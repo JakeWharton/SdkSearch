@@ -1,12 +1,12 @@
-package com.jakewharton.sdksearch;
+package com.jakewharton.sdksearch.api;
 
-final class Item {
-  final long id;
-  final String label;
-  final String link;
-  final String type;
+public final class ApiItem {
+  public final long id;
+  public final String label;
+  public final String link;
+  public final String type;
 
-  Item(long id, String label, String link, String type) {
+  ApiItem(long id, String label, String link, String type) {
     this.id = id;
     this.label = label;
     this.link = link;
@@ -14,7 +14,7 @@ final class Item {
   }
 
   @Override public String toString() {
-    return "Item{"
+    return "ApiItem{"
         + "id="
         + id
         + ", label='"

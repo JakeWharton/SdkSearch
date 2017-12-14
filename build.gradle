@@ -13,6 +13,7 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:3.0.1'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+    classpath 'com.squareup.sqldelight:gradle-plugin:0.6.1'
   }
 }
 
@@ -23,6 +24,7 @@ def versionBuild = 0
 
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'com.squareup.sqldelight'
 
 android {
   compileSdkVersion 27
@@ -35,6 +37,11 @@ android {
 
     versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
   }
 
   signingConfigs {
@@ -71,6 +78,12 @@ dependencies {
   compile "com.android.support:customtabs:${versions.supportLibrary}"
   compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
+  compile 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.0.0'
+  compile 'android.arch.persistence:db-framework:1.0.0'
+
+  annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
+  compileOnly 'com.jakewharton.auto.value:auto-value-annotations:1.5'
+
   compile 'com.squareup.okio:okio:1.13.0'
 
   compile 'com.squareup.moshi:moshi:1.5.0'
@@ -79,7 +92,7 @@ dependencies {
   compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
   compile 'com.squareup.retrofit2:retrofit:2.3.0'
-  compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
+  compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
   compile 'com.squareup.retrofit2:converter-moshi:2.3.0'
 
   compile 'io.reactivex.rxjava2:rxjava:2.1.6'
