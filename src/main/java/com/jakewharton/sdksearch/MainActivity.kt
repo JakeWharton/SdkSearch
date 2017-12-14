@@ -30,7 +30,7 @@ class MainActivity : Activity() {
           runOnUiThread { throw RuntimeException("HTTP ${response.code()}") }
           return
         }
-        val source = response.body().source()
+        val source = response.body()!!.source()
         val start = source.indexOf(ByteString.encodeUtf8("["))
         source.skip(start)
 
@@ -39,7 +39,7 @@ class MainActivity : Activity() {
         val reader = JsonReader.of(source)
         reader.isLenient = true
 
-        val items = adapter.fromJson(reader)
+        val items = adapter.fromJson(reader)!!
 
         items.forEach {
           Log.d("Item", it.toString())
