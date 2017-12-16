@@ -42,7 +42,7 @@ class MainActivity : Activity() {
     val count = findViewById<TextView>(R.id.count)
 
     val dbConfiguration = Configuration.builder(this)
-        // .name("sdk.db") Use in-memory DB for now.
+        .name("sdk.db")
         .callback(DbCallback())
         .build()
     val openHelper = FrameworkSQLiteOpenHelperFactory().create(dbConfiguration)
