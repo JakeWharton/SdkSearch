@@ -24,6 +24,7 @@ def versionBuild = 0
 
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.squareup.sqldelight'
 
 android {
@@ -81,7 +82,7 @@ dependencies {
   compile 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.0.0'
   compile 'android.arch.persistence:db-framework:1.0.0'
 
-  annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
+  kapt 'com.google.auto.value:auto-value:1.5.2'
   compileOnly 'com.jakewharton.auto.value:auto-value-annotations:1.5'
 
   compile 'com.squareup.okio:okio:1.13.0'
@@ -104,10 +105,10 @@ dependencies {
   compile 'com.jakewharton.timber:timber:4.6.0'
 
   compile 'com.google.dagger:dagger:2.13'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
+  kapt 'com.google.dagger:dagger-compiler:2.13'
 
   compile 'com.jakewharton:butterknife:8.8.1'
-  annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+  kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 
 // Force all of the primary support libraries to use the same version.
