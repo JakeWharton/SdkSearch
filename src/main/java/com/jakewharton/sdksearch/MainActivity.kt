@@ -91,7 +91,7 @@ class MainActivity : Activity() {
         try {
           briteDatabase.newTransaction().use {
             Item.FACTORY.clear_listing(listing).let {
-              briteDatabase.executeAndTrigger(it.tables, it.statement)
+              briteDatabase.executeAndTrigger(it.tables, it.statement, *it.args)
             }
             for (item in items) {
               briteDatabase.insert(ItemModel.TABLE_NAME, 0, Item.FACTORY.marshal()
