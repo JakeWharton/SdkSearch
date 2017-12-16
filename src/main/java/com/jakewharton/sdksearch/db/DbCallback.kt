@@ -5,7 +5,7 @@ import android.arch.persistence.db.SupportSQLiteOpenHelper
 
 private const val VERSION = 1
 
-class DbCallback : SupportSQLiteOpenHelper.Callback(VERSION) {
+internal class DbCallback : SupportSQLiteOpenHelper.Callback(VERSION) {
   override fun onCreate(db: SupportSQLiteDatabase) {
     db.execSQL(ItemModel.CREATE_TABLE)
   }

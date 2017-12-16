@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.api;
 
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Singleton;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -14,7 +15,7 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.BASIC;
 
 @Module //
 abstract class ApiModule {
-  @Provides static DocumentationService documentationService(HttpUrl baseUrl) {
+  @Provides @Singleton static DocumentationService documentationService(HttpUrl baseUrl) {
     HttpLoggingInterceptor.Logger logger = message -> Timber.tag("HTTP").d(message);
 
     OkHttpClient client = new OkHttpClient.Builder() //

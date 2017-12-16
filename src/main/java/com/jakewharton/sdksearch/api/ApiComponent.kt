@@ -3,7 +3,9 @@ package com.jakewharton.sdksearch.api
 import dagger.BindsInstance
 import dagger.Component
 import okhttp3.HttpUrl
+import javax.inject.Singleton
 
+@Singleton
 @Component(modules = [
   ApiModule::class
 ])
