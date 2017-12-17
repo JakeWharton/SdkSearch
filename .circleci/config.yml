@@ -31,19 +31,16 @@ jobs:
             - ~/.gradle/wrapper
 
       - store_test_results:
-          path: build/test-results/testDebugUnitTest
+          path: frontend/build/test-results/testDebugUnitTest
 
       - store_test_results:
-          path: build/test-results/testReleaseUnitTest
+          path: frontend/build/test-results/testReleaseUnitTest
 
       - store_artifacts:
-          path: build/reports/lint-results.html
+          path: frontend/build/reports/lint-results.html
 
       - store_artifacts:
-          path: build/outputs/apk/debug/SdkSearch-debug.apk
-
-      - store_artifacts:
-          path: build/outputs/apk/release/SdkSearch-release.apk
+          path: frontend/build/outputs/
 
 workflows:
   version: 2
