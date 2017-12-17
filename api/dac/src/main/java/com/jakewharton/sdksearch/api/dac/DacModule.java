@@ -15,7 +15,7 @@ import timber.log.Timber;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BASIC;
 
 @Module //
-abstract class ApiModule {
+abstract class DacModule {
   @Provides @Singleton static DocumentationService documentationService(HttpUrl baseUrl) {
     HttpLoggingInterceptor.Logger logger = message -> Timber.tag("HTTP").d(message);
 
@@ -25,7 +25,7 @@ abstract class ApiModule {
         .build();
 
     Moshi moshi = new Moshi.Builder()
-        .add(ApiJsonAdapterFactory.INSTANCE)
+        .add(DacJsonAdapterFactory.INSTANCE)
         .build();
 
     Retrofit retrofit = new Retrofit.Builder() //

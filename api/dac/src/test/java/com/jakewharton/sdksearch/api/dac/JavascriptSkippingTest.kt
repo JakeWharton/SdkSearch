@@ -12,7 +12,7 @@ class JavascriptSkippingTest {
   private lateinit var service: DocumentationService
 
   @Before fun before() {
-    service = ApiComponent.builder()
+    service = DacComponent.builder()
         .baseUrl(server.url("/"))
         .build()
         .documentationService()
@@ -29,7 +29,7 @@ class JavascriptSkippingTest {
     service.list("whatever")
         .test()
         .await()
-        .assertValue(listOf(ApiItem(1, "android.Manifest", "reference/android/Manifest.html", "class")))
+        .assertValue(listOf(Item(1, "android.Manifest", "reference/android/Manifest.html", "class")))
         .assertComplete()
   }
 }

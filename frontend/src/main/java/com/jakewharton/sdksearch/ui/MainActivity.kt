@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.REFERENCE_LISTS
-import com.jakewharton.sdksearch.api.dac.ApiComponent
+import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
@@ -36,7 +36,7 @@ class MainActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    service = ApiComponent.builder()
+    service = DacComponent.builder()
         .baseUrl(baseUrl)
         .build()
         .documentationService()

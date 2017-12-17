@@ -5,5 +5,5 @@ import retrofit2.http.GET
 import retrofit2.http.Url
 
 interface DocumentationService {
-  @GET fun list(@Url relativeUrl: String): Single<List<ApiItem>>
+  @GET fun list(@Url relativeUrl: String): Single<List<Item>>
 }

@@ -7,18 +7,18 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-  ApiModule::class
+  DacModule::class
 ])
-interface ApiComponent {
+interface DacComponent {
   fun documentationService(): DocumentationService
 
   @Component.Builder
   interface Builder {
     @BindsInstance fun baseUrl(url: HttpUrl): Builder
-    fun build(): ApiComponent
+    fun build(): DacComponent
   }
 
   companion object {
-    fun builder(): Builder = DaggerApiComponent.builder()
+    fun builder(): Builder = DaggerDacComponent.builder()
   }
 }
