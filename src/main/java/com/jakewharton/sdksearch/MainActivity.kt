@@ -8,7 +8,8 @@ import com.jakewharton.sdksearch.api.DocumentationService
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
 import com.jakewharton.sdksearch.db.ItemStore
-import com.jakewharton.sdksearch.db.ItemType
+import com.jakewharton.sdksearch.db.ItemType.CLASS
+import com.jakewharton.sdksearch.db.ItemType.PACKAGE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.OnErrorNotImplementedException
@@ -59,10 +60,16 @@ class MainActivity : Activity() {
     service.list(url).subscribe({ apiItems ->
       Timber.d("Listing $listing got ${apiItems.size} items")
       val dbItems = apiItems
-          .map { Item.createForInsert(listing, it.label, ItemType.parse(it.type), it.link) }
+          .map { Item.createForInsert(listing, it.label, parseItemType(it.type), it.link) }
       store.updateListing(listing, dbItems)
     }, {
       runOnUiThread { throw RuntimeException(it) }
     })
+  }
+
+  private fun parseItemType(name: String) = when (name) {
+    "package" -> PACKAGE
+    "class" -> CLASS
+    else -> throw IllegalArgumentException("Unknown type \"$name\"")
   }
 }
