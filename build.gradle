@@ -45,6 +45,14 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+
   signingConfigs {
     debug {
       storeFile rootProject.file('debug.keystore')
