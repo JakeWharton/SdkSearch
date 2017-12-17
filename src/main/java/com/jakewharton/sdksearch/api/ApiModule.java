@@ -1,5 +1,6 @@
 package com.jakewharton.sdksearch.api;
 
+import com.squareup.moshi.Moshi;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -23,11 +24,15 @@ abstract class ApiModule {
         .addNetworkInterceptor(new HttpLoggingInterceptor(logger).setLevel(BASIC)) //
         .build();
 
+    Moshi moshi = new Moshi.Builder()
+        .add(ApiJsonAdapterFactory.INSTANCE)
+        .build();
+
     Retrofit retrofit = new Retrofit.Builder() //
         .baseUrl(baseUrl) //
         .client(client) //
         // The Moshi converter has to be lenient because the JS keys are unquoted.
-        .addConverterFactory(MoshiConverterFactory.create().asLenient()) //
+        .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient()) //
         .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync()) //
         .build();
 
