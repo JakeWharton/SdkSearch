@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.api
+package com.jakewharton.sdksearch.api.dac
 
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -13,7 +13,8 @@ internal class JavascriptSkippingInterceptor : Interceptor {
     val response = chain.proceed(chain.request())
     val realBody = response.body()!!
     val realSource = realBody.source()
-    val skipSource = Okio.buffer(SkippingSource(realSource))
+    val skipSource = Okio.buffer(
+        SkippingSource(realSource))
     val skipBody = ResponseBody.create(realBody.contentType(), -1, skipSource)
     return response.newBuilder().body(skipBody).build()
   }

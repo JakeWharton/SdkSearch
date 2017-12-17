@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.squareup.sqldelight'
+
+android {
+  compileSdkVersion 27
+
+  defaultConfig {
+    minSdkVersion 24
+
+    consumerProguardFiles file('src/main/proguard-consumer.pro')
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+}
+
+dependencies {
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+
+  implementation 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.0.0'
+  implementation 'android.arch.persistence:db-framework:1.0.0'
+
+  kapt 'com.google.auto.value:auto-value:1.5.2'
+  compileOnly 'com.jakewharton.auto.value:auto-value-annotations:1.5'
+
+  api 'io.reactivex.rxjava2:rxjava:2.1.6'
+
+  implementation 'com.jakewharton.timber:timber:4.6.0'
+
+  compile 'com.google.dagger:dagger:2.13'
+  kapt 'com.google.dagger:dagger-compiler:2.13'
+}

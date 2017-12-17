@@ -22,7 +22,7 @@ jobs:
 
       - run:
           name: JVM Tests & Lint
-          command: ./gradlew check
+          command: ./gradlew test :frontend:lint
 
       - save_cache:
           key: jars-{{ checksum "build.gradle" }}
@@ -31,10 +31,10 @@ jobs:
             - ~/.gradle/wrapper
 
       - store_test_results:
-          path: frontend/build/test-results/testDebugUnitTest
+          path: api/build/test-results/testDebugUnitTest
 
       - store_test_results:
-          path: frontend/build/test-results/testReleaseUnitTest
+          path: api/build/test-results/testReleaseUnitTest
 
       - store_artifacts:
           path: frontend/build/reports/lint-results.html

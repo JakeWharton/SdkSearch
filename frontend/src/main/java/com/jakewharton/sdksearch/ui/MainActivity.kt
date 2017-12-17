@@ -11,8 +11,8 @@ import android.widget.TextView
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.REFERENCE_LISTS
-import com.jakewharton.sdksearch.api.ApiComponent
-import com.jakewharton.sdksearch.api.DocumentationService
+import com.jakewharton.sdksearch.api.dac.ApiComponent
+import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
 import com.jakewharton.sdksearch.db.ItemStore

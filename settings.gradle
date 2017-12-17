@@ -1,1 +1,3 @@
+include ':api:dac'
+include ':db'
 include ':frontend'

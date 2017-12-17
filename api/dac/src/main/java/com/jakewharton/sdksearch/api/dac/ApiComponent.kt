@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.api
+package com.jakewharton.sdksearch.api.dac
 
 import dagger.BindsInstance
 import dagger.Component

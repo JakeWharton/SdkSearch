@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.api
+package com.jakewharton.sdksearch.api.dac
 
 import io.reactivex.Single
 import retrofit2.http.GET

@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-kapt'
+
+android {
+  compileSdkVersion 27
+
+  defaultConfig {
+    minSdkVersion 24
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+}
+
+dependencies {
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+
+  implementation 'com.squareup.moshi:moshi:1.5.0'
+
+  api 'com.squareup.okhttp3:okhttp:3.9.1'
+  implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+  testImplementation 'com.squareup.okhttp3:mockwebserver:3.9.1'
+
+  implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+  implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+  implementation 'com.squareup.retrofit2:converter-moshi:2.3.0'
+
+  api 'io.reactivex.rxjava2:rxjava:2.1.6'
+
+  implementation 'com.jakewharton.timber:timber:4.6.0'
+
+  implementation 'se.ansman.kotshi:api:0.3.0-beta1'
+  kapt 'se.ansman.kotshi:compiler:0.3.0-beta1'
+
+  implementation 'com.google.dagger:dagger:2.13'
+  kapt 'com.google.dagger:dagger-compiler:2.13'
+
+  testImplementation 'junit:junit:4.12'
+  testImplementation 'com.google.truth:truth:0.37'
+}

@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.squareup.sqldelight'
 
 def versionMajor = 1
 def versionMinor = 0
@@ -67,54 +66,19 @@ android {
 }
 
 dependencies {
-  compile "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+  implementation project(':api:dac')
+  implementation project(':db')
 
-  compile "com.android.support:support-annotations:${versions.supportLibrary}"
-  compile "com.android.support:recyclerview-v7:${versions.supportLibrary}"
-  compile "com.android.support:customtabs:${versions.supportLibrary}"
-  compile 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
 
-  compile 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.0.0'
-  compile 'android.arch.persistence:db-framework:1.0.0'
+  implementation "com.android.support:support-annotations:${versions.supportLibrary}"
+  implementation "com.android.support:recyclerview-v7:${versions.supportLibrary}"
+  implementation "com.android.support:customtabs:${versions.supportLibrary}"
+  implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
 
-  kapt 'com.google.auto.value:auto-value:1.5.2'
-  compileOnly 'com.jakewharton.auto.value:auto-value-annotations:1.5'
+  implementation 'io.reactivex.rxjava2:rxjava:2.1.6'
+  implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+  implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
 
-  compile 'com.squareup.okio:okio:1.13.0'
-
-  compile 'com.squareup.moshi:moshi:1.5.0'
-
-  compile 'com.squareup.okhttp3:okhttp:3.9.1'
-  compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-  testImplementation 'com.squareup.okhttp3:mockwebserver:3.9.1'
-
-  compile 'com.squareup.retrofit2:retrofit:2.3.0'
-  compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-  compile 'com.squareup.retrofit2:converter-moshi:2.3.0'
-
-  compile 'io.reactivex.rxjava2:rxjava:2.1.6'
-  compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-  compile 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
-
-  compile 'com.jakewharton.timber:timber:4.6.0'
-
-  compile 'com.google.dagger:dagger:2.13'
-  kapt 'com.google.dagger:dagger-compiler:2.13'
-
-  implementation 'se.ansman.kotshi:api:0.3.0-beta1'
-  kapt 'se.ansman.kotshi:compiler:0.3.0-beta1'
-
-  testImplementation 'junit:junit:4.12'
-  testImplementation 'com.google.truth:truth:0.37'
-}
-
-// Force all of the primary support libraries to use the same version.
-configurations.all {
-  resolutionStrategy {
-    eachDependency { details ->
-      if (details.requested.group == 'com.android.support') {
-        details.useVersion versions.supportLibrary
-      }
-    }
-  }
+  implementation 'com.jakewharton.timber:timber:4.6.0'
 }

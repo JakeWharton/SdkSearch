@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.api;
+package com.jakewharton.sdksearch.api.dac;
 
 import com.squareup.moshi.Moshi;
 import dagger.Module;

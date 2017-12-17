@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.api
+package com.jakewharton.sdksearch.api.dac
 
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
