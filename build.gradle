@@ -59,6 +59,21 @@ android {
       applicationIdSuffix '.debug'
       signingConfig signingConfigs.debug
     }
+    release {
+      signingConfig signingConfigs.debug // TODO temporary
+
+      minifyEnabled true
+      proguardFiles(
+          file('src/main/proguard-android.pro'),
+          file('src/main/proguard-app.pro')
+      )
+    }
+  }
+
+  packagingOptions {
+    exclude 'kotlin/**'
+    exclude 'META-INF/*.kotlin_module'
+    exclude 'META-INF/*.version'
   }
 }
 
@@ -72,9 +87,6 @@ dependencies {
   compile "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
 
   compile "com.android.support:support-annotations:${versions.supportLibrary}"
-  compile "com.android.support:support-v4:${versions.supportLibrary}"
-  compile "com.android.support:appcompat-v7:${versions.supportLibrary}"
-  compile "com.android.support:design:${versions.supportLibrary}"
   compile "com.android.support:recyclerview-v7:${versions.supportLibrary}"
   compile "com.android.support:customtabs:${versions.supportLibrary}"
   compile 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
@@ -99,17 +111,12 @@ dependencies {
 
   compile 'io.reactivex.rxjava2:rxjava:2.1.6'
   compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-  compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
   compile 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
-  compile 'com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.0.0'
 
   compile 'com.jakewharton.timber:timber:4.6.0'
 
   compile 'com.google.dagger:dagger:2.13'
   kapt 'com.google.dagger:dagger-compiler:2.13'
-
-  compile 'com.jakewharton:butterknife:8.8.1'
-  kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
   implementation 'se.ansman.kotshi:api:0.3.0-beta1'
   kapt 'se.ansman.kotshi:compiler:0.3.0-beta1'
