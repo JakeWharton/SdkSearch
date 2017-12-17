@@ -77,7 +77,7 @@ dependencies {
   compile "com.android.support:design:${versions.supportLibrary}"
   compile "com.android.support:recyclerview-v7:${versions.supportLibrary}"
   compile "com.android.support:customtabs:${versions.supportLibrary}"
-  compile 'com.android.support.constraint:constraint-layout:1.0.2'
+  compile 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
 
   compile 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.0.0'
   compile 'android.arch.persistence:db-framework:1.0.0'

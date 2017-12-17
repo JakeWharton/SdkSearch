@@ -23,3 +23,9 @@ count:
 SELECT COUNT(_id)
 FROM item
 ;
+
+query_term:
+SELECT item.*
+FROM item
+WHERE label LIKE ?
+;

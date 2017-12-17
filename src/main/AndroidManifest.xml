@@ -13,7 +13,7 @@
       android:supportsRtl="true"
       >
     <activity
-        android:name=".MainActivity"
+        android:name=".ui.MainActivity"
         android:launchMode="singleInstance"
         >
       <intent-filter>
