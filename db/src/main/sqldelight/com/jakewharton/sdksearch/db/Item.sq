@@ -5,13 +5,12 @@ CREATE TABLE item(
   _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   listing TEXT NOT NULL,
   label TEXT NOT NULL,
-  type TEXT AS ItemType NOT NULL,
   deprecated INTEGER AS Boolean NOT NULL DEFAULT 0,
   link TEXT NOT NULL
 );
 
 insert_item:
-INSERT INTO item(listing, label, type, deprecated, link) VALUES (?, ?, ?, ?, ?)
+INSERT INTO item(listing, label, deprecated, link) VALUES (?, ?, ?, ?)
 ;
 
 clear_listing:

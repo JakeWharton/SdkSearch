@@ -18,7 +18,6 @@ internal class SqlItemStore @Inject constructor(
             .listing(listing)
             .label(item.label())
             .link(item.link())
-            .type(item.type())
             .asContentValues())
       }
       it.markSuccessful()

@@ -16,8 +16,6 @@ import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
 import com.jakewharton.sdksearch.db.ItemStore
-import com.jakewharton.sdksearch.db.ItemType.CLASS
-import com.jakewharton.sdksearch.db.ItemType.PACKAGE
 import io.reactivex.Observable.just
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -88,17 +86,12 @@ class MainActivity : Activity() {
     service.list(url).subscribe({ apiItems ->
       Timber.d("Listing $listing got ${apiItems.size} items")
       val dbItems = apiItems
-          .map { Item.createForInsert(listing, it.label, parseItemType(it.type), it.link) }
+          .filter { it.type == "class" }
+          .map { Item.createForInsert(listing, it.label, it.link) }
       store.updateListing(listing, dbItems)
     }, {
       runOnUiThread { throw RuntimeException(it) }
     })
-  }
-
-  private fun parseItemType(name: String) = when (name) {
-    "package" -> PACKAGE
-    "class" -> CLASS
-    else -> throw IllegalArgumentException("Unknown type \"$name\"")
   }
 
   private fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
