@@ -27,4 +27,5 @@ query_term:
 SELECT item.*
 FROM item
 WHERE class LIKE ?
+LIMIT 50
 ;
