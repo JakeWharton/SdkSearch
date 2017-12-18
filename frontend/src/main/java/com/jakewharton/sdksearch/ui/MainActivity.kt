@@ -102,7 +102,7 @@ class MainActivity : Activity() {
       Timber.d("Listing $listing got ${apiItems.size} items")
       val dbItems = apiItems
           .filter { it.type == "class" }
-          .map { Item.createForInsert(listing, it.label, it.link) }
+          .map { Item.createForInsert(listing, it.label, it.link, it.deprecated) }
       store.updateListing(listing, dbItems)
     }, {
       runOnUiThread { throw RuntimeException(it) }

@@ -7,6 +7,8 @@ android {
 
   defaultConfig {
     minSdkVersion buildConfig.minSdk
+
+    consumerProguardFiles file('src/main/proguard-consumer.pro')
   }
 
   compileOptions {

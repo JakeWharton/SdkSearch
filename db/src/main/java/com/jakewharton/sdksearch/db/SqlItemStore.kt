@@ -19,6 +19,7 @@ internal class SqlItemStore @Inject constructor(
             .package_(item.package_())
             .class_(item.class_())
             .link(item.link())
+            .deprecated(item.deprecated())
             .asContentValues())
       }
       it.markSuccessful()

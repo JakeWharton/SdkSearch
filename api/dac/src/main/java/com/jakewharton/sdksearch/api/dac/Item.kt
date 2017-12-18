@@ -7,5 +7,6 @@ data class Item(
   val id: Long,
   val label: String,
   val link: String,
-  val type: String
+  val type: String,
+  @BooleanString val deprecated: Boolean
 )
