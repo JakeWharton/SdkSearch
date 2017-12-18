@@ -30,11 +30,14 @@ jobs:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
 
+      - run:
+          name: Coalesce Test Results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always
       - store_test_results:
-          path: api/build/test-results/testDebugUnitTest
-
-      - store_test_results:
-          path: api/build/test-results/testReleaseUnitTest
+          path: ~/junit
 
       - store_artifacts:
           path: frontend/build/reports/lint-results.html
