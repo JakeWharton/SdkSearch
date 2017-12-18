@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.widget.EditText
 import android.widget.TextView
@@ -16,14 +17,17 @@ import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
 import com.jakewharton.sdksearch.db.ItemStore
+import com.jakewharton.sdksearch.util.DataWithDiff
 import io.reactivex.Observable.just
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.schedulers.Schedulers.computation
 import okhttp3.HttpUrl
 import timber.log.Timber
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 class MainActivity : Activity() {
   private val baseUrl = HttpUrl.parse("https://developer.android.com")!!
@@ -65,10 +69,20 @@ class MainActivity : Activity() {
         .map(CharSequence::toString)
         .switchMap {
           if (it.isBlank()) just(emptyList())
-          else store.queryItems(it).observeOn(AndroidSchedulers.mainThread())
+          else store.queryItems(it).delaySubscription(200, MILLISECONDS, mainThread())
         }
-        // TODO Use DiffUtil to previous list.
-        .subscribe({ adapter.updateItems(it) }, { throw OnErrorNotImplementedException(it) })
+        .observeOn(computation())
+        .scan(DataWithDiff(emptyList<Item>())) { (old), new ->
+          DataWithDiff(new, DiffUtil.calculateDiff(ItemDiffCallback(old, new)))
+        }
+        .skip(1)
+        .observeOn(mainThread())
+        .subscribe({
+          adapter.updateItems(it.data)
+          it.diff.dispatchUpdatesTo(adapter)
+        }, {
+          throw OnErrorNotImplementedException(it)
+        })
         .addTo(disposables)
 
     for ((listing, url) in REFERENCE_LISTS) {

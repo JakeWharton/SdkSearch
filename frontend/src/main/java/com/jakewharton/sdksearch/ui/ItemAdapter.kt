@@ -16,7 +16,6 @@ internal class ItemAdapter(
 
   fun updateItems(items: List<Item>) {
     this.items = items
-    notifyDataSetChanged()
   }
 
   override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
