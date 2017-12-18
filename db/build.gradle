@@ -41,4 +41,6 @@ dependencies {
 
   implementation deps.dagger.runtime
   kapt deps.dagger.compiler
+
+  testImplementation deps.junit
 }

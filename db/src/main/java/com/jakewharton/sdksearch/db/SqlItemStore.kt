@@ -16,7 +16,8 @@ internal class SqlItemStore @Inject constructor(
       for (item in items) {
         db.insert(ItemModel.TABLE_NAME, 0, Item.FACTORY.marshal()
             .listing(listing)
-            .label(item.label())
+            .package_(item.package_())
+            .class_(item.class_())
             .link(item.link())
             .asContentValues())
       }

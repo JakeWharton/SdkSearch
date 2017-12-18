@@ -23,6 +23,7 @@ internal class ItemViewHolder(
   fun setItem(item: Item) {
     this.item = item
 
-    view.text = item.label()
+    val packageAcronym = item.package_().split('.').map { it.first().toString() }.joinToString(".")
+    view.text = "$packageAcronym.${item.class_()}"
   }
 }

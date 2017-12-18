@@ -1,16 +1,16 @@
-import com.jakewharton.sdksearch.db.ItemType;
 import java.lang.Boolean;
 
 CREATE TABLE item(
   _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   listing TEXT NOT NULL,
-  label TEXT NOT NULL,
+  package TEXT NOT NULL,
+  class TEXT NOT NULL,
   deprecated INTEGER AS Boolean NOT NULL DEFAULT 0,
   link TEXT NOT NULL
 );
 
 insert_item:
-INSERT INTO item(listing, label, deprecated, link) VALUES (?, ?, ?, ?)
+INSERT INTO item(listing, package, class, deprecated, link) VALUES (?, ?, ?, ?, ?)
 ;
 
 clear_listing:
@@ -26,5 +26,5 @@ FROM item
 query_term:
 SELECT item.*
 FROM item
-WHERE label LIKE ?
+WHERE class LIKE ?
 ;
