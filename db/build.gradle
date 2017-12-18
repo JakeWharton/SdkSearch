@@ -4,10 +4,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.squareup.sqldelight'
 
 android {
-  compileSdkVersion 27
+  compileSdkVersion buildConfig.compileSdk
 
   defaultConfig {
-    minSdkVersion 24
+    minSdkVersion buildConfig.minSdk
 
     consumerProguardFiles file('src/main/proguard-consumer.pro')
   }
@@ -27,18 +27,18 @@ android {
 }
 
 dependencies {
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+  implementation deps.kotlin.stdlib
 
-  implementation 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.0.0'
-  implementation 'android.arch.persistence:db-framework:1.0.0'
+  implementation deps.sqlBrite
+  implementation deps.android.arch.dbFramework
 
-  kapt 'com.google.auto.value:auto-value:1.5.2'
-  compileOnly 'com.jakewharton.auto.value:auto-value-annotations:1.5'
+  kapt deps.auto.value.compiler
+  compileOnly deps.auto.value.annotations
 
-  api 'io.reactivex.rxjava2:rxjava:2.1.6'
+  api deps.rx.java
 
-  implementation 'com.jakewharton.timber:timber:4.6.0'
+  implementation deps.timber
 
-  compile 'com.google.dagger:dagger:2.13'
-  kapt 'com.google.dagger:dagger-compiler:2.13'
+  implementation deps.dagger.runtime
+  kapt deps.dagger.compiler
 }

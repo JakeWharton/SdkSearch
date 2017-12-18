@@ -3,10 +3,10 @@ apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
 
 android {
-  compileSdkVersion 27
+  compileSdkVersion buildConfig.compileSdk
 
   defaultConfig {
-    minSdkVersion 24
+    minSdkVersion buildConfig.minSdk
   }
 
   compileOptions {
@@ -24,28 +24,28 @@ android {
 }
 
 dependencies {
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+  implementation deps.kotlin.stdlib
 
-  implementation 'com.squareup.moshi:moshi:1.5.0'
+  implementation deps.moshi
 
-  api 'com.squareup.okhttp3:okhttp:3.9.1'
-  implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-  testImplementation 'com.squareup.okhttp3:mockwebserver:3.9.1'
+  api deps.okhttp.client
+  implementation deps.okhttp.logging
+  testImplementation deps.okhttp.mockWebServer
 
-  implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-  implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-  implementation 'com.squareup.retrofit2:converter-moshi:2.3.0'
+  implementation deps.retrofit.client
+  implementation deps.retrofit.adapterRxJava2
+  implementation deps.retrofit.converterMoshi
 
-  api 'io.reactivex.rxjava2:rxjava:2.1.6'
+  api deps.rx.java
 
-  implementation 'com.jakewharton.timber:timber:4.6.0'
+  implementation deps.timber
 
-  implementation 'se.ansman.kotshi:api:0.3.0-beta1'
-  kapt 'se.ansman.kotshi:compiler:0.3.0-beta1'
+  implementation deps.kotshi.api
+  kapt deps.kotshi.compiler
 
-  implementation 'com.google.dagger:dagger:2.13'
-  kapt 'com.google.dagger:dagger-compiler:2.13'
+  implementation deps.dagger.runtime
+  kapt deps.dagger.compiler
 
-  testImplementation 'junit:junit:4.12'
-  testImplementation 'com.google.truth:truth:0.37'
+  testImplementation deps.junit
+  testImplementation deps.truth
 }

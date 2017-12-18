@@ -8,13 +8,13 @@ def versionPatch = 0
 def versionBuild = 0
 
 android {
-  compileSdkVersion 27
+  compileSdkVersion buildConfig.compileSdk
 
   defaultConfig {
     applicationId 'com.jakewharton.sdksearch'
 
-    minSdkVersion 24
-    targetSdkVersion 27
+    minSdkVersion buildConfig.minSdk
+    targetSdkVersion buildConfig.targetSdk
 
     versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -69,16 +69,16 @@ dependencies {
   implementation project(':api:dac')
   implementation project(':db')
 
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+  implementation deps.kotlin.stdlib
 
-  implementation "com.android.support:support-annotations:${versions.supportLibrary}"
-  implementation "com.android.support:recyclerview-v7:${versions.supportLibrary}"
-  implementation "com.android.support:customtabs:${versions.supportLibrary}"
-  implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
+  implementation deps.android.support.annotations
+  implementation deps.android.support.recyclerView
+  implementation deps.android.support.customTabs
+  implementation deps.android.support.constraintLayout
 
-  implementation 'io.reactivex.rxjava2:rxjava:2.1.6'
-  implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-  implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
+  implementation deps.rx.java
+  implementation deps.rx.android
+  implementation deps.rx.binding.framework
 
-  implementation 'com.jakewharton.timber:timber:4.6.0'
+  implementation deps.timber
 }
