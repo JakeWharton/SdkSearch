@@ -19,33 +19,31 @@ jobs:
       - run:
           name: Compile
           command: ./gradlew assemble
+      - store_artifacts:
+          path: frontend/build/outputs/
 
       - run:
-          name: JVM Tests & Lint
-          command: ./gradlew test :frontend:lint
+          name: JVM Tests
+          command: |
+            ./gradlew test
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp --parents {} ~/junit/ \;
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
+
+      - run:
+          name: Lint
+          command: ./gradlew :frontend:lint
+      - store_artifacts:
+          path: frontend/build/reports/lint-results.html
 
       - save_cache:
           key: jars-{{ checksum "build.gradle" }}
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
-
-      - run:
-          name: Coalesce Test Results
-          command: |
-            mkdir -p ~/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp --parents {} ~/junit/ \;
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
-
-      - store_artifacts:
-          path: frontend/build/reports/lint-results.html
-
-      - store_artifacts:
-          path: frontend/build/outputs/
 
 workflows:
   version: 2
