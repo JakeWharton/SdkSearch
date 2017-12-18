@@ -34,9 +34,11 @@ jobs:
           name: Coalesce Test Results
           command: |
             mkdir -p ~/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp --parents {} ~/junit/ \;
           when: always
       - store_test_results:
+          path: ~/junit
+      - store_artifacts:
           path: ~/junit
 
       - store_artifacts:
