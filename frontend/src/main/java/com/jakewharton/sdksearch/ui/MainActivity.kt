@@ -54,6 +54,7 @@ class MainActivity : Activity() {
 
     val count = findViewById<TextView>(R.id.count)
     store.count()
+        .observeOn(mainThread())
         .subscribe({ count.text = "Count: $it" }, { throw OnErrorNotImplementedException(it) })
         .addTo(disposables)
 
