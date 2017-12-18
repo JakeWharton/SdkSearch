@@ -23,7 +23,13 @@ internal class ItemViewHolder(
   fun setItem(item: Item) {
     this.item = item
 
-    val packageAcronym = item.package_().split('.').map { it.first().toString() }.joinToString(".")
+    val packageAcronym = item.package_()
+        .split('.')
+        .joinToString(".") { if (it.matches(VERSION_PACKAGE)) it else it.first().toString() }
     view.text = "$packageAcronym.${item.class_()}"
+  }
+
+  companion object {
+    private val VERSION_PACKAGE = """v\d+""".toRegex()
   }
 }
