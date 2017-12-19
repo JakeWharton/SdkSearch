@@ -14,7 +14,7 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle.properties" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
 
       - run:
           name: Compile
@@ -40,7 +40,7 @@ jobs:
           path: frontend/build/reports/lint-results.html
 
       - save_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle.properties" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
