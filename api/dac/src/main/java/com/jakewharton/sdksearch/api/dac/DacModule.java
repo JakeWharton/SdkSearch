@@ -4,7 +4,6 @@ import com.squareup.moshi.Moshi;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -16,7 +15,7 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.BASIC;
 
 @Module //
 abstract class DacModule {
-  @Provides @Singleton static DocumentationService documentationService(HttpUrl baseUrl) {
+  @Provides @Singleton static DocumentationService documentationService(BaseUrl baseUrl) {
     HttpLoggingInterceptor.Logger logger = message -> Timber.tag("HTTP").d(message);
 
     OkHttpClient client = new OkHttpClient.Builder() //
@@ -30,7 +29,7 @@ abstract class DacModule {
         .build();
 
     Retrofit retrofit = new Retrofit.Builder() //
-        .baseUrl(baseUrl) //
+        .baseUrl(baseUrl.getUrl()) //
         .client(client) //
         // The Moshi converter has to be lenient because the JS keys are unquoted.
         .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient()) //

@@ -2,7 +2,6 @@ package com.jakewharton.sdksearch.api.dac
 
 import dagger.BindsInstance
 import dagger.Component
-import okhttp3.HttpUrl
 import javax.inject.Singleton
 
 @Singleton
@@ -14,7 +13,7 @@ interface DacComponent {
 
   @Component.Builder
   interface Builder {
-    @BindsInstance fun baseUrl(url: HttpUrl): Builder
+    @BindsInstance fun baseUrl(url: BaseUrl): Builder
     fun build(): DacComponent
   }
 

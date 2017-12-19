@@ -30,7 +30,7 @@ dependencies {
 
   implementation deps.moshi
 
-  api deps.okhttp.client
+  implementation deps.okhttp.client
   implementation deps.okhttp.logging
   testImplementation deps.okhttp.mockWebServer
 

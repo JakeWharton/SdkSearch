@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.REFERENCE_LISTS
+import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.db.DbComponent
@@ -25,12 +26,11 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.Schedulers.computation
-import okhttp3.HttpUrl
 import timber.log.Timber
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 class MainActivity : Activity() {
-  private val baseUrl = HttpUrl.parse("https://developer.android.com")!!
+  private val baseUrl = BaseUrl("https://developer.android.com")
   private val disposables = CompositeDisposable()
   private lateinit var service: DocumentationService
   private lateinit var store: ItemStore
@@ -60,7 +60,7 @@ class MainActivity : Activity() {
 
     val recycler = findViewById<RecyclerView>(R.id.results)
     val adapter = ItemAdapter(layoutInflater) {
-      val uri = baseUrl.resolve(it.link())!!.toUri()
+      val uri = baseUrl.resolve(it.link()).toUri()
       startActivity(Intent(ACTION_VIEW, uri))
     }
     recycler.adapter = adapter
@@ -113,5 +113,5 @@ class MainActivity : Activity() {
     compositeDisposable.add(this)
   }
 
-  private fun HttpUrl.toUri(): Uri = Uri.parse(toString())
+  private fun String.toUri(): Uri = Uri.parse(this)
 }
