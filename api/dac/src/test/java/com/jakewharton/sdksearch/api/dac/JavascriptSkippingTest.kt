@@ -13,7 +13,7 @@ class JavascriptSkippingTest {
 
   @Before fun before() {
     service = DacComponent.builder()
-        .baseUrl(server.url("/"))
+        .baseUrl(BaseUrl(server.url("/").toString()))
         .build()
         .documentationService()
   }
