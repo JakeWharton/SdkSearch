@@ -1,0 +1,24 @@
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jakewharton.sdksearch"
+    >
+
+  <application>
+    <activity android:name=".ui.MainActivity">
+      <meta-data
+          android:name="android.app.shortcuts"
+          android:resource="@xml/shortcuts"
+          />
+    </activity>
+    <activity
+        android:name=".ui.UpdateActivity"
+        android:excludeFromRecents="true"
+        android:taskAffinity=""
+        android:theme="@android:style/Theme.NoDisplay"
+        >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>

@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-kapt'
+
+android {
+  compileSdkVersion buildConfig.compileSdk
+
+  defaultConfig {
+    minSdkVersion buildConfig.minSdk
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+}
+
+dependencies {
+  implementation deps.kotlin.stdlib
+
+  implementation deps.android.support.annotations
+
+  implementation deps.moshi
+  implementation deps.kotshi.api
+  kapt deps.kotshi.compiler
+
+  implementation deps.okhttp.client
+  implementation deps.okhttp.logging
+  testImplementation deps.okhttp.mockWebServer
+
+  implementation deps.retrofit.client
+  implementation deps.retrofit.adapterRxJava2
+  implementation deps.retrofit.converterMoshi
+
+  api deps.rx.java
+
+  implementation deps.timber
+
+  implementation deps.dagger.runtime
+  kapt deps.dagger.compiler
+
+  testImplementation deps.junit
+  testImplementation deps.truth
+}

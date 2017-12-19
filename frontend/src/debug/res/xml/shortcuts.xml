@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:targetApi="n_mr1"
+    >
+  <shortcut
+      android:enabled="true"
+      android:icon="@drawable/ic_shortcut_update"
+      android:shortcutDisabledMessage="@string/update"
+      android:shortcutId="update"
+      android:shortcutLongLabel="@string/update_from_ci"
+      android:shortcutShortLabel="@string/update"
+      >
+    <intent
+        android:action="android.intent.action.MAIN"
+        android:targetClass="com.jakewharton.sdksearch.ui.UpdateActivity"
+        android:targetPackage="com.jakewharton.sdksearch.debug"
+        />
+  </shortcut>
+</shortcuts>
