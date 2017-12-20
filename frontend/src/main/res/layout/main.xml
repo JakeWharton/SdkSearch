@@ -2,36 +2,25 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-  <TextView
-      android:id="@+id/count"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_margin="8dp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:text="Count: 456"
-      />
   <EditText
       android:id="@+id/query"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_margin="8dp"
+      android:layout_marginTop="8dp"
       android:hint="Search..."
       android:inputType="textCapWords|textNoSuggestions"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/count"
+      app:layout_constraintTop_toTopOf="parent"
       />
   <android.support.v7.widget.RecyclerView
       android:id="@+id/results"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_margin="8dp"
       app:layoutManager="android.support.v7.widget.LinearLayoutManager"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"

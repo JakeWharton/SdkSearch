@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.widget.EditText
-import android.widget.TextView
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.REFERENCE_LISTS
@@ -57,12 +56,6 @@ class MainActivity : Activity() {
 
     setContentView(R.layout.main)
 
-    val count = findViewById<TextView>(R.id.count)
-    store.count()
-        .observeOn(mainThread())
-        .subscribe({ count.text = "Count: $it" }, { throw OnErrorNotImplementedException(it) })
-        .addTo(disposables)
-
     val recycler = findViewById<RecyclerView>(R.id.results)
     val adapter = ItemAdapter(layoutInflater) {
       val uri = baseUrl.resolve(it.link()).toUri()
@@ -71,6 +64,16 @@ class MainActivity : Activity() {
     recycler.adapter = adapter
 
     val query = findViewById<EditText>(R.id.query)
+
+    store.count()
+        .observeOn(mainThread())
+        .subscribe({
+          query.hint = getString(R.string.search_classes, it)
+        }, {
+          throw OnErrorNotImplementedException(it)
+        })
+        .addTo(disposables)
+
     query.textChanges()
         .map(CharSequence::toString)
         .switchMap {
