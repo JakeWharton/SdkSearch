@@ -103,7 +103,10 @@ android {
 dependencies {
   implementation project(':api:dac')
   implementation project(':db')
+
   debugImplementation project(':api:circleci')
+  debugImplementation deps.okio
+  debugImplementation deps.android.support.coreUtils
 
   implementation deps.kotlin.stdlib
 

@@ -1,9 +1,12 @@
 package com.jakewharton.sdksearch.api.circleci
 
-import io.reactivex.Observable
+import io.reactivex.Single
+import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Streaming
+import retrofit2.http.Url
 
 interface CircleCiService {
   @GET("project/{vcs-type}/{user}/{project}/latest/artifacts") //
@@ -13,5 +16,8 @@ interface CircleCiService {
     @Path("project") project: String,
     @Query("branch") branch: String?,
     @Query("filter") filter: Filter?
-  ): Observable<List<BuildArtifact>>
+  ): Single<List<BuildArtifact>>
+
+  @GET @Streaming
+  fun getArtifact(@Url path: String): Single<ResponseBody>
 }

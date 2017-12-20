@@ -3,6 +3,8 @@
     package="com.jakewharton.sdksearch"
     >
 
+  <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
   <application>
     <activity android:name=".ui.MainActivity">
       <meta-data
@@ -20,5 +22,17 @@
         <action android:name="android.intent.action.MAIN"/>
       </intent-filter>
     </activity>
+
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="com.jakewharton.sdksearch.updates"
+        android:exported="false"
+        android:grantUriPermissions="true"
+        >
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/update_paths"
+          />
+    </provider>
   </application>
 </manifest>

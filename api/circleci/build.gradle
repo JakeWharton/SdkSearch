@@ -32,7 +32,7 @@ dependencies {
   implementation deps.kotshi.api
   kapt deps.kotshi.compiler
 
-  implementation deps.okhttp.client
+  api deps.okhttp.client
   implementation deps.okhttp.logging
   testImplementation deps.okhttp.mockWebServer
 

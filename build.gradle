@@ -24,6 +24,7 @@ buildscript {
           ],
           'support': [
               'annotations': "com.android.support:support-annotations:${versions.supportLibrary}",
+              'coreUtils': "com.android.support:support-core-utils:${versions.supportLibarry}",
               'recyclerView': "com.android.support:recyclerview-v7:${versions.supportLibrary}",
               'customTabs': "com.android.support:customtabs:${versions.supportLibrary}",
               'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta4',
@@ -60,6 +61,7 @@ buildscript {
               'compiler': 'com.google.auto.value:auto-value:1.5.2',
           ],
       ],
+      'okio': 'com.squareup.okio:okio:1.13.0',
       'moshi': 'com.squareup.moshi:moshi:1.5.0',
       'timber': 'com.jakewharton.timber:timber:4.6.0',
       'junit': 'junit:junit:4.12',
