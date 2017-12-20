@@ -1,10 +1,9 @@
 package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
-import android.content.Intent
-import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
+import android.support.customtabs.CustomTabsIntent
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.widget.EditText
@@ -59,7 +58,11 @@ class MainActivity : Activity() {
     val recycler = findViewById<RecyclerView>(R.id.results)
     val adapter = ItemAdapter(layoutInflater) {
       val uri = baseUrl.resolve(it.link()).toUri()
-      startActivity(Intent(ACTION_VIEW, uri))
+      CustomTabsIntent.Builder()
+          // TODO colors and such once we get a UI design.
+          .addDefaultShareMenuItem()
+          .build()
+          .launchUrl(this, uri)
     }
     recycler.adapter = adapter
 
