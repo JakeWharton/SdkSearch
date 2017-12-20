@@ -1,5 +1,8 @@
 version: 2.0
 
+cache_key: &cache_key
+  key: jars-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
 jobs:
   build:
     working_directory: ~/SdkSearch
@@ -14,7 +17,7 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+          <<: *cache_key
 
       - run:
           name: Compile
@@ -40,7 +43,7 @@ jobs:
           path: frontend/build/reports/lint-results.html
 
       - save_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+          <<: *cache_key
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
