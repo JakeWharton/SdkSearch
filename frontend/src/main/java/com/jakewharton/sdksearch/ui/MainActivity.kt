@@ -38,6 +38,11 @@ class MainActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
+    if ("true" == intent.getStringExtra("crash")) {
+      Timber.e("Synthetic crash signal detected. Throwing in 3.. 2.. 1..")
+      throw RuntimeException("Crash! Bang! Pow! This is only a test...")
+    }
+
     service = DacComponent.builder()
         .baseUrl(baseUrl)
         .build()

@@ -19,10 +19,30 @@ SDK_SEARCH_CIRCLE_CI_TOKEN=<token>
 ```
 (replacing `<token>` with the actual token, obviously)
 
+Crashes in debug builds are not uploaded unless they are built on CI. See the "Release" section
+below for information on configuring the required API key for this.
 
 ### Release
 
-TODO
+A Bugsnag project API key is required. Place the following in `~/.gradle/gradle.properties`:
+```
+SDK_SEARCH_BUGSNAG_API_KEY=<key>
+```
+(replacing `<key>` with the actual key, obviously)
+
+
+Deploying
+---------
+
+ 1. Create a clean release build: `./gradlew clean assembleRelease`
+
+ 2. Install it onto a device: `./gradlew installRelease`
+
+ 3. Run `adb shell am start -n com.jakewharton.sdksearch/.ui.MainActivity -e crash true` and ensure
+    that the app crashed and that the exception was reported to Bugsnag.
+
+ 4. Upload to Google Play.
+
 
 
 

@@ -24,6 +24,9 @@ android {
 
     versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+    buildConfigField 'String', 'BUGSNAG_API_KEY', "\"${propOrEmpty('SDK_SEARCH_BUGSNAG_API_KEY')}\""
+    buildConfigField 'boolean', 'IS_CI_BUILD', "false" // May be overridden by a build type.
   }
 
   compileOptions {
@@ -54,6 +57,7 @@ android {
       signingConfig signingConfigs.debug
 
       buildConfigField 'String', 'CIRCLE_CI_TOKEN', "\"${propOrEmpty('SDK_SEARCH_CIRCLE_CI_TOKEN')}\""
+      buildConfigField 'boolean', 'IS_CI_BUILD', isCiBuild.toString()
     }
     release {
       signingConfig signingConfigs.debug // TODO temporary
@@ -90,4 +94,6 @@ dependencies {
   implementation deps.rx.binding.framework
 
   implementation deps.timber
+
+  implementation deps.bugsnag
 }
