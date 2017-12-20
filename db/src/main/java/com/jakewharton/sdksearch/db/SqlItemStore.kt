@@ -1,6 +1,7 @@
 package com.jakewharton.sdksearch.db
 
 import com.squareup.sqlbrite3.BriteDatabase
+import com.squareup.sqlbrite3.inTransaction
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -9,7 +10,7 @@ internal class SqlItemStore @Inject constructor(
     private val db: BriteDatabase
 ) : ItemStore {
   override fun updateListing(listing: String, items: List<Item>) {
-    db.newTransaction().use {
+    db.inTransaction {
       Item.FACTORY.clear_listing(listing).let {
         db.executeAndTrigger(it.tables, it.statement, *it.args)
       }
@@ -22,7 +23,6 @@ internal class SqlItemStore @Inject constructor(
             .deprecated(item.deprecated())
             .asContentValues())
       }
-      it.markSuccessful()
     }
   }
 
