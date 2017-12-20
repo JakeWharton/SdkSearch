@@ -13,6 +13,27 @@ def propOrEmpty(String name) {
   return hasProperty(name) ? getProperty(name) : ''
 }
 
+// TODO make these incremental(ish) by persisting to a file in buildDir
+def gitSha() {
+  def p = 'git rev-parse HEAD'.execute([], project.rootDir)
+  p.waitFor()
+  if (p.exitValue() != 0) {
+    throw new RuntimeException(p.errorStream.text)
+  }
+
+  return p.text.trim()
+}
+
+def gitTimestamp() {
+  def p = 'git log -n 1 --format=%at'.execute([], rootDir)
+  p.waitFor()
+  if (p.exitValue() != 0) {
+    throw new RuntimeException(p.errorStream.text)
+  }
+
+  return p.text.trim()
+}
+
 android {
   compileSdkVersion buildConfig.compileSdk
 
@@ -26,7 +47,9 @@ android {
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
     buildConfigField 'String', 'BUGSNAG_API_KEY', "\"${propOrEmpty('SDK_SEARCH_BUGSNAG_API_KEY')}\""
-    buildConfigField 'boolean', 'IS_CI_BUILD', "false" // May be overridden by a build type.
+    buildConfigField 'boolean', 'IS_CI_BUILD', 'false' // May be overridden by a build type.
+    buildConfigField 'String', 'COMMIT_SHA', "\"${gitSha()}\""
+    buildConfigField 'long', 'COMMIT_TIMESTAMP', gitTimestamp().toString()
   }
 
   compileOptions {

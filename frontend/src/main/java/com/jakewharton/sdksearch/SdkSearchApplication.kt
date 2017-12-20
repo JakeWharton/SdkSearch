@@ -5,6 +5,9 @@ import com.bugsnag.android.Bugsnag
 import com.jakewharton.sdksearch.util.BugsnagTree
 import timber.log.Timber
 import timber.log.Timber.DebugTree
+import java.time.Instant
+import java.time.ZoneOffset.UTC
+import java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME
 
 class SdkSearchApplication : Application() {
   override fun onCreate() {
@@ -18,10 +21,11 @@ class SdkSearchApplication : Application() {
       val client = Bugsnag.init(this, BuildConfig.BUGSNAG_API_KEY)!!
 
       client.setReleaseStage(BuildConfig.BUILD_TYPE)
-      client.setProjectPackages("com.jakewharton.sdksearch");
-      // TODO client.addToTab("App", "Commit SHA", BuildConfig.COMMIT_SHA);
-      // TODO client.addToTab("App", "Commit Time", BuildConfig.COMMIT_TIME);
-      // TODO client.addToTab("App", "Build Time", BuildConfig.BUILD_TIME);
+      client.setProjectPackages("com.jakewharton.sdksearch")
+
+      val commitDateTime = Instant.ofEpochSecond(BuildConfig.COMMIT_TIMESTAMP).atOffset(UTC)
+      client.addToTab("App", "commitTime", RFC_1123_DATE_TIME.format(commitDateTime))
+      client.addToTab("App", "commitSha", BuildConfig.COMMIT_SHA)
 
       val tree = BugsnagTree(client)
       Timber.plant(tree)
