@@ -24,7 +24,7 @@ class SdkSearchApplication : Application() {
       client.setProjectPackages("com.jakewharton.sdksearch")
 
       val commitDateTime = Instant.ofEpochSecond(BuildConfig.COMMIT_TIMESTAMP).atOffset(UTC)
-      client.addToTab("App", "commitTime", RFC_1123_DATE_TIME.format(commitDateTime))
+      client.addToTab("App", "commitTime", commitDateTime.format(RFC_1123_DATE_TIME))
       client.addToTab("App", "commitSha", BuildConfig.COMMIT_SHA)
 
       val tree = BugsnagTree(client)
