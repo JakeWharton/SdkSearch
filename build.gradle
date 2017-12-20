@@ -71,9 +71,8 @@ buildscript {
   ext.isCiBuild = System.getenv('CI') == 'true'
 
   repositories {
-    mavenCentral()
-    google()
     jcenter()
+    google()
   }
 
   dependencies {
@@ -85,9 +84,8 @@ buildscript {
 
 allprojects {
   repositories {
-    mavenCentral()
-    google()
     jcenter()
+    google()
   }
 
   // Force all of the primary support libraries to use the same version.
