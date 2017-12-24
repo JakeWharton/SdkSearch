@@ -3,13 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:background="?android:attr/selectableItemBackground"
-    android:minHeight="48dp"
     android:orientation="horizontal"
     android:paddingBottom="4dp"
-    android:paddingEnd="12dp"
-    android:paddingStart="12dp"
     android:paddingTop="4dp"
     tools:ignore="Overdraw"
     >
@@ -20,17 +17,20 @@
       android:layout_gravity="center_vertical"
       android:layout_weight="1"
       android:ellipsize="start"
+      android:paddingStart="12dp"
       android:singleLine="true"
       android:textSize="18sp"
+      tools:ignore="RtlSymmetry"
       tools:text="android.this.is.a.really.long.package.name.And.Nested.Class.Names"
       />
   <ImageView
       android:id="@+id/more_options"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
       android:layout_gravity="center_vertical"
       android:background="?android:attr/selectableItemBackgroundBorderless"
       android:contentDescription="@string/more_options"
+      android:padding="12dp"
       android:src="@drawable/ic_more_vert_black_24dp"
       />
 </LinearLayout>
