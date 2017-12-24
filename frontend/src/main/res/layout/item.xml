@@ -11,6 +11,7 @@
     android:paddingEnd="12dp"
     android:paddingStart="12dp"
     android:paddingTop="4dp"
+    tools:ignore="Overdraw"
     >
   <TextView
       android:id="@+id/text"
