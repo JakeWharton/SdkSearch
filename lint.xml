@@ -1,0 +1,3 @@
+<lint>
+  <issue id="ObsoleteSdkInt" severity="error"/>
+</lint>
