@@ -1,12 +1,17 @@
 package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
+import android.support.v4.app.ShareCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.widget.EditText
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.REFERENCE_LISTS
@@ -53,17 +58,34 @@ class MainActivity : Activity() {
         .build()
         .itemStore()
 
-    setContentView(R.layout.main)
-
-    val recycler = findViewById<RecyclerView>(R.id.results)
-    val adapter = ItemAdapter(layoutInflater) {
-      val uri = baseUrl.resolve(it.link()).toUri()
+    val onClick = { item: Item ->
+      val uri = baseUrl.resolve(item.link()).toUri()
       CustomTabsIntent.Builder()
           // TODO colors and such once we get a UI design.
           .addDefaultShareMenuItem()
           .build()
           .launchUrl(this, uri)
     }
+    val onCopy = { item: Item ->
+      val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+      val uri = baseUrl.resolve(item.link()).toUri()
+      clipboard.primaryClip = ClipData.newPlainText(item.class_(), uri.toString())
+      val message = getString(R.string.copied, item.class_())
+      Toast.makeText(this, message, LENGTH_SHORT).show()
+    }
+    val onShare = { item: Item ->
+      val uri = baseUrl.resolve(item.link()).toUri()
+      ShareCompat.IntentBuilder.from(this)
+          .setType("text/plain")
+          .setChooserTitle(getString(R.string.share_title, item.class_()))
+          .setText(uri.toString())
+          .startChooser()
+    }
+
+    setContentView(R.layout.main)
+
+    val recycler = findViewById<RecyclerView>(R.id.results)
+    val adapter = ItemAdapter(layoutInflater, onClick, onCopy, onShare)
     recycler.adapter = adapter
 
     val query = findViewById<EditText>(R.id.query)

@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    android:ellipsize="start"
-    android:gravity="center_vertical"
     android:minHeight="48dp"
+    android:orientation="horizontal"
     android:paddingBottom="4dp"
     android:paddingEnd="12dp"
     android:paddingStart="12dp"
     android:paddingTop="4dp"
-    android:singleLine="true"
-    android:textSize="18sp"
-    tools:text="android.this.is.a.really.long.package.name.And.Nested.Class.Names"
-    />
+    >
+  <TextView
+      android:id="@+id/text"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:layout_weight="1"
+      android:ellipsize="start"
+      android:singleLine="true"
+      android:textSize="18sp"
+      tools:text="android.this.is.a.really.long.package.name.And.Nested.Class.Names"
+      />
+  <ImageView
+      android:id="@+id/more_options"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:background="?android:attr/selectableItemBackgroundBorderless"
+      android:contentDescription="@string/more_options"
+      android:src="@drawable/ic_more_vert_black_24dp"
+      />
+</LinearLayout>
