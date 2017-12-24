@@ -3,7 +3,10 @@
   <string name="application_name">SDK Search</string>
 
   <string name="search">Search…</string>
-  <string name="search_classes">Search %d classes…</string>
+  <plurals name="search_classes">
+    <item quantity="one">Search 1 class…</item>
+    <item quantity="other">Search %d classes…</item>
+  </plurals>
   <string name="copy">Copy</string>
   <string name="share">Share</string>
   <string name="copied">%s URL copied to clipboard!</string>

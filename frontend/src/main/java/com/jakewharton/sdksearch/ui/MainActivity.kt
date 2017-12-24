@@ -93,7 +93,7 @@ class MainActivity : Activity() {
     store.count()
         .observeOn(mainThread())
         .subscribe({
-          query.hint = getString(R.string.search_classes, it)
+          query.hint = resources.getQuantityString(R.plurals.search_classes, it.toInt(), it)
         }, {
           throw OnErrorNotImplementedException(it)
         })
