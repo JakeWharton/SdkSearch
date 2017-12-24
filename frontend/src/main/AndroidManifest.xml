@@ -11,7 +11,7 @@
       android:icon="@mipmap/ic_launcher"
       android:label="@string/application_name"
       android:supportsRtl="true"
-      android:theme="@android:style/Theme.Material.Light.NoActionBar"
+      android:theme="@style/Theme.SdkSearch"
       >
     <activity
         android:name=".ui.MainActivity"

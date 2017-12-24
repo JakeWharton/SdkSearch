@@ -9,9 +9,12 @@ import android.support.customtabs.CustomTabsIntent
 import android.support.v4.app.ShareCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
+import android.view.View
+import android.view.View.INVISIBLE
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
+import com.jakewharton.rxbinding2.view.visibility
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.REFERENCE_LISTS
@@ -27,6 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.OnErrorNotImplementedException
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.Schedulers.computation
 import timber.log.Timber
@@ -115,6 +119,18 @@ class MainActivity : Activity() {
           adapter.updateItems(it.data)
           it.diff.dispatchUpdatesTo(adapter)
         }, {
+          throw OnErrorNotImplementedException(it)
+        })
+        .addTo(disposables)
+
+    val clear = findViewById<View>(R.id.clear_query)
+    clear.setOnClickListener {
+      query.setText("")
+    }
+
+    query.textChanges()
+        .map(CharSequence::isNotEmpty)
+        .subscribe(clear.visibility(INVISIBLE), Consumer {
           throw OnErrorNotImplementedException(it)
         })
         .addTo(disposables)
