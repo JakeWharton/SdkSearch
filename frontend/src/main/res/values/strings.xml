@@ -2,6 +2,7 @@
 <resources>
   <string name="application_name">SDK Search</string>
 
+  <string name="search">Search…</string>
   <string name="search_classes">Search %d classes…</string>
   <string name="copy">Copy</string>
   <string name="share">Share</string>
