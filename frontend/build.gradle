@@ -9,10 +9,6 @@ def versionBuild = 0
 
 archivesBaseName = 'sdk-search'
 
-def propOrEmpty(String name) {
-  return hasProperty(name) ? getProperty(name) : ''
-}
-
 def gitSha() {
   def f = new File(buildDir, "commit-sha.txt")
   if (!f.exists()) {
@@ -85,7 +81,6 @@ android {
       applicationIdSuffix '.debug'
       signingConfig signingConfigs.debug
 
-      buildConfigField 'String', 'CIRCLE_CI_TOKEN', "\"${propOrEmpty('SDK_SEARCH_CIRCLE_CI_TOKEN')}\""
       buildConfigField 'boolean', 'IS_CI_BUILD', isCiBuild.toString()
     }
     release {
@@ -110,9 +105,7 @@ dependencies {
   implementation project(':api:dac')
   implementation project(':db')
 
-  debugImplementation project(':api:circleci')
-  debugImplementation deps.okio
-  debugImplementation deps.android.support.coreUtils
+  debugImplementation project(':debug-updater')
 
   implementation deps.kotlin.stdlib
 

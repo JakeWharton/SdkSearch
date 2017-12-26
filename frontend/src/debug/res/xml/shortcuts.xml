@@ -14,7 +14,7 @@
       >
     <intent
         android:action="android.intent.action.MAIN"
-        android:targetClass="com.jakewharton.sdksearch.ui.UpdateActivity"
+        android:targetClass="com.jakewharton.sdksearch.debug.updater.UpdateActivity"
         android:targetPackage="com.jakewharton.sdksearch.debug"
         />
   </shortcut>

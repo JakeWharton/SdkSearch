@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-kapt'
+
+android {
+  compileSdkVersion buildConfig.compileSdk
+
+  defaultConfig {
+    minSdkVersion buildConfig.minSdk
+
+    buildConfigField 'String', 'CIRCLE_CI_TOKEN', "\"${propOrEmpty('SDK_SEARCH_CIRCLE_CI_TOKEN')}\""
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    lintConfig rootProject.file('lint.xml')
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+}
+
+dependencies {
+  implementation project(':api:circleci')
+  implementation deps.kotlin.stdlib
+  implementation deps.timber
+  implementation deps.rx.android
+  implementation deps.okio
+  implementation deps.android.support.coreUtils
+}

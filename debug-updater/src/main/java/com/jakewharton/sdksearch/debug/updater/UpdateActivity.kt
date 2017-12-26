@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.debug.updater
 
 import android.app.Activity
 import android.content.Intent
@@ -9,10 +9,10 @@ import android.os.Bundle
 import android.support.v4.content.FileProvider
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
-import com.jakewharton.sdksearch.BuildConfig.CIRCLE_CI_TOKEN
 import com.jakewharton.sdksearch.api.circleci.CircleCiComponent
 import com.jakewharton.sdksearch.api.circleci.Filter.SUCCESSFUL
 import com.jakewharton.sdksearch.api.circleci.VcsType.GITHUB
+import com.jakewharton.sdksearch.debug.updater.BuildConfig.CIRCLE_CI_TOKEN
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
