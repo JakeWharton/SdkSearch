@@ -24,6 +24,8 @@ jobs:
           command: ./gradlew assemble
       - store_artifacts:
           path: frontend/build/outputs/
+      - store_artifacts:
+          path: frontend/build/commit-timestamp.txt
 
       - run:
           name: JVM Tests
