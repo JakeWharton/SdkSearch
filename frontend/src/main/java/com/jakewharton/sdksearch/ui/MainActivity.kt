@@ -65,7 +65,7 @@ class MainActivity : Activity() {
     val onClick = { item: Item ->
       val uri = baseUrl.resolve(item.link()).toUri()
       CustomTabsIntent.Builder()
-          // TODO colors and such once we get a UI design.
+          .setToolbarColor(getColor(R.color.primary))
           .addDefaultShareMenuItem()
           .build()
           .launchUrl(this, uri)
