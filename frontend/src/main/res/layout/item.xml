@@ -17,7 +17,7 @@
       android:layout_gravity="center_vertical"
       android:layout_weight="1"
       android:ellipsize="start"
-      android:paddingStart="12dp"
+      android:paddingStart="@dimen/horizontal_spacing"
       android:singleLine="true"
       android:textSize="18sp"
       tools:ignore="RtlSymmetry"
@@ -30,7 +30,8 @@
       android:layout_gravity="center_vertical"
       android:background="?android:attr/selectableItemBackgroundBorderless"
       android:contentDescription="@string/more_options"
-      android:padding="12dp"
+      android:paddingEnd="@dimen/horizontal_spacing"
+      android:paddingStart="@dimen/horizontal_spacing"
       android:src="@drawable/ic_more_vert_black_24dp"
       />
 </LinearLayout>

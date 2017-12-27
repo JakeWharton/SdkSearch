@@ -5,44 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-  <Toolbar
+  <LinearLayout
       android:id="@+id/toolbar"
       android:layout_width="0dp"
       android:layout_height="?android:attr/actionBarSize"
       android:background="@color/primary"
+      android:elevation="4dp"
+      android:orientation="horizontal"
       android:theme="@android:style/ThemeOverlay.Material.Dark.ActionBar"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
-      <EditText
-          android:id="@+id/query"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_vertical"
-          android:layout_weight="1"
-          android:background="@null"
-          android:hint="@string/search"
-          android:inputType="textCapWords|textNoSuggestions"
-          />
-      <ImageView
-          android:id="@+id/clear_query"
-          android:layout_width="48dp"
-          android:layout_height="48dp"
-          android:layout_gravity="center_vertical"
-          android:background="?android:attr/selectableItemBackgroundBorderless"
-          android:contentDescription="@string/clear_search_query"
-          android:padding="12dp"
-          android:src="@drawable/ic_close_white_24dp"
-          android:visibility="invisible"
-          />
-    </LinearLayout>
-  </Toolbar>
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
+        android:importantForAccessibility="no"
+        android:paddingEnd="@dimen/horizontal_spacing"
+        android:paddingStart="@dimen/horizontal_spacing"
+        android:src="@drawable/ic_search_white_24dp"
+        />
+    <EditText
+        android:id="@+id/query"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@null"
+        android:hint="@string/search"
+        android:inputType="textCapWords|textNoSuggestions"
+        />
+    <ImageView
+        android:id="@+id/clear_query"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/clear_search_query"
+        android:paddingEnd="@dimen/horizontal_spacing"
+        android:paddingStart="@dimen/horizontal_spacing"
+        android:src="@drawable/ic_close_white_24dp"
+        android:visibility="invisible"
+        />
+  </LinearLayout>
   <android.support.v7.widget.RecyclerView
       android:id="@+id/results"
       android:layout_width="0dp"
