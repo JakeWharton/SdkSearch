@@ -25,7 +25,7 @@ jobs:
       - store_artifacts:
           path: frontend/build/outputs/
       - store_artifacts:
-          path: frontend/build/commit-timestamp.txt
+          path: build/commit-timestamp.txt
 
       - run:
           name: JVM Tests

@@ -9,32 +9,6 @@ def versionBuild = 0
 
 archivesBaseName = 'sdk-search'
 
-def gitSha() {
-  def f = new File(buildDir, "commit-sha.txt")
-  if (!f.exists()) {
-    def p = 'git rev-parse HEAD'.execute([], project.rootDir)
-    if (p.waitFor() != 0) {
-      throw new RuntimeException(p.errorStream.text)
-    }
-    f.parentFile.mkdirs()
-    f.text = p.text.trim()
-  }
-  return f.text.trim()
-}
-
-def gitTimestamp() {
-  def f = new File(buildDir, "commit-timestamp.txt")
-  if (!f.exists()) {
-    def p = 'git log -n 1 --format=%at'.execute([], rootDir)
-    if (p.waitFor() != 0) {
-      throw new RuntimeException(p.errorStream.text)
-    }
-    f.parentFile.mkdirs()
-    f.text = p.text.trim()
-  }
-  return f.text.trim()
-}
-
 android {
   compileSdkVersion buildConfig.compileSdk
 

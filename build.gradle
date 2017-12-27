@@ -8,6 +8,7 @@ buildscript {
   ext.versions = [
       'supportLibrary': '27.0.2',
       'kotlin': '1.2.10',
+      'kotlinCoroutines': '0.20',
       'okhttp': '3.9.1',
       'retrofit': '2.3.0',
       'kotshi': '0.3.0-beta3',
@@ -17,6 +18,10 @@ buildscript {
   ext.deps = [
       'kotlin': [
           'stdlib': "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+          'coroutines': [
+              'core': "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}",
+              'android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}",
+          ],
       ],
       'android': [
           'arch': [
@@ -38,6 +43,7 @@ buildscript {
       'retrofit': [
           'client': "com.squareup.retrofit2:retrofit:${versions.retrofit}",
           'adapterRxJava2': "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}",
+          'adapterKotlinCoroutines': 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0',
           'converterMoshi': "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
       ],
       'rx': [
@@ -100,6 +106,32 @@ allprojects {
       }
     }
   }
+}
+
+def gitSha() {
+  def f = new File(buildDir, "commit-sha.txt")
+  if (!f.exists()) {
+    def p = 'git rev-parse HEAD'.execute([], project.rootDir)
+    if (p.waitFor() != 0) {
+      throw new RuntimeException(p.errorStream.text)
+    }
+    f.parentFile.mkdirs()
+    f.text = p.text.trim()
+  }
+  return f.text.trim()
+}
+
+def gitTimestamp() {
+  def f = new File(buildDir, "commit-timestamp.txt")
+  if (!f.exists()) {
+    def p = 'git log -n 1 --format=%at'.execute([], rootDir)
+    if (p.waitFor() != 0) {
+      throw new RuntimeException(p.errorStream.text)
+    }
+    f.parentFile.mkdirs()
+    f.text = p.text.trim()
+  }
+  return f.text.trim()
 }
 
 def propOrEmpty(String name) {

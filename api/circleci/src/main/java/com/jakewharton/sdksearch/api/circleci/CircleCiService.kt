@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.api.circleci
 
-import io.reactivex.Single
+import kotlinx.coroutines.experimental.Deferred
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,8 +16,8 @@ interface CircleCiService {
     @Path("project") project: String,
     @Query("branch") branch: String?,
     @Query("filter") filter: Filter?
-  ): Single<List<BuildArtifact>>
+  ): Deferred<List<BuildArtifact>>
 
   @GET @Streaming
-  fun getArtifact(@Url path: String): Single<ResponseBody>
+  fun getArtifact(@Url path: String): Deferred<ResponseBody>
 }

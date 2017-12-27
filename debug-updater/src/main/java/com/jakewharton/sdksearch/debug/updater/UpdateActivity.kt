@@ -13,13 +13,13 @@ import com.jakewharton.sdksearch.api.circleci.CircleCiComponent
 import com.jakewharton.sdksearch.api.circleci.Filter.SUCCESSFUL
 import com.jakewharton.sdksearch.api.circleci.VcsType.GITHUB
 import com.jakewharton.sdksearch.debug.updater.BuildConfig.CIRCLE_CI_TOKEN
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableSingleObserver
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import okio.Okio.buffer
 import okio.Okio.sink
 import timber.log.Timber
 import java.io.File
+import java.io.IOException
 
 class UpdateActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,46 +38,78 @@ class UpdateActivity : Activity() {
         .build()
         .service()
 
-    service.listArtifacts(GITHUB, "JakeWharton", "SdkSearch", "master", SUCCESSFUL)
-        .flatMapObservable { Observable.fromIterable(it) }
-        .filter { it.nodeIndex == 0 }
-        .filter { it.prettyPath.endsWith("build/outputs/apk/debug/sdk-search-debug.apk") }
-        .singleOrError()
-        .doOnSuccess {
-          Timber.d("Found artifact: $it")
+    launch {
+      val artifacts = try {
+        service.listArtifacts(GITHUB, "JakeWharton", "SdkSearch", "master",
+            SUCCESSFUL).await()
+            .filter { it.nodeIndex == 0 }
+      } catch (e: IOException) {
+        Timber.i(e, "Failed to fetch artifacts.")
+        launch(UI) {
+          Toast.makeText(application, "Failed to lookup the latest build:\n\n${e.message}",
+              LENGTH_SHORT).show()
         }
-        .flatMap { service.getArtifact(it.url) }
-        .map { body ->
-          val updateDir = File(cacheDir, "updates")
-          updateDir.mkdirs()
+        return@launch
+      }
 
-          val file = File(updateDir, "update.apk")
-          body.source().use { source ->
-            buffer(sink(file)).use { destination ->
-              source.readAll(destination)
-            }
-          }
-          return@map file
+      val timestampArtifact = artifacts.single {
+        it.prettyPath.endsWith("build/commit-timestamp.txt")
+      }
+      val timestamp = try {
+        service.getArtifact(timestampArtifact.url).await().string().toLong()
+      } catch (e: IOException) {
+        Timber.i(e, "Failed to fetch timestamp of latest build.")
+        launch(UI) {
+          Toast.makeText(application, "Failed to lookup the latest build:\n\n${e.message}",
+              LENGTH_SHORT).show()
         }
-        .doOnSuccess { Timber.d("Downloaded APK to $it") }
-        .map {
-          val uri = FileProvider.getUriForFile(application,
-              "com.jakewharton.sdksearch.updates", it)
-          val intent = Intent(ACTION_INSTALL_PACKAGE, uri)
-          intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
-          intent.addFlags(FLAG_GRANT_READ_URI_PERMISSION)
-          return@map intent
-        }
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(object : DisposableSingleObserver<Intent>() {
-          override fun onSuccess(intent: Intent) = application.startActivity(intent)
+        return@launch
+      }
 
-          override fun onError(e: Throwable) {
-            Timber.i(e, "Failed to fetch artifacts.")
-            Toast.makeText(application, "Failed to load artifacts from Circle CI:\n\n${e.message}",
-                LENGTH_SHORT).show()
+      Timber.d("This build: ${BuildConfig.COMMIT_TIMESTAMP}, Latest build: $timestamp")
+      if (timestamp <= BuildConfig.COMMIT_TIMESTAMP) {
+        launch(UI) {
+          Toast.makeText(this@UpdateActivity, "App is already up-to-date!", LENGTH_SHORT).show()
+        }
+        return@launch
+      }
+
+      val updateDir = File(cacheDir, "updates")
+      updateDir.mkdirs()
+      val apkFile = File(updateDir, "update.apk")
+
+      val apkArtifact = artifacts.single {
+        it.prettyPath.endsWith("build/outputs/apk/debug/sdk-search-debug.apk")
+      }
+      try {
+        val apkResponse = service.getArtifact(apkArtifact.url).await()
+
+        apkResponse.use { response ->
+          buffer(sink(apkFile)).use { destination ->
+            response.source().readAll(destination)
           }
-        })
+        }
+      } catch (e: IOException) {
+        Timber.i(e, "Failed to download latest build.")
+        launch(UI) {
+          Toast.makeText(application, "Failed to download the latest build:\n\n${e.message}",
+              LENGTH_SHORT).show()
+        }
+        return@launch
+      }
+
+      Timber.d("Downloaded APK to $apkFile")
+
+      val fileProviderUri = FileProvider.getUriForFile(application,
+          "com.jakewharton.sdksearch.updates", apkFile)
+      val intent = Intent(ACTION_INSTALL_PACKAGE, fileProviderUri)
+      intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+      intent.addFlags(FLAG_GRANT_READ_URI_PERMISSION)
+
+      launch(UI) {
+        startActivity(intent)
+      }
+    }
 
     finish()
   }
