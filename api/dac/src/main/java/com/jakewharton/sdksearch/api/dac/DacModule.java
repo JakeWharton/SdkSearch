@@ -1,5 +1,6 @@
 package com.jakewharton.sdksearch.api.dac;
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory;
 import com.squareup.moshi.Moshi;
 import dagger.Module;
 import dagger.Provides;
@@ -7,7 +8,6 @@ import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 import timber.log.Timber;
 
@@ -33,7 +33,7 @@ abstract class DacModule {
         .client(client) //
         // The Moshi converter has to be lenient because the JS keys are unquoted.
         .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient()) //
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync()) //
+        .addCallAdapterFactory(CoroutineCallAdapterFactory.create()) //
         .build();
 
     return retrofit.create(DocumentationService.class);

@@ -28,6 +28,7 @@ android {
 
 dependencies {
   implementation deps.kotlin.stdlib
+  api deps.kotlin.coroutines.core
 
   implementation deps.moshi
 
@@ -36,10 +37,8 @@ dependencies {
   testImplementation deps.okhttp.mockWebServer
 
   implementation deps.retrofit.client
-  implementation deps.retrofit.adapterRxJava2
+  implementation deps.retrofit.adapterKotlinCoroutines
   implementation deps.retrofit.converterMoshi
-
-  api deps.rx.java
 
   implementation deps.timber
 
@@ -51,4 +50,10 @@ dependencies {
 
   testImplementation deps.junit
   testImplementation deps.truth
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
 }

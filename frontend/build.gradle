@@ -82,6 +82,8 @@ dependencies {
   debugImplementation project(':debug-updater')
 
   implementation deps.kotlin.stdlib
+  implementation deps.kotlin.coroutines.core
+  implementation deps.kotlin.coroutines.android
 
   implementation deps.android.support.annotations
   implementation deps.android.support.recyclerView
@@ -95,4 +97,10 @@ dependencies {
   implementation deps.timber
 
   implementation deps.bugsnag
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
 }

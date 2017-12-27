@@ -1,5 +1,7 @@
 package com.jakewharton.sdksearch.api.dac
 
+import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.experimental.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Before
@@ -18,7 +20,7 @@ class JavascriptSkippingTest {
         .documentationService()
   }
 
-  @Test fun skipsJavascript() {
+  @Test fun skipsJavascript() = runBlocking<Unit> {
     server.enqueue(MockResponse().setBody("""
       |var DATA = [
       |  { id:1, label:"android.Manifest", link:"reference/android/Manifest.html", type:"class", deprecated:"false" }
@@ -26,10 +28,8 @@ class JavascriptSkippingTest {
       |
       """.trimMargin()))
 
-    service.list("whatever")
-        .test()
-        .await()
-        .assertValue(listOf(Item(1, "android.Manifest", "reference/android/Manifest.html", "class", deprecated = false)))
-        .assertComplete()
+    val items = service.list("whatever").await()
+    assertThat(items).containsExactly(
+        Item(1, "android.Manifest", "reference/android/Manifest.html", "class", deprecated = false))
   }
 }

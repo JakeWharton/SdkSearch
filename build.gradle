@@ -42,7 +42,6 @@ buildscript {
       ],
       'retrofit': [
           'client': "com.squareup.retrofit2:retrofit:${versions.retrofit}",
-          'adapterRxJava2': "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}",
           'adapterKotlinCoroutines': 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0',
           'converterMoshi': "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
       ],

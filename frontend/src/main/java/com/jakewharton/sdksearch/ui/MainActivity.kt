@@ -33,7 +33,9 @@ import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.Schedulers.computation
+import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
+import java.io.IOException
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 class MainActivity : Activity() {
@@ -136,7 +138,9 @@ class MainActivity : Activity() {
         .addTo(disposables)
 
     for ((listing, url) in REFERENCE_LISTS) {
-      load(listing, url)
+      launch {
+        load(listing, url)
+      }
     }
   }
 
@@ -145,17 +149,20 @@ class MainActivity : Activity() {
     disposables.clear()
   }
 
-  private fun load(listing: String, url: String) {
+  private suspend fun load(listing: String, url: String) {
     Timber.d("Listing $listing...")
-    service.list(url).subscribe({ apiItems ->
-      Timber.d("Listing $listing got ${apiItems.size} items")
-      val dbItems = apiItems
-          .filter { it.type == "class" }
-          .map { Item.createForInsert(listing, it.label, it.link, it.deprecated) }
-      store.updateListing(listing, dbItems)
-    }, {
-      runOnUiThread { throw RuntimeException(it) }
-    })
+    val apiItems = try {
+      service.list(url).await()
+    } catch (e: IOException) {
+      Timber.i(e, "Unable to load $listing")
+      return@load
+    }
+    Timber.d("Listing $listing got ${apiItems.size} items")
+
+    val items = apiItems
+        .filter { it.type == "class" }
+        .map { Item.createForInsert(listing, it.label, it.link, it.deprecated) }
+    store.updateListing(listing, items)
   }
 
   private fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
