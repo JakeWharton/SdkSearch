@@ -13,6 +13,7 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.widget.EditText
 import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import android.widget.Toast.LENGTH_SHORT
 import com.jakewharton.rxbinding2.view.visibility
 import com.jakewharton.rxbinding2.widget.textChanges
@@ -20,10 +21,9 @@ import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.REFERENCE_LISTS
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
-import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
-import com.jakewharton.sdksearch.db.ItemStore
+import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import com.jakewharton.sdksearch.util.DataWithDiff
 import io.reactivex.Observable.just
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -33,16 +33,14 @@ import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.Schedulers.computation
+import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
-import java.io.IOException
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 class MainActivity : Activity() {
   private val baseUrl = BaseUrl("https://developer.android.com")
   private val disposables = CompositeDisposable()
-  private lateinit var service: DocumentationService
-  private lateinit var store: ItemStore
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -52,17 +50,19 @@ class MainActivity : Activity() {
       throw RuntimeException("Crash! Bang! Pow! This is only a test...")
     }
 
-    service = DacComponent.builder()
+    val service = DacComponent.builder()
         .baseUrl(baseUrl)
         .build()
         .documentationService()
 
-    store = DbComponent.builder()
+    val store = DbComponent.builder()
         .context(this)
         .scheduler(Schedulers.io())
         .filename("sdk.db")
         .build()
         .itemStore()
+
+    val synchronizer = ItemSynchronizer(store, service, REFERENCE_LISTS)
 
     val onClick = { item: Item ->
       val uri = baseUrl.resolve(item.link()).toUri()
@@ -137,32 +137,24 @@ class MainActivity : Activity() {
         })
         .addTo(disposables)
 
-    for ((listing, url) in REFERENCE_LISTS) {
-      launch {
-        load(listing, url)
+    launch(UI) {
+      var toast: Toast? = null
+      for (isRunning in synchronizer.isRunning) {
+        if (isRunning) {
+          toast = Toast.makeText(this@MainActivity, "Updating...", LENGTH_LONG)
+          toast.show()
+        } else {
+          toast?.cancel()
+        }
       }
     }
+
+    synchronizer.forceSync()
   }
 
   override fun onDestroy() {
     super.onDestroy()
     disposables.clear()
-  }
-
-  private suspend fun load(listing: String, url: String) {
-    Timber.d("Listing $listing...")
-    val apiItems = try {
-      service.list(url).await()
-    } catch (e: IOException) {
-      Timber.i(e, "Unable to load $listing")
-      return@load
-    }
-    Timber.d("Listing $listing got ${apiItems.size} items")
-
-    val items = apiItems
-        .filter { it.type == "class" }
-        .map { Item.createForInsert(listing, it.label, it.link, it.deprecated) }
-    store.updateListing(listing, items)
   }
 
   private fun Disposable.addTo(compositeDisposable: CompositeDisposable) {

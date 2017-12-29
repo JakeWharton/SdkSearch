@@ -76,8 +76,8 @@ android {
 }
 
 dependencies {
-  implementation project(':api:dac')
   implementation project(':db')
+  implementation project(':sync')
 
   debugImplementation project(':debug-updater')
 
