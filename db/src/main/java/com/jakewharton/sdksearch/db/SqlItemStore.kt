@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.db
 
 import com.squareup.sqlbrite3.BriteDatabase
 import com.squareup.sqlbrite3.inTransaction
+import com.squareup.sqldelight.SqlDelightCompiledStatement
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -9,19 +10,18 @@ import javax.inject.Singleton
 internal class SqlItemStore @Inject constructor(
     private val db: BriteDatabase
 ) : ItemStore {
+  private val clearListing by lazy { ItemModel.Clear_listing(db.writableDatabase) }
+  private val insertItem by lazy { ItemModel.Insert_item(db.writableDatabase) }
+
   override fun updateListing(listing: String, items: List<Item>) {
     db.inTransaction {
-      Item.FACTORY.clear_listing(listing).let {
-        db.executeAndTrigger(it.tables, it.statement, *it.args)
+      clearListing.insert {
+        bind(listing)
       }
       for (item in items) {
-        db.insert(ItemModel.TABLE_NAME, 0, Item.FACTORY.marshal()
-            .listing(listing)
-            .package_(item.package_())
-            .class_(item.class_())
-            .link(item.link())
-            .deprecated(item.deprecated())
-            .asContentValues())
+        insertItem.insert {
+          bind(listing, item.package_(), item.class_(),item.deprecated(), item.link())
+        }
       }
     }
   }
@@ -33,6 +33,13 @@ internal class SqlItemStore @Inject constructor(
       }
 
   override fun count() =
-      Item.FACTORY.count().let { db.createQuery(it.tables, it.statement) }
+      Item.FACTORY.count().let { db.createQuery(it.tables, it) }
           .mapToOne(Item.FACTORY.countMapper()::map)
+
+  private fun <T : SqlDelightCompiledStatement> T.insert(binder: T.() -> Unit) {
+    synchronized(this) {
+      binder()
+      db.executeInsert(table, program)
+    }
+  }
 }

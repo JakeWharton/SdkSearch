@@ -80,12 +80,13 @@ buildscript {
   repositories {
     jcenter()
     google()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
   dependencies {
     classpath 'com.android.tools.build:gradle:3.0.1'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-    classpath 'com.squareup.sqldelight:gradle-plugin:0.6.1'
+    classpath 'com.squareup.sqldelight:gradle-plugin:0.7.0-SNAPSHOT'
   }
 }
 
@@ -93,6 +94,7 @@ allprojects {
   repositories {
     jcenter()
     google()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
   // Force all of the primary support libraries to use the same version.
