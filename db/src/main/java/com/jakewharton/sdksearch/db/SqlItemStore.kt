@@ -3,6 +3,7 @@ package com.jakewharton.sdksearch.db
 import com.squareup.sqlbrite3.BriteDatabase
 import com.squareup.sqlbrite3.inTransaction
 import com.squareup.sqldelight.SqlDelightCompiledStatement
+import com.squareup.sqldelight.SqlDelightQuery
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,15 +27,11 @@ internal class SqlItemStore @Inject constructor(
     }
   }
 
-  override fun queryItems(term: String) =
-      Item.FACTORY.query_term(term).let {
-        db.createQuery(it.tables, it.statement, *it.args)
-            .mapToList(Item.FACTORY.query_termMapper()::map)
-      }
+  override fun queryItems(term: String) = db.createQuery(Item.FACTORY.query_term(term))
+      .mapToList(Item.FACTORY.query_termMapper()::map)
 
-  override fun count() =
-      Item.FACTORY.count().let { db.createQuery(it.tables, it) }
-          .mapToOne(Item.FACTORY.countMapper()::map)
+  override fun count() = db.createQuery(Item.FACTORY.count())
+      .mapToOne(Item.FACTORY.countMapper()::map)
 
   private fun <T : SqlDelightCompiledStatement> T.insert(binder: T.() -> Unit) {
     synchronized(this) {
@@ -42,4 +39,7 @@ internal class SqlItemStore @Inject constructor(
       db.executeInsert(table, program)
     }
   }
+
+  private fun BriteDatabase.createQuery(query: SqlDelightQuery)
+      = query.let { createQuery(it.tables, it) }
 }
