@@ -27,7 +27,7 @@ internal class SqlItemStore @Inject constructor(
   }
 
   override fun queryItems(term: String) =
-      Item.FACTORY.query_term("%$term%").let {
+      Item.FACTORY.query_term(term).let {
         db.createQuery(it.tables, it.statement, *it.args)
             .mapToList(Item.FACTORY.query_termMapper()::map)
       }

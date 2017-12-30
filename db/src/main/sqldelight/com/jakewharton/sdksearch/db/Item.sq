@@ -26,7 +26,7 @@ FROM item
 query_term:
 SELECT item.*
 FROM item
-WHERE class LIKE ?
+WHERE class LIKE '%' || ? || '%'
 ORDER BY deprecated ASC
 LIMIT 50
 ;
