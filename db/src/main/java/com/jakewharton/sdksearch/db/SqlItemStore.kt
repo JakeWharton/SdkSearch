@@ -39,7 +39,7 @@ internal class SqlItemStore @Inject constructor(
       db.executeInsert(table, program)
     }
   }
-
-  private fun BriteDatabase.createQuery(query: SqlDelightQuery)
-      = query.let { createQuery(it.tables, it) }
 }
+
+private fun BriteDatabase.createQuery(query: SqlDelightQuery)
+    = query.let { createQuery(it.tables, it) }
