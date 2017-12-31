@@ -1,6 +1,6 @@
 <resources>
-  <style name="Theme.SdkSearch" parent="@android:style/Theme.Material.Light.NoActionBar">
-    <item name="android:colorPrimary">@color/primary</item>
-    <item name="android:colorPrimaryDark">@color/primary_dark</item>
+  <style name="Theme.SdkSearch" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">@color/primary</item>
+    <item name="colorPrimaryDark">@color/primary_dark</item>
   </style>
 </resources>

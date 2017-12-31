@@ -88,6 +88,7 @@ dependencies {
   implementation deps.android.support.annotations
   implementation deps.android.support.recyclerView
   implementation deps.android.support.customTabs
+  implementation deps.android.support.design
   implementation deps.android.support.constraintLayout
 
   implementation deps.rx.java

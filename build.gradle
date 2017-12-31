@@ -32,6 +32,7 @@ buildscript {
               'coreUtils': "com.android.support:support-core-utils:${versions.supportLibrary}",
               'recyclerView': "com.android.support:recyclerview-v7:${versions.supportLibrary}",
               'customTabs': "com.android.support:customtabs:${versions.supportLibrary}",
+              'design': "com.android.support:design:${versions.supportLibrary}",
               'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta4',
           ],
       ],

@@ -6,6 +6,8 @@ import android.content.ClipboardManager
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
+import android.support.design.widget.Snackbar
+import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
 import android.support.v4.app.ShareCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
@@ -14,7 +16,6 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.widget.EditText
 import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import android.widget.Toast.LENGTH_SHORT
 import com.jakewharton.rxbinding2.view.visibility
 import com.jakewharton.rxbinding2.widget.textChanges
@@ -143,13 +144,13 @@ class MainActivity : Activity() {
         .addTo(disposables)
 
     launch(UI) {
-      var toast: Toast? = null
+      var snackbar: Snackbar? = null
       for (isRunning in synchronizer.isRunning) {
         if (isRunning) {
-          toast = Toast.makeText(this@MainActivity, "Updating...", LENGTH_LONG)
-          toast.show()
+          snackbar = Snackbar.make(recycler, R.string.updating_class_list, LENGTH_INDEFINITE)
+          snackbar.show()
         } else {
-          toast?.cancel()
+          snackbar?.dismiss()
         }
       }
     }
