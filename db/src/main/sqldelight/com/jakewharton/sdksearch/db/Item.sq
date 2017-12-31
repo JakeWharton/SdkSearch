@@ -44,6 +44,8 @@ ORDER BY
     /* infix match */
     ELSE 6
   END ASC,
+  /* prefer "closer" matches based on length */
+  length(class) ASC,
   /* alphabetize to eliminate any remaining non-determinism */
   package ASC,
   class ASC
