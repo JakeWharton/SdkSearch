@@ -35,6 +35,7 @@
         android:background="@null"
         android:hint="@string/search"
         android:inputType="textCapWords|textNoSuggestions"
+        android:privateImeOptions="nm"
         />
     <ImageView
         android:id="@+id/clear_query"
