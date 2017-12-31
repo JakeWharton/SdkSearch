@@ -26,7 +26,26 @@ FROM item
 query_term:
 SELECT item.*
 FROM item
-WHERE class LIKE '%' || ? || '%'
-ORDER BY deprecated ASC
+WHERE class LIKE '%' || ?1 || '%'
+ORDER BY
+  /* deprecated classes are always last */
+  deprecated ASC,
+  CASE
+    /* exact match */
+    WHEN class = ?1 THEN 1
+    /* prefix match with no nested type */
+    WHEN class LIKE ?1 || '%' AND instr(class, '.') = 0 THEN 2
+    /* prefix match on nested type */
+    WHEN class LIKE '%.' || ?1 THEN 3
+    /* prefix match (allowing nested types) */
+    WHEN class LIKE ?1 || '%' THEN 4
+    /* prefix match on nested type */
+    WHEN class LIKE '%.' || ?1 || '%' THEN 5
+    /* infix match */
+    ELSE 6
+  END ASC,
+  /* alphabetize to eliminate any remaining non-determinism */
+  package ASC,
+  class ASC
 LIMIT 50
 ;
