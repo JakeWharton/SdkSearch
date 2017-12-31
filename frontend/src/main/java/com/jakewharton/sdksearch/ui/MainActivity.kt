@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.app.ShareCompat
 import android.support.v7.util.DiffUtil
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.View.INVISIBLE
@@ -91,6 +92,8 @@ class MainActivity : Activity() {
     setContentView(R.layout.main)
 
     val recycler = findViewById<RecyclerView>(R.id.results)
+    val layoutManager = LinearLayoutManager(this)
+    recycler.layoutManager = layoutManager
     val adapter = ItemAdapter(layoutInflater, onClick, onCopy, onShare)
     recycler.adapter = adapter
 
@@ -118,8 +121,10 @@ class MainActivity : Activity() {
         .skip(1)
         .observeOn(mainThread())
         .subscribe({
+          val scrollPosition = layoutManager.findFirstVisibleItemPosition()
           adapter.updateItems(it.data)
           it.diff.dispatchUpdatesTo(adapter)
+          recycler.scrollToPosition(scrollPosition)
         }, {
           throw OnErrorNotImplementedException(it)
         })
