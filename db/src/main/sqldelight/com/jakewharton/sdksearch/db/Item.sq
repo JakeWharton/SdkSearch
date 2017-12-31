@@ -35,7 +35,7 @@ ORDER BY
     WHEN class = ?1 THEN 1
     /* prefix match with no nested type */
     WHEN class LIKE ?1 || '%' AND instr(class, '.') = 0 THEN 2
-    /* prefix match on nested type */
+    /* exact match on nested type */
     WHEN class LIKE '%.' || ?1 THEN 3
     /* prefix match (allowing nested types) */
     WHEN class LIKE ?1 || '%' THEN 4
