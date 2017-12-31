@@ -7,7 +7,7 @@ buildscript {
 
   ext.versions = [
       'supportLibrary': '27.0.2',
-      'kotlin': '1.2.10',
+      'kotlin': '1.2.20-eap-33',
       'kotlinCoroutines': '0.20',
       'okhttp': '3.9.1',
       'retrofit': '2.3.0',
@@ -80,6 +80,7 @@ buildscript {
   repositories {
     jcenter()
     google()
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
@@ -94,6 +95,7 @@ allprojects {
   repositories {
     jcenter()
     google()
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
