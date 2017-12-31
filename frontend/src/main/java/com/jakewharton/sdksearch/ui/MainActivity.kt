@@ -26,7 +26,6 @@ import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import com.jakewharton.sdksearch.util.DataWithDiff
 import io.reactivex.Observable.just
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
@@ -98,32 +97,35 @@ class MainActivity : Activity() {
     val adapter = ItemAdapter(layoutInflater, onClick, onCopy, onShare)
     recycler.adapter = adapter
 
-    val query = findViewById<EditText>(R.id.query)
+    val queryInput = findViewById<EditText>(R.id.query)
 
     store.count()
         .observeOn(mainThread())
         .subscribe({
-          query.hint = resources.getQuantityString(R.plurals.search_classes, it.toInt(), it)
+          queryInput.hint = resources.getQuantityString(R.plurals.search_classes, it.toInt(), it)
         }, {
           throw OnErrorNotImplementedException(it)
         })
         .addTo(disposables)
 
-    query.textChanges()
+    queryInput.textChanges()
         .map(CharSequence::toString)
-        .switchMap {
-          if (it.isBlank()) just(emptyList())
-          else store.queryItems(it).delaySubscription(200, MILLISECONDS, mainThread())
+        .switchMap { query ->
+          val results = if (query.isBlank()) just(emptyList())
+          else store.queryItems(query).delaySubscription(200, MILLISECONDS, mainThread())
+
+          results.map { query to it }
         }
         .observeOn(computation())
-        .scan(DataWithDiff(emptyList<Item>())) { (old), new ->
-          DataWithDiff(new, DiffUtil.calculateDiff(ItemDiffCallback(old, new)))
+        .scan(QueryResults<Item>()) { (oldQuery, old), (newQuery, new) ->
+          val diff = DiffUtil.calculateDiff(ItemDiffCallback(oldQuery, old, newQuery, new))
+          QueryResults(newQuery, new, diff)
         }
         .skip(1)
         .observeOn(mainThread())
         .subscribe({
           val scrollPosition = layoutManager.findFirstVisibleItemPosition()
-          adapter.updateItems(it.data)
+          adapter.updateItems(it.query, it.data)
           it.diff.dispatchUpdatesTo(adapter)
           recycler.scrollToPosition(scrollPosition)
         }, {
@@ -133,10 +135,10 @@ class MainActivity : Activity() {
 
     val clear = findViewById<View>(R.id.clear_query)
     clear.setOnClickListener {
-      query.setText("")
+      queryInput.setText("")
     }
 
-    query.textChanges()
+    queryInput.textChanges()
         .map(CharSequence::isNotEmpty)
         .subscribe(clear.visibility(INVISIBLE), Consumer {
           throw OnErrorNotImplementedException(it)

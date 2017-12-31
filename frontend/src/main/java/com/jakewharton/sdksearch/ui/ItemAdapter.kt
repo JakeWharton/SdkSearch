@@ -12,15 +12,30 @@ internal class ItemAdapter(
   private val onCopy: (Item) -> Unit,
   private val onShare: (Item) -> Unit
 ) : RecyclerView.Adapter<ItemViewHolder>() {
-
+  private var query = ""
   private var items: List<Item> = emptyList()
 
-  fun updateItems(items: List<Item>) {
+  fun updateItems(query: String, items: List<Item>) {
+    this.query = query
     this.items = items
   }
 
   override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-    holder.setItem(items[position])
+    holder.setItem(query, items[position])
+  }
+
+  override fun onBindViewHolder(holder: ItemViewHolder, position: Int, payloads: List<Any>) {
+    if (payloads.isEmpty()) {
+      onBindViewHolder(holder, position)
+      return
+    }
+
+    for (payload in payloads) {
+      when (payload) {
+        QUERY_CHANGED -> holder.updateQuery(query)
+        ITEM_CHANGED -> holder.updateItem(items[position])
+      }
+    }
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -29,4 +44,9 @@ internal class ItemAdapter(
   }
 
   override fun getItemCount() = items.size
+
+  companion object {
+    val QUERY_CHANGED = Any()
+    val ITEM_CHANGED = Any()
+  }
 }

@@ -1,7 +1,11 @@
 package com.jakewharton.sdksearch.ui
 
+import android.graphics.Typeface.BOLD
 import android.support.v7.widget.RecyclerView.ViewHolder
+import android.text.SpannableString
+import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.style.StrikethroughSpan
+import android.text.style.StyleSpan
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
@@ -36,6 +40,7 @@ internal class ItemViewHolder(
     overflow.setOnClickListener(this)
   }
 
+  private var query: String? = null
   private var item: Item? = null
 
   override fun onClick(view: View) {
@@ -58,22 +63,45 @@ internal class ItemViewHolder(
     else -> false
   }
 
-  fun setItem(item: Item) {
+  fun updateQuery(query: String) {
+    this.query = query
+    render()
+  }
+
+  fun updateItem(item: Item) {
     this.item = item
+    render()
+  }
+
+  fun setItem(query: String, item: Item) {
+    this.query = query
+    this.item = item
+    render()
+  }
+
+  private fun render() {
+    val query = this.query!!
+    val item = this.item!!
 
     val packageAcronym = item.package_()
         .split('.')
         .joinToString(".") { if (it.matches(VERSION_PACKAGE)) it else it.first().toString() }
-    if (item.deprecated()) {
-      text.text = buildSpannedString {
-        append(packageAcronym)
-        append('.')
+
+    val className = SpannableString(item.class_())
+    val start = item.class_().indexOf(query, ignoreCase = true)
+    className.setSpan(StyleSpan(BOLD), start, start + query.length, SPAN_INCLUSIVE_EXCLUSIVE)
+
+    text.text = buildSpannedString {
+      append(packageAcronym)
+      append('.')
+
+      if (item.deprecated()) {
         inSpan(StrikethroughSpan()) {
-          append(item.class_())
+          append(className)
         }
+      } else {
+        append(className)
       }
-    } else {
-      text.text = "$packageAcronym.${item.class_()}"
     }
   }
 

@@ -1,10 +1,14 @@
-package com.jakewharton.sdksearch.util
+package com.jakewharton.sdksearch.ui
 
 import android.support.v7.util.DiffUtil
 import android.support.v7.util.DiffUtil.Callback
 import android.support.v7.util.DiffUtil.DiffResult
 
-data class DataWithDiff<out T>(val data: T, val diff: DiffResult = EMPTY_RESULT)
+internal data class QueryResults<out T>(
+  val query: String = "",
+  val data: List<T> = emptyList(),
+  val diff: DiffResult = EMPTY_RESULT
+)
 
 private val EMPTY_RESULT = DiffUtil.calculateDiff(object : Callback() {
   override fun getOldListSize() = 0
