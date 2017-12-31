@@ -13,5 +13,18 @@
   <string name="share_title">Share %s URL</string>
   <string name="more_options">More options</string>
   <string name="clear_search_query">Clear search query</string>
-  <string name="updating_class_list">Updating class list…</string>
+  <string name="dismiss">Dismiss</string>
+
+  <plurals name="updating">
+    <item quantity="one">Updating %d class list…</item>
+    <item quantity="other">Updating %d class lists…</item>
+  </plurals>
+  <plurals name="updating_with_failed">
+    <item quantity="one">Updating %d class list… (%d failed)</item>
+    <item quantity="other">Updating %d class lists… (%d failed)</item>
+  </plurals>
+  <plurals name="updating_failed">
+    <item quantity="one">Failed to update %d class list.</item>
+    <item quantity="other">Failed to update %d class lists.</item>
+  </plurals>
 </resources>

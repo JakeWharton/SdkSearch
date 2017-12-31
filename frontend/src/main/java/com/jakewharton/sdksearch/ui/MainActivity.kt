@@ -147,10 +147,35 @@ class MainActivity : Activity() {
 
     launch(UI) {
       var snackbar: Snackbar? = null
-      for (isRunning in synchronizer.isRunning) {
-        if (isRunning) {
-          snackbar = Snackbar.make(recycler, R.string.updating_class_list, LENGTH_INDEFINITE)
-          snackbar.show()
+      for (state in synchronizer.state) {
+        if (state.isNotEmpty()) {
+          val failed = state.count { it.failed }
+          val updating = state.size - failed
+
+          val message = when {
+            failed == 0 -> {
+              resources.getQuantityString(R.plurals.updating, updating, updating)
+            }
+            updating == 0 -> {
+              resources.getQuantityString(R.plurals.updating_failed, failed, failed)
+            }
+            else -> {
+              resources.getQuantityString(R.plurals.updating_with_failed, updating, updating, failed)
+            }
+          }
+
+          if (snackbar == null) {
+            snackbar = Snackbar.make(recycler, message, LENGTH_INDEFINITE)
+            snackbar.show()
+          } else {
+            snackbar.setText(message)
+          }
+
+          if (failed > 0 && updating == 0) {
+            snackbar.setAction(R.string.dismiss) {
+              snackbar.dismiss()
+            }
+          }
         } else {
           snackbar?.dismiss()
         }
