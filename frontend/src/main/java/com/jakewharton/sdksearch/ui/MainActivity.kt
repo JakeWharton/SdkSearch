@@ -117,9 +117,9 @@ class MainActivity : Activity() {
           results.map { query to it }
         }
         .observeOn(computation())
-        .scan(QueryResults<Item>()) { (oldQuery, old), (newQuery, new) ->
-          val diff = DiffUtil.calculateDiff(ItemDiffCallback(oldQuery, old, newQuery, new))
-          QueryResults(newQuery, new, diff)
+        .scan(QueryResults()) { (oldQuery, oldItems), (newQuery, newItems) ->
+          val diff = DiffUtil.calculateDiff(ItemDiffer(oldQuery, oldItems, newQuery, newItems))
+          QueryResults(newQuery, newItems, diff)
         }
         .skip(1)
         .observeOn(mainThread())

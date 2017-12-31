@@ -3,7 +3,7 @@ package com.jakewharton.sdksearch.ui
 import android.support.v7.util.DiffUtil
 import com.jakewharton.sdksearch.db.Item
 
-internal class ItemDiffCallback(
+internal class ItemDiffer(
   oldQuery: String,
   private val old: List<Item>,
   newQuery: String,
