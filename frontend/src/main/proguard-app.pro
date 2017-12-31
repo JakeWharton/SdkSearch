@@ -1,5 +1,8 @@
 -dontobfuscate
 
+# Desugaring Java 8 language features happens after ProGuard.
+-dontwarn java.lang.invoke.LambdaMetafactory
+
 # Many libraries use JSR 305 annotations for embedding nullability information.
 -dontwarn javax.annotation.**
 
