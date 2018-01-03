@@ -7,6 +7,7 @@ import com.jakewharton.sdksearch.references.SourceProject.ICU
 import com.jakewharton.sdksearch.references.SourceProject.LIBCORE
 import com.jakewharton.sdksearch.references.SourceProject.MULTIDEX
 import com.jakewharton.sdksearch.references.SourceProject.SUPPORT
+import com.jakewharton.sdksearch.references.SourceProject.TELEPHONY
 import com.jakewharton.sdksearch.references.SourceProject.VOIP
 
 const val PRODUCTION_DAC = "https://developer.android.com/"
@@ -25,6 +26,7 @@ enum class SourceProject(val projectDir: String) {
   LIBCORE("platform/libcore/"),
   BASE("platform/frameworks/base/"),
   VOIP("platform/frameworks/opt/net/voip/"),
+  TELEPHONY("platform/frameworks/opt/telephony/"),
   SUPPORT("platform/frameworks/support/"),
   MULTIDEX("platform/frameworks/multidex/"),
   CONSTRAINT_LAYOUT("platform/frameworks/opt/sherpa/"),
@@ -81,6 +83,8 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.sax" to SourceLocation(BASE, "sax/java/"),
     "android.telecom" to SourceLocation(BASE, "telecomm/java/"),
     "android.telephony" to SourceLocation(BASE, "telephony/java/"),
+    "android.telephony.gsm.SmsManager" to SourceLocation(TELEPHONY, "src/java/"),
+    "android.telephony.gsm.SmsMessage" to SourceLocation(TELEPHONY, "src/java/"),
     "android.net.rtp" to SourceLocation(VOIP, "src/java/"),
     "android.net.sip" to SourceLocation(VOIP, "src/java/"),
     "android.net.wifi" to SourceLocation(BASE, "wifi/java/"),
