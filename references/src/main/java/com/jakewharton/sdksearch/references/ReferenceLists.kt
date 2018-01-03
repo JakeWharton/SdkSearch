@@ -147,7 +147,14 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.support.constraint" to CONSTRAINT_LAYOUT.path("constraintlayout/src/main/java/"),
 
     "android.test" to BASE.path("test-runner/src/"),
+    "android.test.AndroidTestCase" to BASE.path("legacy-test/src/"),
+    "android.test.FlakyTest" to BASE.path("legacy-test/src/"),
+    "android.test.InstrumentationTestCase" to BASE.path("legacy-test/src/"),
+    "android.test.InstrumentationTestSuite" to BASE.path("legacy-test/src/"),
+    "android.test.PerformanceTestCase" to BASE.path("legacy-test/src/"),
+    "android.test.UiThreadTest" to BASE.path("legacy-test/src/"),
     "android.test.mock" to BASE.path("test-mock/src/"),
+    "android.test.suitebuilder" to BASE.path("legacy-test/src/"),
 
     "android.view.PixelCopy" to BASE.path("graphics/java/"),
 
