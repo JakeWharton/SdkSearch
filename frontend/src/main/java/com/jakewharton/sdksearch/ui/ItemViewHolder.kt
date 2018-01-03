@@ -22,7 +22,8 @@ internal class ItemViewHolder(
   private val root: View,
   private val onClick: (Item) -> Unit,
   private val onCopy: (Item) -> Unit,
-  private val onShare: (Item) -> Unit
+  private val onShare: (Item) -> Unit,
+  private val onSource: (Item) -> Unit
 ) : ViewHolder(root), OnClickListener, OnMenuItemClickListener {
   private val text: TextView = root.findViewById(R.id.text)
   private val overflow: View = root.findViewById(R.id.more_options)
@@ -60,7 +61,11 @@ internal class ItemViewHolder(
       onShare(item!!)
       true
     }
-    else -> false
+    R.id.source -> {
+      onSource(item!!)
+      true
+    }
+    else -> throw IllegalArgumentException("Unknown menu item: $menuItem")
   }
 
   fun updateQuery(query: String) {

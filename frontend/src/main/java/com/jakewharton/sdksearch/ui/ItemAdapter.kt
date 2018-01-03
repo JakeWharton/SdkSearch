@@ -10,7 +10,8 @@ internal class ItemAdapter(
   private val inflater: LayoutInflater,
   private val onClick: (Item) -> Unit,
   private val onCopy: (Item) -> Unit,
-  private val onShare: (Item) -> Unit
+  private val onShare: (Item) -> Unit,
+  private val onSource: (Item) -> Unit
 ) : RecyclerView.Adapter<ItemViewHolder>() {
   private var query = ""
   private var items: List<Item> = emptyList()
@@ -40,7 +41,7 @@ internal class ItemAdapter(
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
     val view = inflater.inflate(R.layout.item, parent, false)
-    return ItemViewHolder(view, onClick, onCopy, onShare)
+    return ItemViewHolder(view, onClick, onCopy, onShare, onSource)
   }
 
   override fun getItemCount() = items.size

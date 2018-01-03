@@ -20,11 +20,13 @@ import android.widget.Toast.LENGTH_SHORT
 import com.jakewharton.rxbinding2.view.visibility
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.REFERENCE_LISTS
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
+import com.jakewharton.sdksearch.references.PRODUCTION_DAC
+import com.jakewharton.sdksearch.references.REFERENCE_LISTS
+import com.jakewharton.sdksearch.references.sourceUrl
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.Observable.just
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -40,7 +42,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 class MainActivity : Activity() {
-  private val baseUrl = BaseUrl("https://developer.android.com")
+  private val baseUrl = BaseUrl(PRODUCTION_DAC)
   private val disposables = CompositeDisposable()
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,13 +90,25 @@ class MainActivity : Activity() {
           .setText(uri.toString())
           .startChooser()
     }
+    val onSource = { item: Item ->
+      val url = sourceUrl(item.package_(), item.class_())
+      if (url != null) {
+        CustomTabsIntent.Builder()
+            .setToolbarColor(getColor(R.color.primary))
+            .addDefaultShareMenuItem()
+            .build()
+            .launchUrl(this, url.toUri())
+      } else {
+        Toast.makeText(this@MainActivity, R.string.unknown_source, LENGTH_SHORT).show()
+      }
+    }
 
     setContentView(R.layout.main)
 
     val recycler = findViewById<RecyclerView>(R.id.results)
     val layoutManager = LinearLayoutManager(this)
     recycler.layoutManager = layoutManager
-    val adapter = ItemAdapter(layoutInflater, onClick, onCopy, onShare)
+    val adapter = ItemAdapter(layoutInflater, onClick, onCopy, onShare, onSource)
     recycler.adapter = adapter
 
     val queryInput = findViewById<EditText>(R.id.query)

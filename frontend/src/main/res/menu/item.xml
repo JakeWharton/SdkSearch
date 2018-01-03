@@ -8,4 +8,8 @@
       android:id="@+id/share"
       android:title="@string/share"
       />
+  <item
+      android:id="@+id/source"
+      android:title="@string/view_source"
+      />
 </menu>
