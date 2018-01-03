@@ -158,6 +158,8 @@ val PACKAGE_SOURCE_MAP = mapOf(
 
     "android.view.PixelCopy" to BASE.path("graphics/java/"),
 
+    "dalvik" to LIBCORE.path("dalvik/src/main/java/"),
+
     "java" to LIBCORE.path("ojluni/src/main/java/"),
     "java.math" to LIBCORE.path("luni/src/main/java/"),
 
