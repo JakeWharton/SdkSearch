@@ -49,6 +49,7 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "java.math" to SourceLocation(LIBCORE, "luni/src/main/java/"),
     "javax" to SourceLocation(LIBCORE, "ojluni/src/main/java/"),
     "javax.microeition" to null,
+    "javax.xml" to SourceLocation(LIBCORE, "luni/src/main/java/"),
     "org" to SourceLocation(LIBCORE, "luni/src/main/java/"),
     "org.json" to SourceLocation(LIBCORE, "json/src/main/java/"),
     "org.xmlpull" to null,
