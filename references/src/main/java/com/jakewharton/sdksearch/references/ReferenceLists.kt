@@ -48,6 +48,8 @@ data class SourceLocation(val project: SourceProject, val baseDir: String) {
 
 val PACKAGE_SOURCE_MAP = mapOf(
     "android" to BASE.path("core/java/"),
+    "android.R" to null,
+    "android.Manifest" to null,
 
     "android.arch.lifecycle" to SUPPORT.path("lifecycle/extensions/src/main/java/"),
     "android.arch.paging" to SUPPORT.path("paging/common/src/main/java/"),
