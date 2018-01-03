@@ -11,7 +11,7 @@ buildscript {
       'kotlinCoroutines': '0.21',
       'okhttp': '3.9.1',
       'retrofit': '2.3.0',
-      'kotshi': '0.3.0-beta3',
+      'kotshi': '0.3.0',
       'dagger': '2.14.1',
   ]
 
