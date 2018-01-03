@@ -160,7 +160,7 @@ val PACKAGE_SOURCE_MAP = mapOf(
 
     "org" to LIBCORE.path("luni/src/main/java/"),
     "org.json" to LIBCORE.path("json/src/main/java/"),
-    "org.xmlpull" to null,
+    "org.xmlpull" to LIBCORE.path("xml/src/main/java/"),
     "org.apache.http" to BASE.path("core/java/")
 )
 
