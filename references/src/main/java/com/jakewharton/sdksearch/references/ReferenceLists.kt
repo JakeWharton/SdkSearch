@@ -168,6 +168,8 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "javax.xml" to LIBCORE.path("luni/src/main/java/"),
 
     "junit" to BASE.path("legacy-test/src/"),
+    "junit.runner" to BASE.path("test-runner/src/"),
+    "junit.textui" to BASE.path("test-runner/src/"),
 
     "org" to LIBCORE.path("luni/src/main/java/"),
     "org.json" to LIBCORE.path("json/src/main/java/"),
