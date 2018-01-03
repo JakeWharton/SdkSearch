@@ -149,7 +149,7 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "java.math" to LIBCORE.path("luni/src/main/java/"),
 
     "javax" to LIBCORE.path("ojluni/src/main/java/"),
-    "javax.microeition" to null,
+    "javax.microedition" to BASE.path("opengl/java/"),
     "javax.xml" to LIBCORE.path("luni/src/main/java/"),
 
     "org" to LIBCORE.path("luni/src/main/java/"),
