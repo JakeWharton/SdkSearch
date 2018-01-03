@@ -90,6 +90,7 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.net.sip" to VOIP.path("src/java/"),
     "android.net.wifi" to BASE.path("wifi/java/"),
     "android.opengl" to BASE.path("opengl/java/"),
+    "android.provider.Telephony" to null, // TODO https://issuetracker.google.com/issues/71549250
     "android.sax" to BASE.path("sax/java/"),
     "android.telecom" to BASE.path("telecomm/java/"),
     "android.telephony" to BASE.path("telephony/java/"),
