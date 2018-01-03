@@ -159,7 +159,7 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "org" to LIBCORE.path("luni/src/main/java/"),
     "org.json" to LIBCORE.path("json/src/main/java/"),
     "org.xmlpull" to null,
-    "org.apache.http" to LIBCORE.path("core/java/")
+    "org.apache.http" to BASE.path("core/java/")
 )
 
 fun sourceUrl(packageName: String, className: String): String? {
