@@ -1,0 +1,19 @@
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'application'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+mainClassName = 'com.jakewharton.sdksearch.references.validator.ReferencesValidator'
+
+dependencies {
+  implementation project(':references')
+  implementation project(':api:dac')
+  implementation deps.okhttp.client
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}
