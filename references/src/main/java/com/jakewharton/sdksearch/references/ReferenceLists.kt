@@ -78,6 +78,7 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.graphics" to BASE.path("graphics/java/"),
     "android.icu" to ICU.path("android_icu4j/src/main/java/"),
     "android.security" to BASE.path("keystore/java/"),
+    "android.security.NetworkSecurityPolicy" to BASE.path("core/java/"),
     "android.system" to LIBCORE.path("luni/src/main/java/"),
     "android.location" to BASE.path("location/java/"),
     "android.media" to BASE.path("media/java/"),
