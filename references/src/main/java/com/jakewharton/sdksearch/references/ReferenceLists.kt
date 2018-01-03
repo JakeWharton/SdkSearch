@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.references
 
 import com.jakewharton.sdksearch.references.SourceProject.BASE
 import com.jakewharton.sdksearch.references.SourceProject.CONSTRAINT_LAYOUT
+import com.jakewharton.sdksearch.references.SourceProject.DATABINDING
 import com.jakewharton.sdksearch.references.SourceProject.ICU
 import com.jakewharton.sdksearch.references.SourceProject.LIBCORE
 import com.jakewharton.sdksearch.references.SourceProject.MULTIDEX
@@ -28,6 +29,7 @@ enum class SourceProject(val projectDir: String) {
   MULTIDEX("platform/frameworks/multidex/"),
   CONSTRAINT_LAYOUT("platform/frameworks/opt/sherpa/"),
   ICU("platform/external/icu/"),
+  DATABINDING("platform/frameworks/data-binding/"),
   ;
 
   init {
@@ -50,6 +52,20 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "org.apache.http" to SourceLocation(LIBCORE, "core/java/"),
     "java.math" to SourceLocation(LIBCORE, "luni/src/main/java/"),
     "android" to SourceLocation(BASE, "core/java/"),
+    "android.databinding" to SourceLocation(DATABINDING, "extensions/library/src/main/java/"),
+    "android.databinding.Bindable" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.BindingAdapter" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.BindingConversion" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.BindingMethod" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.BindingMethods" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.CallbackRegistry" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.InverseBindingAdapter" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.InverseBindingListener" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.InverseBindingMethod" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.InverseBindingMethods" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.Observable" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.ObservableList" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
+    "android.databinding.ObservableMap" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
     "android.drm" to SourceLocation(BASE, "drm/java/"),
     "android.drm.mobile1" to SourceLocation(BASE, "media/java/"),
     "android.renderscript" to SourceLocation(BASE, "rs/java/"),
@@ -127,10 +143,9 @@ val PACKAGE_SOURCE_MAP = mapOf(
 )
 
 fun sourceUrl(packageName: String, className: String): String? {
-  val nestedClass = className.indexOf('.')
-  val filename = if (nestedClass == -1) className else className.substring(0, nestedClass)
+  val topLevelClassName = className.substringBefore('.')
 
-  var lookup = packageName
+  var lookup = "$packageName.$topLevelClassName"
   while (true) {
     if (PACKAGE_SOURCE_MAP.containsKey(lookup)) {
       val path = PACKAGE_SOURCE_MAP[lookup] ?: return null // Explicitly absent.
@@ -141,7 +156,7 @@ fun sourceUrl(packageName: String, className: String): String? {
         append(path.baseDir)
         append(packageName.replace('.', '/'))
         append('/')
-        append(filename)
+        append(topLevelClassName)
         append(".java")
       }
     }
