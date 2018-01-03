@@ -7,7 +7,7 @@ import org.junit.Test
 class ReferenceListsTest {
   @Test fun sourceUrl() {
     assertNull(sourceUrl("missing.entry", "NotThere"))
-    assertNull(sourceUrl("org.json", "JsonObject"))
+    assertNull(sourceUrl("android", "R"))
     assertNotNull(sourceUrl("android.widget", "Toolbar"))
   }
 }
