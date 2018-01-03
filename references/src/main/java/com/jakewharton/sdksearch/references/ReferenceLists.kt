@@ -46,13 +46,13 @@ data class SourceLocation(val project: SourceProject, val baseDir: String) {
 
 val PACKAGE_SOURCE_MAP = mapOf(
     "java" to SourceLocation(LIBCORE, "ojluni/src/main/java/"),
+    "java.math" to SourceLocation(LIBCORE, "luni/src/main/java/"),
     "javax" to SourceLocation(LIBCORE, "ojluni/src/main/java/"),
     "javax.microeition" to null,
     "org" to SourceLocation(LIBCORE, "luni/src/main/java/"),
     "org.json" to SourceLocation(LIBCORE, "json/src/main/java/"),
     "org.xmlpull" to null,
     "org.apache.http" to SourceLocation(LIBCORE, "core/java/"),
-    "java.math" to SourceLocation(LIBCORE, "luni/src/main/java/"),
     "android" to SourceLocation(BASE, "core/java/"),
     "android.databinding" to SourceLocation(DATABINDING, "extensions/library/src/main/java/"),
     "android.databinding.Bindable" to SourceLocation(DATABINDING, "baseLibrary/src/main/java/"),
