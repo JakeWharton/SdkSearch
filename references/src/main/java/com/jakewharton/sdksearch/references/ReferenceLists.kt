@@ -158,6 +158,8 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "javax.microedition" to BASE.path("opengl/java/"),
     "javax.xml" to LIBCORE.path("luni/src/main/java/"),
 
+    "junit" to BASE.path("legacy-test/src/"),
+
     "org" to LIBCORE.path("luni/src/main/java/"),
     "org.json" to LIBCORE.path("json/src/main/java/"),
     "org.xmlpull" to LIBCORE.path("xml/src/main/java/"),
