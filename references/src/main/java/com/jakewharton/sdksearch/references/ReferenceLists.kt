@@ -143,6 +143,8 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.support.wear" to SUPPORT.path("wear/src/main/java/"),
     "android.support.constraint" to CONSTRAINT_LAYOUT.path("constraintlayout/src/main/java/"),
 
+    "android.view.PixelCopy" to BASE.path("graphics/java/"),
+
     "java" to LIBCORE.path("ojluni/src/main/java/"),
     "java.math" to LIBCORE.path("luni/src/main/java/"),
 
