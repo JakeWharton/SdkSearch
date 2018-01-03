@@ -1,13 +1,16 @@
 package com.jakewharton.sdksearch.api.dac
 
-import com.squareup.moshi.FromJson
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonQualifier
-import com.squareup.moshi.ToJson
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
 
 @JsonQualifier
 annotation class BooleanString
 
-object BooleanStringAdapter {
-  @FromJson @BooleanString fun fromJson(value: String) = value.toBoolean()
-  @ToJson fun toJson(@BooleanString value: Boolean) = value.toString()
+object BooleanStringAdapter : JsonAdapter<Boolean>() {
+  override fun fromJson(reader: JsonReader) = reader.nextString().toBoolean()
+  override fun toJson(writer: JsonWriter, value: Boolean?) {
+    writer.value(value.toString())
+  }
 }

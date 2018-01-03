@@ -24,7 +24,7 @@ abstract class DacModule {
         .build();
 
     Moshi moshi = new Moshi.Builder()
-        .add(BooleanStringAdapter.INSTANCE)
+        .add(boolean.class, BooleanString.class, BooleanStringAdapter.INSTANCE)
         .add(DacJsonAdapterFactory.INSTANCE)
         .build();
 
