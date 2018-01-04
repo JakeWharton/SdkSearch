@@ -8,6 +8,7 @@ import com.jakewharton.sdksearch.references.SourceProject.LIBCORE
 import com.jakewharton.sdksearch.references.SourceProject.MULTIDEX
 import com.jakewharton.sdksearch.references.SourceProject.SUPPORT
 import com.jakewharton.sdksearch.references.SourceProject.TELEPHONY
+import com.jakewharton.sdksearch.references.SourceProject.TESTING
 import com.jakewharton.sdksearch.references.SourceProject.VOIP
 
 const val PRODUCTION_DAC = "https://developer.android.com/"
@@ -28,6 +29,7 @@ enum class SourceProject(val projectDir: String) {
   VOIP("platform/frameworks/opt/net/voip/"),
   TELEPHONY("platform/frameworks/opt/telephony/"),
   SUPPORT("platform/frameworks/support/"),
+  TESTING("platform/frameworks/testing/"),
   MULTIDEX("platform/frameworks/multidex/"),
   CONSTRAINT_LAYOUT("platform/frameworks/opt/sherpa/"),
   ICU("platform/external/icu/"),
@@ -124,6 +126,16 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.support.mediacompat" to null,
     "android.support.mediacompat.testlib" to SUPPORT.path("media-compat-test-lib/src/main/java/"),
     "android.support.percent" to SUPPORT.path("percent/src/main/java/"),
+    "android.support.test.annotation" to TESTING.path("runner/src/main/java/").branch("android-support-test"),
+    "android.support.test.annotation.UiThreadTest" to TESTING.path("rules/src/main/java/").branch("android-support-test"),
+    "android.support.test.filters" to TESTING.path("runner/src/main/java/").branch("android-support-test"),
+    "android.support.test.espresso" to TESTING.path("espresso/core/src/main/java/").branch("android-support-test"),
+    "android.support.test.espresso.IdlingResource" to TESTING.path("espresso/idling-resource/src/main/java/").branch("android-support-test"),
+    "android.support.test.espresso.contrib" to TESTING.path("espresso/contrib/src/main/java/").branch("android-support-test"),
+    "android.support.test.espresso.intent" to TESTING.path("espresso/intents/src/main/java/").branch("android-support-test"),
+    "android.support.test.espresso.web" to TESTING.path("espresso/web/src/main/java/").branch("android-support-test"),
+    "android.support.test.rule" to TESTING.path("rules/src/main/java/").branch("android-support-test"),
+    "android.support.test.runner" to TESTING.path("runner/src/main/java/").branch("android-support-test"),
     "android.support.text.emoji" to SUPPORT.path("emoji/core/src/main/java/"),
     "android.support.text.emoji.bundled" to SUPPORT.path("emoji/bundled/src/main/java/"),
     "android.support.text.emoji.widget" to SUPPORT.path("emoji/appcompat/src/main/java/"),
