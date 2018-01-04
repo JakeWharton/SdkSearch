@@ -99,6 +99,8 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.opengl" to BASE.path("opengl/java/"),
     "android.provider.Telephony" to null, // TODO https://issuetracker.google.com/issues/71549250
     "android.sax" to BASE.path("sax/java/"),
+    "android.service.media" to BASE.path("media/java/"),
+    "android.service.media.CameraPrewarmService" to BASE.path("core/java/"),
     "android.telecom" to BASE.path("telecomm/java/"),
     "android.telephony" to BASE.path("telephony/java/"),
     "android.telephony.gsm.SmsManager" to TELEPHONY.path("src/java/"),
