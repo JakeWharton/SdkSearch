@@ -6,21 +6,18 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
-import timber.log.Timber;
-
-import static okhttp3.logging.HttpLoggingInterceptor.Level.BASIC;
 
 @Module //
 abstract class DacModule {
   @Provides @Singleton static DocumentationService documentationService(BaseUrl baseUrl) {
-    HttpLoggingInterceptor.Logger logger = message -> Timber.tag("HTTP").d(message);
+    // TODO logging
+    //HttpLoggingInterceptor.Logger logger = message -> Timber.tag("HTTP").d(message);
 
     OkHttpClient client = new OkHttpClient.Builder() //
         .addInterceptor(new JavascriptSkippingInterceptor())
-        .addNetworkInterceptor(new HttpLoggingInterceptor(logger).setLevel(BASIC)) //
+        //.addNetworkInterceptor(new HttpLoggingInterceptor(logger).setLevel(BASIC)) //
         .build();
 
     Moshi moshi = new Moshi.Builder()
