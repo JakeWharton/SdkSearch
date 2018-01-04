@@ -56,6 +56,7 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.arch.persistence.db" to SUPPORT.path("persistence/db/src/main/java/"),
     "android.arch.persistence.db.framework" to SUPPORT.path("persistence/db-framework/src/main/java/"),
     "android.arch.persistence.room" to SUPPORT.path("room/common/src/main/java/"),
+    "android.arch.persistence.room.RxRoom" to SUPPORT.path("room/rxjava2/src/main/java/"),
     "android.arch.persistence.room.migration" to SUPPORT.path("room/runtime/src/main/java/"),
     "android.arch.persistence.room.testing" to SUPPORT.path("room/testing/src/main/java/"),
 
