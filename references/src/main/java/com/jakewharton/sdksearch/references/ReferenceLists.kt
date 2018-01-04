@@ -139,6 +139,8 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.support.design" to SUPPORT.path("design/src/"),
     "android.support.fragment" to null,
     "android.support.graphics.drawable" to SUPPORT.path("graphics/drawable/static/src/main/java/"),
+    "android.support.graphics.drawable.Animatable2Compat" to SUPPORT.path("graphics/drawable/animated/src/main/java/"),
+    "android.support.graphics.drawable.AnimatedVectorDrawableCompat" to SUPPORT.path("graphics/drawable/animated/src/main/java/"),
     "android.support.multidex" to MULTIDEX.path("library/src/"),
     "android.support.media" to SUPPORT.path("exifinterface/src/main/java/"),
     "android.support.media.tv" to SUPPORT.path("tv-provider/src/main/java/"),
