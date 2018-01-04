@@ -163,6 +163,8 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.test.UiThreadTest" to BASE.path("legacy-test/src/"),
     "android.test.mock" to BASE.path("test-mock/src/"),
     "android.test.suitebuilder" to BASE.path("legacy-test/src/"),
+    "android.test.suitebuilder.TestMethod" to BASE.path("test-runner/src/"),
+    "android.test.suitebuilder.TestSuiteBuilder" to BASE.path("test-runner/src/"),
 
     "android.view.PixelCopy" to BASE.path("graphics/java/"),
 
