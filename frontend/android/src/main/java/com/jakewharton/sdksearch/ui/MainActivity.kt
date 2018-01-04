@@ -24,9 +24,10 @@ import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
+import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
-import com.jakewharton.sdksearch.reference.REFERENCE_LISTS
-import com.jakewharton.sdksearch.reference.sourceUrl
+import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
+import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.Observable.just
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -65,7 +66,7 @@ class MainActivity : Activity() {
         .build()
         .itemStore()
 
-    val synchronizer = ItemSynchronizer(store, service, REFERENCE_LISTS)
+    val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
 
     val onClick = { item: Item ->
       val uri = baseUrl.resolve(item.link()).toUri()
@@ -90,8 +91,10 @@ class MainActivity : Activity() {
           .setText(uri.toString())
           .startChooser()
     }
+
+    val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
     val onSource = { item: Item ->
-      val url = sourceUrl(item.package_(), item.class_())
+      val url = androidReference.sourceUrl(item.package_(), item.class_())
       if (url != null) {
         CustomTabsIntent.Builder()
             .setToolbarColor(getColor(R.color.green))

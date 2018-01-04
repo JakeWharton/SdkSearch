@@ -12,51 +12,7 @@ import com.jakewharton.sdksearch.reference.SourceProject.TESTING
 import com.jakewharton.sdksearch.reference.SourceProject.UI_AUTOMATOR
 import com.jakewharton.sdksearch.reference.SourceProject.VOIP
 
-const val PRODUCTION_DAC = "https://developer.android.com/"
-const val PRODUCTION_GITWEB = "https://android.googlesource.com/"
-
-val REFERENCE_LISTS = mapOf(
-    "platform" to "reference/lists.js",
-    "support" to "reference/android/support/lists.js",
-    "wear" to "reference/android/support/wearable/lists.js",
-    "test" to "reference/android/support/test/lists.js",
-    "constraint" to "reference/android/support/constraint/lists.js",
-    "arch" to "reference/android/arch/lists.js"
-)
-
-enum class SourceProject(val projectDir: String) {
-  LIBCORE("platform/libcore/"),
-  BASE("platform/frameworks/base/"),
-  VOIP("platform/frameworks/opt/net/voip/"),
-  TELEPHONY("platform/frameworks/opt/telephony/"),
-  SUPPORT("platform/frameworks/support/"),
-  TESTING("platform/frameworks/testing/"),
-  UI_AUTOMATOR("platform/frameworks/uiautomator/"),
-  MULTIDEX("platform/frameworks/multidex/"),
-  CONSTRAINT_LAYOUT("platform/frameworks/opt/sherpa/"),
-  ICU("platform/external/icu/"),
-  DATABINDING("platform/frameworks/data-binding/"),
-  ;
-
-  init {
-    check(projectDir.endsWith('/'))
-  }
-
-  fun path(dir: String) = SourceLocation(this, baseDir = dir)
-}
-data class SourceLocation(
-  val project: SourceProject,
-  val branch: String = "master",
-  val baseDir: String
-) {
-  init {
-    check(baseDir.endsWith('/'))
-  }
-
-  fun branch(branch: String) = copy(branch = branch)
-}
-
-val PACKAGE_SOURCE_MAP = mapOf(
+internal val SOURCE_MAP = mapOf(
     "android" to BASE.path("core/java/"),
     "android.Manifest" to null,
 
@@ -331,34 +287,3 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "org.xmlpull" to LIBCORE.path("xml/src/main/java/"),
     "org.apache.http" to BASE.path("core/java/")
 )
-
-fun sourceUrl(packageName: String, className: String): String? {
-  val topLevelClassName = className.substringBefore('.')
-  if (topLevelClassName == "R") {
-    return null
-  }
-
-  var lookup = "$packageName.$topLevelClassName"
-  while (true) {
-    if (PACKAGE_SOURCE_MAP.containsKey(lookup)) {
-      val path = PACKAGE_SOURCE_MAP[lookup] ?: return null // Explicitly absent.
-      return buildString {
-        append(PRODUCTION_GITWEB)
-        append(path.project.projectDir)
-        append("+/refs/heads/")
-        append(path.branch)
-        append('/')
-        append(path.baseDir)
-        append(packageName.replace('.', '/'))
-        append('/')
-        append(topLevelClassName)
-        append(".java")
-      }
-    }
-    val lastDot = lookup.lastIndexOf('.')
-    if (lastDot == -1) {
-      return null // No entry.
-    }
-    lookup = lookup.substring(0, lastDot)
-  }
-}
