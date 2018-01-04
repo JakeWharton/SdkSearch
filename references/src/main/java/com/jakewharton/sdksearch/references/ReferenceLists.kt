@@ -38,12 +38,18 @@ enum class SourceProject(val projectDir: String) {
     check(projectDir.endsWith('/'))
   }
 
-  fun path(dir: String) = SourceLocation(this, dir)
+  fun path(dir: String) = SourceLocation(this, baseDir = dir)
 }
-data class SourceLocation(val project: SourceProject, val baseDir: String) {
+data class SourceLocation(
+  val project: SourceProject,
+  val branch: String = "master",
+  val baseDir: String
+) {
   init {
     check(baseDir.endsWith('/'))
   }
+
+  fun branch(branch: String) = copy(branch = branch)
 }
 
 val PACKAGE_SOURCE_MAP = mapOf(
@@ -103,6 +109,7 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.support.app.recommendation" to SUPPORT.path("recommendation/src/main/java/"),
     "android.support.compat" to null,
     "android.support.content" to SUPPORT.path("content/src/main/java/"),
+    "android.support.constraint" to CONSTRAINT_LAYOUT.path("constraintlayout/src/main/java/").branch("studio-master-dev"),
     "android.support.coreui" to null,
     "android.support.coreutils" to null,
     "android.support.customtabs" to SUPPORT.path("customtabs/src/main/java/"),
@@ -146,7 +153,6 @@ val PACKAGE_SOURCE_MAP = mapOf(
     "android.support.v17.leanback" to SUPPORT.path("v17/leanback/src/"),
     "android.support.v17.preference" to SUPPORT.path("v17/preference-leanback/src/"),
     "android.support.wear" to SUPPORT.path("wear/src/main/java/"),
-    "android.support.constraint" to CONSTRAINT_LAYOUT.path("constraintlayout/src/main/java/"),
 
     "android.test" to BASE.path("test-runner/src/"),
     "android.test.AndroidTestCase" to BASE.path("legacy-test/src/"),
@@ -189,7 +195,9 @@ fun sourceUrl(packageName: String, className: String): String? {
       return buildString {
         append(PRODUCTION_GITWEB)
         append(path.project.projectDir)
-        append("+/refs/heads/master/")
+        append("+/refs/heads/")
+        append(path.branch)
+        append('/')
         append(path.baseDir)
         append(packageName.replace('.', '/'))
         append('/')
