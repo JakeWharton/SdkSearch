@@ -1,6 +1,6 @@
-@file:JvmName("ReferencesValidator")
+@file:JvmName("ReferenceValidator")
 
-package com.jakewharton.sdksearch.references.validator
+package com.jakewharton.sdksearch.reference.validator
 
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent

@@ -5,7 +5,7 @@ apply plugin: 'application'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-mainClassName = 'com.jakewharton.sdksearch.references.validator.ReferencesValidator'
+mainClassName = 'com.jakewharton.sdksearch.reference.validator.ReferenceValidator'
 
 dependencies {
   implementation project(':references:jvm')
