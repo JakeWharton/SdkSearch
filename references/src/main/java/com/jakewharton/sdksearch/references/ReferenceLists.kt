@@ -53,8 +53,8 @@ val PACKAGE_SOURCE_MAP = mapOf(
 
     "android.arch.lifecycle" to SUPPORT.path("lifecycle/extensions/src/main/java/"),
     "android.arch.paging" to SUPPORT.path("paging/common/src/main/java/"),
-    "android.arch.persistence.db" to SUPPORT.path("room/db/src/main/java/"),
-    "android.arch.persistence.db.framework" to SUPPORT.path("room/db-impl/src/main/java/"),
+    "android.arch.persistence.db" to SUPPORT.path("persistence/db/src/main/java/"),
+    "android.arch.persistence.db.framework" to SUPPORT.path("persistence/db-framework/src/main/java/"),
     "android.arch.persistence.room" to SUPPORT.path("room/common/src/main/java/"),
     "android.arch.persistence.room.migration" to SUPPORT.path("room/runtime/src/main/java/"),
     "android.arch.persistence.room.testing" to SUPPORT.path("room/testing/src/main/java/"),
