@@ -70,7 +70,7 @@ class MainActivity : Activity() {
     val onClick = { item: Item ->
       val uri = baseUrl.resolve(item.link()).toUri()
       CustomTabsIntent.Builder()
-          .setToolbarColor(getColor(R.color.primary))
+          .setToolbarColor(getColor(R.color.green))
           .addDefaultShareMenuItem()
           .build()
           .launchUrl(this, uri)
@@ -94,7 +94,7 @@ class MainActivity : Activity() {
       val url = sourceUrl(item.package_(), item.class_())
       if (url != null) {
         CustomTabsIntent.Builder()
-            .setToolbarColor(getColor(R.color.primary))
+            .setToolbarColor(getColor(R.color.green))
             .addDefaultShareMenuItem()
             .build()
             .launchUrl(this, url.toUri())

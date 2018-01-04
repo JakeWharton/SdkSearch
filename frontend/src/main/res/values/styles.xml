@@ -1,6 +1,11 @@
 <resources>
   <style name="Theme.SdkSearch" parent="@style/Theme.AppCompat.Light.NoActionBar">
-    <item name="colorPrimary">@color/primary</item>
-    <item name="colorPrimaryDark">@color/primary_dark</item>
+    <item name="android:colorPrimary">@color/green</item>
+    <item name="colorPrimaryDark">@color/green_darker</item>
+    <item name="colorAccent">@color/green</item>
+  </style>
+
+  <style name="ThemeOverlay.SdkSearch.Dark.ActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <item name="colorAccent">@color/white_translucent</item>
   </style>
 </resources>
