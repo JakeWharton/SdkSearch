@@ -1,0 +1,7 @@
+apply plugin: 'org.jetbrains.kotlin.platform.jvm'
+
+dependencies {
+  expectedBy project(':references')
+  implementation deps.kotlin.stdlib.jdk
+  testImplementation deps.kotlin.test.jdk
+}

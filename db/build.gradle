@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-  implementation deps.kotlin.stdlib
+  implementation deps.kotlin.stdlib.jdk
 
   implementation deps.sqlBrite
   implementation deps.android.arch.dbFramework

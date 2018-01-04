@@ -1,10 +1,7 @@
-apply plugin: 'org.jetbrains.kotlin.jvm'
-
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+apply plugin: 'org.jetbrains.kotlin.platform.common'
 
 dependencies {
-  implementation deps.kotlin.stdlib
-
-  testImplementation deps.junit
+  implementation deps.kotlin.stdlib.common
+  testImplementation deps.kotlin.test.common
+  testImplementation deps.kotlin.test.annotations
 }

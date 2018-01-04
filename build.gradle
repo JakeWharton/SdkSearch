@@ -17,9 +17,17 @@ buildscript {
 
   ext.deps = [
       'kotlin': [
-          'stdlib': "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+          'stdlib': [
+              'common': "org.jetbrains.kotlin:kotlin-stdlib-common:${versions.kotlin}",
+              'jdk': "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+          ],
+          'test': [
+              'common': "org.jetbrains.kotlin:kotlin-test-common:${versions.kotlin}",
+              'annotations': "org.jetbrains.kotlin:kotlin-test-annotations-common:${versions.kotlin}",
+              'jdk': "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
+          ],
           'coroutines': [
-              'core': "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}",
+              'jdk': "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}",
               'android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}",
           ],
       ],

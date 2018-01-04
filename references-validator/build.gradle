@@ -7,7 +7,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 mainClassName = 'com.jakewharton.sdksearch.references.validator.ReferencesValidator'
 
 dependencies {
-  implementation project(':references')
+  implementation project(':references:jvm')
   implementation project(':api:dac')
   implementation deps.okhttp.client
 }

@@ -30,8 +30,8 @@ android {
 
 dependencies {
   implementation project(':api:circleci')
-  implementation deps.kotlin.stdlib
-  implementation deps.kotlin.coroutines.core
+  implementation deps.kotlin.stdlib.jdk
+  implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
   implementation deps.timber
   implementation deps.rx.android

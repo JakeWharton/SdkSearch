@@ -27,8 +27,8 @@ android {
 dependencies {
   api project(':api:dac')
   api project(':db')
-  implementation deps.kotlin.stdlib
-  api deps.kotlin.coroutines.core
+  implementation deps.kotlin.stdlib.jdk
+  api deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
   implementation deps.timber
 }
