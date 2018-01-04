@@ -23,7 +23,7 @@ jobs:
           name: Compile
           command: ./gradlew assemble
       - store_artifacts:
-          path: frontend/build/outputs/
+          path: frontend/android/build/outputs/
       - store_artifacts:
           path: build/commit-timestamp.txt
 
@@ -40,9 +40,9 @@ jobs:
 
       - run:
           name: Lint
-          command: ./gradlew :frontend:lint
+          command: ./gradlew :frontend:android:lint
       - store_artifacts:
-          path: frontend/build/reports/lint-results.html
+          path: frontend/android/build/reports/lint-results.html
 
       - save_cache:
           <<: *cache_key
