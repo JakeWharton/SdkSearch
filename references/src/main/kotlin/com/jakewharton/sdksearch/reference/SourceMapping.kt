@@ -78,7 +78,7 @@ internal val SOURCE_MAP = mapOf(
     "android.net.sip" to VOIP.path("src/java/"),
     "android.net.wifi" to BASE.path("wifi/java/"),
     "android.opengl" to BASE.path("opengl/java/"),
-    "android.provider.Telephony" to null, // TODO https://issuetracker.google.com/issues/71549250
+    "android.provider.Telephony" to BASE.path("telephony/java/"),
     "android.sax" to BASE.path("sax/java/"),
     "android.service.media" to BASE.path("media/java/"),
     "android.service.media.CameraPrewarmService" to BASE.path("core/java/"),
