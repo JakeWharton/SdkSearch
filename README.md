@@ -36,7 +36,7 @@ Deploying
 
  1. Ensure all source mappings are working.
 
-    * Run `gw :references-validator:run`
+    * Run `gw :references:validator:run`
 
     * Correct any 404s in `ReferenceLists.kt`
 
