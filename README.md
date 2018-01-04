@@ -34,14 +34,20 @@ SDK_SEARCH_BUGSNAG_API_KEY=<key>
 Deploying
 ---------
 
- 1. Create a clean release build: `./gradlew clean assembleRelease`
+ 1. Ensure all source mappings are working.
 
- 2. Install it onto a device: `./gradlew installRelease`
+    * Run `gw :references-validator:run`
 
- 3. Run `adb shell am start -n com.jakewharton.sdksearch/.ui.MainActivity -e crash true` and ensure
+    * Correct any 404s in `ReferenceLists.kt`
+
+ 2. Create a clean release build: `./gradlew clean assembleRelease`
+
+ 3. Install it onto a device: `./gradlew installRelease`
+
+ 4. Run `adb shell am start -n com.jakewharton.sdksearch/.ui.MainActivity -e crash true` and ensure
     that the app crashed and that the exception was reported to Bugsnag.
 
- 4. Upload to Google Play.
+ 5. Upload to Google Play.
 
 
 
