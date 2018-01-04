@@ -1,16 +1,16 @@
-package com.jakewharton.sdksearch.references
+package com.jakewharton.sdksearch.reference
 
-import com.jakewharton.sdksearch.references.SourceProject.BASE
-import com.jakewharton.sdksearch.references.SourceProject.CONSTRAINT_LAYOUT
-import com.jakewharton.sdksearch.references.SourceProject.DATABINDING
-import com.jakewharton.sdksearch.references.SourceProject.ICU
-import com.jakewharton.sdksearch.references.SourceProject.LIBCORE
-import com.jakewharton.sdksearch.references.SourceProject.MULTIDEX
-import com.jakewharton.sdksearch.references.SourceProject.SUPPORT
-import com.jakewharton.sdksearch.references.SourceProject.TELEPHONY
-import com.jakewharton.sdksearch.references.SourceProject.TESTING
-import com.jakewharton.sdksearch.references.SourceProject.UI_AUTOMATOR
-import com.jakewharton.sdksearch.references.SourceProject.VOIP
+import com.jakewharton.sdksearch.reference.SourceProject.BASE
+import com.jakewharton.sdksearch.reference.SourceProject.CONSTRAINT_LAYOUT
+import com.jakewharton.sdksearch.reference.SourceProject.DATABINDING
+import com.jakewharton.sdksearch.reference.SourceProject.ICU
+import com.jakewharton.sdksearch.reference.SourceProject.LIBCORE
+import com.jakewharton.sdksearch.reference.SourceProject.MULTIDEX
+import com.jakewharton.sdksearch.reference.SourceProject.SUPPORT
+import com.jakewharton.sdksearch.reference.SourceProject.TELEPHONY
+import com.jakewharton.sdksearch.reference.SourceProject.TESTING
+import com.jakewharton.sdksearch.reference.SourceProject.UI_AUTOMATOR
+import com.jakewharton.sdksearch.reference.SourceProject.VOIP
 
 const val PRODUCTION_DAC = "https://developer.android.com/"
 const val PRODUCTION_GITWEB = "https://android.googlesource.com/"

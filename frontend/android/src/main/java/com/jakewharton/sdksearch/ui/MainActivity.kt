@@ -24,9 +24,9 @@ import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
-import com.jakewharton.sdksearch.references.PRODUCTION_DAC
-import com.jakewharton.sdksearch.references.REFERENCE_LISTS
-import com.jakewharton.sdksearch.references.sourceUrl
+import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
+import com.jakewharton.sdksearch.reference.REFERENCE_LISTS
+import com.jakewharton.sdksearch.reference.sourceUrl
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.Observable.just
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
