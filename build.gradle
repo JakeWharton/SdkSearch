@@ -20,6 +20,7 @@ buildscript {
           'stdlib': [
               'common': "org.jetbrains.kotlin:kotlin-stdlib-common:${versions.kotlin}",
               'jdk': "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+              'js': "org.jetbrains.kotlin:kotlin-stdlib-js:${versions.kotlin}",
           ],
           'test': [
               'common': "org.jetbrains.kotlin:kotlin-test-common:${versions.kotlin}",

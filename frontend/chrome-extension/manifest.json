@@ -1,0 +1,9 @@
+{
+  "name": "Android SDK Search",
+  "description": "Omnibox search of the Android SDK classes",
+  "version": "1.0",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_popup": "hello.html"
+  }
+}

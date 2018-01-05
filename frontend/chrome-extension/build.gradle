@@ -1,0 +1,39 @@
+apply plugin: 'kotlin2js' // TODO why isn't this org.jetbrains.kotlin.js?
+apply plugin: 'distribution'
+
+archivesBaseName = 'sdk-search'
+
+dependencies {
+  compile deps.kotlin.stdlib.js
+  compile project(':references:js')
+}
+
+task populateCompileNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
+  configurations.compile.each {
+    from zipTree(it.absolutePath).matching { include '*.js' }
+  }
+  into "$buildDir/compile_deps"
+}
+
+distZip.dependsOn(populateCompileNodeModules)
+installDist.dependsOn(populateCompileNodeModules)
+distTar.enabled = false
+
+distributions {
+  main {
+    baseName = archivesBaseName
+
+    contents {
+      from 'manifest.json'
+      from 'hello.html'
+      from("$buildDir/classes/kotlin/main") {
+        include '*.js'
+        exclude '*.meta.js'
+      }
+      from("$buildDir/compile_deps") {
+        include '*.js'
+        exclude '*.meta.js'
+      }
+    }
+  }
+}
