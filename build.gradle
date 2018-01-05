@@ -26,6 +26,7 @@ buildscript {
               'common': "org.jetbrains.kotlin:kotlin-test-common:${versions.kotlin}",
               'annotations': "org.jetbrains.kotlin:kotlin-test-annotations-common:${versions.kotlin}",
               'jdk': "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
+              'js': "org.jetbrains.kotlin:kotlin-test-js:${versions.kotlin}",
           ],
           'coroutines': [
               'jdk': "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}",
