@@ -1,0 +1,5 @@
+apply plugin: 'kotlin2js'
+
+dependencies {
+  compile deps.kotlin.stdlib.js
+}

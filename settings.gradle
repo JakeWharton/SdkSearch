@@ -1,5 +1,6 @@
 include ':api:circleci'
 include ':api:dac'
+include ':chrome-platform'
 include ':db'
 include ':debug-updater'
 include ':frontend:android'

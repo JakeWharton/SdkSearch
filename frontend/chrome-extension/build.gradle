@@ -8,6 +8,7 @@ archivesBaseName = 'sdk-search'
 dependencies {
   compile deps.kotlin.stdlib.js
   compile project(':references:js')
+  compile project(':chrome-platform')
 }
 
 combineJs {
@@ -15,6 +16,7 @@ combineJs {
       // Order is important!
       "$buildDir/kotlin-js-min/main/kotlin.js",
       "$buildDir/kotlin-js-min/main/references.js",
+      "$buildDir/kotlin-js-min/main/chrome-platform.js",
       "$buildDir/kotlin-js-min/main/sdk-search.js",
   ]
   dest = file("$buildDir/combined/${archivesBaseName}.js")
