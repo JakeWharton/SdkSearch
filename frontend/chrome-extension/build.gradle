@@ -1,4 +1,6 @@
 apply plugin: 'kotlin2js' // TODO why isn't this org.jetbrains.kotlin.js?
+apply plugin: 'kotlin-dce-js'
+apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'distribution'
 
 archivesBaseName = 'sdk-search'
@@ -8,16 +10,20 @@ dependencies {
   compile project(':references:js')
 }
 
-task populateCompileNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
-  configurations.compile.each {
-    from zipTree(it.absolutePath).matching { include '*.js' }
-  }
-  into "$buildDir/compile_deps"
+combineJs {
+  source = [
+      // Order is important!
+      "$buildDir/kotlin-js-min/main/kotlin.js",
+      "$buildDir/kotlin-js-min/main/references.js",
+      "$buildDir/kotlin-js-min/main/sdk-search.js",
+  ]
+  dest = file("$buildDir/${archivesBaseName}.js")
 }
+combineJs.dependsOn(runDceKotlinJs)
 
-distZip.dependsOn(populateCompileNodeModules)
-installDist.dependsOn(populateCompileNodeModules)
+distZip.dependsOn(combineJs)
 distTar.enabled = false
+installDist.dependsOn(combineJs)
 
 distributions {
   main {
@@ -26,14 +32,7 @@ distributions {
     contents {
       from 'manifest.json'
       from 'hello.html'
-      from("$buildDir/classes/kotlin/main") {
-        include '*.js'
-        exclude '*.meta.js'
-      }
-      from("$buildDir/compile_deps") {
-        include '*.js'
-        exclude '*.meta.js'
-      }
+      from "$buildDir/${archivesBaseName}.js"
     }
   }
 }
