@@ -20,15 +20,17 @@ jobs:
           <<: *cache_key
 
       - run:
-          name: Compile
+          name: Assemble
           command: ./gradlew assemble
       - store_artifacts:
           path: frontend/android/build/outputs/
       - store_artifacts:
+          path: frontend/chrome-extension/build/distributions/
+      - store_artifacts:
           path: build/commit-timestamp.txt
 
       - run:
-          name: JVM Tests
+          name: Test
           command: |
             ./gradlew test
             mkdir -p ~/junit/
@@ -39,7 +41,7 @@ jobs:
           path: ~/junit
 
       - run:
-          name: Lint
+          name: Android Lint
           command: ./gradlew :frontend:android:lint
       - store_artifacts:
           path: frontend/android/build/reports/lint-results.html
