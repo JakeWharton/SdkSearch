@@ -6,6 +6,9 @@ import com.jakewharton.sdksearch.chrome.omnibox
 import com.jakewharton.sdksearch.chrome.tabs
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JSON
+import kotlinx.serialization.list
 import kotlin.browser.window
 
 fun main(vararg args: String) {
@@ -45,9 +48,23 @@ fun main(vararg args: String) {
           // Data ends with a ";<newline>" suffix which we skip.
           val endIndex = it.lastIndexOf(';')
 
-          println(it.substring(startIndex, endIndex))
+          val json = it.substring(startIndex, endIndex)
+
+          val items = JSON.unquoted.parse(Item.serializer().list, json)
+          for (item in items) {
+            println(item)
+          }
         }
       }
     }
   }
 }
+
+@Serializable
+data class Item(
+  val id: Int,
+  val label: String,
+  val link: String,
+  val type: String,
+  val deprecated: String
+)

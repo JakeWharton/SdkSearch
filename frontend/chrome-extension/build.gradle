@@ -1,5 +1,6 @@
 apply plugin: 'kotlin2js' // TODO why isn't this org.jetbrains.kotlin.js?
 apply plugin: 'kotlin-dce-js'
+apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'distribution'
 
@@ -7,6 +8,7 @@ archivesBaseName = 'sdk-search'
 
 dependencies {
   compile deps.kotlin.stdlib.js
+  compile deps.kotlin.serialization.js
   compile project(':references:js')
   compile project(':chrome-platform')
 }
@@ -15,6 +17,7 @@ combineJs {
   source = [
       // Order is important!
       "$buildDir/kotlin-js-min/main/kotlin.js",
+      "$buildDir/kotlin-js-min/main/kotlinx-serialization-runtime-js.js",
       "$buildDir/kotlin-js-min/main/references.js",
       "$buildDir/kotlin-js-min/main/chrome-platform.js",
       "$buildDir/kotlin-js-min/main/sdk-search.js",
