@@ -1,9 +1,9 @@
 package com.jakewharton.sdksearch
 
-import com.jakewharton.sdksearch.chrome.DefaultSuggestResult
-import com.jakewharton.sdksearch.chrome.UpdateProperties
-import com.jakewharton.sdksearch.chrome.omnibox
-import com.jakewharton.sdksearch.chrome.tabs
+import com.chrome.platform.Chrome.omnibox
+import com.chrome.platform.Chrome.tabs
+import com.chrome.platform.omnibox.DefaultSuggestResult
+import com.chrome.platform.tabs.UpdateProperties
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import kotlinx.serialization.KInput
@@ -16,7 +16,8 @@ import kotlinx.serialization.list
 import kotlin.browser.window
 
 fun main(vararg args: String) {
-  omnibox.setDefaultSuggestion(DefaultSuggestResult("Search Android SDK docs for <match>%s</match>"))
+  omnibox.setDefaultSuggestion(
+      DefaultSuggestResult("Search Android SDK docs for <match>%s</match>"))
 
   omnibox.onInputChanged.addListener { text, _ ->
     println("OMNIBOX: \"$text\"")
