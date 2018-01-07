@@ -15,6 +15,7 @@
     "keyword": "ad2"
   },
   "permissions": [
+    "storage",
     "https://developer.android.com/"
   ]
 }

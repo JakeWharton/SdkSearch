@@ -8,15 +8,23 @@ archivesBaseName = 'sdk-search'
 
 dependencies {
   compile deps.kotlin.stdlib.js
+  compile deps.kotlin.coroutines.js
   compile deps.kotlin.serialization.js
   compile project(':references:js')
   compile project(':chrome-platform')
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
 }
 
 combineJs {
   source = [
       // Order is important!
       "$buildDir/kotlin-js-min/main/kotlin.js",
+      "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core-js.js",
       "$buildDir/kotlin-js-min/main/kotlinx-serialization-runtime-js.js",
       "$buildDir/kotlin-js-min/main/references.js",
       "$buildDir/kotlin-js-min/main/chrome-platform.js",
