@@ -1,6 +1,6 @@
 package com.chrome.platform.omnibox
 
-import com.chrome.platform.events.Event2
+import com.chrome.platform.events.Event
 
 /** https://developer.chrome.com/extensions/omnibox */
 external interface Omnibox {
@@ -8,7 +8,7 @@ external interface Omnibox {
   fun setDefaultSuggestion(suggestion: DefaultSuggestResult)
 
   /** https://developer.chrome.com/extensions/omnibox#event-onInputChanged */
-  val onInputChanged: Event2<String, (Array<SuggestResult>) -> Unit>
+  val onInputChanged: Event<(String, (Array<SuggestResult>) -> Unit) -> Unit>
   /** https://developer.chrome.com/extensions/omnibox#event-onInputEntered */
-  val onInputEntered: Event2<String, String>
+  val onInputEntered: Event<(String, String) -> Unit>
 }

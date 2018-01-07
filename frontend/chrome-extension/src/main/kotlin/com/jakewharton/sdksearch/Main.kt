@@ -29,7 +29,7 @@ fun main(vararg args: String) {
     // TODO all the things!
   }
 
-  omnibox.onInputEntered.addListener { text ->
+  omnibox.onInputEntered.addListener { text, _ ->
     val url = if (text.startsWith("http://") || text.startsWith("https://")) {
       text
     } else {
