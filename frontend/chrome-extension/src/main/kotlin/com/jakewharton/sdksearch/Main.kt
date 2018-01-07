@@ -6,7 +6,11 @@ import com.jakewharton.sdksearch.chrome.omnibox
 import com.jakewharton.sdksearch.chrome.tabs
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
+import kotlinx.serialization.KInput
+import kotlinx.serialization.KOutput
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.json.JSON
 import kotlinx.serialization.list
 import kotlin.browser.window
@@ -33,7 +37,6 @@ fun main(vararg args: String) {
 
     tabs.update(UpdateProperties(url = url))
   }
-
 
   for ((name, path) in ITEM_LIST_URL_PATHS) {
     val url = PRODUCTION_DAC + path
@@ -66,5 +69,12 @@ data class Item(
   val label: String,
   val link: String,
   val type: String,
-  val deprecated: String
+  @Serializable(with = BooleanStringSerializer::class) val deprecated: Boolean
 )
+
+@Serializer(forClass = Boolean::class)
+object BooleanStringSerializer : KSerializer<Boolean> {
+  override fun save(output: KOutput, obj: Boolean) = output.writeStringValue(obj.toString())
+  // TODO https://youtrack.jetbrains.com/issue/KT-16348
+  override fun load(input: KInput) = input.readStringValue().toLowerCase() == "true"
+}
