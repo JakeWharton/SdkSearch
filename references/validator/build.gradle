@@ -9,7 +9,7 @@ mainClassName = 'com.jakewharton.sdksearch.reference.validator.ReferenceValidato
 
 dependencies {
   implementation project(':references:jvm')
-  implementation project(':api:dac')
+  implementation project(':api:dac:jvm')
   implementation deps.okhttp.client
 }
 

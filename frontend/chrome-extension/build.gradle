@@ -9,7 +9,7 @@ dependencies {
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
   compile deps.kotlin.serialization.js
-  compile project(':api:dac:model:js')
+  compile project(':api:dac:js')
   compile project(':references:js')
   compile project(':chrome-platform')
 }
@@ -26,7 +26,7 @@ combineJs {
       "$buildDir/kotlin-js-min/main/kotlin.js",
       "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core-js.js",
       "$buildDir/kotlin-js-min/main/kotlinx-serialization-runtime-js.js",
-      "$buildDir/kotlin-js-min/main/dac-model.js",
+      "$buildDir/kotlin-js-min/main/api-dac.js",
       "$buildDir/kotlin-js-min/main/references.js",
       "$buildDir/kotlin-js-min/main/chrome-platform.js",
       "$buildDir/kotlin-js-min/main/sdk-search.js",

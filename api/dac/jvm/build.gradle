@@ -1,0 +1,34 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.platform.jvm'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'kotlin-kapt'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+  expectedBy project(':api:dac')
+  implementation deps.kotlin.stdlib.jdk
+  api deps.kotlin.coroutines.jdk
+  api deps.kotlin.serialization.jdk
+
+  implementation deps.okhttp.client
+  implementation deps.okhttp.logging
+  testImplementation deps.okhttp.mockWebServer
+
+  implementation deps.retrofit.client
+  implementation deps.retrofit.adapterKotlinCoroutines
+  implementation project(':retrofit2-kotlinx-serialization-converter')
+
+  implementation deps.dagger.runtime
+  kapt deps.dagger.compiler
+
+  testImplementation deps.junit
+  testImplementation deps.truth
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

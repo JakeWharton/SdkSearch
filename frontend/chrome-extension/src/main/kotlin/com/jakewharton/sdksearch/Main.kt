@@ -5,15 +5,10 @@ import com.chrome.platform.Chrome.storage
 import com.chrome.platform.Chrome.tabs
 import com.chrome.platform.omnibox.DefaultSuggestResult
 import com.chrome.platform.tabs.UpdateProperties
-import com.jakewharton.sdksearch.api.dac.model.Item
+import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
-import kotlinx.coroutines.experimental.await
 import kotlinx.coroutines.experimental.launch
-import kotlinx.serialization.json.JSON
-import kotlinx.serialization.list
-import kotlin.browser.window
-import kotlin.js.Promise
 import kotlin.js.json
 
 fun main(vararg args: String) {
@@ -40,10 +35,11 @@ fun main(vararg args: String) {
     tabs.update(UpdateProperties(url = url))
   }
 
+  val service = FetchDocumentationService(PRODUCTION_DAC)
+
   launch {
     val items = ITEM_LIST_URL_PATHS.values
-        .map { PRODUCTION_DAC + it }
-        .map { list(it) }
+        .map { service.list(it) }
         .flatMap { it.await() }
         .filter { it.type == "class" }
         .sortedBy { it.label }
@@ -55,22 +51,3 @@ fun main(vararg args: String) {
     println(items)
   }
 }
-
-private fun list(url: String): Promise<List<Item>> = window
-    .fetch(url)
-    .then {
-      if (it.status != 200.toShort()) {
-        throw RuntimeException("HTTP ${it.status} ${it.statusText}")
-      } else {
-        it.text()
-      }
-    }.then {
-      // Data starts with a "val SOMETHING =" prefix which we skip.
-      val startIndex = it.indexOf('=') + 1
-      // Data ends with a ";<newline>" suffix which we skip.
-      val endIndex = it.lastIndexOf(';')
-
-      val json = it.substring(startIndex, endIndex)
-
-      JSON.unquoted.parse(Item.serializer().list, json)
-    }
