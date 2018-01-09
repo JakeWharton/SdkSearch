@@ -5,6 +5,7 @@ import com.chrome.platform.Chrome.storage
 import com.chrome.platform.Chrome.tabs
 import com.chrome.platform.omnibox.DefaultSuggestResult
 import com.chrome.platform.tabs.UpdateProperties
+import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
@@ -35,7 +36,7 @@ fun main(vararg args: String) {
     tabs.update(UpdateProperties(url = url))
   }
 
-  val service = FetchDocumentationService(PRODUCTION_DAC)
+  val service = FetchDocumentationService(BaseUrl(PRODUCTION_DAC))
 
   launch {
     val items = ITEM_LIST_URL_PATHS.values

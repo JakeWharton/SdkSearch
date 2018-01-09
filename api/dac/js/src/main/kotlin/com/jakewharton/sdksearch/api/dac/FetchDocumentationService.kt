@@ -7,11 +7,11 @@ import kotlinx.serialization.list
 import kotlin.browser.window
 
 class FetchDocumentationService(
-  private val baseUrl: String
+  private val baseUrl: BaseUrl
 ) : DocumentationService {
 
   override fun list(relativeUrl: String): Deferred<List<Item>> = window
-      .fetch(baseUrl + relativeUrl)
+      .fetch(baseUrl.resolve(relativeUrl))
       .then {
         if (it.status != 200.toShort()) {
           throw RuntimeException("HTTP ${it.status} ${it.statusText}")
