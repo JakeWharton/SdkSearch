@@ -1,6 +1,7 @@
 package com.jakewharton.sdksearch.api.dac
 
 import com.google.common.truth.Truth.assertThat
+import com.jakewharton.sdksearch.api.dac.model.Item
 import kotlinx.coroutines.experimental.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -30,6 +31,6 @@ class JavascriptSkippingTest {
 
     val items = service.list("whatever").await()
     assertThat(items).containsExactly(
-        Item(1, "android.Manifest", "reference/android/Manifest.html", "class", deprecated = false))
+        Item(1, "android.Manifest", "reference/android/Manifest.html", "class", false))
   }
 }

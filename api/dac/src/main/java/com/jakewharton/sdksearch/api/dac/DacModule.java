@@ -1,13 +1,16 @@
 package com.jakewharton.sdksearch.api.dac;
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory;
-import com.squareup.moshi.Moshi;
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.KotlinSerializationConverterFactory;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
+import kotlinx.serialization.json.JSON;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
+
+import static java.util.Objects.requireNonNull;
 
 @Module //
 abstract class DacModule {
@@ -20,16 +23,13 @@ abstract class DacModule {
         //.addNetworkInterceptor(new HttpLoggingInterceptor(logger).setLevel(BASIC)) //
         .build();
 
-    Moshi moshi = new Moshi.Builder()
-        .add(boolean.class, BooleanString.class, BooleanStringAdapter.INSTANCE)
-        .add(DacJsonAdapterFactory.INSTANCE)
-        .build();
-
+    MediaType contentType = requireNonNull(MediaType.parse("application/json; charset=utf-8"));
+    JSON json = JSON.Companion.getUnquoted();
     Retrofit retrofit = new Retrofit.Builder() //
         .baseUrl(baseUrl.getUrl()) //
         .client(client) //
-        // The Moshi converter has to be lenient because the JS keys are unquoted.
-        .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient()) //
+        .addConverterFactory(
+            KotlinSerializationConverterFactory.stringBased(contentType, json::parse, json::stringify)) //
         .addCallAdapterFactory(CoroutineCallAdapterFactory.create()) //
         .build();
 

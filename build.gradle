@@ -35,7 +35,12 @@ buildscript {
               'android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}",
           ],
           'serialization': [
+              'common': "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${versions.kotlinSerialization}",
+              'jdk': "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinSerialization}",
               'js': "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${versions.kotlinSerialization}",
+          ],
+          'reflect': [
+              'jdk': "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}",
           ],
       ],
       'android': [

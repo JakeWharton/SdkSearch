@@ -6,10 +6,10 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
+  api project(':api:dac:model:jvm')
+
   implementation deps.kotlin.stdlib.jdk
   api deps.kotlin.coroutines.jdk
-
-  implementation deps.moshi
 
   implementation deps.okhttp.client
   implementation deps.okhttp.logging
@@ -17,10 +17,7 @@ dependencies {
 
   implementation deps.retrofit.client
   implementation deps.retrofit.adapterKotlinCoroutines
-  implementation deps.retrofit.converterMoshi
-
-  implementation deps.kotshi.api
-  kapt deps.kotshi.compiler
+  implementation project(':retrofit2-kotlinx-serialization-converter')
 
   implementation deps.dagger.runtime
   kapt deps.dagger.compiler

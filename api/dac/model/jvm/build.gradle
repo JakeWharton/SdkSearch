@@ -1,0 +1,9 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.platform.jvm'
+apply plugin: 'kotlinx-serialization'
+
+dependencies {
+  expectedBy project(':api:dac:model')
+  implementation deps.kotlin.stdlib.jdk
+  api deps.kotlin.serialization.jdk
+}
