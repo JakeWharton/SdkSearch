@@ -18,7 +18,7 @@ class SdkSearchApplication : Application() {
         "Bugsnag API key is blank. Check the README and your Gradle configuration!"
       }
 
-      val client = Bugsnag.init(this, BuildConfig.BUGSNAG_API_KEY)!!
+      val client = Bugsnag.init(this, BuildConfig.BUGSNAG_API_KEY)
 
       client.setReleaseStage(BuildConfig.BUILD_TYPE)
       client.setProjectPackages("com.jakewharton.sdksearch")
