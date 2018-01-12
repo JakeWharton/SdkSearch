@@ -8,6 +8,5 @@ import kotlinx.serialization.Serializer
 @Serializer(forClass = Boolean::class)
 internal object BooleanStringSerializer : KSerializer<Boolean> {
   override fun save(output: KOutput, obj: Boolean) = output.writeStringValue(obj.toString())
-  // TODO https://youtrack.jetbrains.com/issue/KT-16348
-  override fun load(input: KInput) = input.readStringValue().toLowerCase() == "true"
+  override fun load(input: KInput) = input.readStringValue().toBoolean()
 }
