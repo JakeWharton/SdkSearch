@@ -7,10 +7,14 @@ import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View
 import android.view.View.INVISIBLE
+import android.view.inputmethod.EditorInfo.IME_ACTION_GO
 import android.widget.EditText
+import com.jakewharton.rxbinding2.view.keys
 import com.jakewharton.rxbinding2.view.visibility
+import com.jakewharton.rxbinding2.widget.editorActionEvents
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
@@ -22,11 +26,13 @@ import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.Observable.just
+import io.reactivex.Observable.merge
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.functions.Consumer
+import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.Schedulers.computation
 import kotlinx.coroutines.experimental.android.UI
@@ -75,6 +81,18 @@ class MainActivity : Activity() {
     recycler.adapter = adapter
 
     val queryInput = findViewById<EditText>(R.id.query)
+
+    val enterKeys = queryInput.keys(Predicate { it.keyCode == KEYCODE_ENTER })
+        .filter { it.keyCode == KEYCODE_ENTER }
+    val imeActions = queryInput.editorActionEvents()
+        .filter { it.actionId() == IME_ACTION_GO }
+    merge(enterKeys, imeActions)
+        .subscribe({
+          adapter.invokeFirstItem()
+        }, {
+          throw OnErrorNotImplementedException(it)
+        })
+        .addTo(disposables)
 
     store.count()
         .observeOn(mainThread())
