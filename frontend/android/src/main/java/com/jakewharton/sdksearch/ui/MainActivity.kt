@@ -1,8 +1,11 @@
 package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
@@ -25,9 +28,9 @@ import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.db.DbComponent
 import com.jakewharton.sdksearch.db.Item
 import com.jakewharton.sdksearch.reference.AndroidReference
+import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
-import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.Observable.just
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -67,12 +70,21 @@ class MainActivity : Activity() {
         .itemStore()
 
     val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
+    val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
 
     val onClick = { item: Item ->
       val uri = baseUrl.resolve(item.link()).toUri()
+      val sourceUri = androidReference.sourceUrl(item.package_(), item.class_())?.toUri()
       CustomTabsIntent.Builder()
           .setToolbarColor(getColor(R.color.green))
           .addDefaultShareMenuItem()
+          .apply {
+            if (sourceUri != null) {
+              val sourceIntent = Intent(ACTION_VIEW, sourceUri)
+              val pendingIntent = PendingIntent.getActivity(this@MainActivity, 123, sourceIntent, 0)
+              addMenuItem(getString(R.string.view_class_source, item.class_()), pendingIntent)
+            }
+          }
           .build()
           .launchUrl(this, uri)
     }
@@ -91,8 +103,6 @@ class MainActivity : Activity() {
           .setText(uri.toString())
           .startChooser()
     }
-
-    val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
     val onSource = { item: Item ->
       val url = androidReference.sourceUrl(item.package_(), item.class_())
       if (url != null) {
