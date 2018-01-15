@@ -126,7 +126,7 @@ class MainActivity : Activity() {
       queryInput.setText("")
     }
 
-   queryInput.textChanges()
+    queryInput.textChanges()
         .map(CharSequence::isNotEmpty)
         .crashingSubscribe(clear.visibility(INVISIBLE))
 
