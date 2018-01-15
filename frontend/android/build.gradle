@@ -43,7 +43,7 @@ android {
 
   signingConfigs {
     debug {
-      storeFile rootProject.file('debug.keystore')
+      storeFile file('debug.keystore')
       storePassword 'sdksearch'
       keyAlias 'sdksearch'
       keyPassword 'sdksearch'
