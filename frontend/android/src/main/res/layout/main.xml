@@ -36,6 +36,7 @@
         android:hint="@string/search"
         android:inputType="textCapWords|textNoSuggestions"
         android:privateImeOptions="nm"
+        android:selectAllOnFocus="true"
         />
     <ImageView
         android:id="@+id/clear_query"
