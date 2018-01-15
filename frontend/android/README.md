@@ -1,7 +1,9 @@
 SDK Search (Android)
 ====================
 
-![](src/main/play/en-US/listing/phoneScreenshots/1.png)
+Download from [Google Play](https://play.google.com/store/apps/details?id=com.jakewharton.sdksearch)
+
+<img src="src/main/play/en-US/listing/phoneScreenshots/1.png" height="300"/>
 
 
 Building

@@ -3,7 +3,11 @@ SDK Search
 
 An Android app and Chrome Extension for searching the Android SDK documentation.
 
-![](frontend/android/src/main/play/en-US/listing/phoneScreenshots/1.png)
+Download from [Google Play](https://play.google.com/store/apps/details?id=com.jakewharton.sdksearch)
+
+Coming soon to the Chrome Web Store
+
+<img src="frontend/android/src/main/play/en-US/listing/phoneScreenshots/1.png" height="300"/>
 
 ![](frontend/chrome-extension/src/main/store/screenshots/1.png)
 
