@@ -1,54 +1,11 @@
 SDK Search
 ==========
 
-A quick tile which searches the contents of the Android SDK.
+An Android app and Chrome Extension for searching the Android SDK documentation.
 
+![](frontend/android/src/main/play/en-US/listing/phoneScreenshots/1.png)
 
-Building
---------
-
-### Debug
-
-Debug builds should Just Work™.
-
-The one caveat is that you won't be able to use the "Update from CI" app shortcut since it requires
-a valid Circle CI API token. You can obtain a token at https://circleci.com/account/api. Once you
-have the token, place the following in `~/.gradle/gradle.properties`:
-```
-SDK_SEARCH_CIRCLE_CI_TOKEN=<token>
-```
-(replacing `<token>` with the actual token, obviously)
-
-Crashes in debug builds are not uploaded unless they are built on CI. See the "Release" section
-below for information on configuring the required API key for this.
-
-### Release
-
-A Bugsnag project API key is required. Place the following in `~/.gradle/gradle.properties`:
-```
-SDK_SEARCH_BUGSNAG_API_KEY=<key>
-```
-(replacing `<key>` with the actual key, obviously)
-
-
-Deploying
----------
-
- 1. Ensure all source mappings are working.
-
-    * Run `gw :references:validator:run`
-
-    * Correct any 404s in `ReferenceLists.kt`
-
- 2. Create a clean release build: `./gradlew clean assembleRelease`
-
- 3. Install it onto a device: `./gradlew installRelease`
-
- 4. Run `adb shell am start -n com.jakewharton.sdksearch/.ui.MainActivity -e crash true` and ensure
-    that the app crashed and that the exception was reported to Bugsnag.
-
- 5. Upload to Google Play.
-
+![](frontend/chrome-extension/src/main/store/screenshots/1.png)
 
 
 

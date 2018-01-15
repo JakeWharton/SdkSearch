@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.github.triplet.play'
 
 def versionMajor = 1
 def versionMinor = 0
@@ -11,6 +12,13 @@ archivesBaseName = 'sdk-search'
 
 android {
   compileSdkVersion buildConfig.compileSdk
+
+  playAccountConfigs {
+    production {
+      serviceAccountEmail = propOrEmpty('SDK_SEARCH_UPLOAD_PLAY_EMAIL')
+      pk12File = file('upload.p12')
+    }
+  }
 
   defaultConfig {
     applicationId 'com.jakewharton.sdksearch'
@@ -25,6 +33,8 @@ android {
     buildConfigField 'boolean', 'IS_CI_BUILD', 'false' // May be overridden by a build type.
     buildConfigField 'String', 'COMMIT_SHA', "\"${gitSha()}\""
     buildConfigField 'long', 'COMMIT_TIMESTAMP', gitTimestamp().toString()
+
+    playAccountConfig = playAccountConfigs.production
   }
 
   compileOptions {
@@ -48,6 +58,14 @@ android {
       keyAlias 'sdksearch'
       keyPassword 'sdksearch'
     }
+    if (file('upload.keystore').exists()) {
+      upload {
+        storeFile file('upload.keystore')
+        storePassword propOrEmpty('SDK_SEARCH_UPLOAD_STORE_PASSWORD')
+        keyAlias 'sdksearch'
+        keyPassword propOrEmpty('SDK_SEARCH_UPLOAD_KEY_PASSWORD')
+      }
+    }
   }
 
   buildTypes {
@@ -58,7 +76,11 @@ android {
       buildConfigField 'boolean', 'IS_CI_BUILD', isCiBuild.toString()
     }
     release {
-      signingConfig signingConfigs.debug // TODO temporary
+      if (file('upload.keystore').exists()) {
+        signingConfig signingConfigs.upload
+      } else {
+        signingConfig signingConfigs.debug
+      }
 
       minifyEnabled true
       proguardFiles(
@@ -105,4 +127,9 @@ kotlin {
   experimental {
     coroutines 'enable'
   }
+}
+
+play {
+  track = 'alpha'
+  uploadImages = true
 }
