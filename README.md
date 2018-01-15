@@ -7,9 +7,8 @@ Download from [Google Play](https://play.google.com/store/apps/details?id=com.ja
 
 Coming soon to the Chrome Web Store
 
-<img src="frontend/android/src/main/play/en-US/listing/phoneScreenshots/1.png" height="300"/>
-
-![](frontend/chrome-extension/src/main/store/screenshots/1.png)
+<img src="frontend/android/src/main/play/en-US/listing/phoneScreenshots/1.png" height="400"/>
+<img src="frontend/chrome-extension/src/main/store/screenshots/1.png"/>
 
 
 
