@@ -1,6 +1,7 @@
 package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
@@ -25,6 +26,7 @@ import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
+import io.reactivex.Observable
 import io.reactivex.Observable.just
 import io.reactivex.Observable.merge
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -87,21 +89,15 @@ class MainActivity : Activity() {
     val imeActions = queryInput.editorActionEvents()
         .filter { it.actionId() == IME_ACTION_GO }
     merge(enterKeys, imeActions)
-        .subscribe({
+        .crashingSubscribe{
           adapter.invokeFirstItem()
-        }, {
-          throw OnErrorNotImplementedException(it)
-        })
-        .addTo(disposables)
+        }
 
     store.count()
         .observeOn(mainThread())
-        .subscribe({
+        .crashingSubscribe {
           queryInput.hint = resources.getQuantityString(R.plurals.search_classes, it.toInt(), it)
-        }, {
-          throw OnErrorNotImplementedException(it)
-        })
-        .addTo(disposables)
+        }
 
     queryInput.textChanges()
         .map(CharSequence::toString)
@@ -118,27 +114,28 @@ class MainActivity : Activity() {
         }
         .skip(1)
         .observeOn(mainThread())
-        .subscribe({
+        .crashingSubscribe {
           val scrollPosition = layoutManager.findFirstVisibleItemPosition()
           adapter.updateItems(it.query, it.data)
           it.diff.dispatchUpdatesTo(adapter)
           recycler.scrollToPosition(scrollPosition)
-        }, {
-          throw OnErrorNotImplementedException(it)
-        })
-        .addTo(disposables)
+        }
 
     val clear = findViewById<View>(R.id.clear_query)
     clear.setOnClickListener {
       queryInput.setText("")
     }
 
-    queryInput.textChanges()
+   queryInput.textChanges()
         .map(CharSequence::isNotEmpty)
-        .subscribe(clear.visibility(INVISIBLE), Consumer {
-          throw OnErrorNotImplementedException(it)
-        })
-        .addTo(disposables)
+        .crashingSubscribe(clear.visibility(INVISIBLE))
+
+    val robotoMono = resources.getFont(R.font.roboto_mono)
+    queryInput.textChanges()
+        .map(CharSequence::isEmpty)
+        .crashingSubscribe { empty ->
+          queryInput.typeface = if (empty) Typeface.DEFAULT else robotoMono
+        }
 
     launch(UI) {
       var snackbar: Snackbar? = null
@@ -183,6 +180,16 @@ class MainActivity : Activity() {
   override fun onDestroy() {
     super.onDestroy()
     disposables.clear()
+  }
+
+  @Suppress("NOTHING_TO_INLINE") // Needed for correct stacktraces.
+  private inline fun <I> Observable<I>.crashingSubscribe(noinline onNext: (I) -> Unit) {
+    subscribe(onNext, { throw OnErrorNotImplementedException(it) }).addTo(disposables)
+  }
+
+  @Suppress("NOTHING_TO_INLINE") // Needed for correct stacktraces.
+  private inline fun <I> Observable<I>.crashingSubscribe(onNext: Consumer<in I>) {
+    subscribe(onNext, Consumer { throw OnErrorNotImplementedException(it) }).addTo(disposables)
   }
 
   private fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
