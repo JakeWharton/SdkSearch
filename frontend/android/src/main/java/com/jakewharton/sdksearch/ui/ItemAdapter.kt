@@ -16,6 +16,10 @@ internal class ItemAdapter(
   private var query = ""
   private var items: List<Item> = emptyList()
 
+  fun invokeFirstItem() {
+    items.firstOrNull()?.let(onClick)
+  }
+
   fun updateItems(query: String, items: List<Item>) {
     this.query = query
     this.items = items
