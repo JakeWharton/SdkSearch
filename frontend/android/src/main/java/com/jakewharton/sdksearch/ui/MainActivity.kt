@@ -1,32 +1,21 @@
 package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
-import android.app.PendingIntent
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Intent
-import android.content.Intent.ACTION_VIEW
-import android.net.Uri
 import android.os.Bundle
-import android.support.customtabs.CustomTabsIntent
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
-import android.support.v4.app.ShareCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.View.INVISIBLE
 import android.widget.EditText
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import com.jakewharton.rxbinding2.view.visibility
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.db.DbComponent
-import com.jakewharton.sdksearch.db.Item
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
@@ -72,49 +61,10 @@ class MainActivity : Activity() {
     val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
     val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
 
-    val onClick = { item: Item ->
-      val uri = baseUrl.resolve(item.link()).toUri()
-      val sourceUri = androidReference.sourceUrl(item.package_(), item.class_())?.toUri()
-      CustomTabsIntent.Builder()
-          .setToolbarColor(getColor(R.color.green))
-          .addDefaultShareMenuItem()
-          .apply {
-            if (sourceUri != null) {
-              val sourceIntent = Intent(ACTION_VIEW, sourceUri)
-              val pendingIntent = PendingIntent.getActivity(this@MainActivity, 123, sourceIntent, 0)
-              addMenuItem(getString(R.string.view_class_source, item.class_()), pendingIntent)
-            }
-          }
-          .build()
-          .launchUrl(this, uri)
-    }
-    val onCopy = { item: Item ->
-      val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-      val uri = baseUrl.resolve(item.link()).toUri()
-      clipboard.primaryClip = ClipData.newPlainText(item.class_(), uri.toString())
-      val message = getString(R.string.copied, item.class_())
-      Toast.makeText(this, message, LENGTH_SHORT).show()
-    }
-    val onShare = { item: Item ->
-      val uri = baseUrl.resolve(item.link()).toUri()
-      ShareCompat.IntentBuilder.from(this)
-          .setType("text/plain")
-          .setChooserTitle(getString(R.string.share_title, item.class_()))
-          .setText(uri.toString())
-          .startChooser()
-    }
-    val onSource = { item: Item ->
-      val url = androidReference.sourceUrl(item.package_(), item.class_())
-      if (url != null) {
-        CustomTabsIntent.Builder()
-            .setToolbarColor(getColor(R.color.green))
-            .addDefaultShareMenuItem()
-            .build()
-            .launchUrl(this, url.toUri())
-      } else {
-        Toast.makeText(this@MainActivity, R.string.unknown_source, LENGTH_SHORT).show()
-      }
-    }
+    val onClick = OpenDocumentationItemHandler(this, baseUrl, androidReference)
+    val onCopy = ClipboardCopyItemHandler(this, baseUrl)
+    val onShare = ShareItemHandler(this, baseUrl)
+    val onSource = OpenSourceItemHandler(this, androidReference)
 
     setContentView(R.layout.main)
 
@@ -220,6 +170,4 @@ class MainActivity : Activity() {
   private fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
     compositeDisposable.add(this)
   }
-
-  private fun String.toUri(): Uri = Uri.parse(this)
 }

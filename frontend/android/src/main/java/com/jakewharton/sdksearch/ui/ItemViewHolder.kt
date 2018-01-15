@@ -18,12 +18,14 @@ import com.jakewharton.sdksearch.util.buildSpannedString
 import com.jakewharton.sdksearch.util.inSpan
 import kotlin.LazyThreadSafetyMode.NONE
 
+internal typealias ItemHandler = (Item) -> Unit
+
 internal class ItemViewHolder(
   private val root: View,
-  private val onClick: (Item) -> Unit,
-  private val onCopy: (Item) -> Unit,
-  private val onShare: (Item) -> Unit,
-  private val onSource: (Item) -> Unit
+  private val onClick: ItemHandler,
+  private val onCopy: ItemHandler,
+  private val onShare: ItemHandler,
+  private val onSource: ItemHandler
 ) : ViewHolder(root), OnClickListener, OnMenuItemClickListener {
   private val text: TextView = root.findViewById(R.id.text)
   private val overflow: View = root.findViewById(R.id.more_options)
