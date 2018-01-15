@@ -8,7 +8,7 @@
     <item quantity="other">Search %d classes…</item>
   </plurals>
   <string name="copy">Copy</string>
-  <string name="share">Share</string>
+  <string name="share">Share…</string>
   <string name="copied">%s URL copied to clipboard!</string>
   <string name="share_title">Share %s URL</string>
   <string name="more_options">More options</string>
