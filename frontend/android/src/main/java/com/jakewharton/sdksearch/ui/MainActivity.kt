@@ -37,6 +37,7 @@ import io.reactivex.functions.Consumer
 import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.Schedulers.computation
+import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
@@ -137,7 +138,7 @@ class MainActivity : Activity() {
           queryInput.typeface = if (empty) Typeface.DEFAULT else robotoMono
         }
 
-    launch(UI) {
+    launch(UI, UNDISPATCHED) {
       var snackbar: Snackbar? = null
       for (state in synchronizer.state) {
         if (state.isNotEmpty()) {
