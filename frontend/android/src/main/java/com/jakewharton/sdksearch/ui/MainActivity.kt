@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
 import android.support.v7.util.DiffUtil
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.KeyEvent.KEYCODE_ENTER
@@ -42,9 +43,6 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit.MILLISECONDS
-import android.support.v7.widget.DividerItemDecoration
-
-
 
 class MainActivity : Activity() {
   private val baseUrl = BaseUrl(PRODUCTION_DAC)
@@ -91,6 +89,9 @@ class MainActivity : Activity() {
     recycler.addItemDecoration(dividerDecoration)
 
     val queryInput = findViewById<EditText>(R.id.query)
+    if (savedInstanceState == null) {
+      queryInput.setText(intent.getStringExtra("query") ?: "")
+    }
 
     val enterKeys = queryInput.keys(Predicate { it.keyCode == KEYCODE_ENTER })
         .filter { it.keyCode == KEYCODE_ENTER }
