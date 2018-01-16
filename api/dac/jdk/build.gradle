@@ -18,7 +18,7 @@ dependencies {
 
   implementation deps.retrofit.client
   implementation deps.retrofit.adapterKotlinCoroutines
-  implementation project(':retrofit2-kotlinx-serialization-converter')
+  implementation deps.retrofit.converterKotlinxSerialization
 
   implementation deps.dagger.runtime
   kapt deps.dagger.compiler
