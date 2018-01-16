@@ -27,7 +27,8 @@ internal class ItemViewHolder(
   private val onShare: ItemHandler,
   private val onSource: ItemHandler
 ) : ViewHolder(root), OnClickListener, OnMenuItemClickListener {
-  private val text: TextView = root.findViewById(R.id.text)
+  private val packageNameText: TextView = root.findViewById(R.id.package_name)
+  private val classNameText: TextView = root.findViewById(R.id.class_name)
   private val overflow: View = root.findViewById(R.id.more_options)
 
   private val popup by lazy(NONE) {
@@ -90,18 +91,13 @@ internal class ItemViewHolder(
     val query = this.query!!
     val item = this.item!!
 
-    val packageAcronym = item.package_()
-        .split('.')
-        .joinToString(".") { if (it.matches(VERSION_PACKAGE)) it else it.first().toString() }
+    packageNameText.text = item.package_()
 
     val className = SpannableString(item.class_())
     val start = item.class_().indexOf(query, ignoreCase = true)
     className.setSpan(StyleSpan(BOLD), start, start + query.length, SPAN_INCLUSIVE_EXCLUSIVE)
 
-    text.text = buildSpannedString {
-      append(packageAcronym)
-      append('.')
-
+    classNameText.text = buildSpannedString {
       if (item.deprecated()) {
         inSpan(StrikethroughSpan()) {
           append(className)
