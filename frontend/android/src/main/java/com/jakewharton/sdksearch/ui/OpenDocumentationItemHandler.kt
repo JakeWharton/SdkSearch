@@ -8,6 +8,7 @@ import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.db.Item
 import com.jakewharton.sdksearch.reference.AndroidReference
+import com.jakewharton.sdksearch.util.toBitmap
 import com.jakewharton.sdksearch.util.toUri
 
 internal class OpenDocumentationItemHandler(
@@ -25,10 +26,14 @@ internal class OpenDocumentationItemHandler(
           if (sourceUri != null) {
             val sourceIntent = Intent(Intent.ACTION_VIEW, sourceUri)
             val pendingIntent = PendingIntent.getActivity(context, 123, sourceIntent, 0)
-            addMenuItem(context.getString(R.string.view_class_source, item.class_()), pendingIntent)
+            setActionButton(
+                    context.getDrawable(R.drawable.ic_code_black_24dp).toBitmap(),
+                    context.getString(R.string.view_class_source, item.class_()),
+                    pendingIntent,
+                    true)
           }
         }
         .build()
-        .launchUrl( context, uri)
+        .launchUrl(context, uri)
   }
 }
