@@ -1,9 +1,11 @@
 package com.jakewharton.sdksearch.ui
 
 import android.graphics.Typeface.BOLD
+import android.support.v4.graphics.ColorUtils
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.text.SpannableString
 import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
@@ -93,11 +95,32 @@ internal class ItemViewHolder(
     val query = this.query!!
     val item = this.item!!
 
-    packageNameText.text = item.package_()
+    packageNameText.text = buildSpannedString {
+      val splitIt = item.package_().split('.').iterator()
+      while (splitIt.hasNext()) {
+        append(splitIt.next())
+        if (splitIt.hasNext()) {
+          inSpan(LetterSpacingSpan(PERIOD_LETTER_SPACING)) {
+            append(".")
+          }
+        }
+      }
+    }
 
     val className = SpannableString(item.class_())
     val start = item.class_().indexOf(query, ignoreCase = true)
     className.setSpan(StyleSpan(BOLD), start, start + query.length, SPAN_INCLUSIVE_EXCLUSIVE)
+
+    var dotIndex = item.class_().indexOf('.', 0)
+    while (dotIndex >= 0) {
+      className.setSpan(LetterSpacingSpan(PERIOD_LETTER_SPACING),
+              dotIndex, dotIndex + 1, SPAN_INCLUSIVE_EXCLUSIVE)
+      className.setSpan(ForegroundColorSpan(
+              ColorUtils.setAlphaComponent(classNameText.currentTextColor, 0x8A)),
+              dotIndex, dotIndex + 1, SPAN_INCLUSIVE_EXCLUSIVE)
+
+      dotIndex = item.class_().indexOf('.', dotIndex + 1)
+    }
 
     classNameText.text = buildSpannedString {
       if (item.deprecated()) {
@@ -109,4 +132,10 @@ internal class ItemViewHolder(
       }
     }
   }
+
+  companion object {
+    // We make it 20% 'smaller'
+    private const val PERIOD_LETTER_SPACING = -0.2f
+  }
 }
+
