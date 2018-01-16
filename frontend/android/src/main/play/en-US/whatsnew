@@ -1,1 +1,3 @@
-Initial release
+* New look for result rows
+* View source action item added to browser (moved from overflow menu)
+* Keyboard action or enter key launches first result
