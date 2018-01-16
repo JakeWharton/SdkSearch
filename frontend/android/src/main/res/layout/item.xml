@@ -1,38 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:orientation="horizontal"
-    android:paddingBottom="4dp"
-    android:paddingTop="4dp"
-    tools:ignore="Overdraw"
-    >
-  <TextView
-      android:id="@+id/text"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical"
-      android:layout_weight="1"
-      android:ellipsize="start"
-      android:fontFamily="@font/roboto_mono"
-      android:paddingStart="@dimen/horizontal_spacing"
-      android:singleLine="true"
-      android:textSize="18sp"
-      tools:ignore="RtlSymmetry"
-      tools:text="android.this.is.a.really.long.package.name.And.Nested.Class.Names"
-      />
-  <ImageView
-      android:id="@+id/more_options"
-      android:layout_width="48dp"
-      android:layout_height="48dp"
-      android:layout_gravity="center_vertical"
-      android:background="?android:attr/selectableItemBackgroundBorderless"
-      android:contentDescription="@string/more_options"
-      android:paddingEnd="@dimen/horizontal_spacing"
-      android:paddingStart="@dimen/horizontal_spacing"
-      android:src="@drawable/ic_more_vert_black_24dp"
-      />
-</LinearLayout>
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground">
+    <TextView
+        android:id="@+id/package_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:autoSizeTextType="uniform"
+        android:lines="1"
+        android:textAppearance="@style/TextAppearance.PackageName"
+        app:layout_constraintEnd_toStartOf="@+id/more_options"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="android.this.is.a.really.long.package.name"/>
+    <TextView
+        android:id="@+id/class_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="4dp"
+        android:autoSizeTextType="uniform"
+        android:lines="1"
+        android:textAppearance="@style/TextAppearance.ClassName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/package_name"
+        app:layout_constraintStart_toStartOf="@+id/package_name"
+        app:layout_constraintTop_toBottomOf="@+id/package_name"
+        tools:ignore="RtlSymmetry"
+        tools:text="Nested.Class.Names"/>
+    <ImageButton
+        android:id="@+id/more_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/more_options"
+        android:padding="12dp"
+        android:src="@drawable/ic_more_vert_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</android.support.constraint.ConstraintLayout>

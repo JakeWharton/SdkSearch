@@ -42,6 +42,9 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit.MILLISECONDS
+import android.support.v7.widget.DividerItemDecoration
+
+
 
 class MainActivity : Activity() {
   private val baseUrl = BaseUrl(PRODUCTION_DAC)
@@ -82,6 +85,7 @@ class MainActivity : Activity() {
     recycler.layoutManager = layoutManager
     val adapter = ItemAdapter(layoutInflater, onClick, onCopy, onShare, onSource)
     recycler.adapter = adapter
+    recycler.addItemDecoration(DividerItemDecoration(recycler.context, layoutManager.orientation))
 
     val queryInput = findViewById<EditText>(R.id.query)
 
