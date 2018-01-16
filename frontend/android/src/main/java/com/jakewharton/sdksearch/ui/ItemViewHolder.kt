@@ -107,8 +107,4 @@ internal class ItemViewHolder(
       }
     }
   }
-
-  companion object {
-    private val VERSION_PACKAGE = """v\d+""".toRegex()
-  }
 }
