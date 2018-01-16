@@ -85,7 +85,10 @@ class MainActivity : Activity() {
     recycler.layoutManager = layoutManager
     val adapter = ItemAdapter(layoutInflater, onClick, onCopy, onShare, onSource)
     recycler.adapter = adapter
-    recycler.addItemDecoration(DividerItemDecoration(recycler.context, layoutManager.orientation))
+
+    val dividerDecoration = DividerItemDecoration(recycler.context, layoutManager.orientation)
+    dividerDecoration.setDrawable(getDrawable(R.drawable.list_divider))
+    recycler.addItemDecoration(dividerDecoration)
 
     val queryInput = findViewById<EditText>(R.id.query)
 
