@@ -6,6 +6,7 @@ import android.text.SpannableString
 import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
@@ -31,7 +32,8 @@ internal class ItemViewHolder(
   private val overflow: View = root.findViewById(R.id.more_options)
 
   private val popup by lazy(NONE) {
-    val window = PopupMenu(root.context, overflow)
+    val window = PopupMenu(root.context, overflow, Gravity.NO_GRAVITY,
+            0, android.R.style.Widget_Material_PopupMenu_Overflow)
     overflow.setOnTouchListener(window.dragToOpenListener)
     window.menuInflater.inflate(R.menu.item, window.menu)
     window.setOnMenuItemClickListener(this)
