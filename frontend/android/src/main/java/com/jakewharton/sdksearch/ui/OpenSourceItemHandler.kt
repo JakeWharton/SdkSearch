@@ -13,7 +13,7 @@ internal class OpenSourceItemHandler(
   private val androidReference: AndroidReference
 ) : ItemHandler {
   override fun invoke(item: Item) {
-    val url = androidReference.sourceUrl(item.packageName(), item.className())
+    val url = androidReference.sourceUrl(item.packageName, item.className)
     if (url != null) {
       CustomTabsIntent.Builder()
           .setToolbarColor(context.getColor(R.color.green))

@@ -16,7 +16,7 @@ internal class ItemDiffer(
   override fun getNewListSize() = new.size
 
   override fun areItemsTheSame(oldIndex: Int, newIndex: Int): Boolean {
-    return old[oldIndex].id() == new[newIndex].id()
+    return old[oldIndex].id == new[newIndex].id
   }
 
   override fun areContentsTheSame(oldIndex: Int, newIndex: Int): Boolean {

@@ -35,9 +35,6 @@ dependencies {
   implementation deps.sqlBrite
   implementation deps.android.arch.dbFramework
 
-  kapt deps.auto.value.compiler
-  compileOnly deps.auto.value.annotations
-
   api deps.rx.java
 
   implementation deps.timber

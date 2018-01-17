@@ -94,12 +94,6 @@ buildscript {
           'runtime': "com.google.dagger:dagger:${versions.dagger}",
           'compiler': "com.google.dagger:dagger-compiler:${versions.dagger}",
       ],
-      'auto': [
-          'value': [
-              'annotations': 'com.jakewharton.auto.value:auto-value-annotations:1.5',
-              'compiler': 'com.google.auto.value:auto-value:1.5.2',
-          ],
-      ],
       'okio': 'com.squareup.okio:okio:1.13.0',
       'moshi': 'com.squareup.moshi:moshi:1.5.0',
       'timber': 'com.jakewharton.timber:timber:4.6.0',
