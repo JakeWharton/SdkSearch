@@ -45,7 +45,7 @@ distributions {
 
     contents {
       from 'src/main/manifest.json'
-      from 'src/main/html'
+      from 'src/main/static'
       from "$buildDir/combined"
     }
   }

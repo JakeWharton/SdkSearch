@@ -3,6 +3,11 @@
   "description": "Omnibox search of the Android SDK classes",
   "version": "1.0",
   "manifest_version": 2,
+  "icons": {
+    "16": "icon_16.png",
+    "32": "icon_32.png",
+    "128": "icon_128.png"
+  },
   "browser_action": {
     "default_popup": "hello.html"
   },
