@@ -6,27 +6,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground">
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/package_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:autoSizeTextType="uniform"
+        app:autoSizeTextType="uniform"
         android:lines="1"
         android:textAppearance="@style/TextAppearance.PackageName"
         app:layout_constraintEnd_toStartOf="@+id/more_options"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="android.this.is.a.really.long.package.name"/>
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/class_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:layout_marginTop="4dp"
-        android:autoSizeTextType="uniform"
+        app:autoSizeTextType="uniform"
         android:lines="1"
         android:textAppearance="@style/TextAppearance.ClassName"
         app:layout_constraintBottom_toBottomOf="parent"
