@@ -27,8 +27,9 @@ internal class SqlItemStore @Inject constructor(
     }
   }
 
-  override fun queryItems(term: String) = db.createQuery(Item.FACTORY.query_term(term))
-      .mapToList(Item.FACTORY.query_termMapper()::map)
+  override fun queryItems(term: String) =
+      db.createQuery(Item.FACTORY.query_term(term.escapeLike('\\')))
+          .mapToList(Item.FACTORY.query_termMapper()::map)
 
   override fun count() = db.createQuery(Item.FACTORY.count())
       .mapToOne(Item.FACTORY.countMapper()::map)
@@ -40,6 +41,11 @@ internal class SqlItemStore @Inject constructor(
     }
   }
 }
+
+private fun String.escapeLike(escapeChar: Char) =
+    this.replace("$escapeChar", "$escapeChar$escapeChar")
+        .replace("%", "$escapeChar%")
+        .replace("_", "${escapeChar}_")
 
 private fun BriteDatabase.createQuery(query: SqlDelightQuery)
     = query.let { createQuery(it.tables, it) }
