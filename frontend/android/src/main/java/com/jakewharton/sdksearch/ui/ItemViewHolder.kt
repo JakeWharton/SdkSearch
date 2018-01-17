@@ -96,7 +96,7 @@ internal class ItemViewHolder(
     val item = this.item!!
 
     packageNameText.text = buildSpannedString {
-      item.package_().split('.').forEachIndexed { index, part ->
+      item.packageName().split('.').forEachIndexed { index, part ->
         if (index > 0) {
           inSpan(LetterSpacingSpan(PERIOD_LETTER_SPACING)) {
               append('.')
@@ -106,19 +106,19 @@ internal class ItemViewHolder(
       }
     }
 
-    val className = SpannableString(item.class_())
-    val start = item.class_().indexOf(query, ignoreCase = true)
+    val className = SpannableString(item.className())
+    val start = item.className().indexOf(query, ignoreCase = true)
     className.setSpan(StyleSpan(BOLD), start, start + query.length, SPAN_INCLUSIVE_EXCLUSIVE)
 
     val nestedClassSeparatorColor = classNameText.currentTextColor.withAlpha(0x8A)
-    var dotIndex = item.class_().indexOf('.')
+    var dotIndex = item.className().indexOf('.')
     while (dotIndex >= 0) {
       className.setSpan(LetterSpacingSpan(PERIOD_LETTER_SPACING),
               dotIndex, dotIndex + 1, SPAN_INCLUSIVE_EXCLUSIVE)
       className.setSpan(ForegroundColorSpan(nestedClassSeparatorColor),
               dotIndex, dotIndex + 1, SPAN_INCLUSIVE_EXCLUSIVE)
 
-      dotIndex = item.class_().indexOf('.', dotIndex + 1)
+      dotIndex = item.className().indexOf('.', dotIndex + 1)
     }
 
     classNameText.text = buildSpannedString {

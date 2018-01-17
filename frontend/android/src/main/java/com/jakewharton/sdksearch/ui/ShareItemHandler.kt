@@ -15,7 +15,7 @@ internal class ShareItemHandler(
     val uri = baseUrl.resolve(item.link()).toUri()
     IntentBuilder.from(activity)
         .setType("text/plain")
-        .setChooserTitle(activity.getString(R.string.share_title, item.class_()))
+        .setChooserTitle(activity.getString(R.string.share_title, item.className()))
         .setText(uri.toString())
         .startChooser()
   }

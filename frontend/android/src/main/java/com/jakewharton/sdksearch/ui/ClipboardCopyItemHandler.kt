@@ -17,8 +17,8 @@ internal class ClipboardCopyItemHandler(
   override fun invoke(item: Item) {
     val clipboard = context.systemService<ClipboardManager>()
     val uri = baseUrl.resolve(item.link()).toUri()
-    clipboard.primaryClip = ClipData.newPlainText(item.class_(), uri.toString())
-    val message = context.getString(R.string.copied, item.class_())
+    clipboard.primaryClip = ClipData.newPlainText(item.className(), uri.toString())
+    val message = context.getString(R.string.copied, item.className())
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
   }
 }
