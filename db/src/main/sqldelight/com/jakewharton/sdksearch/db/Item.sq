@@ -1,16 +1,16 @@
 import java.lang.Boolean;
 
 CREATE TABLE item(
-  _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   listing TEXT NOT NULL,
-  package TEXT NOT NULL,
-  class TEXT NOT NULL,
+  packageName TEXT NOT NULL,
+  className TEXT NOT NULL,
   deprecated INTEGER AS Boolean NOT NULL DEFAULT 0,
   link TEXT NOT NULL
 );
 
 insert_item:
-INSERT INTO item(listing, package, class, deprecated, link) VALUES (?, ?, ?, ?, ?)
+INSERT INTO item(listing, packageName, className, deprecated, link) VALUES (?, ?, ?, ?, ?)
 ;
 
 clear_listing:
@@ -19,35 +19,35 @@ WHERE listing = ?
 ;
 
 count:
-SELECT COUNT(_id)
+SELECT COUNT(id)
 FROM item
 ;
 
 query_term:
 SELECT item.*
 FROM item
-WHERE class LIKE '%' || ?1 || '%' ESCAPE '\'
+WHERE className LIKE '%' || ?1 || '%' ESCAPE '\'
 ORDER BY
   /* deprecated classes are always last */
   deprecated ASC,
   CASE
     /* exact match */
-    WHEN class LIKE ?1 ESCAPE '\' THEN 1
+    WHEN className LIKE ?1 ESCAPE '\' THEN 1
     /* prefix match with no nested type */
-    WHEN class LIKE ?1 || '%' ESCAPE '\' AND instr(class, '.') = 0 THEN 2
+    WHEN className LIKE ?1 || '%' ESCAPE '\' AND instr(className, '.') = 0 THEN 2
     /* exact match on nested type */
-    WHEN class LIKE '%.' || ?1 ESCAPE '\' THEN 3
+    WHEN className LIKE '%.' || ?1 ESCAPE '\' THEN 3
     /* prefix match (allowing nested types) */
-    WHEN class LIKE ?1 || '%' ESCAPE '\' THEN 4
+    WHEN className LIKE ?1 || '%' ESCAPE '\' THEN 4
     /* prefix match on nested type */
-    WHEN class LIKE '%.' || ?1 || '%' ESCAPE '\' THEN 5
+    WHEN className LIKE '%.' || ?1 || '%' ESCAPE '\' THEN 5
     /* infix match */
     ELSE 6
   END ASC,
   /* prefer "closer" matches based on length */
-  length(class) ASC,
+  length(className) ASC,
   /* alphabetize to eliminate any remaining non-determinism */
-  package ASC,
-  class ASC
+  packageName ASC,
+  className ASC
 LIMIT 50
 ;

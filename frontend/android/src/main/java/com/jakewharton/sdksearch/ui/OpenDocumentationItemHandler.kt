@@ -17,8 +17,8 @@ internal class OpenDocumentationItemHandler(
   private val androidReference: AndroidReference
 ) : ItemHandler {
   override fun invoke(item: Item) {
-    val uri = baseUrl.resolve(item.link()).toUri()
-    val sourceUri = androidReference.sourceUrl(item.package_(), item.class_())?.toUri()
+    val uri = baseUrl.resolve(item.link).toUri()
+    val sourceUri = androidReference.sourceUrl(item.packageName, item.className)?.toUri()
     CustomTabsIntent.Builder()
         .setToolbarColor(context.getColor(R.color.green))
         .addDefaultShareMenuItem()
@@ -28,7 +28,7 @@ internal class OpenDocumentationItemHandler(
             val pendingIntent = PendingIntent.getActivity(context, 123, sourceIntent, 0)
             setActionButton(
                     context.getDrawable(R.drawable.ic_code_black_24dp).toBitmap(),
-                    context.getString(R.string.view_class_source, item.class_()),
+                    context.getString(R.string.view_class_source, item.className),
                     pendingIntent,
                     true)
           }

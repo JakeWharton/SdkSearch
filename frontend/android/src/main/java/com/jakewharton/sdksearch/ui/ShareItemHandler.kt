@@ -12,10 +12,10 @@ internal class ShareItemHandler(
   private val baseUrl: BaseUrl
 ) : ItemHandler {
   override fun invoke(item: Item) {
-    val uri = baseUrl.resolve(item.link()).toUri()
+    val uri = baseUrl.resolve(item.link).toUri()
     IntentBuilder.from(activity)
         .setType("text/plain")
-        .setChooserTitle(activity.getString(R.string.share_title, item.class_()))
+        .setChooserTitle(activity.getString(R.string.share_title, item.className))
         .setText(uri.toString())
         .startChooser()
   }

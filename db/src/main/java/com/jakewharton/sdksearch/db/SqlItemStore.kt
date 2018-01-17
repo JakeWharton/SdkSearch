@@ -21,7 +21,7 @@ internal class SqlItemStore @Inject constructor(
       }
       for (item in items) {
         insertItem.insert {
-          bind(listing, item.package_(), item.class_(),item.deprecated(), item.link())
+          bind(listing, item.packageName, item.className, item.deprecated, item.link)
         }
       }
     }
