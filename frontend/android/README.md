@@ -1,7 +1,9 @@
 SDK Search (Android)
 ====================
 
-Download from [Google Play](https://play.google.com/store/apps/details?id=com.jakewharton.sdksearch)
+Download from [Google Play](https://play.google.com/store/apps/details?id=com.jakewharton.sdksearch).
+Consider joining the [alpha testers](https://play.google.com/apps/testing/com.jakewharton.sdksearch)
+for early access to the next version.
 
 <img src="src/main/play/en-US/listing/phoneScreenshots/1.png" height="300"/>
 
