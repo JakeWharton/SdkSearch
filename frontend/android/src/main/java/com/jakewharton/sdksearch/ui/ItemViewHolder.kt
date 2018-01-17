@@ -107,7 +107,9 @@ internal class ItemViewHolder(
 
     val className = SpannableString(item.class_())
     val start = item.class_().indexOf(query, ignoreCase = true)
-    className.setSpan(StyleSpan(BOLD), start, start + query.length, SPAN_INCLUSIVE_EXCLUSIVE)
+    if (start >= 0) {
+      className.setSpan(StyleSpan(BOLD), start, start + query.length, SPAN_INCLUSIVE_EXCLUSIVE)
+    }
 
     var dotIndex = item.class_().indexOf('.')
     while (dotIndex >= 0) {
