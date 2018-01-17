@@ -32,7 +32,7 @@ android {
     buildConfigField 'String', 'BUGSNAG_API_KEY', "\"${propOrEmpty('SDK_SEARCH_BUGSNAG_API_KEY')}\""
     buildConfigField 'boolean', 'IS_CI_BUILD', 'false' // May be overridden by a build type.
     buildConfigField 'String', 'COMMIT_SHA', "\"${gitSha()}\""
-    buildConfigField 'long', 'COMMIT_TIMESTAMP', gitTimestamp().toString()
+    buildConfigField 'long', 'COMMIT_UNIX_TIMESTAMP', gitTimestamp().toString() + "L"
 
     playAccountConfig = playAccountConfigs.production
   }

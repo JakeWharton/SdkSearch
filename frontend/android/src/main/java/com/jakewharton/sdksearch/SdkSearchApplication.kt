@@ -1,13 +1,15 @@
 package com.jakewharton.sdksearch
 
+import android.annotation.SuppressLint
 import android.app.Application
 import com.bugsnag.android.Bugsnag
 import com.jakewharton.sdksearch.util.BugsnagTree
 import timber.log.Timber
 import timber.log.Timber.DebugTree
-import java.time.Instant
-import java.time.ZoneOffset.UTC
-import java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class SdkSearchApplication : Application() {
   override fun onCreate() {
@@ -23,8 +25,7 @@ class SdkSearchApplication : Application() {
       client.setReleaseStage(BuildConfig.BUILD_TYPE)
       client.setProjectPackages("com.jakewharton.sdksearch")
 
-      val commitDateTime = Instant.ofEpochSecond(BuildConfig.COMMIT_TIMESTAMP).atOffset(UTC)
-      client.addToTab("App", "commitTime", commitDateTime.format(RFC_1123_DATE_TIME))
+      client.addToTab("App", "commitTime", formattedCommitTime())
       client.addToTab("App", "commitSha", BuildConfig.COMMIT_SHA)
 
       val tree = BugsnagTree(client)
@@ -38,5 +39,13 @@ class SdkSearchApplication : Application() {
     if (BuildConfig.DEBUG) {
       Timber.plant(DebugTree())
     }
+  }
+
+  @SuppressLint("SimpleDateFormat") // Explicitly after normalized format not localized.
+  private fun formattedCommitTime(): String {
+    val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", Locale.US)
+    formatter.timeZone = TimeZone.getTimeZone("UTC")
+    val epochMillis = BuildConfig.COMMIT_UNIX_TIMESTAMP * 1000
+    return formatter.format(Date(epochMillis))
   }
 }
