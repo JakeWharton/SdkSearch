@@ -1,6 +1,7 @@
 package com.jakewharton.sdksearch.ui
 
 import android.graphics.Typeface.BOLD
+import android.support.v4.graphics.ColorUtils
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.text.SpannableString
 import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
@@ -109,11 +110,12 @@ internal class ItemViewHolder(
     val start = item.class_().indexOf(query, ignoreCase = true)
     className.setSpan(StyleSpan(BOLD), start, start + query.length, SPAN_INCLUSIVE_EXCLUSIVE)
 
+    val nestedClassSeparatorColor = classNameText.currentTextColor.withAlpha(0x8A)
     var dotIndex = item.class_().indexOf('.')
     while (dotIndex >= 0) {
       className.setSpan(LetterSpacingSpan(PERIOD_LETTER_SPACING),
               dotIndex, dotIndex + 1, SPAN_INCLUSIVE_EXCLUSIVE)
-      className.setSpan(ForegroundColorSpan(classNameText.currentTextColor and 0x00ffffff or (0x8A shl 24)),
+      className.setSpan(ForegroundColorSpan(nestedClassSeparatorColor),
               dotIndex, dotIndex + 1, SPAN_INCLUSIVE_EXCLUSIVE)
 
       dotIndex = item.class_().indexOf('.', dotIndex + 1)
@@ -136,3 +138,5 @@ internal class ItemViewHolder(
   }
 }
 
+@Suppress("NOTHING_TO_INLINE") // Convenience alias to public API.
+private inline fun Int.withAlpha(alpha: Int) = ColorUtils.setAlphaComponent(this, alpha)
