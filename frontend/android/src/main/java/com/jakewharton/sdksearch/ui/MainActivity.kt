@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -139,7 +140,7 @@ class MainActivity : Activity() {
         .map(CharSequence::isNotEmpty)
         .crashingSubscribe(clear.visibility(INVISIBLE))
 
-    val robotoMono = resources.getFont(R.font.roboto_mono)
+    val robotoMono = ResourcesCompat.getFont(this, R.font.roboto_mono)
     queryInput.textChanges()
         .map(CharSequence::isEmpty)
         .crashingSubscribe { empty ->
