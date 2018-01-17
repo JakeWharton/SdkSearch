@@ -53,7 +53,6 @@ buildscript {
               'design': "com.android.support:design:${versions.supportLibrary}",
               'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta4',
           ],
-          'threetenabp': 'com.jakewharton.threetenabp:threetenabp:1.0.5',
       ],
       'okhttp': [
           'client': "com.squareup.okhttp3:okhttp:${versions.okhttp}",
