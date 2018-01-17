@@ -7,6 +7,7 @@ buildscript {
 
   ext.versions = [
       'supportLibrary': '27.0.2',
+      'atsl': '1.0.1',
       'kotlin': '1.2.20',
       'kotlinCoroutines': '0.21.2',
       'kotlinSerialization': '0.4',
@@ -53,6 +54,10 @@ buildscript {
               'design': "com.android.support:design:${versions.supportLibrary}",
               'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta4',
           ],
+          'test': [
+              'runner': "com.android.support.test:runner:${versions.atsl}",
+              'rules': "com.android.support.test:rules${versions.atsl}",
+          ],
       ],
       'okhttp': [
           'client': "com.squareup.okhttp3:okhttp:${versions.okhttp}",
@@ -90,7 +95,7 @@ buildscript {
       'moshi': 'com.squareup.moshi:moshi:1.5.0',
       'timber': 'com.jakewharton.timber:timber:4.6.0',
       'junit': 'junit:junit:4.12',
-      'truth': 'com.google.truth:truth:0.37',
+      'truth': 'com.google.truth:truth:0.39',
       'sqlBrite': 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.1.0',
       'bugsnag': 'com.bugsnag:bugsnag-android:4.2.2',
   ]
