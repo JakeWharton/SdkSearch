@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.db.Item
+import com.jakewharton.sdksearch.store.Item
 
 internal class ItemAdapter(
   private val inflater: LayoutInflater,

@@ -6,7 +6,7 @@ import android.content.Context
 import android.widget.Toast
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
-import com.jakewharton.sdksearch.db.Item
+import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.util.systemService
 import com.jakewharton.sdksearch.util.toUri
 
