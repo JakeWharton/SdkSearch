@@ -8,7 +8,7 @@
   <application
       android:name=".SdkSearchApplication"
       android:allowBackup="false"
-      android:icon="@mipmap/ic_launcher"
+      android:icon="@drawable/ic_launcher"
       android:label="@string/application_name"
       android:supportsRtl="true"
       android:theme="@style/Theme.SdkSearch"
