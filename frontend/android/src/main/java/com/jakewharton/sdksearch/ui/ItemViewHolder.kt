@@ -16,7 +16,7 @@ import android.widget.PopupMenu
 import android.widget.PopupMenu.OnMenuItemClickListener
 import android.widget.TextView
 import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.db.Item
+import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.util.buildSpannedString
 import com.jakewharton.sdksearch.util.inSpan
 import kotlin.LazyThreadSafetyMode.NONE

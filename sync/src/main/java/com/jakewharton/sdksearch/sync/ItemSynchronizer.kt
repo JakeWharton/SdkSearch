@@ -2,8 +2,8 @@ package com.jakewharton.sdksearch.sync
 
 import android.support.annotation.MainThread
 import com.jakewharton.sdksearch.api.dac.DocumentationService
-import com.jakewharton.sdksearch.db.Item
-import com.jakewharton.sdksearch.db.ItemStore
+import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer.LoaderEvent.ForceSync
 import com.jakewharton.sdksearch.sync.ItemSynchronizer.LoaderEvent.LoadResult
 import kotlinx.coroutines.experimental.channels.ConflatedChannel

@@ -1,12 +1,17 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.squareup.sqldelight'
 
 android {
   compileSdkVersion buildConfig.compileSdk
 
   defaultConfig {
     minSdkVersion buildConfig.minSdk
+
+    testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+
+    consumerProguardFiles file('src/main/proguard-consumer.pro')
   }
 
   compileOptions {
@@ -25,16 +30,21 @@ android {
 }
 
 dependencies {
-  api project(':api:dac:jdk')
-  api project(':store:android')
-  implementation deps.kotlin.stdlib.jdk
-  api deps.kotlin.coroutines.jdk
-  implementation deps.kotlin.coroutines.android
-  implementation deps.timber
-}
+  // TODO expectBy store directly once https://youtrack.jetbrains.com/issue/KT-18462
+  api project(':store:temp-jdk')
 
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
+  implementation deps.kotlin.stdlib.jdk
+
+  implementation deps.sqlBrite
+  implementation deps.android.arch.dbFramework
+
+  implementation deps.timber
+
+  implementation deps.dagger.runtime
+  kapt deps.dagger.compiler
+
+  testImplementation deps.junit
+
+  androidTestImplementation deps.android.test.runner
+  androidTestImplementation deps.truth
 }

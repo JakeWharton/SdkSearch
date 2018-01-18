@@ -93,7 +93,6 @@ android {
 }
 
 dependencies {
-  implementation project(':db')
   implementation project(':references:jdk')
   implementation project(':sync')
 

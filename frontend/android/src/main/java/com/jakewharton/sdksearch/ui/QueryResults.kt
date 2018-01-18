@@ -3,7 +3,7 @@ package com.jakewharton.sdksearch.ui
 import android.support.v7.util.DiffUtil
 import android.support.v7.util.DiffUtil.Callback
 import android.support.v7.util.DiffUtil.DiffResult
-import com.jakewharton.sdksearch.db.Item
+import com.jakewharton.sdksearch.store.Item
 
 internal data class QueryResults(
   val query: String = "",

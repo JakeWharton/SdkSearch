@@ -1,0 +1,9 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.platform.jvm'
+
+dependencies {
+  expectedBy project(':store')
+  api deps.rx.java
+  implementation deps.kotlin.stdlib.jdk
+  testImplementation deps.kotlin.test.jdk
+}
