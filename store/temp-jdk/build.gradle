@@ -7,3 +7,9 @@ dependencies {
   implementation deps.kotlin.stdlib.jdk
   testImplementation deps.kotlin.test.jdk
 }
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

@@ -9,8 +9,9 @@ import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
+import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.store.StorageAreaItemStore
 import kotlinx.coroutines.experimental.launch
-import kotlin.js.json
 
 fun main(vararg args: String) {
   omnibox.setDefaultSuggestion(
@@ -37,18 +38,16 @@ fun main(vararg args: String) {
   }
 
   val service = FetchDocumentationService(BaseUrl(PRODUCTION_DAC))
+  val store = StorageAreaItemStore("items", storage.local)
 
-  launch {
-    val items = ITEM_LIST_URL_PATHS.values
-        .map { service.list(it) }
-        .flatMap { it.await() }
-        .filter { it.type == "class" }
-        .sortedBy { it.label }
+  ITEM_LIST_URL_PATHS.forEach { (listing, url) ->
+    launch {
+      val items = service.list(url).await()
+          .filter { it.type == "class" }
+          .map { Item.createForInsert(listing, it.label, it.link, it.deprecated) }
+      store.updateListing(listing, items)
 
-    storage.local.set(json("items" to items)) {
-      println("Stored ${items.size} items")
+      println("Updated $listing with ${items.size} items")
     }
-
-    println(items)
   }
 }
