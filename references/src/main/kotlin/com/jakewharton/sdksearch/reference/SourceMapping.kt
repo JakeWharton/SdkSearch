@@ -278,7 +278,7 @@ internal val SOURCE_MAP = mapOf(
     "javax.microedition" to BASE.path("opengl/java/"),
     "javax.xml" to LIBCORE.path("luni/src/main/java/"),
 
-    "junit" to BASE.path("legacy-test/src/"),
+    "junit" to BASE.path("test-base/src/"),
     "junit.runner" to BASE.path("test-runner/src/"),
     "junit.textui" to BASE.path("test-runner/src/"),
 
