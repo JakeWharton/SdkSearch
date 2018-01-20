@@ -15,7 +15,7 @@ internal class SqlItemStore @Inject constructor(
   private val insertItem by lazy { ItemModel.Insert_item(db.writableDatabase) }
   private val queryTermMapper = SqlItem.FACTORY.query_termMapper()
 
-  override fun updateListing(listing: String, items: List<Item>) {
+  override suspend fun updateListing(listing: String, items: List<Item>) {
     db.inTransaction {
       clearListing.insert {
         bind(listing)

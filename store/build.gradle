@@ -5,3 +5,9 @@ dependencies {
   testImplementation deps.kotlin.test.common
   testImplementation deps.kotlin.test.annotations
 }
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

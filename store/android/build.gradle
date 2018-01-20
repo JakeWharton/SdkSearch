@@ -48,3 +48,9 @@ dependencies {
   androidTestImplementation deps.android.test.runner
   androidTestImplementation deps.truth
 }
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

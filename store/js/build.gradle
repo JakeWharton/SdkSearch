@@ -1,0 +1,17 @@
+apply plugin: 'org.jetbrains.kotlin.platform.js'
+
+archivesBaseName = 'store'
+
+dependencies {
+  expectedBy project(':store')
+  compile deps.kotlin.stdlib.js
+  compile deps.kotlin.coroutines.js
+  compile project(':chrome-platform')
+  testCompile deps.kotlin.test.js
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}
