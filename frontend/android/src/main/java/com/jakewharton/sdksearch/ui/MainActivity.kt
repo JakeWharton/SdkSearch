@@ -1,6 +1,7 @@
 package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -22,11 +23,11 @@ import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
-import com.jakewharton.sdksearch.store.DbComponent
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
+import com.jakewharton.sdksearch.store.DbComponent
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.Observable
 import io.reactivex.Observable.just
@@ -48,6 +49,8 @@ import java.util.concurrent.TimeUnit.MILLISECONDS
 class MainActivity : Activity() {
   private val baseUrl = BaseUrl(PRODUCTION_DAC)
   private val disposables = CompositeDisposable()
+
+  private var orientation = Configuration.ORIENTATION_PORTRAIT
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -109,27 +112,29 @@ class MainActivity : Activity() {
           queryInput.hint = resources.getQuantityString(R.plurals.search_classes, it.toInt(), it)
         }
 
-    queryInput.textChanges()
-        .map(CharSequence::toString)
-        .switchMap { query ->
-          val results = if (query.isBlank()) just(emptyList())
-          else store.queryItems(query).delaySubscription(200, MILLISECONDS, mainThread())
+    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+      queryInput.textChanges()
+          .map(CharSequence::toString)
+          .switchMap { query ->
+            val results = if (query.isBlank()) just(emptyList())
+            else store.queryItems(query).delaySubscription(200, MILLISECONDS, mainThread())
 
-          results.map { query to it }
-        }
-        .observeOn(computation())
-        .scan(QueryResults()) { (oldQuery, oldItems), (newQuery, newItems) ->
-          val diff = DiffUtil.calculateDiff(ItemDiffer(oldQuery, oldItems, newQuery, newItems))
-          QueryResults(newQuery, newItems, diff)
-        }
-        .skip(1)
-        .observeOn(mainThread())
-        .crashingSubscribe {
-          val scrollPosition = layoutManager.findFirstVisibleItemPosition()
-          adapter.updateItems(it.query, it.data)
-          it.diff.dispatchUpdatesTo(adapter)
-          recycler.scrollToPosition(scrollPosition)
-        }
+            results.map { query to it }
+          }
+          .observeOn(computation())
+          .scan(QueryResults()) { (oldQuery, oldItems), (newQuery, newItems) ->
+            val diff = DiffUtil.calculateDiff(ItemDiffer(oldQuery, oldItems, newQuery, newItems))
+            QueryResults(newQuery, newItems, diff)
+          }
+          .skip(1)
+          .observeOn(mainThread())
+          .crashingSubscribe {
+            val scrollPosition = layoutManager.findFirstVisibleItemPosition()
+            adapter.updateItems(it.query, it.data)
+            it.diff.dispatchUpdatesTo(adapter)
+            recycler.scrollToPosition(scrollPosition)
+          }
+    }
 
     val clear = findViewById<View>(R.id.clear_query)
     clear.setOnClickListener {
@@ -190,6 +195,15 @@ class MainActivity : Activity() {
   override fun onDestroy() {
     super.onDestroy()
     disposables.clear()
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      orientation = Configuration.ORIENTATION_LANDSCAPE
+    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+      orientation = Configuration.ORIENTATION_PORTRAIT
+    }
   }
 
   @Suppress("NOTHING_TO_INLINE") // Needed for correct stacktraces.
