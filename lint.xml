@@ -1,8 +1,6 @@
 <lint>
   <issue id="ObsoleteSdkInt" severity="error"/>
-
-  <!-- Broken until AGP 3.1. Make an 'error' after upgrade. -->
-  <issue id="UnusedResources" severity="ignore"/>
+  <issue id="UnusedResources" severity="error"/>
   <!-- No one cares. -->
   <issue id="GoogleAppIndexingWarning" severity="ignore"/>
 </lint>
