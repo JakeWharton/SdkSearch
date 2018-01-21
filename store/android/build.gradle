@@ -10,8 +10,6 @@ android {
     minSdkVersion buildConfig.minSdk
 
     testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-
-    consumerProguardFiles file('src/main/proguard-consumer.pro')
   }
 
   compileOptions {
