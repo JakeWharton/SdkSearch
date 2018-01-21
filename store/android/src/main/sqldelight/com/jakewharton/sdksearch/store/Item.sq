@@ -2,20 +2,24 @@ import java.lang.Boolean;
 
 CREATE TABLE item(
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  listing TEXT NOT NULL,
   packageName TEXT NOT NULL,
   className TEXT NOT NULL,
   deprecated INTEGER AS Boolean NOT NULL DEFAULT 0,
-  link TEXT NOT NULL
+  link TEXT NOT NULL,
+
+  UNIQUE (packageName, className)
 );
 
 insert_item:
-INSERT INTO item(listing, packageName, className, deprecated, link) VALUES (?, ?, ?, ?, ?)
+INSERT OR ABORT INTO item(packageName, className, deprecated, link) VALUES (?, ?, ?, ?)
 ;
 
-clear_listing:
-DELETE FROM item
-WHERE listing = ?
+update_item:
+UPDATE item
+SET deprecated = ?3,
+    link = ?4
+WHERE packageName = ?1
+  AND className = ?2
 ;
 
 count:

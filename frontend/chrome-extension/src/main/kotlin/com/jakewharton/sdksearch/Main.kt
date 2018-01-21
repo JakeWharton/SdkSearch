@@ -58,8 +58,8 @@ fun main(vararg args: String) {
     launch {
       val items = service.list(url).await()
           .filter { it.type == "class" }
-          .map { Item.createForInsert(listing, it.label, it.link, it.deprecated) }
-      store.updateListing(listing, items)
+          .map { Item.createForInsert(it.label, it.link, it.deprecated) }
+      store.updateItems(items)
 
       println("Updated $listing with ${items.size} items")
     }

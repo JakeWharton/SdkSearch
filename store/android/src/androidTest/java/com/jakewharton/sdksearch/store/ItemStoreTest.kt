@@ -3,6 +3,7 @@ package com.jakewharton.sdksearch.store
 import android.support.test.InstrumentationRegistry
 import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -15,11 +16,13 @@ class ItemStoreTest {
       .itemStore()
 
   @Test fun wildcards() {
-    itemStore.updateListing("dummy", listOf(
-        Item(1, "dummy", "com.example", "One%Two", false, "percent.html"),
-        Item(2, "dummy", "com.example", "One_Two", false, "underscore.html"),
-        Item(3, "dummy", "com.example", "One\\Two", false, "escape.html")
-    ))
+    runBlocking {
+      itemStore.updateItems(listOf(
+          Item(1, "com.example", "One%Two", false, "percent.html"),
+          Item(2, "com.example", "One_Two", false, "underscore.html"),
+          Item(3, "com.example", "One\\Two", false, "escape.html")
+      ))
+    }
 
     itemStore.queryItems("%")
         .test()
