@@ -24,6 +24,8 @@ android {
     versionCode buildConfig.version.code
     versionName buildConfig.version.name
 
+    resConfigs 'en'
+
     buildConfigField 'String', 'BUGSNAG_API_KEY', "\"${propOrEmpty('SDK_SEARCH_BUGSNAG_API_KEY')}\""
     buildConfigField 'boolean', 'IS_CI_BUILD', 'false' // May be overridden by a build type.
     buildConfigField 'String', 'COMMIT_SHA', "\"${gitSha()}\""
