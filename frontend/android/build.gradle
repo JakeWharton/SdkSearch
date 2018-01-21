@@ -78,6 +78,7 @@ android {
       }
 
       minifyEnabled true
+      shrinkResources true
       proguardFiles(
           file('src/main/proguard-android.pro'),
           file('src/main/proguard-app.pro')
