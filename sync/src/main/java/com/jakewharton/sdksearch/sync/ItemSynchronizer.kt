@@ -69,10 +69,10 @@ class ItemSynchronizer(
 
     val items = apiItems
         .filter { it.type == "class" }
-        .map { Item.createForInsert(listing, it.label, it.link, it.deprecated) }
+        .map { Item.createForInsert(it.label, it.link, it.deprecated) }
 
     try {
-      itemStore.updateListing(listing, items)
+      itemStore.updateItems(items)
     } catch (e: RuntimeException) {
       Timber.i(e, "Unable to save $listing")
       loader.send(LoadResult(listing, false))

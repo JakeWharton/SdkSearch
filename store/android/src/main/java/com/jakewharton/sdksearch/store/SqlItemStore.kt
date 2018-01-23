@@ -11,18 +11,20 @@ import javax.inject.Singleton
 internal class SqlItemStore @Inject constructor(
     private val db: BriteDatabase
 ) : ItemStore {
-  private val clearListing by lazy { ItemModel.Clear_listing(db.writableDatabase) }
   private val insertItem by lazy { ItemModel.Insert_item(db.writableDatabase) }
+  private val updateItem by lazy { ItemModel.Update_item(db.writableDatabase) }
   private val queryTermMapper = SqlItem.FACTORY.query_termMapper()
 
-  override suspend fun updateListing(listing: String, items: List<Item>) {
+  override suspend fun updateItems(items: List<Item>) {
     db.inTransaction {
-      clearListing.insert {
-        bind(listing)
-      }
       for (item in items) {
-        insertItem.insert {
-          bind(listing, item.packageName, item.className, item.deprecated, item.link)
+        val affected = insertItem.insert {
+          bind(item.packageName, item.className, item.deprecated, item.link)
+        }
+        if (affected == 0L) {
+          updateItem.update {
+            bind(item.packageName, item.className, item.deprecated, item.link)
+          }
         }
       }
     }
@@ -35,10 +37,17 @@ internal class SqlItemStore @Inject constructor(
   override fun count() = db.createQuery(SqlItem.FACTORY.count())
       .mapToOne(SqlItem.FACTORY.countMapper()::map)
 
-  private fun <T : SqlDelightCompiledStatement> T.insert(binder: T.() -> Unit) {
+  private fun <T : SqlDelightCompiledStatement> T.insert(binder: T.() -> Unit): Long {
     synchronized(this) {
       binder()
-      db.executeInsert(table, program)
+      return db.executeInsert(table, program)
+    }
+  }
+
+  private fun <T : SqlDelightCompiledStatement> T.update(binder: T.() -> Unit): Int {
+    synchronized(this) {
+      binder()
+      return db.executeUpdateDelete(table, program)
     }
   }
 }

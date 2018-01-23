@@ -29,13 +29,16 @@ class StorageAreaItemStore(
     return job.await()
   }
 
-  override suspend fun updateListing(listing: String, items: List<Item>) {
+  override suspend fun updateItems(items: List<Item>) {
     serially {
       suspendCoroutine<Unit> { continuation ->
         storage.get(key) {
           @Suppress("UNCHECKED_CAST")
           val existingItems = it[key] as Array<Item>? ?: emptyArray()
-          val oldItems = existingItems.filter { it.listing != listing }
+          // TODO something not n^2? persist map of fqcn to item?
+          val oldItems = existingItems.filter { existing ->
+            items.any { it.packageName == existing.packageName && it.className == existing.className }
+          }
           val newItems = oldItems + items
           storage.set(json(key to newItems.toTypedArray())) {
             continuation.resume(Unit)
