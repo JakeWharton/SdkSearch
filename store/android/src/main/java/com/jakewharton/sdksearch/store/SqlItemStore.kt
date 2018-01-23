@@ -18,11 +18,11 @@ internal class SqlItemStore @Inject constructor(
   override suspend fun updateItems(items: List<Item>) {
     db.inTransaction {
       for (item in items) {
-        val affected = insertItem.insert {
+        val affected = updateItem.update {
           bind(item.packageName, item.className, item.deprecated, item.link)
         }
-        if (affected == 0L) {
-          updateItem.update {
+        if (affected == 0) {
+          insertItem.insert {
             bind(item.packageName, item.className, item.deprecated, item.link)
           }
         }
