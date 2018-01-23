@@ -48,16 +48,12 @@ class StorageAreaItemStore(
     }
   }
 
-  override suspend fun queryItems(term: String): List<Item> {
-    return serially {
-      suspendCoroutine<List<Item>> { continuation ->
-        storage.get(key) {
-          @Suppress("UNCHECKED_CAST")
-          val allItems = it[key] as Array<Item>? ?: emptyArray()
-          val items = allItems.filter { it.className.contains(term) }
-          continuation.resume(items)
-        }
-      }
+  override suspend fun queryItems(term: String) = suspendCoroutine<List<Item>> { continuation ->
+    storage.get(key) {
+      @Suppress("UNCHECKED_CAST")
+      val allItems = it[key] as Array<Item>? ?: emptyArray()
+      val items = allItems.filter { it.className.contains(term) }
+      continuation.resume(items)
     }
   }
 }
