@@ -2,7 +2,7 @@ package com.jakewharton.sdksearch.store
 
 import com.chrome.platform.storage.StorageArea
 import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.async
 import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.js.json
 
@@ -12,13 +12,13 @@ class StorageAreaItemStore(
 ) : ItemStore {
   private var currentJob: Job? = null
 
-  private suspend fun serially(body: suspend () -> Unit) {
+  private suspend fun <T> serially(body: suspend () -> T): T {
     // TODO replace with actor once available in JS.
 
     while (true) {
       currentJob?.join() ?: break
     }
-    val job = launch {
+    val job = async {
       try {
         body()
       } finally {
@@ -26,7 +26,7 @@ class StorageAreaItemStore(
       }
     }
     currentJob = job
-    job.join()
+    return job.await()
   }
 
   override suspend fun updateListing(listing: String, items: List<Item>) {
@@ -40,6 +40,19 @@ class StorageAreaItemStore(
           storage.set(json(key to newItems.toTypedArray())) {
             continuation.resume(Unit)
           }
+        }
+      }
+    }
+  }
+
+  override suspend fun queryItems(term: String): List<Item> {
+    return serially {
+      suspendCoroutine<List<Item>> { continuation ->
+        storage.get(key) {
+          @Suppress("UNCHECKED_CAST")
+          val allItems = it[key] as Array<Item>? ?: emptyArray()
+          val items = allItems.filter { it.className.contains(term) }
+          continuation.resume(items)
         }
       }
     }
