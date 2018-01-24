@@ -35,8 +35,21 @@ fun main(vararg args: String) {
       println("Searching $text")
 
       val items = store.queryItems(text)
+          .take(5)
           .map {
-            SuggestResult(baseUrl.resolve(it.link), "${it.packageName}.${it.className}", false)
+            val matchStart = it.className.indexOf(text, ignoreCase = true)
+            val matchEnd = matchStart + text.length
+            val description = buildString {
+              append("<dim>")
+              append(it.packageName)
+              append(".</dim>")
+              append(it.className.substring(0, matchStart))
+              append("<match>")
+              append(it.className.substring(matchStart, matchEnd))
+              append("</match>")
+              append(it.className.substring(matchEnd))
+            }
+            SuggestResult(baseUrl.resolve(it.link), description, false)
           }.toTypedArray()
       suggestions(items)
     }
