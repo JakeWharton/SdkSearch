@@ -52,7 +52,20 @@ class StorageAreaItemStore(
     storage.get(key) {
       @Suppress("UNCHECKED_CAST")
       val allItems = it[key] as Array<Item>? ?: emptyArray()
-      val items = allItems.filter { it.className.contains(term) }
+
+      val items = allItems
+          .filter { it.className.contains(term, ignoreCase = true) }
+          .sortedWith(compareBy {
+            val name = it.className
+            when {
+              name.equals(term, ignoreCase = true) -> 1
+              name.startsWith(term, ignoreCase = true) && name.indexOf('.') == -1 -> 2
+              name.endsWith(".$term", ignoreCase = true) -> 3
+              name.startsWith(term, ignoreCase = true) -> 4
+              name.contains(".$term", ignoreCase = true) -> 5
+              else -> 6
+            }
+          })
       continuation.resume(items)
     }
   }
