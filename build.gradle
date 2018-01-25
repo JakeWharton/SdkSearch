@@ -18,7 +18,7 @@ buildscript {
       'supportLibrary': '27.0.2',
       'atsl': '1.0.1',
       'kotlin': '1.2.21',
-      'kotlinCoroutines': '0.21.2',
+      'kotlinCoroutines': '0.22',
       'kotlinSerialization': '0.4',
       'okhttp': '3.9.1',
       'retrofit': '2.3.0',
