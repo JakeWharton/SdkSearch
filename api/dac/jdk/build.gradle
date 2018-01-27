@@ -16,7 +16,7 @@ dependencies {
   implementation deps.okhttp.logging
   testImplementation deps.okhttp.mockWebServer
 
-  implementation deps.retrofit.client
+  api deps.retrofit.client
   implementation deps.retrofit.adapterKotlinCoroutines
   implementation deps.retrofit.converterKotlinxSerialization
 

@@ -10,6 +10,7 @@ import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.channels.actor
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
+import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
 
@@ -59,6 +60,10 @@ class ItemSynchronizer(
     val apiItems = try {
       documentationService.list(url).await()
     } catch (e: IOException) {
+      Timber.i(e, "Unable to load $listing")
+      loader.send(LoadResult(listing, false))
+      return
+    } catch (e: HttpException) {
       Timber.i(e, "Unable to load $listing")
       loader.send(LoadResult(listing, false))
       return
