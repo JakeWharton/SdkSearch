@@ -1,6 +1,5 @@
 package com.jakewharton.sdksearch.sync
 
-import android.support.annotation.MainThread
 import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
@@ -14,7 +13,6 @@ import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
 import java.io.IOException
 
-@MainThread
 class ItemSynchronizer(
   private val itemStore: ItemStore,
   private val documentationService: DocumentationService,
@@ -47,7 +45,7 @@ class ItemSynchronizer(
           }
         }
       }
-      _state.offer(status)
+      _state.offer(status.toList())
     }
   }
 
