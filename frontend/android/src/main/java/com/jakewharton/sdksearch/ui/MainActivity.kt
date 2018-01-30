@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View
 import android.view.View.INVISIBLE
+import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 import android.view.inputmethod.EditorInfo.IME_ACTION_GO
 import android.widget.EditText
 import com.jakewharton.rxbinding2.view.keys
@@ -51,6 +53,11 @@ class MainActivity : Activity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    if (Build.VERSION.SDK_INT == 26) {
+      // This attribute can only be set in code on API 26. It's in the theme in 27+.
+      window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+    }
 
     if ("true" == intent.getStringExtra("crash")) {
       Timber.e("Synthetic crash signal detected. Throwing in 3.. 2.. 1..")
