@@ -1,6 +1,7 @@
 # IDEA
 *.iml
 /.idea
+!/.idea/runConfigurations
 
 # Gradle
 .gradle
