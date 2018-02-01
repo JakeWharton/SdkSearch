@@ -3,12 +3,12 @@ package com.jakewharton.sdksearch.ui
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.support.customtabs.CustomTabsIntent
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.util.toBitmap
 import com.jakewharton.sdksearch.util.toUri
 
 internal class OpenDocumentationItemHandler(
@@ -27,10 +27,10 @@ internal class OpenDocumentationItemHandler(
             val sourceIntent = Intent(Intent.ACTION_VIEW, sourceUri)
             val pendingIntent = PendingIntent.getActivity(context, 123, sourceIntent, 0)
             setActionButton(
-                    context.getDrawable(R.drawable.ic_code_black_24dp).toBitmap(),
-                    context.getString(R.string.view_class_source, item.className),
-                    pendingIntent,
-                    true)
+                BitmapFactory.decodeResource(context.resources, R.drawable.ic_code_black_24dp),
+                context.getString(R.string.view_class_source, item.className),
+                pendingIntent,
+                true)
           }
         }
         .build()
