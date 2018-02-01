@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.platform.android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.squareup.sqldelight'
 
@@ -28,10 +28,11 @@ android {
 }
 
 dependencies {
-  // TODO expectBy store directly once https://youtrack.jetbrains.com/issue/KT-18462
-  api project(':store:temp-jdk')
+  expectedBy project(':store')
 
   implementation deps.kotlin.stdlib.jdk
+
+  api deps.rx.java
 
   implementation deps.sqlBrite
   implementation deps.android.arch.dbFramework
@@ -42,6 +43,7 @@ dependencies {
   kapt deps.dagger.compiler
 
   testImplementation deps.junit
+  testImplementation deps.kotlin.test.jdk
 
   androidTestImplementation deps.android.test.runner
   androidTestImplementation deps.truth
