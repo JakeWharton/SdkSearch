@@ -1,21 +1,30 @@
 package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v4.view.MotionEventCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.KeyEvent.KEYCODE_ENTER
+import android.view.MotionEvent
 import android.view.View
 import android.view.View.INVISIBLE
+import android.view.ViewConfiguration
 import android.view.inputmethod.EditorInfo.IME_ACTION_GO
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.jakewharton.rxbinding2.support.v7.widget.scrollEvents
 import com.jakewharton.rxbinding2.view.keys
+import com.jakewharton.rxbinding2.view.scrollChangeEvents
+import com.jakewharton.rxbinding2.view.touches
 import com.jakewharton.rxbinding2.view.visibility
 import com.jakewharton.rxbinding2.widget.editorActionEvents
 import com.jakewharton.rxbinding2.widget.textChanges
@@ -184,6 +193,21 @@ class MainActivity : Activity() {
       }
     }
 
+    var totalDy = 0
+    val vc = ViewConfiguration.get(recycler.context)
+    val slop = vc.scaledTouchSlop
+
+    recycler.scrollEvents()
+            .filter({ scroll -> scroll.dy() > 0 })
+            .observeOn(mainThread())
+            .crashingSubscribe {
+              scroll -> totalDy += scroll.dy()
+              if (totalDy >= slop) {
+                val inputManager = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                totalDy = 0
+              }
+            }
     synchronizer.forceSync()
   }
 
