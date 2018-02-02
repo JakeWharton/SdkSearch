@@ -115,6 +115,7 @@ dependencies {
   implementation deps.rx.java
   implementation deps.rx.android
   implementation deps.rx.binding.framework
+  implementation deps.rx.binding.recyclerview
 
   implementation deps.timber
 
