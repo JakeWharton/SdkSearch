@@ -15,8 +15,12 @@ import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+import android.view.ViewConfiguration
 import android.view.inputmethod.EditorInfo.IME_ACTION_GO
+import android.view.inputmethod.InputMethodManager
+import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
+import com.jakewharton.rxbinding2.support.v7.widget.scrollEvents
 import com.jakewharton.rxbinding2.view.keys
 import com.jakewharton.rxbinding2.view.visibility
 import com.jakewharton.rxbinding2.widget.editorActionEvents
@@ -153,6 +157,21 @@ class MainActivity : Activity() {
         .crashingSubscribe { empty ->
           queryInput.typeface = if (empty) Typeface.DEFAULT else robotoMono
         }
+
+    var totalDy = 0
+    val vc = ViewConfiguration.get(recycler.context)
+    val slop = vc.scaledTouchSlop
+    recycler.scrollEvents()
+            .filter({ scroll -> scroll.dy() > 0 })
+            .observeOn(mainThread())
+            .crashingSubscribe {
+              scroll -> totalDy += scroll.dy()
+              if (totalDy >= slop) {
+                val inputManager = applicationContext.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken, HIDE_NOT_ALWAYS)
+                totalDy = 0
+              }
+            }
 
     launch(UI, UNDISPATCHED) {
       var snackbar: Snackbar? = null
