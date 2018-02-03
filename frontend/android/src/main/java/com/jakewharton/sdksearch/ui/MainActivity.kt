@@ -34,6 +34,7 @@ import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
+import com.jakewharton.sdksearch.util.systemService
 import io.reactivex.Observable
 import io.reactivex.Observable.just
 import io.reactivex.Observable.merge
@@ -167,8 +168,9 @@ class MainActivity : Activity() {
             .crashingSubscribe {
               scroll -> totalDy += scroll.dy()
               if (totalDy >= slop) {
-                val inputManager = applicationContext.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, HIDE_NOT_ALWAYS)
+                systemService<InputMethodManager>().apply {
+                  hideSoftInputFromWindow(currentFocus?.windowToken, HIDE_NOT_ALWAYS)
+                }
                 totalDy = 0
               }
             }
