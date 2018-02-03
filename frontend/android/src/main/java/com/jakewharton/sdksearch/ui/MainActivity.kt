@@ -168,7 +168,7 @@ class MainActivity : Activity() {
               scroll -> totalDy += scroll.dy()
               if (totalDy >= slop) {
                 val inputManager = applicationContext.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken, HIDE_NOT_ALWAYS)
+                inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, HIDE_NOT_ALWAYS)
                 totalDy = 0
               }
             }

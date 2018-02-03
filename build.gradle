@@ -24,6 +24,7 @@ buildscript {
       'retrofit': '2.3.0',
       'kotshi': '0.3.0',
       'dagger': '2.14.1',
+      'rxbinding' : '2.1.0',
   ]
 
   ext.deps = [
@@ -83,8 +84,8 @@ buildscript {
           'java': 'io.reactivex.rxjava2:rxjava:2.1.8',
           'android': 'io.reactivex.rxjava2:rxandroid:2.0.1',
           'binding': [
-              'framework': 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.1.0',
-              'recyclerview': 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:2.1.0',
+              'framework': "com.jakewharton.rxbinding2:rxbinding-kotlin:${versions.rxbinding}",
+              'recyclerview': "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:${versions.rxbinding}",
           ],
       ],
       'kotshi': [
