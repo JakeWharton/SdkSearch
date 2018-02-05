@@ -15,10 +15,10 @@ import android.view.View.OnClickListener
 import android.widget.PopupMenu
 import android.widget.PopupMenu.OnMenuItemClickListener
 import android.widget.TextView
+import androidx.text.buildSpannedString
+import androidx.text.inSpans
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.util.buildSpannedString
-import com.jakewharton.sdksearch.util.inSpan
 import kotlin.LazyThreadSafetyMode.NONE
 
 internal typealias ItemHandler = (Item) -> Unit
@@ -98,7 +98,7 @@ internal class ItemViewHolder(
     packageNameText.text = buildSpannedString {
       item.packageName.split('.').forEachIndexed { index, part ->
         if (index > 0) {
-          inSpan(LetterSpacingSpan(PERIOD_LETTER_SPACING)) {
+          inSpans(LetterSpacingSpan(PERIOD_LETTER_SPACING)) {
               append('.')
           }
         }
@@ -123,7 +123,7 @@ internal class ItemViewHolder(
 
     classNameText.text = buildSpannedString {
       if (item.deprecated) {
-        inSpan(StrikethroughSpan()) {
+        inSpans(StrikethroughSpan()) {
           append(className)
         }
       } else {

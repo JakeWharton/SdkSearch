@@ -4,11 +4,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
+import androidx.content.systemService
+import androidx.net.toUri
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.util.systemService
-import com.jakewharton.sdksearch.util.toUri
 
 internal class ClipboardCopyItemHandler(
   private val context: Context,
