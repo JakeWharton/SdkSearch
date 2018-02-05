@@ -110,6 +110,7 @@ dependencies {
   implementation deps.android.support.customTabs
   implementation deps.android.support.design
   implementation deps.android.support.constraintLayout
+  implementation deps.android.x.coreKtx
 
   implementation deps.rx.java
   implementation deps.rx.android

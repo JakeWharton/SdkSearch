@@ -3,10 +3,10 @@ package com.jakewharton.sdksearch.ui
 import android.content.Context
 import android.support.customtabs.CustomTabsIntent
 import android.widget.Toast
+import androidx.net.toUri
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.reference.AndroidReference
-import com.jakewharton.sdksearch.util.toUri
 
 internal class OpenSourceItemHandler(
   private val context: Context,

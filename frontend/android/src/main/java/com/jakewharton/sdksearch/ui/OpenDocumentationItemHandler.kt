@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.support.customtabs.CustomTabsIntent
+import androidx.net.toUri
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.util.toUri
 
 internal class OpenDocumentationItemHandler(
   private val context: Context,
