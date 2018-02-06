@@ -2,10 +2,10 @@ package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
 import android.support.v4.app.ShareCompat.IntentBuilder
+import androidx.net.toUri
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.util.toUri
 
 internal class ShareItemHandler(
   private val activity: Activity,

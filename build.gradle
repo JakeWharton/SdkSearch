@@ -64,6 +64,9 @@ buildscript {
               'design': "com.android.support:design:${versions.supportLibrary}",
               'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta4',
           ],
+          'x': [
+              'coreKtx': 'androidx.core:core-ktx:0.1',
+          ],
           'test': [
               'runner': "com.android.support.test:runner:${versions.atsl}",
               'rules': "com.android.support.test:rules${versions.atsl}",
@@ -116,7 +119,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.0-beta1'
+    classpath 'com.android.tools.build:gradle:3.2.0-alpha01'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:${versions.kotlinSerialization}"
     classpath 'com.squareup.sqldelight:gradle-plugin:0.7.0-SNAPSHOT'
