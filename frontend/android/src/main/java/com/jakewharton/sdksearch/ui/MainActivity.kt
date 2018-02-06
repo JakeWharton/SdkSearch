@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo.IME_ACTION_GO
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
+import androidx.content.systemService
 import com.jakewharton.rxbinding2.support.v7.widget.scrollEvents
 import com.jakewharton.rxbinding2.view.keys
 import com.jakewharton.rxbinding2.view.visibility
@@ -34,7 +35,6 @@ import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import com.jakewharton.sdksearch.util.systemService
 import io.reactivex.Observable
 import io.reactivex.Observable.just
 import io.reactivex.Observable.merge
@@ -163,17 +163,14 @@ class MainActivity : Activity() {
     val vc = ViewConfiguration.get(recycler.context)
     val slop = vc.scaledTouchSlop
     recycler.scrollEvents()
-            .filter({ scroll -> scroll.dy() > 0 })
-            .observeOn(mainThread())
-            .crashingSubscribe {
-              scroll -> totalDy += scroll.dy()
-              if (totalDy >= slop) {
-                systemService<InputMethodManager>().apply {
-                  hideSoftInputFromWindow(currentFocus?.windowToken, HIDE_NOT_ALWAYS)
-                }
-                totalDy = 0
-              }
-            }
+        .filter { scroll -> scroll.dy() > 0 }
+        .crashingSubscribe { scroll ->
+          totalDy += scroll.dy()
+          if (totalDy >= slop) {
+            totalDy = 0
+            systemService<InputMethodManager>().hideSoftInputFromWindow(currentFocus?.windowToken, HIDE_NOT_ALWAYS)
+          }
+        }
 
     launch(UI, UNDISPATCHED) {
       var snackbar: Snackbar? = null
