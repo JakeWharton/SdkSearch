@@ -17,6 +17,7 @@ import android.view.View.INVISIBLE
 import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 import android.view.inputmethod.EditorInfo.IME_ACTION_GO
 import android.widget.EditText
+import android.widget.TextView
 import com.jakewharton.rxbinding2.view.keys
 import com.jakewharton.rxbinding2.view.visibility
 import com.jakewharton.rxbinding2.widget.editorActionEvents
@@ -30,6 +31,8 @@ import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
+import com.jakewharton.sdksearch.util.plusAssign
+import com.jakewharton.sdksearch.util.visible
 import io.reactivex.Observable
 import io.reactivex.Observable.just
 import io.reactivex.Observable.merge
@@ -86,6 +89,9 @@ class MainActivity : Activity() {
 
     setContentView(R.layout.main)
 
+    val noQuery = findViewById<View>(R.id.noQuery)
+    val noResultsText = findViewById<TextView>(R.id.noResultsText)
+    val noResults = findViewById<View>(R.id.noResults)
     val recycler = findViewById<RecyclerView>(R.id.results)
     val layoutManager = LinearLayoutManager(this)
     recycler.layoutManager = layoutManager
@@ -136,6 +142,9 @@ class MainActivity : Activity() {
           adapter.updateItems(it.query, it.data)
           it.diff.dispatchUpdatesTo(adapter)
           recycler.scrollToPosition(scrollPosition)
+          noQuery.visible = it.query.isBlank()
+          noResults.visible = !it.query.isBlank() && it.data.isEmpty()
+          noResultsText.text = getString(R.string.no_results, it.query)
         }
 
     val clear = findViewById<View>(R.id.clear_query)
@@ -201,15 +210,12 @@ class MainActivity : Activity() {
 
   @Suppress("NOTHING_TO_INLINE") // Needed for correct stacktraces.
   private inline fun <I> Observable<I>.crashingSubscribe(noinline onNext: (I) -> Unit) {
-    subscribe(onNext, { throw OnErrorNotImplementedException(it) }).addTo(disposables)
+    disposables += subscribe(onNext, { throw OnErrorNotImplementedException(it) })
   }
 
   @Suppress("NOTHING_TO_INLINE") // Needed for correct stacktraces.
   private inline fun <I> Observable<I>.crashingSubscribe(onNext: Consumer<in I>) {
-    subscribe(onNext, Consumer { throw OnErrorNotImplementedException(it) }).addTo(disposables)
+    disposables += subscribe(onNext, Consumer { throw OnErrorNotImplementedException(it) })
   }
 
-  private fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
-    compositeDisposable.add(this)
-  }
 }

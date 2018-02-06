@@ -17,6 +17,8 @@
   <string name="view_source">View source</string>
   <string name="view_class_source">View %s source</string>
   <string name="unknown_source">Unknown source location!</string>
+  <string name="no_query_instruction">What are you looking for?</string>
+  <string name="no_results">No classes matching \"%s\"</string>
 
   <plurals name="updating">
     <item quantity="one">Updating %d class list…</item>
