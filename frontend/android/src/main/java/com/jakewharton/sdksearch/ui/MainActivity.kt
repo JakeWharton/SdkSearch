@@ -137,10 +137,11 @@ class MainActivity : Activity() {
         .skip(1)
         .observeOn(mainThread())
         .crashingSubscribe {
-          val scrollPosition = layoutManager.findFirstVisibleItemPosition()
           adapter.updateItems(it.query, it.data)
           it.diff.dispatchUpdatesTo(adapter)
-          recycler.scrollToPosition(scrollPosition)
+
+          // Always reset the scroll position to the top when the query changes.
+          recycler.scrollToPosition(0)
         }
 
     val clear = findViewById<View>(R.id.clear_query)
