@@ -11,6 +11,8 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View
 import android.view.View.INVISIBLE
@@ -20,6 +22,7 @@ import android.view.inputmethod.EditorInfo.IME_ACTION_GO
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
+import android.widget.TextView
 import androidx.content.systemService
 import com.jakewharton.rxbinding2.support.v7.widget.scrollEvents
 import com.jakewharton.rxbinding2.view.keys
@@ -101,10 +104,45 @@ class MainActivity : Activity() {
     dividerDecoration.setDrawable(getDrawable(R.drawable.list_divider))
     recycler.addItemDecoration(dividerDecoration)
 
+    val emptyStateTextView = findViewById<TextView>(R.id.emptyState)
+
     val queryInput = findViewById<EditText>(R.id.query)
     if (savedInstanceState == null) {
       queryInput.setText(intent.getStringExtra("query") ?: "")
     }
+    queryInput.addTextChangedListener(object : TextWatcher {
+      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+      override fun afterTextChanged(s: Editable) {
+        if (s.isEmpty()) {
+          emptyStateTextView.text = getString(R.string.enter_class_name)
+          emptyStateTextView.animate()
+                  .scaleX(1f)
+                  .scaleY(1f)
+                  .alpha(1f)
+                  .start()
+        } else {
+          emptyStateTextView.animate()
+                  .scaleX(0f)
+                  .scaleY(0f)
+                  .alpha(0f)
+                  .start()
+        }
+      }
+    })
+    adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+      override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+        if (queryInput.length() > 0 && adapter.itemCount == 0) {
+          emptyStateTextView.visibility = View.VISIBLE
+          emptyStateTextView.text = getString(R.string.no_results)
+          emptyStateTextView.animate()
+                  .scaleX(1f)
+                  .scaleY(1f)
+                  .alpha(1f)
+                  .start()
+        }
+      }
+    })
 
     val enterKeys = queryInput.keys(Predicate { it.keyCode == KEYCODE_ENTER })
         .filter { it.keyCode == KEYCODE_ENTER }

@@ -7,6 +7,8 @@
     <item quantity="one">Search 1 class…</item>
     <item quantity="other">Search %d classes…</item>
   </plurals>
+  <string name="enter_class_name">Enter a class name</string>
+  <string name="no_results">No results</string>
   <string name="copy">Copy</string>
   <string name="share">Share…</string>
   <string name="copied">%s URL copied to clipboard!</string>
