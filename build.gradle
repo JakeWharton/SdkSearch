@@ -62,7 +62,7 @@ buildscript {
               'recyclerView': "com.android.support:recyclerview-v7:${versions.supportLibrary}",
               'customTabs': "com.android.support:customtabs:${versions.supportLibrary}",
               'design': "com.android.support:design:${versions.supportLibrary}",
-              'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta4',
+              'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta5',
           ],
           'x': [
               'coreKtx': 'androidx.core:core-ktx:0.1',
