@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.util
+package com.jakewharton.timber.bugsnag
 
 import android.util.Log.DEBUG
 import android.util.Log.ERROR

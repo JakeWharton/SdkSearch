@@ -1,0 +1,25 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+android {
+  compileSdkVersion buildConfig.compileSdk
+
+  defaultConfig {
+    minSdkVersion buildConfig.minSdk
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    lintConfig rootProject.file('lint.xml')
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+}
+
+dependencies {
+  implementation deps.kotlin.stdlib.jdk
+  api deps.timber
+  api deps.bugsnag
+}

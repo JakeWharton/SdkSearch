@@ -118,8 +118,8 @@ dependencies {
   implementation deps.rx.binding.recyclerview
 
   implementation deps.timber
-
   implementation deps.bugsnag
+  implementation project(':bugsnag-tree')
 }
 
 kotlin {

@@ -3,7 +3,7 @@ package com.jakewharton.sdksearch
 import android.annotation.SuppressLint
 import android.app.Application
 import com.bugsnag.android.Bugsnag
-import com.jakewharton.sdksearch.util.BugsnagTree
+import com.jakewharton.timber.bugsnag.BugsnagTree
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.text.SimpleDateFormat
