@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="debug_updater_notification_title_checking">Checking for updates…</string>
+  <string name="debug_updater_notification_title_failed">Checking for update failed!</string>
+  <string name="debug_updater_notification_text_checking_1">(1/2) Looking up latest version</string>
+  <string name="debug_updater_notification_text_checking_2">(2/2) Downloading update APK</string>
+  <string name="debug_updater_notification_text_artifacts_failed">Unable to load remote artifacts.</string>
+  <string name="debug_updater_notification_text_download_failed">Unable to download update APK.</string>
+</resources>

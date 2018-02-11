@@ -11,11 +11,9 @@
         android:excludeFromRecents="true"
         android:taskAffinity=""
         android:theme="@android:style/Theme.NoDisplay"
-        >
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-      </intent-filter>
-    </activity>
+        />
+
+    <service android:name=".UpdateService"/>
 
     <provider
         android:name="android.support.v4.content.FileProvider"
@@ -25,7 +23,7 @@
         >
       <meta-data
           android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/update_paths"
+          android:resource="@xml/debug_updater_paths"
           />
     </provider>
   </application>
