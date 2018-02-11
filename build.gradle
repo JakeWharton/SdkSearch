@@ -22,7 +22,7 @@ buildscript {
       'kotlinSerialization': '0.4',
       'okhttp': '3.9.1',
       'retrofit': '2.3.0',
-      'kotshi': '0.3.0',
+      'kotshi': '1.0.0',
       'dagger': '2.14.1',
       'rxbinding': '2.1.0',
   ]
