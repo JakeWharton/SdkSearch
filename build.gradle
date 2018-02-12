@@ -115,14 +115,13 @@ buildscript {
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
   dependencies {
     classpath 'com.android.tools.build:gradle:3.2.0-alpha02'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:${versions.kotlinSerialization}"
-    classpath 'com.squareup.sqldelight:gradle-plugin:0.7.0-SNAPSHOT'
+    classpath 'com.squareup.sqldelight:gradle-plugin:0.7.0'
     classpath 'com.eriwen:gradle-js-plugin:1.12.1'
     classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
   }
@@ -140,7 +139,6 @@ allprojects {
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
   // Force all of the primary support libraries to use the same version.
