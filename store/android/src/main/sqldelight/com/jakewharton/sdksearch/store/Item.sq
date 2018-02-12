@@ -10,11 +10,11 @@ CREATE TABLE item(
   UNIQUE (packageName, className)
 );
 
-insert_item:
+insertItem:
 INSERT OR FAIL INTO item(packageName, className, deprecated, link) VALUES (?, ?, ?, ?)
 ;
 
-update_item:
+updateItem:
 UPDATE item
 SET deprecated = ?3,
     link = ?4
@@ -27,7 +27,7 @@ SELECT COUNT(id)
 FROM item
 ;
 
-query_term:
+queryTerm:
 SELECT item.*
 FROM item
 WHERE className LIKE '%' || ?1 || '%' ESCAPE '\'

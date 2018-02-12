@@ -11,9 +11,9 @@ import javax.inject.Singleton
 internal class SqlItemStore @Inject constructor(
     private val db: BriteDatabase
 ) : ItemStore {
-  private val insertItem by lazy { ItemModel.Insert_item(db.writableDatabase) }
-  private val updateItem by lazy { ItemModel.Update_item(db.writableDatabase) }
-  private val queryTermMapper = SqlItem.FACTORY.query_termMapper()
+  private val insertItem by lazy { ItemModel.InsertItem(db.writableDatabase) }
+  private val updateItem by lazy { ItemModel.UpdateItem(db.writableDatabase) }
+  private val queryTermMapper = SqlItem.FACTORY.queryTermMapper()
 
   override suspend fun updateItems(items: List<Item>) {
     db.inTransaction {
@@ -31,7 +31,7 @@ internal class SqlItemStore @Inject constructor(
   }
 
   override fun queryItems(term: String) =
-      db.createQuery(SqlItem.FACTORY.query_term(term.escapeLike('\\')))
+      db.createQuery(SqlItem.FACTORY.queryTerm(term.escapeLike('\\')))
           .mapToList { queryTermMapper.map(it).item }
 
   override fun count() = db.createQuery(SqlItem.FACTORY.count())
