@@ -126,6 +126,12 @@ buildscript {
     classpath 'com.eriwen:gradle-js-plugin:1.12.1'
     classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
   }
+
+  configurations.all {
+    resolutionStrategy {
+      force 'net.sf.proguard:proguard-base:6.0'
+    }
+  }
 }
 
 allprojects {
