@@ -2,8 +2,8 @@ package com.jakewharton.sdksearch.store
 
 import com.squareup.sqlbrite3.BriteDatabase
 import com.squareup.sqlbrite3.inTransaction
-import com.squareup.sqldelight.SqlDelightCompiledStatement
 import com.squareup.sqldelight.SqlDelightQuery
+import com.squareup.sqldelight.SqlDelightStatement
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,17 +37,17 @@ internal class SqlItemStore @Inject constructor(
   override fun count() = db.createQuery(SqlItem.FACTORY.count())
       .mapToOne(SqlItem.FACTORY.countMapper()::map)
 
-  private fun <T : SqlDelightCompiledStatement> T.insert(binder: T.() -> Unit): Long {
+  private fun <T : SqlDelightStatement> T.insert(binder: T.() -> Unit): Long {
     synchronized(this) {
       binder()
-      return db.executeInsert(table, program)
+      return db.executeInsert(table, this)
     }
   }
 
-  private fun <T : SqlDelightCompiledStatement> T.update(binder: T.() -> Unit): Int {
+  private fun <T : SqlDelightStatement> T.update(binder: T.() -> Unit): Int {
     synchronized(this) {
       binder()
-      return db.executeUpdateDelete(table, program)
+      return db.executeUpdateDelete(table, this)
     }
   }
 }
