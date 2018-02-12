@@ -24,7 +24,7 @@ buildscript {
       'retrofit': '2.3.0',
       'kotshi': '1.0.0',
       'dagger': '2.14.1',
-      'rxbinding': '2.1.0',
+      'rxbinding': '2.1.1',
   ]
 
   ext.deps = [

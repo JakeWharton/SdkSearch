@@ -11,6 +11,3 @@
 
 # Kotlin serialization generates sibling serializer classes which are looked up reflectively.
 -keep class **.*$serializer { *; }
-
-# TODO remove once https://github.com/JakeWharton/RxBinding/issues/427 is fixed.
--dontwarn com.google.auto.value.AutoValue
