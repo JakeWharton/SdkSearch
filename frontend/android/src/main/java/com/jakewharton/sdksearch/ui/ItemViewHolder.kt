@@ -19,16 +19,16 @@ import androidx.text.buildSpannedString
 import androidx.text.inSpans
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemClick
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemCopy
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemShare
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemViewSource
+import io.reactivex.functions.Consumer
 import kotlin.LazyThreadSafetyMode.NONE
-
-internal typealias ItemHandler = (Item) -> Unit
 
 internal class ItemViewHolder(
   private val root: View,
-  private val onClick: ItemHandler,
-  private val onCopy: ItemHandler,
-  private val onShare: ItemHandler,
-  private val onSource: ItemHandler
+  private val events: Consumer<SearchViewBinder.Event>
 ) : ViewHolder(root), OnClickListener, OnMenuItemClickListener {
   private val packageNameText: TextView = root.findViewById(R.id.package_name)
   private val classNameText: TextView = root.findViewById(R.id.class_name)
@@ -55,21 +55,21 @@ internal class ItemViewHolder(
     if (view == overflow) {
       popup.show()
     } else {
-      onClick.invoke(item!!)
+      events.accept(ItemClick(item!!))
     }
   }
 
   override fun onMenuItemClick(menuItem: MenuItem) = when(menuItem.itemId) {
     R.id.copy -> {
-      onCopy(item!!)
+      events.accept(ItemCopy(item!!))
       true
     }
     R.id.share -> {
-      onShare(item!!)
+      events.accept(ItemShare(item!!))
       true
     }
     R.id.source -> {
-      onSource(item!!)
+      events.accept(ItemViewSource(item!!))
       true
     }
     else -> throw IllegalArgumentException("Unknown menu item: $menuItem")

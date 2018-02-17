@@ -16,7 +16,12 @@ import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.DbComponent
+import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemClick
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemCopy
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemShare
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemViewSource
 import io.reactivex.Observable
 import io.reactivex.Observable.just
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -29,6 +34,8 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit.MILLISECONDS
+
+internal typealias ItemHandler = (Item) -> Unit
 
 class MainActivity : Activity() {
   private val baseUrl = BaseUrl(PRODUCTION_DAC)
@@ -68,7 +75,7 @@ class MainActivity : Activity() {
     val onSource = OpenSourceItemHandler(this, androidReference)
 
     setContentView(R.layout.main)
-    val binder = SearchViewBinder(window.decorView, onClick, onCopy, onShare, onSource)
+    val binder = SearchViewBinder(window.decorView)
 
     val recycler = binder.results
     val adapter = binder.resultsAdapter
@@ -76,6 +83,15 @@ class MainActivity : Activity() {
 
     if (savedInstanceState == null) {
       queryInput.setText(intent.getStringExtra("query") ?: "")
+    }
+
+    binder.events.crashingSubscribe {
+      when (it) {
+        is ItemClick -> onClick(it.item)
+        is ItemCopy -> onCopy(it.item)
+        is ItemShare -> onShare(it.item)
+        is ItemViewSource -> onSource(it.item)
+      }
     }
 
     store.count()

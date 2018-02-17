@@ -15,25 +15,26 @@ import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
 import androidx.content.systemService
+import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay2.Relay
 import com.jakewharton.sdksearch.R
+import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.util.layoutInflater
 import com.jakewharton.sdksearch.util.onEditorAction
 import com.jakewharton.sdksearch.util.onKey
 import com.jakewharton.sdksearch.util.onScroll
 import com.jakewharton.sdksearch.util.onTextChanged
+import io.reactivex.Observable
 
-class SearchViewBinder(
-    view: View,
-    onClick: ItemHandler,
-    onCopy: ItemHandler,
-    onShare: ItemHandler,
-    onSource: ItemHandler
-) {
+class SearchViewBinder(view: View) {
   private val context = view.context
+
+  private val _events: Relay<Event> = PublishRelay.create<Event>()
+  val events: Observable<Event> get() = _events
 
   // TODO all private + view model
   internal val results: RecyclerView = view.findViewById(R.id.results)
-  internal val resultsAdapter = ItemAdapter(context.layoutInflater, onClick, onCopy, onShare, onSource)
+  internal val resultsAdapter = ItemAdapter(context.layoutInflater, _events)
   internal val queryInput: EditText = view.findViewById(R.id.query)
   private val queryClear: View = view.findViewById(R.id.clear_query)
 
@@ -87,5 +88,12 @@ class SearchViewBinder(
         false
       }
     }
+  }
+
+  sealed class Event {
+    class ItemClick(val item: Item): Event()
+    class ItemCopy(val item: Item): Event()
+    class ItemShare(val item: Item): Event()
+    class ItemViewSource(val item: Item): Event()
   }
 }

@@ -5,19 +5,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemClick
+import io.reactivex.functions.Consumer
 
 internal class ItemAdapter(
   private val inflater: LayoutInflater,
-  private val onClick: ItemHandler,
-  private val onCopy: ItemHandler,
-  private val onShare: ItemHandler,
-  private val onSource: ItemHandler
+  private val events: Consumer<SearchViewBinder.Event>
 ) : RecyclerView.Adapter<ItemViewHolder>() {
   private var query = ""
   private var items: List<Item> = emptyList()
 
   fun invokeFirstItem() {
-    items.firstOrNull()?.let(onClick)
+    items.firstOrNull()?.let { events.accept(ItemClick(it)) }
   }
 
   fun updateItems(query: String, items: List<Item>) {
@@ -45,7 +44,7 @@ internal class ItemAdapter(
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
     val view = inflater.inflate(R.layout.item, parent, false)
-    return ItemViewHolder(view, onClick, onCopy, onShare, onSource)
+    return ItemViewHolder(view, events)
   }
 
   override fun getItemCount() = items.size

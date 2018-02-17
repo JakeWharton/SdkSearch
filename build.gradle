@@ -89,6 +89,7 @@ buildscript {
           'binding': [
               'framework': "com.jakewharton.rxbinding2:rxbinding-kotlin:${versions.rxbinding}",
           ],
+          'relay': 'com.jakewharton.rxrelay2:rxrelay:2.0.0',
       ],
       'kotshi': [
           'api': "se.ansman.kotshi:api:${versions.kotshi}",
