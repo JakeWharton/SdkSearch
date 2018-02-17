@@ -21,8 +21,8 @@ abstract class DbModule {
         .name(filename)
         .build();
     SupportSQLiteOpenHelper helper = new FrameworkSQLiteOpenHelperFactory().create(configuration);
-    SqlBrite.Logger loger = message -> Timber.tag("DB").d(message);
-    SqlBrite sqlBrite = new SqlBrite.Builder().logger(loger).build();
+    SqlBrite.Logger logger = message -> Timber.tag("DB").d(message);
+    SqlBrite sqlBrite = new SqlBrite.Builder().logger(logger).build();
     return sqlBrite.wrapDatabaseHelper(helper, scheduler);
   }
 
