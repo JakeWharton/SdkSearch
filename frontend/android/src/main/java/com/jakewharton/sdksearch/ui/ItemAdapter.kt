@@ -8,10 +8,10 @@ import com.jakewharton.sdksearch.store.Item
 
 internal class ItemAdapter(
   private val inflater: LayoutInflater,
-  private val onClick: (Item) -> Unit,
-  private val onCopy: (Item) -> Unit,
-  private val onShare: (Item) -> Unit,
-  private val onSource: (Item) -> Unit
+  private val onClick: ItemHandler,
+  private val onCopy: ItemHandler,
+  private val onShare: ItemHandler,
+  private val onSource: ItemHandler
 ) : RecyclerView.Adapter<ItemViewHolder>() {
   private var query = ""
   private var items: List<Item> = emptyList()

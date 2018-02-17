@@ -1,49 +1,27 @@
 package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.util.DiffUtil
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.KeyEvent.KEYCODE_ENTER
-import android.view.View
-import android.view.View.INVISIBLE
 import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-import android.view.ViewConfiguration
-import android.view.inputmethod.EditorInfo.IME_ACTION_GO
-import android.view.inputmethod.InputMethodManager
-import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
-import android.widget.EditText
-import androidx.content.systemService
-import com.jakewharton.rxbinding2.support.v7.widget.scrollEvents
-import com.jakewharton.rxbinding2.view.keys
-import com.jakewharton.rxbinding2.view.visibility
-import com.jakewharton.rxbinding2.widget.editorActionEvents
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
-import com.jakewharton.sdksearch.store.DbComponent
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
+import com.jakewharton.sdksearch.store.DbComponent
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.Observable
 import io.reactivex.Observable.just
-import io.reactivex.Observable.merge
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.OnErrorNotImplementedException
-import io.reactivex.functions.Consumer
-import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.Schedulers.computation
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
@@ -90,30 +68,15 @@ class MainActivity : Activity() {
     val onSource = OpenSourceItemHandler(this, androidReference)
 
     setContentView(R.layout.main)
+    val binder = SearchViewBinder(window.decorView, onClick, onCopy, onShare, onSource)
 
-    val recycler = findViewById<RecyclerView>(R.id.results)
-    val layoutManager = LinearLayoutManager(this)
-    recycler.layoutManager = layoutManager
-    val adapter = ItemAdapter(layoutInflater, onClick, onCopy, onShare, onSource)
-    recycler.adapter = adapter
+    val recycler = binder.results
+    val adapter = binder.resultsAdapter
+    val queryInput = binder.queryInput
 
-    val dividerDecoration = DividerItemDecoration(recycler.context, layoutManager.orientation)
-    dividerDecoration.setDrawable(getDrawable(R.drawable.list_divider))
-    recycler.addItemDecoration(dividerDecoration)
-
-    val queryInput = findViewById<EditText>(R.id.query)
     if (savedInstanceState == null) {
       queryInput.setText(intent.getStringExtra("query") ?: "")
     }
-
-    val enterKeys = queryInput.keys(Predicate { it.keyCode == KEYCODE_ENTER })
-        .filter { it.keyCode == KEYCODE_ENTER }
-    val imeActions = queryInput.editorActionEvents()
-        .filter { it.actionId() == IME_ACTION_GO }
-    merge(enterKeys, imeActions)
-        .crashingSubscribe{
-          adapter.invokeFirstItem()
-        }
 
     store.count()
         .observeOn(mainThread())
@@ -142,35 +105,6 @@ class MainActivity : Activity() {
 
           // Always reset the scroll position to the top when the query changes.
           recycler.scrollToPosition(0)
-        }
-
-    val clear = findViewById<View>(R.id.clear_query)
-    clear.setOnClickListener {
-      queryInput.setText("")
-    }
-
-    queryInput.textChanges()
-        .map(CharSequence::isNotEmpty)
-        .crashingSubscribe(clear.visibility(INVISIBLE))
-
-    val robotoMono = ResourcesCompat.getFont(this, R.font.roboto_mono)
-    queryInput.textChanges()
-        .map(CharSequence::isEmpty)
-        .crashingSubscribe { empty ->
-          queryInput.typeface = if (empty) Typeface.DEFAULT else robotoMono
-        }
-
-    var totalDy = 0
-    val vc = ViewConfiguration.get(recycler.context)
-    val slop = vc.scaledTouchSlop
-    recycler.scrollEvents()
-        .filter { scroll -> scroll.dy() > 0 }
-        .crashingSubscribe { scroll ->
-          totalDy += scroll.dy()
-          if (totalDy >= slop) {
-            totalDy = 0
-            systemService<InputMethodManager>().hideSoftInputFromWindow(currentFocus?.windowToken, HIDE_NOT_ALWAYS)
-          }
         }
 
     launch(UI, UNDISPATCHED) {
@@ -220,15 +154,6 @@ class MainActivity : Activity() {
 
   @Suppress("NOTHING_TO_INLINE") // Needed for correct stacktraces.
   private inline fun <I> Observable<I>.crashingSubscribe(noinline onNext: (I) -> Unit) {
-    subscribe(onNext, { throw OnErrorNotImplementedException(it) }).addTo(disposables)
-  }
-
-  @Suppress("NOTHING_TO_INLINE") // Needed for correct stacktraces.
-  private inline fun <I> Observable<I>.crashingSubscribe(onNext: Consumer<in I>) {
-    subscribe(onNext, Consumer { throw OnErrorNotImplementedException(it) }).addTo(disposables)
-  }
-
-  private fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
-    compositeDisposable.add(this)
+    disposables.add(subscribe(onNext, { throw OnErrorNotImplementedException(it) }))
   }
 }
