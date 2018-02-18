@@ -12,3 +12,5 @@ inline fun <I> Observable<I>.crashingSubscribe(noinline onNext: (I) -> Unit): Di
 }
 
 inline fun Disposable.addTo(disposables: CompositeDisposable) = disposables.add(this)
+
+inline fun <reified T> Observable<*>.ofType(): Observable<T> = ofType(T::class.java)

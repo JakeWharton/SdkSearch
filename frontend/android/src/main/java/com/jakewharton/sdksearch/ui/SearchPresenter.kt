@@ -4,7 +4,6 @@ import android.app.Activity
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
 import android.support.v7.util.DiffUtil
-import com.jakewharton.rxbinding2.widget.textChanges
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.reference.AndroidReference
@@ -12,6 +11,7 @@ import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import com.jakewharton.sdksearch.util.addTo
 import com.jakewharton.sdksearch.util.crashingSubscribe
+import com.jakewharton.sdksearch.util.ofType
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -44,8 +44,6 @@ internal class SearchPresenter(
     val recycler = binder.results
     val adapter = binder.resultsAdapter
 
-    defaultQuery?.let(queryInput::setText)
-
     binder.events.crashingSubscribe {
       when (it) {
         is SearchViewBinder.Event.ItemClick -> onClick(it.item)
@@ -62,8 +60,9 @@ internal class SearchPresenter(
         }
         .addTo(disposables)
 
-    queryInput.textChanges()
-        .map(CharSequence::toString)
+    binder.events
+        .ofType<SearchViewBinder.Event.QueryChanged>()
+        .map(SearchViewBinder.Event.QueryChanged::query)
         .switchMap { query ->
           val results = if (query.isBlank()) Observable.just(emptyList())
           else store.queryItems(query).delaySubscription(200, TimeUnit.MILLISECONDS, mainThread())
@@ -85,6 +84,8 @@ internal class SearchPresenter(
           recycler.scrollToPosition(0)
         }
         .addTo(disposables)
+
+    defaultQuery?.let(queryInput::setText)
 
     launch(UI, UNDISPATCHED) {
       var snackbar: Snackbar? = null

@@ -56,6 +56,8 @@ class SearchViewBinder(view: View) {
     queryInput.onTextChanged {
       queryClear.visibility = if (it.isEmpty()) INVISIBLE else VISIBLE
       queryInput.typeface = if (it.isEmpty()) Typeface.DEFAULT else robotoMono
+
+      _events.accept(Event.QueryChanged(it.toString()))
     }
 
     val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
@@ -95,5 +97,6 @@ class SearchViewBinder(view: View) {
     class ItemCopy(val item: Item): Event()
     class ItemShare(val item: Item): Event()
     class ItemViewSource(val item: Item): Event()
+    class QueryChanged(val query: String): Event()
   }
 }
