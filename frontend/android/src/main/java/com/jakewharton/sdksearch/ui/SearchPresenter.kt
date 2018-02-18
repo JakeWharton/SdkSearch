@@ -20,6 +20,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.launch
 import java.util.concurrent.TimeUnit
 
@@ -40,7 +41,6 @@ internal class SearchPresenter(
   fun start(): Disposable {
     val disposables = CompositeDisposable()
     val resources = activity.resources
-    val queryInput = binder.queryInput
     val recycler = binder.results
     val adapter = binder.resultsAdapter
 
@@ -53,10 +53,12 @@ internal class SearchPresenter(
       }
     }.addTo(disposables)
 
+    val models = Channel<Long>()
+
     store.count()
         .observeOn(AndroidSchedulers.mainThread())
         .crashingSubscribe {
-          queryInput.hint = resources.getQuantityString(R.plurals.search_classes, it.toInt(), it)
+          models.offer(it)
         }
         .addTo(disposables)
 
@@ -84,8 +86,6 @@ internal class SearchPresenter(
           recycler.scrollToPosition(0)
         }
         .addTo(disposables)
-
-    defaultQuery?.let(queryInput::setText)
 
     launch(UI, UNDISPATCHED) {
       var snackbar: Snackbar? = null
@@ -123,6 +123,8 @@ internal class SearchPresenter(
         }
       }
     }
+
+    binder.attach(SearchViewBinder.Args(defaultQuery), models)
 
     synchronizer.forceSync()
 

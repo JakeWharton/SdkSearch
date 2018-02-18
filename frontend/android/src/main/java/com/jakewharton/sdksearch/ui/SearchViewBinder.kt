@@ -25,6 +25,11 @@ import com.jakewharton.sdksearch.util.onKey
 import com.jakewharton.sdksearch.util.onScroll
 import com.jakewharton.sdksearch.util.onTextChanged
 import io.reactivex.Observable
+import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.launch
 
 class SearchViewBinder(view: View) {
   private val context = view.context
@@ -35,7 +40,7 @@ class SearchViewBinder(view: View) {
   // TODO all private + view model
   internal val results: RecyclerView = view.findViewById(R.id.results)
   internal val resultsAdapter = ItemAdapter(context.layoutInflater, _events)
-  internal val queryInput: EditText = view.findViewById(R.id.query)
+  private val queryInput: EditText = view.findViewById(R.id.query)
   private val queryClear: View = view.findViewById(R.id.clear_query)
 
   init {
@@ -91,6 +96,19 @@ class SearchViewBinder(view: View) {
       }
     }
   }
+
+  fun attach(args: Args, models: ReceiveChannel<Long>): Job {
+    args.defaultQuery?.let(queryInput::setText)
+
+    val resources = context.resources
+    return launch(UI, UNDISPATCHED) {
+      for (model in models) {
+        queryInput.hint = resources.getQuantityString(R.plurals.search_classes, model.toInt(), model)
+      }
+    }
+  }
+
+  data class Args(val defaultQuery: String? = null)
 
   sealed class Event {
     class ItemClick(val item: Item): Event()
