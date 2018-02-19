@@ -3,10 +3,11 @@ package com.jakewharton.sdksearch.ui
 import android.app.Activity
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
-import android.support.v7.util.DiffUtil
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Model
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Model.QueryResults
 import com.jakewharton.sdksearch.util.addTo
 import com.jakewharton.sdksearch.util.crashingSubscribe
 import com.jakewharton.sdksearch.util.ofType
@@ -15,7 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.functions.BiFunction
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.Channel
@@ -38,7 +39,6 @@ internal class SearchPresenter(
     val disposables = CompositeDisposable()
     val resources = activity.resources
     val recycler = binder.results
-    val adapter = binder.resultsAdapter
 
     binder.events.crashingSubscribe {
       when (it) {
@@ -49,39 +49,30 @@ internal class SearchPresenter(
       }
     }.addTo(disposables)
 
-    val models = Channel<Long>()
+    val models = Channel<Model>()
 
-    store.count()
+    val itemCount = store.count()
         .observeOn(AndroidSchedulers.mainThread())
-        .crashingSubscribe {
-          models.offer(it)
-        }
-        .addTo(disposables)
+        .startWith(0L)
 
-    binder.events
+    val queryItems = binder.events
         .ofType<SearchViewBinder.Event.QueryChanged>()
         .map(SearchViewBinder.Event.QueryChanged::query)
         .switchMap { query ->
           val results = if (query.isBlank()) Observable.just(emptyList())
           else store.queryItems(query).delaySubscription(200, TimeUnit.MILLISECONDS, mainThread())
 
-          results.map { query to it }
+          results.map { QueryResults(query, it) }
         }
-        .observeOn(Schedulers.computation())
-        .scan(QueryResults()) { (oldQuery, oldItems), (newQuery, newItems) ->
-          val diff = DiffUtil.calculateDiff(ItemDiffer(oldQuery, oldItems, newQuery, newItems))
-          QueryResults(newQuery, newItems, diff)
-        }
-        .skip(1)
         .observeOn(AndroidSchedulers.mainThread())
-        .crashingSubscribe {
-          adapter.updateItems(it.query, it.data)
-          it.diff.dispatchUpdatesTo(adapter)
+        .startWith(QueryResults("", emptyList()))
 
-          // Always reset the scroll position to the top when the query changes.
-          recycler.scrollToPosition(0)
-        }
-        .addTo(disposables)
+    val items = Observable.combineLatest(itemCount, queryItems,
+        BiFunction<Long, QueryResults, Model> { count, queryResults -> Model(count, queryResults) })
+
+    items.crashingSubscribe {
+      models.offer(it)
+    }.addTo(disposables)
 
     launch(UI, UNDISPATCHED) {
       var snackbar: Snackbar? = null

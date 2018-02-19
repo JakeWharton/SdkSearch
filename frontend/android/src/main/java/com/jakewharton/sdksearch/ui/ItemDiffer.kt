@@ -1,14 +1,16 @@
 package com.jakewharton.sdksearch.ui
 
 import android.support.v7.util.DiffUtil
-import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Model.QueryResults
 
 internal class ItemDiffer(
-  oldQuery: String,
-  private val old: List<Item>,
-  newQuery: String,
-  private val new: List<Item>
+  oldResults: QueryResults,
+  newResults: QueryResults
 ) : DiffUtil.Callback() {
+  private val oldQuery = oldResults.query
+  private val old = oldResults.items
+  private val newQuery = newResults.query
+  private val new = newResults.items
 
   private val queriesTheSame = oldQuery == newQuery
 

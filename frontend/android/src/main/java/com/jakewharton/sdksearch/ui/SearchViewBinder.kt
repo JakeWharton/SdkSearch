@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.ui
 
 import android.graphics.Typeface
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -19,16 +20,21 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Model.QueryResults
 import com.jakewharton.sdksearch.util.layoutInflater
 import com.jakewharton.sdksearch.util.onEditorAction
 import com.jakewharton.sdksearch.util.onKey
 import com.jakewharton.sdksearch.util.onScroll
 import com.jakewharton.sdksearch.util.onTextChanged
 import io.reactivex.Observable
+import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.channels.actor
+import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 
 class SearchViewBinder(view: View) {
@@ -39,7 +45,7 @@ class SearchViewBinder(view: View) {
 
   // TODO all private + view model
   internal val results: RecyclerView = view.findViewById(R.id.results)
-  internal val resultsAdapter = ItemAdapter(context.layoutInflater, _events)
+  private val resultsAdapter = ItemAdapter(context.layoutInflater, _events)
   private val queryInput: EditText = view.findViewById(R.id.query)
   private val queryClear: View = view.findViewById(R.id.clear_query)
 
@@ -97,15 +103,54 @@ class SearchViewBinder(view: View) {
     }
   }
 
-  fun attach(args: Args, models: ReceiveChannel<Long>): Job {
+  fun attach(args: Args, models: ReceiveChannel<Model>): Job {
     args.defaultQuery?.let(queryInput::setText)
 
     val resources = context.resources
-    return launch(UI, UNDISPATCHED) {
-      for (model in models) {
-        queryInput.hint = resources.getQuantityString(R.plurals.search_classes, model.toInt(), model)
+    val parentJob = Job()
+
+    val queryResultProcessor = actor<QueryResults>(CommonPool, parent = parentJob) {
+      var oldResults = receive()
+
+      launch(UI) {
+        resultsAdapter.updateItems(oldResults)
+      }
+
+      consumeEach { newResults ->
+        val diff = DiffUtil.calculateDiff(ItemDiffer(oldResults, newResults))
+
+        launch(UI) {
+          resultsAdapter.updateItems(newResults)
+          diff.dispatchUpdatesTo(resultsAdapter)
+
+          // Always reset the scroll position to the top when the query changes.
+          results.scrollToPosition(0)
+        }
+
+        oldResults = newResults
       }
     }
+
+    launch(Unconfined, UNDISPATCHED, parent = parentJob) {
+      for (model in models) {
+        val count = model.count
+        queryInput.hint = resources.getQuantityString(R.plurals.search_classes, count.toInt(), count)
+
+        queryResultProcessor.send(model.queryResults)
+      }
+    }
+
+    return parentJob
+  }
+
+  data class Model(
+      val count: Long = 0,
+      val queryResults: QueryResults
+  ) {
+    data class QueryResults(
+        val query: String,
+        val items: List<Item>
+    )
   }
 
   data class Args(val defaultQuery: String? = null)

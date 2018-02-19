@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Event
 import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemClick
+import com.jakewharton.sdksearch.ui.SearchViewBinder.Model.QueryResults
 import io.reactivex.functions.Consumer
 
 internal class ItemAdapter(
   private val inflater: LayoutInflater,
-  private val events: Consumer<SearchViewBinder.Event>
+  private val events: Consumer<Event>
 ) : RecyclerView.Adapter<ItemViewHolder>() {
   private var query = ""
   private var items: List<Item> = emptyList()
@@ -19,9 +21,9 @@ internal class ItemAdapter(
     items.firstOrNull()?.let { events.accept(ItemClick(it)) }
   }
 
-  fun updateItems(query: String, items: List<Item>) {
-    this.query = query
-    this.items = items
+  fun updateItems(queryResults: QueryResults) {
+    this.query = queryResults.query
+    this.items = queryResults.items
   }
 
   override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
