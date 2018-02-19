@@ -20,6 +20,8 @@ import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.rx2.openSubscription
+import kotlinx.coroutines.experimental.selects.select
 import java.util.concurrent.TimeUnit
 
 class SearchPresenter(
@@ -47,11 +49,7 @@ class SearchPresenter(
       }
     }.addTo(disposables)
 
-    val models = Channel<Model>()
-
-    val itemCount = store.count()
-        .observeOn(AndroidSchedulers.mainThread())
-        .startWith(0L)
+    val itemCount = store.count().openSubscription()
 
     val queryItems = binder.events
         .ofType<Event.QueryChanged>()
@@ -62,15 +60,23 @@ class SearchPresenter(
 
           results.map { Model.QueryResults(query, it) }
         }
-        .observeOn(AndroidSchedulers.mainThread())
-        .startWith(Model.QueryResults("", emptyList()))
+        .openSubscription()
 
-    val items = Observable.combineLatest(itemCount, queryItems,
-        BiFunction<Long, Model.QueryResults, Model> { count, queryResults -> Model(count, queryResults) })
-
-    items.crashingSubscribe {
-      models.offer(it)
-    }.addTo(disposables)
+    val models = Channel<Model>()
+    launch(UI, UNDISPATCHED) {
+      var model = Model()
+      while (isActive) {
+        model = select {
+          itemCount.onReceive {
+            model.copy(count = it)
+          }
+          queryItems.onReceive {
+            model.copy(queryResults = it)
+          }
+        }
+        models.send(model)
+      }
+    }
 
     launch(UI, UNDISPATCHED) {
       var snackbar: Snackbar? = null
@@ -126,11 +132,11 @@ class SearchPresenter(
 
   data class Model(
       val count: Long = 0,
-      val queryResults: QueryResults
+      val queryResults: QueryResults = QueryResults()
   ) {
     data class QueryResults(
-        val query: String,
-        val items: List<Item>
+        val query: String = "",
+        val items: List<Item> = emptyList()
     )
   }
 }
