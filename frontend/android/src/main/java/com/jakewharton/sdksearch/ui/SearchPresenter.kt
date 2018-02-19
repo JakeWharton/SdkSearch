@@ -4,10 +4,9 @@ import android.app.Activity
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
 import com.jakewharton.sdksearch.R
+import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Model
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Model.QueryResults
 import com.jakewharton.sdksearch.util.addTo
 import com.jakewharton.sdksearch.util.crashingSubscribe
 import com.jakewharton.sdksearch.util.ofType
@@ -23,7 +22,7 @@ import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.launch
 import java.util.concurrent.TimeUnit
 
-internal class SearchPresenter(
+class SearchPresenter(
     private val activity: Activity,
     private val binder: SearchViewBinder, // TODO tease this out
     private val defaultQuery: String?,
@@ -34,7 +33,6 @@ internal class SearchPresenter(
     private val store: ItemStore,
     private val synchronizer: ItemSynchronizer
 ) {
-
   fun start(): Disposable {
     val disposables = CompositeDisposable()
     val resources = activity.resources
@@ -42,10 +40,10 @@ internal class SearchPresenter(
 
     binder.events.crashingSubscribe {
       when (it) {
-        is SearchViewBinder.Event.ItemClick -> onClick(it.item)
-        is SearchViewBinder.Event.ItemCopy -> onCopy(it.item)
-        is SearchViewBinder.Event.ItemShare -> onShare(it.item)
-        is SearchViewBinder.Event.ItemViewSource -> onSource(it.item)
+        is Event.ItemClick -> onClick(it.item)
+        is Event.ItemCopy -> onCopy(it.item)
+        is Event.ItemShare -> onShare(it.item)
+        is Event.ItemViewSource -> onSource(it.item)
       }
     }.addTo(disposables)
 
@@ -56,19 +54,19 @@ internal class SearchPresenter(
         .startWith(0L)
 
     val queryItems = binder.events
-        .ofType<SearchViewBinder.Event.QueryChanged>()
-        .map(SearchViewBinder.Event.QueryChanged::query)
+        .ofType<Event.QueryChanged>()
+        .map(Event.QueryChanged::query)
         .switchMap { query ->
           val results = if (query.isBlank()) Observable.just(emptyList())
           else store.queryItems(query).delaySubscription(200, TimeUnit.MILLISECONDS, mainThread())
 
-          results.map { QueryResults(query, it) }
+          results.map { Model.QueryResults(query, it) }
         }
         .observeOn(AndroidSchedulers.mainThread())
-        .startWith(QueryResults("", emptyList()))
+        .startWith(Model.QueryResults("", emptyList()))
 
     val items = Observable.combineLatest(itemCount, queryItems,
-        BiFunction<Long, QueryResults, Model> { count, queryResults -> Model(count, queryResults) })
+        BiFunction<Long, Model.QueryResults, Model> { count, queryResults -> Model(count, queryResults) })
 
     items.crashingSubscribe {
       models.offer(it)
@@ -116,5 +114,23 @@ internal class SearchPresenter(
     synchronizer.forceSync()
 
     return disposables
+  }
+
+  sealed class Event {
+    class ItemClick(val item: Item): Event()
+    class ItemCopy(val item: Item): Event()
+    class ItemShare(val item: Item): Event()
+    class ItemViewSource(val item: Item): Event()
+    class QueryChanged(val query: String): Event()
+  }
+
+  data class Model(
+      val count: Long = 0,
+      val queryResults: QueryResults
+  ) {
+    data class QueryResults(
+        val query: String,
+        val items: List<Item>
+    )
   }
 }

@@ -1,7 +1,7 @@
 package com.jakewharton.sdksearch.ui
 
 import android.support.v7.util.DiffUtil
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Model.QueryResults
+import com.jakewharton.sdksearch.ui.SearchPresenter.Model.QueryResults
 
 internal class ItemDiffer(
   oldResults: QueryResults,

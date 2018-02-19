@@ -19,8 +19,9 @@ import androidx.content.systemService
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Model.QueryResults
+import com.jakewharton.sdksearch.ui.SearchPresenter.Event
+import com.jakewharton.sdksearch.ui.SearchPresenter.Model
+import com.jakewharton.sdksearch.ui.SearchPresenter.Model.QueryResults
 import com.jakewharton.sdksearch.util.layoutInflater
 import com.jakewharton.sdksearch.util.onEditorAction
 import com.jakewharton.sdksearch.util.onKey
@@ -143,23 +144,5 @@ class SearchViewBinder(view: View) {
     return parentJob
   }
 
-  data class Model(
-      val count: Long = 0,
-      val queryResults: QueryResults
-  ) {
-    data class QueryResults(
-        val query: String,
-        val items: List<Item>
-    )
-  }
-
   data class Args(val defaultQuery: String? = null)
-
-  sealed class Event {
-    class ItemClick(val item: Item): Event()
-    class ItemCopy(val item: Item): Event()
-    class ItemShare(val item: Item): Event()
-    class ItemViewSource(val item: Item): Event()
-    class QueryChanged(val query: String): Event()
-  }
 }

@@ -19,16 +19,17 @@ import androidx.text.buildSpannedString
 import androidx.text.inSpans
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemClick
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemCopy
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemShare
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemViewSource
+import com.jakewharton.sdksearch.ui.SearchPresenter.Event
+import com.jakewharton.sdksearch.ui.SearchPresenter.Event.ItemClick
+import com.jakewharton.sdksearch.ui.SearchPresenter.Event.ItemCopy
+import com.jakewharton.sdksearch.ui.SearchPresenter.Event.ItemShare
+import com.jakewharton.sdksearch.ui.SearchPresenter.Event.ItemViewSource
 import io.reactivex.functions.Consumer
 import kotlin.LazyThreadSafetyMode.NONE
 
 internal class ItemViewHolder(
   private val root: View,
-  private val events: Consumer<SearchViewBinder.Event>
+  private val events: Consumer<Event>
 ) : ViewHolder(root), OnClickListener, OnMenuItemClickListener {
   private val packageNameText: TextView = root.findViewById(R.id.package_name)
   private val classNameText: TextView = root.findViewById(R.id.class_name)

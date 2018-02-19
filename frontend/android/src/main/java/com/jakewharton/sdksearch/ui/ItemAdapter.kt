@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Event
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Event.ItemClick
-import com.jakewharton.sdksearch.ui.SearchViewBinder.Model.QueryResults
+import com.jakewharton.sdksearch.ui.SearchPresenter.Event
+import com.jakewharton.sdksearch.ui.SearchPresenter.Event.ItemClick
+import com.jakewharton.sdksearch.ui.SearchPresenter.Model.QueryResults
 import io.reactivex.functions.Consumer
 
 internal class ItemAdapter(
