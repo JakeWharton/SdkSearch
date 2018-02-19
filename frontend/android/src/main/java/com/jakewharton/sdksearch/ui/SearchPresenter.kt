@@ -5,8 +5,6 @@ import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
 import android.support.v7.util.DiffUtil
 import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.api.dac.BaseUrl
-import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import com.jakewharton.sdksearch.util.addTo
@@ -28,15 +26,13 @@ internal class SearchPresenter(
     private val activity: Activity,
     private val binder: SearchViewBinder, // TODO tease this out
     private val defaultQuery: String?,
-    baseUrl: BaseUrl,
-    androidReference: AndroidReference,
+    private val onClick: ItemHandler,
+    private val onCopy: ItemHandler,
+    private val onShare: ItemHandler,
+    private val onSource: ItemHandler,
     private val store: ItemStore,
     private val synchronizer: ItemSynchronizer
 ) {
-  private val onClick = OpenDocumentationItemHandler(activity, baseUrl, androidReference)
-  private val onCopy = ClipboardCopyItemHandler(activity, baseUrl)
-  private val onShare = ShareItemHandler(activity, baseUrl)
-  private val onSource = OpenSourceItemHandler(activity, androidReference)
 
   fun start(): Disposable {
     val disposables = CompositeDisposable()

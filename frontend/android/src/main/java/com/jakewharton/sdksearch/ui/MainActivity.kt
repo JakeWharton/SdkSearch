@@ -54,9 +54,14 @@ class MainActivity : Activity() {
     val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
     val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
 
+    val onClick = OpenDocumentationItemHandler(this, baseUrl, androidReference)
+    val onCopy = ClipboardCopyItemHandler(this, baseUrl)
+    val onShare = ShareItemHandler(this, baseUrl)
+    val onSource = OpenSourceItemHandler(this, androidReference)
+
     setContentView(R.layout.main)
     val binder = SearchViewBinder(window.decorView)
-    val presenter = SearchPresenter(this, binder, defaultQuery, baseUrl, androidReference, store, synchronizer)
+    val presenter = SearchPresenter(this, binder, defaultQuery, onClick, onCopy, onShare, onSource, store, synchronizer)
 
     disposable = presenter.start()
   }
