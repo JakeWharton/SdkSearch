@@ -1,6 +1,8 @@
 package com.jakewharton.sdksearch.ui
 
 import android.graphics.Typeface
+import android.support.design.widget.Snackbar
+import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
@@ -20,6 +22,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.ui.SearchPresenter.Event
+import com.jakewharton.sdksearch.ui.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.ui.SearchPresenter.Model
 import com.jakewharton.sdksearch.ui.SearchPresenter.Model.QueryResults
 import com.jakewharton.sdksearch.util.layoutInflater
@@ -29,7 +32,6 @@ import com.jakewharton.sdksearch.util.onScroll
 import com.jakewharton.sdksearch.util.onTextChanged
 import io.reactivex.Observable
 import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.android.UI
@@ -44,8 +46,7 @@ class SearchViewBinder(view: View) {
   private val _events: Relay<Event> = PublishRelay.create<Event>()
   val events: Observable<Event> get() = _events
 
-  // TODO all private + view model
-  internal val results: RecyclerView = view.findViewById(R.id.results)
+  private val results: RecyclerView = view.findViewById(R.id.results)
   private val resultsAdapter = ItemAdapter(context.layoutInflater, _events)
   private val queryInput: EditText = view.findViewById(R.id.query)
   private val queryClear: View = view.findViewById(R.id.clear_query)
@@ -132,12 +133,44 @@ class SearchViewBinder(view: View) {
       }
     }
 
-    launch(Unconfined, UNDISPATCHED, parent = parentJob) {
+    launch(Unconfined, parent = parentJob) {
+      var snackbar: Snackbar? = null
+
       for (model in models) {
         val count = model.count
         queryInput.hint = resources.getQuantityString(R.plurals.search_classes, count.toInt(), count)
 
         queryResultProcessor.send(model.queryResults)
+
+        val (inFlight, failed) = model.syncStatus
+        if (inFlight != 0 || failed != 0) {
+          val message = when {
+            failed == 0 -> {
+              resources.getQuantityString(R.plurals.updating, inFlight, inFlight)
+            }
+            inFlight == 0 -> {
+              resources.getQuantityString(R.plurals.updating_failed, failed, failed)
+            }
+            else -> {
+              resources.getQuantityString(R.plurals.updating_with_failed, inFlight, inFlight, failed)
+            }
+          }
+
+          if (snackbar == null) {
+            snackbar = Snackbar.make(results, message, LENGTH_INDEFINITE)
+            snackbar.show()
+          } else {
+            snackbar.setText(message)
+          }
+
+          if (failed > 0 && inFlight == 0) {
+            snackbar.setAction(R.string.dismiss) {
+              _events.accept(ClearSyncStatus)
+            }
+          }
+        } else {
+          snackbar?.dismiss()
+        }
       }
     }
 

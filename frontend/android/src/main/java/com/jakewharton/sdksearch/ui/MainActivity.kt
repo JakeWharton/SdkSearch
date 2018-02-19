@@ -61,7 +61,7 @@ class MainActivity : Activity() {
 
     setContentView(R.layout.main)
     val binder = SearchViewBinder(window.decorView)
-    val presenter = SearchPresenter(this, binder, defaultQuery, onClick, onCopy, onShare, onSource, store, synchronizer)
+    val presenter = SearchPresenter(binder, defaultQuery, onClick, onCopy, onShare, onSource, store, synchronizer)
 
     disposable = presenter.start()
   }
