@@ -12,15 +12,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.channels.Channel
+import kotlinx.coroutines.experimental.channels.ConflatedChannel
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.rx2.openSubscription
 import kotlinx.coroutines.experimental.selects.select
 import java.util.concurrent.TimeUnit
 
 class SearchPresenter(
-    private val binder: SearchViewBinder, // TODO tease this out
-    private val defaultQuery: String?,
     private val onClick: ItemHandler,
     private val onCopy: ItemHandler,
     private val onShare: ItemHandler,
@@ -28,10 +27,13 @@ class SearchPresenter(
     private val store: ItemStore,
     private val synchronizer: ItemSynchronizer
 ) {
-  fun start(): Disposable {
+  private val _models = ConflatedChannel<Model>()
+  val models: ReceiveChannel<Model> get() = _models
+
+  fun start(events: Observable<Event>): Disposable {
     val disposables = CompositeDisposable()
 
-    binder.events.crashingSubscribe {
+    events.crashingSubscribe {
       when (it) {
         is Event.ItemClick -> onClick(it.item)
         is Event.ItemCopy -> onCopy(it.item)
@@ -42,7 +44,7 @@ class SearchPresenter(
 
     val itemCount = store.count().openSubscription()
 
-    val queryItems = binder.events
+    val queryItems = events
         .ofType<Event.QueryChanged>()
         .map(Event.QueryChanged::query)
         .switchMap { query ->
@@ -53,11 +55,10 @@ class SearchPresenter(
         }
         .openSubscription()
 
-    val clearSyncStatus = binder.events
+    val clearSyncStatus = events
         .ofType<Event.ClearSyncStatus>()
         .openSubscription()
 
-    val models = Channel<Model>()
     launch(UI, UNDISPATCHED) {
       var model = Model()
       while (isActive) {
@@ -77,11 +78,9 @@ class SearchPresenter(
             model.copy(syncStatus = Model.SyncStatus(0, 0))
           }
         }
-        models.send(model)
+        _models.send(model)
       }
     }
-
-    binder.attach(SearchViewBinder.Args(defaultQuery), models)
 
     synchronizer.forceSync()
 

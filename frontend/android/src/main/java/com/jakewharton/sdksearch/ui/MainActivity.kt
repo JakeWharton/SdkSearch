@@ -15,10 +15,12 @@ import com.jakewharton.sdksearch.store.DbComponent
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.Job
 import timber.log.Timber
 
 class MainActivity : Activity() {
   private lateinit var disposable: Disposable
+  private lateinit var binderJob: Job
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -48,7 +50,7 @@ class MainActivity : Activity() {
         .itemStore()
 
     val defaultQuery = if (savedInstanceState == null) {
-      intent.getStringExtra("query")
+      SearchViewBinder.Args(intent.getStringExtra("query"))
     } else null
 
     val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
@@ -59,15 +61,19 @@ class MainActivity : Activity() {
     val onShare = ShareItemHandler(this, baseUrl)
     val onSource = OpenSourceItemHandler(this, androidReference)
 
+    val presenter = SearchPresenter(onClick, onCopy, onShare, onSource, store, synchronizer)
+
     setContentView(R.layout.main)
     val binder = SearchViewBinder(window.decorView)
-    val presenter = SearchPresenter(binder, defaultQuery, onClick, onCopy, onShare, onSource, store, synchronizer)
+    defaultQuery?.let { binder.init(it) }
+    binderJob = binder.attach(presenter.models)
 
-    disposable = presenter.start()
+    disposable = presenter.start(binder.events)
   }
 
   override fun onDestroy() {
     super.onDestroy()
+    binderJob.cancel()
     disposable.dispose()
   }
 }

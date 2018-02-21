@@ -105,9 +105,11 @@ class SearchViewBinder(view: View) {
     }
   }
 
-  fun attach(args: Args, models: ReceiveChannel<Model>): Job {
+  fun init(args: Args) {
     args.defaultQuery?.let(queryInput::setText)
+  }
 
+  fun attach(models: ReceiveChannel<Model>): Job {
     val resources = context.resources
     val parentJob = Job()
 
