@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.ui.SearchPresenter.Model.QueryResults
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.QueryResults
 
 internal class ItemAdapter(
   private val inflater: LayoutInflater,

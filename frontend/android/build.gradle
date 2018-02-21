@@ -96,15 +96,13 @@ android {
 }
 
 dependencies {
-  implementation project(':references:jdk')
-  implementation project(':sync')
+  implementation project(':search:presenter')
 
   debugImplementation project(':debug-updater')
 
   implementation deps.kotlin.stdlib.jdk
   implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
-  implementation deps.kotlin.coroutines.rx2
 
   implementation deps.android.support.annotations
   implementation deps.android.support.recyclerView
@@ -112,10 +110,6 @@ dependencies {
   implementation deps.android.support.design
   implementation deps.android.support.constraintLayout
   implementation deps.android.x.coreKtx
-
-  implementation deps.rx.java
-  implementation deps.rx.android
-  implementation deps.rx.relay
 
   implementation deps.timber
   implementation deps.bugsnag

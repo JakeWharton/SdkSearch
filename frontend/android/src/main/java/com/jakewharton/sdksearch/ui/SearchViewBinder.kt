@@ -20,10 +20,10 @@ import android.widget.EditText
 import androidx.content.systemService
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.ui.SearchPresenter.Event
-import com.jakewharton.sdksearch.ui.SearchPresenter.Event.ClearSyncStatus
-import com.jakewharton.sdksearch.ui.SearchPresenter.Model
-import com.jakewharton.sdksearch.ui.SearchPresenter.Model.QueryResults
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.QueryResults
 import com.jakewharton.sdksearch.util.layoutInflater
 import com.jakewharton.sdksearch.util.onEditorAction
 import com.jakewharton.sdksearch.util.onKey

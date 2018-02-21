@@ -1,17 +1,15 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.search.presenter
 
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import com.jakewharton.sdksearch.util.ofType
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
+import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
-import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.ConflatedChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.launch
@@ -20,6 +18,7 @@ import kotlinx.coroutines.experimental.selects.select
 import java.util.concurrent.TimeUnit
 
 class SearchPresenter(
+  private val context: CoroutineDispatcher,
   private val store: ItemStore,
   private val synchronizer: ItemSynchronizer
 ) {
@@ -39,7 +38,7 @@ class SearchPresenter(
         .map(Event.QueryChanged::query)
         .switchMap { query ->
           val results = if (query.isBlank()) Observable.just(emptyList())
-          else store.queryItems(query).delaySubscription(200, TimeUnit.MILLISECONDS, mainThread())
+          else store.queryItems(query).delaySubscription(200, TimeUnit.MILLISECONDS)
 
           results.map { Model.QueryResults(query, it) }
         }
@@ -49,7 +48,7 @@ class SearchPresenter(
         .ofType<Event.ClearSyncStatus>()
         .openSubscription()
 
-    launch(UI, UNDISPATCHED) {
+    launch(context, UNDISPATCHED) {
       var model = Model()
       while (isActive) {
         model = select {
@@ -96,4 +95,6 @@ class SearchPresenter(
         val failed: Int = 0
     )
   }
+
+  private inline fun <reified T> Observable<*>.ofType(): Observable<T> = ofType(T::class.java)
 }

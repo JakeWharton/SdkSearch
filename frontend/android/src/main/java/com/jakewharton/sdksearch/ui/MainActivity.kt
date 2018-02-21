@@ -11,11 +11,13 @@ import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.store.DbComponent
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.UI
 import timber.log.Timber
 
 class MainActivity : Activity() {
@@ -57,7 +59,7 @@ class MainActivity : Activity() {
     val onShare = ShareItemHandler(this, baseUrl)
     val onSource = OpenSourceItemHandler(this, androidReference)
 
-    val presenter = SearchPresenter(store, synchronizer)
+    val presenter = SearchPresenter(UI, store, synchronizer)
     presenterDisposable = presenter.start()
 
     val defaultQuery = if (savedInstanceState == null) {
