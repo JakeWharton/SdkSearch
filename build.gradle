@@ -22,7 +22,7 @@ buildscript {
       'kotlinSerialization': '0.4',
       'okhttp': '3.9.1',
       'retrofit': '2.3.0',
-      'kotshi': '1.1.0-SNAPSHOT',
+      'kotshi': '1.0.1',
       'dagger': '2.14.1',
   ]
 
@@ -136,7 +136,6 @@ allprojects {
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
   // Force all of the primary support libraries to use the same version.
