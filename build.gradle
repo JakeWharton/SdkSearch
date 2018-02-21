@@ -180,3 +180,44 @@ def gitTimestamp() {
 def propOrEmpty(String name) {
   return hasProperty(name) ? getProperty(name) : ''
 }
+
+task projectDependencyGraph {
+  doLast {
+    def dot = new File(rootProject.buildDir, "project.dot")
+    dot.delete()
+
+    dot << 'digraph {\n'
+    dot << "  graph [label=\"${rootProject.name}\\n \",labelloc=t,fontsize=30];\n"
+    dot << '  rankdir=LR;\n\n'
+
+    def projects = [rootProject]
+    while (!projects.isEmpty()) {
+      def project = projects.remove(0)
+
+      project.configurations.all { config ->
+        config.dependencies
+                .withType(ProjectDependency)
+                .collect { it.dependencyProject }
+                .each { dependency ->
+          if (config.name == 'implementation' || config.name.endsWith('Implementation')) {
+            dot << ("  \"${project.displayName}\" -> \"${dependency.displayName}\" [style=dotted]\n")
+          } else {
+            dot << ("  \"${project.displayName}\" -> \"${dependency.displayName}\"\n")
+          }
+        }
+      }
+
+      projects.addAll(project.childProjects.values())
+    }
+
+    dot << '}\n'
+
+    def p = 'dot -Tpng -O project.dot'.execute([], rootProject.buildDir)
+    p.waitFor()
+    if (p.exitValue() != 0) {
+      throw new RuntimeException(p.errorStream.text)
+    }
+
+    println("Project module dependency graph created at ${dot.absolutePath}.png")
+  }
+}
