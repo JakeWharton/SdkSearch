@@ -198,11 +198,11 @@ task projectDependencyGraph {
                 .withType(ProjectDependency)
                 .collect { it.dependencyProject }
                 .each { dependency ->
-          if (config.name == 'implementation' || config.name.endsWith('Implementation')) {
-            dot << ("  \"${project.displayName}\" -> \"${dependency.displayName}\" [style=dotted]\n")
-          } else {
-            dot << ("  \"${project.displayName}\" -> \"${dependency.displayName}\"\n")
+          dot << "  \"${project.path}\" -> \"${dependency.path}\""
+          if (config.name.toLowerCase().endsWith('implementation')) {
+            dot << " [style=dotted]"
           }
+          dot << '\n'
         }
       }
 
