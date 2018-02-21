@@ -19,7 +19,7 @@ import kotlinx.coroutines.experimental.Job
 import timber.log.Timber
 
 class MainActivity : Activity() {
-  private lateinit var disposable: Disposable
+  private lateinit var presenterDisposable: Disposable
   private lateinit var binderJob: Job
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +58,7 @@ class MainActivity : Activity() {
     val onSource = OpenSourceItemHandler(this, androidReference)
 
     val presenter = SearchPresenter(store, synchronizer)
+    presenterDisposable = presenter.start()
 
     val defaultQuery = if (savedInstanceState == null) {
       SearchViewBinder.Args(intent.getStringExtra("query"))
@@ -66,14 +67,12 @@ class MainActivity : Activity() {
     setContentView(R.layout.main)
     val binder = SearchViewBinder(window.decorView, onClick, onCopy, onShare, onSource)
     defaultQuery?.let { binder.init(it) }
-    binderJob = binder.attach(presenter.models)
-
-    disposable = presenter.start(binder.events)
+    binderJob = binder.attach(presenter.models, presenter.events)
   }
 
   override fun onDestroy() {
     super.onDestroy()
     binderJob.cancel()
-    disposable.dispose()
+    presenterDisposable.dispose()
   }
 }

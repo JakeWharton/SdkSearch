@@ -18,8 +18,6 @@ import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
 import androidx.content.systemService
-import com.jakewharton.rxrelay2.PublishRelay
-import com.jakewharton.rxrelay2.Relay
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.ui.SearchPresenter.Event
@@ -31,7 +29,7 @@ import com.jakewharton.sdksearch.util.onEditorAction
 import com.jakewharton.sdksearch.util.onKey
 import com.jakewharton.sdksearch.util.onScroll
 import com.jakewharton.sdksearch.util.onTextChanged
-import io.reactivex.Observable
+import io.reactivex.functions.Consumer
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.Unconfined
@@ -50,10 +48,6 @@ class SearchViewBinder(
 ) {
   private val context = view.context
 
-  private val _events: Relay<Event> = PublishRelay.create<Event>()
-  val events: Observable<Event> get() = _events
-
-  private val results: RecyclerView = view.findViewById(R.id.results)
   private val resultsAdapter = ItemAdapter(context.layoutInflater, object : ItemAdapter.Callback {
     override fun onItemClicked(item: Item) = onClick(item)
     override fun onItemCopied(item: Item) = onCopy(item)
@@ -61,6 +55,7 @@ class SearchViewBinder(
     override fun onItemViewSource(item: Item) = onSource(item)
   })
 
+  private val results: RecyclerView = view.findViewById(R.id.results)
   private val queryInput: EditText = view.findViewById(R.id.query)
   private val queryClear: View = view.findViewById(R.id.clear_query)
 
@@ -82,8 +77,6 @@ class SearchViewBinder(
     queryInput.onTextChanged {
       queryClear.visibility = if (it.isEmpty()) INVISIBLE else VISIBLE
       queryInput.typeface = if (it.isEmpty()) Typeface.DEFAULT else robotoMono
-
-      _events.accept(Event.QueryChanged(it.toString()))
     }
 
     val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
@@ -122,9 +115,16 @@ class SearchViewBinder(
     args.defaultQuery?.let(queryInput::setText)
   }
 
-  fun attach(models: ReceiveChannel<Model>): Job {
+  fun attach(models: ReceiveChannel<Model>, events: Consumer<Event>): Job {
     val resources = context.resources
     val parentJob = Job()
+
+    val watcher = queryInput.onTextChanged {
+      events.accept(Event.QueryChanged(it.toString()))
+    }
+    parentJob.invokeOnCompletion {
+      queryInput.removeTextChangedListener(watcher)
+    }
 
     val queryResultProcessor = actor<QueryResults>(CommonPool, parent = parentJob) {
       var oldResults = receive()
@@ -180,7 +180,7 @@ class SearchViewBinder(
 
           if (failed > 0 && inFlight == 0) {
             snackbar.setAction(R.string.dismiss) {
-              _events.accept(ClearSyncStatus)
+              events.accept(ClearSyncStatus)
             }
           }
         } else {

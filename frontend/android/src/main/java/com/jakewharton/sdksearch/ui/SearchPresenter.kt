@@ -1,5 +1,6 @@
 package com.jakewharton.sdksearch.ui
 
+import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
@@ -8,6 +9,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.ConflatedChannel
@@ -24,12 +26,15 @@ class SearchPresenter(
   private val _models = ConflatedChannel<Model>()
   val models: ReceiveChannel<Model> get() = _models
 
-  fun start(events: Observable<Event>): Disposable {
+  private val _events = PublishRelay.create<Event>()
+  val events: Consumer<Event> get() = _events
+
+  fun start(): Disposable {
     val disposables = CompositeDisposable()
 
     val itemCount = store.count().openSubscription()
 
-    val queryItems = events
+    val queryItems = _events
         .ofType<Event.QueryChanged>()
         .map(Event.QueryChanged::query)
         .switchMap { query ->
@@ -40,7 +45,7 @@ class SearchPresenter(
         }
         .openSubscription()
 
-    val clearSyncStatus = events
+    val clearSyncStatus = _events
         .ofType<Event.ClearSyncStatus>()
         .openSubscription()
 
