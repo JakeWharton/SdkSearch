@@ -21,6 +21,7 @@ import androidx.content.systemService
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import com.jakewharton.sdksearch.R
+import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.ui.SearchPresenter.Event
 import com.jakewharton.sdksearch.ui.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.ui.SearchPresenter.Model
@@ -40,14 +41,26 @@ import kotlinx.coroutines.experimental.channels.actor
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 
-class SearchViewBinder(view: View) {
+class SearchViewBinder(
+  view: View,
+  private val onClick: ItemHandler,
+  private val onCopy: ItemHandler,
+  private val onShare: ItemHandler,
+  private val onSource: ItemHandler
+) {
   private val context = view.context
 
   private val _events: Relay<Event> = PublishRelay.create<Event>()
   val events: Observable<Event> get() = _events
 
   private val results: RecyclerView = view.findViewById(R.id.results)
-  private val resultsAdapter = ItemAdapter(context.layoutInflater, _events)
+  private val resultsAdapter = ItemAdapter(context.layoutInflater, object : ItemAdapter.Callback {
+    override fun onItemClicked(item: Item) = onClick(item)
+    override fun onItemCopied(item: Item) = onCopy(item)
+    override fun onItemShared(item: Item) = onShare(item)
+    override fun onItemViewSource(item: Item) = onSource(item)
+  })
+
   private val queryInput: EditText = view.findViewById(R.id.query)
   private val queryClear: View = view.findViewById(R.id.clear_query)
 

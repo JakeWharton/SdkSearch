@@ -3,8 +3,6 @@ package com.jakewharton.sdksearch.ui
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import com.jakewharton.sdksearch.util.addTo
-import com.jakewharton.sdksearch.util.crashingSubscribe
 import com.jakewharton.sdksearch.util.ofType
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -20,27 +18,14 @@ import kotlinx.coroutines.experimental.selects.select
 import java.util.concurrent.TimeUnit
 
 class SearchPresenter(
-    private val onClick: ItemHandler,
-    private val onCopy: ItemHandler,
-    private val onShare: ItemHandler,
-    private val onSource: ItemHandler,
-    private val store: ItemStore,
-    private val synchronizer: ItemSynchronizer
+  private val store: ItemStore,
+  private val synchronizer: ItemSynchronizer
 ) {
   private val _models = ConflatedChannel<Model>()
   val models: ReceiveChannel<Model> get() = _models
 
   fun start(events: Observable<Event>): Disposable {
     val disposables = CompositeDisposable()
-
-    events.crashingSubscribe {
-      when (it) {
-        is Event.ItemClick -> onClick(it.item)
-        is Event.ItemCopy -> onCopy(it.item)
-        is Event.ItemShare -> onShare(it.item)
-        is Event.ItemViewSource -> onSource(it.item)
-      }
-    }.addTo(disposables)
 
     val itemCount = store.count().openSubscription()
 
@@ -88,11 +73,7 @@ class SearchPresenter(
   }
 
   sealed class Event {
-    class ItemClick(val item: Item): Event()
-    class ItemCopy(val item: Item): Event()
-    class ItemShare(val item: Item): Event()
-    class ItemViewSource(val item: Item): Event()
-    class QueryChanged(val query: String): Event()
+    data class QueryChanged(val query: String): Event()
     object ClearSyncStatus : Event()
   }
 

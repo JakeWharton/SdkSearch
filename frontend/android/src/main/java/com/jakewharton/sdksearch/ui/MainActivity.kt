@@ -49,10 +49,6 @@ class MainActivity : Activity() {
         .build()
         .itemStore()
 
-    val defaultQuery = if (savedInstanceState == null) {
-      SearchViewBinder.Args(intent.getStringExtra("query"))
-    } else null
-
     val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
     val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
 
@@ -61,10 +57,14 @@ class MainActivity : Activity() {
     val onShare = ShareItemHandler(this, baseUrl)
     val onSource = OpenSourceItemHandler(this, androidReference)
 
-    val presenter = SearchPresenter(onClick, onCopy, onShare, onSource, store, synchronizer)
+    val presenter = SearchPresenter(store, synchronizer)
+
+    val defaultQuery = if (savedInstanceState == null) {
+      SearchViewBinder.Args(intent.getStringExtra("query"))
+    } else null
 
     setContentView(R.layout.main)
-    val binder = SearchViewBinder(window.decorView)
+    val binder = SearchViewBinder(window.decorView, onClick, onCopy, onShare, onSource)
     defaultQuery?.let { binder.init(it) }
     binderJob = binder.attach(presenter.models)
 
