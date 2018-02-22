@@ -14,14 +14,13 @@ import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.store.DbComponent
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import timber.log.Timber
 
 class MainActivity : Activity() {
-  private lateinit var presenterDisposable: Disposable
+  private lateinit var presenterJob: Job
   private lateinit var binderJob: Job
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +59,7 @@ class MainActivity : Activity() {
     val onSource = OpenSourceItemHandler(this, androidReference)
 
     val presenter = SearchPresenter(UI, store, synchronizer)
-    presenterDisposable = presenter.start()
+    presenterJob = presenter.start()
 
     val defaultQuery = if (savedInstanceState == null) {
       SearchViewBinder.Args(intent.getStringExtra("query"))
@@ -75,6 +74,6 @@ class MainActivity : Activity() {
   override fun onDestroy() {
     super.onDestroy()
     binderJob.cancel()
-    presenterDisposable.dispose()
+    presenterJob.cancel()
   }
 }

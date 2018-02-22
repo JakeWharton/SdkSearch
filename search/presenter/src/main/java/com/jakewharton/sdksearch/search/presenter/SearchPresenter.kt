@@ -5,11 +5,10 @@ import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
+import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.channels.ConflatedChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.launch
@@ -28,9 +27,7 @@ class SearchPresenter(
   private val _events = PublishRelay.create<Event>()
   val events: Consumer<Event> get() = _events
 
-  fun start(): Disposable {
-    val disposables = CompositeDisposable()
-
+  fun start(): Job {
     val itemCount = store.count().openSubscription()
 
     val queryItems = _events
@@ -48,7 +45,7 @@ class SearchPresenter(
         .ofType<Event.ClearSyncStatus>()
         .openSubscription()
 
-    launch(context, UNDISPATCHED) {
+    val job = launch(context, UNDISPATCHED) {
       var model = Model()
       while (isActive) {
         model = select {
@@ -73,7 +70,7 @@ class SearchPresenter(
 
     synchronizer.forceSync()
 
-    return disposables
+    return job
   }
 
   sealed class Event {
