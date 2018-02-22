@@ -44,22 +44,22 @@ class MainActivity : Activity() {
         .documentationService()
 
     val store = DbComponent.builder()
-        .context(this)
+        .context(applicationContext)
         .scheduler(Schedulers.io())
         .filename("sdk.db")
         .build()
         .itemStore()
 
     val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
-    val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
 
+    val presenter = SearchPresenter(UI, store, synchronizer)
+    presenterJob = presenter.start()
+
+    val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
     val onClick = OpenDocumentationItemHandler(this, baseUrl, androidReference)
     val onCopy = ClipboardCopyItemHandler(this, baseUrl)
     val onShare = ShareItemHandler(this, baseUrl)
     val onSource = OpenSourceItemHandler(this, androidReference)
-
-    val presenter = SearchPresenter(UI, store, synchronizer)
-    presenterJob = presenter.start()
 
     val defaultQuery = if (savedInstanceState == null) {
       SearchViewBinder.Args(intent.getStringExtra("query"))
