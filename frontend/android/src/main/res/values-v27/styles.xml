@@ -1,5 +1,5 @@
 <resources>
   <style name="Theme.SdkSearch" parent="Base.V26.Theme.SdkSearch">
-    <item name="android:windowLightNavigationBar">true</item>
+    <item name="android:windowLightNavigationBar">@bool/light_navigation</item>
   </style>
 </resources>

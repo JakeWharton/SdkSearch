@@ -1,10 +1,10 @@
 <resources>
   <style name="Base.V26.Theme.SdkSearch" parent="Base.Theme.SdkSearch">
     <!-- This attribute is only present on API 27+ but the flag is set in code for 26+ -->
-    <!-- <item name="android:windowLightNavigationBar">true</item> -->
+    <!-- <item name="android:windowLightNavigationBar">@bool/light_navigation</item> -->
     <eat-comment/>
 
-    <item name="android:navigationBarColor">#fff</item>
+    <item name="android:navigationBarColor">@color/navigation_bar</item>
   </style>
 
   <style name="Theme.SdkSearch" parent="Base.V26.Theme.SdkSearch">

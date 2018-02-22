@@ -18,7 +18,7 @@ class MainActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    if (Build.VERSION.SDK_INT == 26) {
+    if (Build.VERSION.SDK_INT == 26 && resources.getBoolean(R.bool.light_navigation)) {
       // This attribute can only be set in code on API 26. It's in the theme in 27+.
       window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
     }
