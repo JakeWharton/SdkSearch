@@ -131,6 +131,7 @@ class SearchViewBinder(
 
       launch(UI) {
         resultsAdapter.updateItems(oldResults)
+        resultsAdapter.notifyDataSetChanged()
       }
 
       consumeEach { newResults ->
