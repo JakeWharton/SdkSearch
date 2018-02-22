@@ -3,7 +3,16 @@ package com.jakewharton.sdksearch
 import android.annotation.SuppressLint
 import android.app.Application
 import com.bugsnag.android.Bugsnag
+import com.jakewharton.sdksearch.api.dac.BaseUrl
+import com.jakewharton.sdksearch.api.dac.DacComponent
+import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
+import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter
+import com.jakewharton.sdksearch.store.DbComponent
+import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import com.jakewharton.timber.bugsnag.BugsnagTree
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.android.UI
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.text.SimpleDateFormat
@@ -12,6 +21,9 @@ import java.util.Locale
 import java.util.TimeZone
 
 class SdkSearchApplication : Application() {
+  lateinit var baseUrl: BaseUrl
+  lateinit var presenter: SearchPresenter
+
   override fun onCreate() {
     super.onCreate()
 
@@ -39,6 +51,24 @@ class SdkSearchApplication : Application() {
     if (BuildConfig.DEBUG) {
       Timber.plant(DebugTree())
     }
+
+    baseUrl = BaseUrl(PRODUCTION_DAC)
+
+    val service = DacComponent.builder()
+        .baseUrl(baseUrl)
+        .build()
+        .documentationService()
+
+    val store = DbComponent.builder()
+        .context(applicationContext)
+        .scheduler(Schedulers.io())
+        .filename("sdk.db")
+        .build()
+        .itemStore()
+
+    val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
+
+    presenter = SearchPresenter(UI, store, synchronizer)
   }
 
   @SuppressLint("SimpleDateFormat") // Explicitly after normalized format not localized.

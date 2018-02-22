@@ -5,18 +5,10 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.api.dac.BaseUrl
-import com.jakewharton.sdksearch.api.dac.DacComponent
+import com.jakewharton.sdksearch.SdkSearchApplication
 import com.jakewharton.sdksearch.reference.AndroidReference
-import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
-import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
-import com.jakewharton.sdksearch.search.presenter.SearchPresenter
-import com.jakewharton.sdksearch.store.DbComponent
-import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
 import timber.log.Timber
 
 class MainActivity : Activity() {
@@ -36,25 +28,12 @@ class MainActivity : Activity() {
       throw RuntimeException("Crash! Bang! Pow! This is only a test...")
     }
 
-    val baseUrl = BaseUrl(PRODUCTION_DAC)
+    val app = application as SdkSearchApplication
 
-    val service = DacComponent.builder()
-        .baseUrl(baseUrl)
-        .build()
-        .documentationService()
+    val presenter = app.presenter
+    presenterJob = lastNonConfigurationInstance as Job? ?: presenter.start()
 
-    val store = DbComponent.builder()
-        .context(applicationContext)
-        .scheduler(Schedulers.io())
-        .filename("sdk.db")
-        .build()
-        .itemStore()
-
-    val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
-
-    val presenter = SearchPresenter(UI, store, synchronizer)
-    presenterJob = presenter.start()
-
+    val baseUrl = app.baseUrl
     val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
     val onClick = OpenDocumentationItemHandler(this, baseUrl, androidReference)
     val onCopy = ClipboardCopyItemHandler(this, baseUrl)
@@ -71,9 +50,14 @@ class MainActivity : Activity() {
     binderJob = binder.attach(presenter.models, presenter.events)
   }
 
+  override fun onRetainNonConfigurationInstance() = presenterJob
+
   override fun onDestroy() {
     super.onDestroy()
     binderJob.cancel()
-    presenterJob.cancel()
+
+    if (!isChangingConfigurations) {
+      presenterJob.cancel()
+    }
   }
 }
