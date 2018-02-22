@@ -155,7 +155,7 @@ class SearchViewBinder(
         val count = model.count
         queryInput.hint = resources.getQuantityString(R.plurals.search_classes, count.toInt(), count)
 
-        queryResultProcessor.send(model.queryResults)
+        queryResultProcessor.offer(model.queryResults)
 
         val (inFlight, failed) = model.syncStatus
         if (inFlight != 0 || failed != 0) {
