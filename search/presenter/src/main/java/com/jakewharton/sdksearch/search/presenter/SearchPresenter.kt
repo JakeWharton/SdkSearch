@@ -64,7 +64,7 @@ class SearchPresenter(
             model.copy(syncStatus = Model.SyncStatus(0, 0))
           }
         }
-        _models.send(model)
+        _models.offer(model)
       }
     }
 
