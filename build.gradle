@@ -95,7 +95,7 @@ buildscript {
           'runtime': "com.google.dagger:dagger:${versions.dagger}",
           'compiler': "com.google.dagger:dagger-compiler:${versions.dagger}",
       ],
-      'okio': 'com.squareup.okio:okio:1.13.0',
+      'okio': 'com.squareup.okio:okio:1.14.0',
       'moshi': 'com.squareup.moshi:moshi:1.5.0',
       'timber': 'com.jakewharton.timber:timber:4.6.1',
       'junit': 'junit:junit:4.12',
