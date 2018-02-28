@@ -67,7 +67,7 @@ buildscript {
               'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta5',
           ],
           'x': [
-              'coreKtx': 'androidx.core:core-ktx:0.1',
+              'coreKtx': 'androidx.core:core-ktx:0.2',
           ],
           'test': [
               'runner': "com.android.support.test:runner:${versions.atsl}",
