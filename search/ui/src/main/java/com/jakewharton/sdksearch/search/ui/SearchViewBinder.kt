@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.search.ui
 
 import android.graphics.Typeface
 import android.support.design.widget.Snackbar
@@ -18,17 +18,16 @@ import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
 import androidx.content.systemService
-import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.QueryResults
-import com.jakewharton.sdksearch.util.layoutInflater
-import com.jakewharton.sdksearch.util.onEditorAction
-import com.jakewharton.sdksearch.util.onKey
-import com.jakewharton.sdksearch.util.onScroll
-import com.jakewharton.sdksearch.util.onTextChanged
+import com.jakewharton.sdksearch.search.ui.util.layoutInflater
+import com.jakewharton.sdksearch.search.ui.util.onEditorAction
+import com.jakewharton.sdksearch.search.ui.util.onKey
+import com.jakewharton.sdksearch.search.ui.util.onScroll
+import com.jakewharton.sdksearch.search.ui.util.onTextChanged
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.actor
 import kotlinx.coroutines.experimental.channels.consumeEach

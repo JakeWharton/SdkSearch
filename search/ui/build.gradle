@@ -1,0 +1,47 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+android {
+  compileSdkVersion buildConfig.compileSdk
+
+  defaultConfig {
+    minSdkVersion buildConfig.minSdk
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    lintConfig rootProject.file('lint.xml')
+
+    // TODO bug?
+    warning 'UnusedResources'
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+}
+
+dependencies {
+  implementation project(':roboto')
+  api project(':search:presenter')
+
+  implementation deps.kotlin.stdlib.jdk
+  implementation deps.kotlin.coroutines.jdk
+  implementation deps.kotlin.coroutines.android
+
+  implementation deps.android.support.recyclerView
+  implementation deps.android.support.constraintLayout
+  implementation(deps.android.support.design) {
+    // TODO remove once https://issuetracker.google.com/issues/68820009 ships (probably via MDC).
+    // All the required granular dependencies are transitive of its appcompat dependency anyway.
+    exclude group: 'com.android.support', module: 'support-v4'
+  }
+
+  implementation deps.android.x.coreKtx
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

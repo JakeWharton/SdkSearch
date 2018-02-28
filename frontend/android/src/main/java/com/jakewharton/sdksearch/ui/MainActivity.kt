@@ -9,6 +9,7 @@ import com.jakewharton.sdksearch.SdkSearchApplication
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
+import com.jakewharton.sdksearch.search.ui.SearchViewBinder
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.launch

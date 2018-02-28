@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.search.ui
 
 import android.support.v7.util.DiffUtil
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.QueryResults

@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.search.ui
 
 import android.graphics.Typeface.BOLD
 import android.support.v4.graphics.ColorUtils
@@ -17,7 +17,6 @@ import android.widget.PopupMenu.OnMenuItemClickListener
 import android.widget.TextView
 import androidx.text.buildSpannedString
 import androidx.text.inSpans
-import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
 import kotlin.LazyThreadSafetyMode.NONE
 

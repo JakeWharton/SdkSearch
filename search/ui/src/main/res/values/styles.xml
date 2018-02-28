@@ -1,0 +1,15 @@
+<resources>
+  <style name="ThemeOverlay.SdkSearch.Dark.ActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <item name="colorAccent">#fff</item>
+  </style>
+
+  <style name="TextAppearance.PackageName" parent="@style/TextAppearance.AppCompat.Caption">
+    <item name="android:fontFamily">@font/roboto_mono</item>
+    <item name="android:letterSpacing">-0.03</item>
+  </style>
+
+  <style name="TextAppearance.ClassName" parent="@style/TextAppearance.AppCompat.Title">
+    <item name="android:fontFamily">@font/roboto_mono</item>
+    <item name="android:letterSpacing">-0.03</item>
+  </style>
+</resources>

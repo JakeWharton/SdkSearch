@@ -9,18 +9,4 @@
 
   <style name="Theme.SdkSearch" parent="Base.Theme.SdkSearch">
   </style>
-
-  <style name="ThemeOverlay.SdkSearch.Dark.ActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-    <item name="colorAccent">@color/white_translucent</item>
-  </style>
-
-  <style name="TextAppearance.PackageName" parent="@style/TextAppearance.AppCompat.Caption">
-    <item name="android:fontFamily">@font/roboto_mono</item>
-    <item name="android:letterSpacing">-0.03</item>
-  </style>
-
-  <style name="TextAppearance.ClassName" parent="@style/TextAppearance.AppCompat.Title">
-    <item name="android:fontFamily">@font/roboto_mono</item>
-    <item name="android:letterSpacing">-0.03</item>
-  </style>
 </resources>

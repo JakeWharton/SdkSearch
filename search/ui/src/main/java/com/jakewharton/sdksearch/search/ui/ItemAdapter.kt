@@ -1,9 +1,8 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.search.ui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.QueryResults
 

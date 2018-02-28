@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.search.ui
 
 import android.text.TextPaint
 import android.text.style.MetricAffectingSpan

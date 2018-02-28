@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+  <!-- TODO Fix background color! -->
   <LinearLayout
       android:id="@+id/toolbar"
       android:layout_width="0dp"
       android:layout_height="?android:attr/actionBarSize"
-      android:background="@color/green"
+      android:background="#FF6AB344"
       android:elevation="4dp"
       android:orientation="horizontal"
       android:theme="@style/ThemeOverlay.SdkSearch.Dark.ActionBar"

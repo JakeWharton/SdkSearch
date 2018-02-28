@@ -62,6 +62,7 @@ buildscript {
               'compat': "com.android.support:support-compat:${versions.supportLibrary}",
               'recyclerView': "com.android.support:recyclerview-v7:${versions.supportLibrary}",
               'customTabs': "com.android.support:customtabs:${versions.supportLibrary}",
+              'appCompat': "com.android.support:appcompat-v7:${versions.supportLibrary}",
               'design': "com.android.support:design:${versions.supportLibrary}",
               'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0-beta5',
           ],

@@ -2,7 +2,6 @@
 <resources>
     <color name="green">#FF6AB344</color>
     <color name="green_darker">#FF4D902F</color>
-    <color name="white_translucent">#BBFFFFFF</color>
 
     <color name="navigation_bar">#fff</color>
 </resources>

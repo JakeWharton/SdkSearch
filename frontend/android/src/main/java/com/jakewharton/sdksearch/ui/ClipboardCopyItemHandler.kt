@@ -8,6 +8,7 @@ import androidx.content.systemService
 import androidx.net.toUri
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
+import com.jakewharton.sdksearch.search.ui.ItemHandler
 import com.jakewharton.sdksearch.store.Item
 
 internal class ClipboardCopyItemHandler(
