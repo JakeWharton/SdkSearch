@@ -96,6 +96,7 @@ android {
 }
 
 dependencies {
+  implementation project(':roboto')
   implementation project(':search:presenter')
 
   debugImplementation project(':debug-updater')
