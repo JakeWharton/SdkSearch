@@ -8,7 +8,10 @@ import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.SdkSearchApplication
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.Unconfined
+import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
 
 class MainActivity : Activity() {
@@ -45,9 +48,16 @@ class MainActivity : Activity() {
     } else null
 
     setContentView(R.layout.main)
-    val binder = SearchViewBinder(window.decorView, onClick, onCopy, onShare, onSource)
+    val binder = SearchViewBinder(window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
     defaultQuery?.let { binder.init(it) }
-    binderJob = binder.attach(presenter.models, presenter.events)
+
+    binderJob = launch(Unconfined) {
+      var oldModel: SearchPresenter.Model? = null
+      for (model in presenter.models) {
+        binder.bind(model, oldModel)
+        oldModel = model
+      }
+    }
   }
 
   override fun onRetainNonConfigurationInstance() = presenterJob

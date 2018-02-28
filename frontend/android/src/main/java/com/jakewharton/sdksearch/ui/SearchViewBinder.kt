@@ -30,23 +30,25 @@ import com.jakewharton.sdksearch.util.onKey
 import com.jakewharton.sdksearch.util.onScroll
 import com.jakewharton.sdksearch.util.onTextChanged
 import io.reactivex.functions.Consumer
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.channels.actor
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 
 class SearchViewBinder(
   view: View,
+  private val events: Consumer<Event>,
   private val onClick: ItemHandler,
   private val onCopy: ItemHandler,
   private val onShare: ItemHandler,
   private val onSource: ItemHandler
 ) {
   private val context = view.context
+  private val resources = view.resources
+
+  private val results: RecyclerView = view.findViewById(R.id.results)
+  private val queryInput: EditText = view.findViewById(R.id.query)
+  private val queryClear: View = view.findViewById(R.id.clear_query)
 
   private val resultsAdapter = ItemAdapter(context.layoutInflater, object : ItemAdapter.Callback {
     override fun onItemClicked(item: Item) = onClick(item)
@@ -54,10 +56,21 @@ class SearchViewBinder(
     override fun onItemShared(item: Item) = onShare(item)
     override fun onItemViewSource(item: Item) = onSource(item)
   })
+  private val queryResultProcessor = actor<Pair<QueryResults, QueryResults>> {
+    consumeEach { (oldResults, newResults) ->
+      val diff = DiffUtil.calculateDiff(ItemDiffer(oldResults, newResults))
 
-  private val results: RecyclerView = view.findViewById(R.id.results)
-  private val queryInput: EditText = view.findViewById(R.id.query)
-  private val queryClear: View = view.findViewById(R.id.clear_query)
+      launch(UI) {
+        resultsAdapter.updateItems(newResults)
+        diff.dispatchUpdatesTo(resultsAdapter)
+
+        // Always reset the scroll position to the top when the query changes.
+        results.scrollToPosition(0)
+      }
+    }
+  }
+
+  private var snackbar: Snackbar? = null
 
   init {
     results.adapter = resultsAdapter
@@ -77,6 +90,8 @@ class SearchViewBinder(
     queryInput.onTextChanged {
       queryClear.visibility = if (it.isEmpty()) INVISIBLE else VISIBLE
       queryInput.typeface = if (it.isEmpty()) Typeface.DEFAULT else robotoMono
+
+      events.accept(Event.QueryChanged(it.toString()))
     }
 
     val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
@@ -115,82 +130,50 @@ class SearchViewBinder(
     args.defaultQuery?.let(queryInput::setText)
   }
 
-  fun attach(models: ReceiveChannel<Model>, events: Consumer<Event>): Job {
-    val resources = context.resources
-    val parentJob = Job()
+  fun bind(model: Model, oldModel: Model?) {
+    val count = model.count
+    queryInput.hint = resources.getQuantityString(R.plurals.search_classes, count.toInt(), count)
 
-    val watcher = queryInput.onTextChanged {
-      events.accept(Event.QueryChanged(it.toString()))
+    val oldResults = oldModel?.queryResults
+    val newResults = model.queryResults
+    if (oldResults == null) {
+      resultsAdapter.updateItems(newResults)
+      resultsAdapter.notifyDataSetChanged()
+    } else if (oldResults !== newResults) {
+      queryResultProcessor.offer(oldResults to newResults)
     }
-    parentJob.invokeOnCompletion {
-      queryInput.removeTextChangedListener(watcher)
-    }
 
-    val queryResultProcessor = actor<QueryResults>(CommonPool, parent = parentJob) {
-      var oldResults = receive()
-
-      launch(UI) {
-        resultsAdapter.updateItems(oldResults)
-        resultsAdapter.notifyDataSetChanged()
-      }
-
-      consumeEach { newResults ->
-        val diff = DiffUtil.calculateDiff(ItemDiffer(oldResults, newResults))
-
-        launch(UI) {
-          resultsAdapter.updateItems(newResults)
-          diff.dispatchUpdatesTo(resultsAdapter)
-
-          // Always reset the scroll position to the top when the query changes.
-          results.scrollToPosition(0)
+    val (inFlight, failed) = model.syncStatus
+    if (inFlight != 0 || failed != 0) {
+      val message = when {
+        failed == 0 -> {
+          resources.getQuantityString(R.plurals.updating, inFlight, inFlight)
         }
-
-        oldResults = newResults
-      }
-    }
-
-    launch(Unconfined, parent = parentJob) {
-      var snackbar: Snackbar? = null
-
-      for (model in models) {
-        val count = model.count
-        queryInput.hint = resources.getQuantityString(R.plurals.search_classes, count.toInt(), count)
-
-        queryResultProcessor.offer(model.queryResults)
-
-        val (inFlight, failed) = model.syncStatus
-        if (inFlight != 0 || failed != 0) {
-          val message = when {
-            failed == 0 -> {
-              resources.getQuantityString(R.plurals.updating, inFlight, inFlight)
-            }
-            inFlight == 0 -> {
-              resources.getQuantityString(R.plurals.updating_failed, failed, failed)
-            }
-            else -> {
-              resources.getQuantityString(R.plurals.updating_with_failed, inFlight, inFlight, failed)
-            }
-          }
-
-          if (snackbar == null) {
-            snackbar = Snackbar.make(results, message, LENGTH_INDEFINITE)
-            snackbar.show()
-          } else {
-            snackbar.setText(message)
-          }
-
-          if (failed > 0 && inFlight == 0) {
-            snackbar.setAction(R.string.dismiss) {
-              events.accept(ClearSyncStatus)
-            }
-          }
-        } else {
-          snackbar?.dismiss()
+        inFlight == 0 -> {
+          resources.getQuantityString(R.plurals.updating_failed, failed, failed)
+        }
+        else -> {
+          resources.getQuantityString(R.plurals.updating_with_failed, inFlight, inFlight, failed)
         }
       }
-    }
 
-    return parentJob
+      var snackbar = this.snackbar
+      if (snackbar == null) {
+        snackbar = Snackbar.make(results, message, LENGTH_INDEFINITE)
+        snackbar.show()
+        this.snackbar = snackbar
+      } else {
+        snackbar.setText(message)
+      }
+
+      if (failed > 0 && inFlight == 0) {
+        snackbar.setAction(R.string.dismiss) {
+          events.accept(ClearSyncStatus)
+        }
+      }
+    } else {
+      snackbar?.dismiss()
+    }
   }
 
   data class Args(val defaultQuery: String? = null)
