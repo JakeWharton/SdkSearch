@@ -27,7 +27,7 @@ dependencies {
   api deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.rx2
 
-  api deps.rx.java
+  implementation deps.rx.java
   implementation deps.rx.relay
 }
 

@@ -5,7 +5,6 @@ import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import io.reactivex.Observable
-import io.reactivex.functions.Consumer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.Job
@@ -15,6 +14,7 @@ import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.rx2.openSubscription
 import kotlinx.coroutines.experimental.selects.select
 import java.util.concurrent.TimeUnit
+import java.util.function.Consumer
 
 class SearchPresenter(
   private val context: CoroutineDispatcher,
@@ -25,7 +25,7 @@ class SearchPresenter(
   val models: ReceiveChannel<Model> get() = _models.openSubscription()
 
   private val _events = PublishRelay.create<Event>()
-  val events: Consumer<Event> get() = _events
+  val events: Consumer<Event> get() = Consumer { _events.accept(it) }
 
   fun start(): Job {
     val itemCount = store.count().openSubscription()
