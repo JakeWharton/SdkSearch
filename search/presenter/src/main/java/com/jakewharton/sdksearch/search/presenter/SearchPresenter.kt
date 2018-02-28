@@ -9,7 +9,7 @@ import io.reactivex.functions.Consumer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.channels.ConflatedChannel
+import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.rx2.openSubscription
@@ -21,8 +21,8 @@ class SearchPresenter(
   private val store: ItemStore,
   private val synchronizer: ItemSynchronizer
 ) {
-  private val _models = ConflatedChannel<Model>()
-  val models: ReceiveChannel<Model> get() = _models
+  private val _models = ConflatedBroadcastChannel<Model>()
+  val models: ReceiveChannel<Model> get() = _models.openSubscription()
 
   private val _events = PublishRelay.create<Event>()
   val events: Consumer<Event> get() = _events
