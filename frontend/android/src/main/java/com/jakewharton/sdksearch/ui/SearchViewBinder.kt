@@ -77,10 +77,7 @@ class SearchViewBinder(
 
     val layoutManager = LinearLayoutManager(context)
     results.layoutManager = layoutManager
-
-    val dividerDecoration = DividerItemDecoration(context, layoutManager.orientation)
-    dividerDecoration.setDrawable(context.getDrawable(R.drawable.list_divider))
-    results.addItemDecoration(dividerDecoration)
+    results.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
 
     queryClear.setOnClickListener {
       queryInput.setText("")

@@ -3,6 +3,8 @@
     <item name="android:colorPrimary">@color/green</item>
     <item name="colorPrimaryDark">@color/green_darker</item>
     <item name="colorAccent">@color/green</item>
+
+    <item name="android:listDivider">@drawable/list_divider</item>
   </style>
 
   <style name="Theme.SdkSearch" parent="Base.Theme.SdkSearch">
