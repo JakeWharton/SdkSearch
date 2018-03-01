@@ -17,7 +17,7 @@ buildscript {
   ext.versions = [
       'supportLibrary': '27.1.0',
       'atsl': '1.0.1',
-      'kotlin': '1.2.30-eap-47',
+      'kotlin': '1.2.30',
       'kotlinCoroutines': '0.22.3',
       'kotlinSerialization': '0.4',
       'okhttp': '3.10.0',
@@ -112,7 +112,6 @@ buildscript {
     jcenter()
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
-    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
   }
 
   dependencies {
@@ -136,7 +135,6 @@ allprojects {
     jcenter()
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
-    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
   }
 
   // Force all of the primary support libraries to use the same version.
