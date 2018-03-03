@@ -147,6 +147,18 @@ allprojects {
       }
     }
   }
+
+  tasks.withType(Test) {
+    testLogging {
+      events "skipped", "failed", "passed"
+    }
+  }
+  // TODO same thing for instrumentation tests: https://issuetracker.google.com/issues/37056080
+  //tasks.withType(AndroidTestTask) {
+  //  testLogging {
+  //    events "skipped", "failed", "passed"
+  //  }
+  //}
 }
 
 def gitSha() {
