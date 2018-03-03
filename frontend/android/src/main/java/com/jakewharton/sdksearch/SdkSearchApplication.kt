@@ -68,7 +68,7 @@ class SdkSearchApplication : Application() {
         .documentationService()
 
     val store = DbComponent.builder()
-        .context(applicationContext)
+        .context(this)
         .scheduler(Schedulers.io())
         .filename("sdk.db")
         .build()
