@@ -18,6 +18,8 @@ import java.util.regex.Pattern
 private val PACKAGE = Pattern.compile("^([a-z0-9]+.)+")
 
 fun main(vararg args: String) = runBlocking {
+  val packages = if (args.isEmpty()) arrayOf("") else args
+
   val client = OkHttpClient()
   val service = DacComponent.builder()
       .baseUrl(BaseUrl(PRODUCTION_DAC))
@@ -30,6 +32,7 @@ fun main(vararg args: String) = runBlocking {
       .flatMap { it.await() }
       .filter { it.type == "class" }
       .map { it.label }
+      .filter { fqcn -> packages.any { fqcn.startsWith(it) } }
       .sorted()
 
   val reference = AndroidReference(PRODUCTION_GIT_WEB)
