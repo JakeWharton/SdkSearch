@@ -20,21 +20,20 @@ internal class OpenDocumentationItemHandler(
   override fun invoke(item: Item) {
     val uri = baseUrl.resolve(item.link).toUri()
     val sourceUri = androidReference.sourceUrl(item.packageName, item.className)?.toUri()
-    CustomTabsIntent.Builder()
-        .setToolbarColor(context.getColor(R.color.green))
-        .addDefaultShareMenuItem()
-        .apply {
-          if (sourceUri != null) {
-            val sourceIntent = Intent(Intent.ACTION_VIEW, sourceUri)
-            val pendingIntent = PendingIntent.getActivity(context, 123, sourceIntent, 0)
-            setActionButton(
-                BitmapFactory.decodeResource(context.resources, R.drawable.ic_code_black_24dp),
-                context.getString(R.string.view_class_source, item.className),
-                pendingIntent,
-                true)
+    CustomTabsHelper.builder(context).apply {
+        if (sourceUri != null) {
+          val sourceIntent = CustomTabsHelper.intent(context).intent.apply {
+            data = sourceUri
           }
+          val pendingIntent = PendingIntent.getActivity(context, 123, sourceIntent, 0)
+          setActionButton(
+                  BitmapFactory.decodeResource(context.resources, R.drawable.ic_code_black_24dp),
+                  context.getString(R.string.view_class_source, item.className),
+                  pendingIntent,
+                  true)
         }
-        .build()
-        .launchUrl(context, uri)
+      }
+      .build()
+      .launchUrl(context, uri)
   }
 }
