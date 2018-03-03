@@ -13,6 +13,7 @@ import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import com.jakewharton.timber.bugsnag.BugsnagTree
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.android.UI
+import okhttp3.OkHttpClient
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.text.SimpleDateFormat
@@ -53,9 +54,11 @@ class SdkSearchApplication : Application() {
     }
 
     baseUrl = BaseUrl(PRODUCTION_DAC)
+    val client = OkHttpClient()
 
     val service = DacComponent.builder()
         .baseUrl(baseUrl)
+        .client(client)
         .build()
         .documentationService()
 

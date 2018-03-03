@@ -14,13 +14,10 @@ import static java.util.Objects.requireNonNull;
 
 @Module //
 abstract class DacModule {
-  @Provides @Singleton static DocumentationService documentationService(BaseUrl baseUrl) {
-    // TODO logging
-    //HttpLoggingInterceptor.Logger logger = message -> Timber.tag("HTTP").d(message);
-
-    OkHttpClient client = new OkHttpClient.Builder() //
+  @Provides @Singleton
+  static DocumentationService documentationService(BaseUrl baseUrl, OkHttpClient client) {
+    client = client.newBuilder() //
         .addInterceptor(new JavascriptSkippingInterceptor())
-        //.addNetworkInterceptor(new HttpLoggingInterceptor(logger).setLevel(BASIC)) //
         .build();
 
     MediaType contentType = requireNonNull(MediaType.parse("application/json; charset=utf-8"));

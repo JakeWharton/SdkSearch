@@ -21,6 +21,7 @@ fun main(vararg args: String) = runBlocking {
   val client = OkHttpClient()
   val service = DacComponent.builder()
       .baseUrl(BaseUrl(PRODUCTION_DAC))
+      .client(client)
       .build()
       .documentationService()
 
@@ -74,5 +75,9 @@ fun main(vararg args: String) = runBlocking {
     index++
   }
 
-  logPrint("")
+  logPrint("Checked $index references!")
+
+  // Shut down OkHttpClient resources so that the JVM can exit cleanly.
+  client.dispatcher().executorService().shutdown()
+  client.connectionPool().evictAll();
 }
