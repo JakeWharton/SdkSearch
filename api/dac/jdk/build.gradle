@@ -14,8 +14,7 @@ dependencies {
   api deps.kotlin.coroutines.jdk
   api deps.kotlin.serialization.jdk
 
-  implementation deps.okhttp.client
-  implementation deps.okhttp.logging
+  api deps.okhttp.client
   testImplementation deps.okhttp.mockWebServer
 
   implementation deps.retrofit.client

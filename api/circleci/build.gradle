@@ -11,15 +11,11 @@ dependencies {
   implementation deps.kotlin.stdlib.jdk
   api deps.kotlin.coroutines.jdk
 
-  implementation deps.android.support.annotations
-
   implementation deps.moshi
   implementation deps.kotshi.api
   kapt deps.kotshi.compiler
 
   api deps.okhttp.client
-  implementation deps.okhttp.logging
-  testImplementation deps.okhttp.mockWebServer
 
   implementation deps.retrofit.client
   implementation deps.retrofit.adapterKotlinCoroutines
@@ -27,7 +23,4 @@ dependencies {
 
   implementation deps.dagger.runtime
   kapt deps.dagger.compiler
-
-  testImplementation deps.junit
-  testImplementation deps.truth
 }

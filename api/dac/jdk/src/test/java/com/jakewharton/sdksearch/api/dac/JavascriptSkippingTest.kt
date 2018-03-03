@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.api.dac
 
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.experimental.runBlocking
+import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Before
@@ -16,6 +17,7 @@ class JavascriptSkippingTest {
   @Before fun before() {
     service = DacComponent.builder()
         .baseUrl(BaseUrl(server.url("/").toString()))
+        .client(OkHttpClient())
         .build()
         .documentationService()
   }

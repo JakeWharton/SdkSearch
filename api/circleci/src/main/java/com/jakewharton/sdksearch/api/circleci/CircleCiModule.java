@@ -7,16 +7,19 @@ import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import org.jetbrains.annotations.Nullable;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 @Module //
 abstract class CircleCiModule {
-  @Provides static CircleCiService documentationService(String token) {
-    // TODO logging
-    //HttpLoggingInterceptor.Logger logger = message -> Timber.tag("HTTP").d(message);
+  @Provides
+  static CircleCiService documentationService(String token, @Nullable OkHttpClient client) {
+    OkHttpClient.Builder builder = client != null
+        ? client.newBuilder()
+        : new OkHttpClient.Builder();
 
-    OkHttpClient client = new OkHttpClient.Builder() //
+    client = builder
         .addInterceptor(chain -> {
           Request request = chain.request();
           HttpUrl newUrl = request.url()
@@ -28,7 +31,6 @@ abstract class CircleCiModule {
               .url(newUrl)
               .build());
         })
-        //.addNetworkInterceptor(new HttpLoggingInterceptor(logger).setLevel(BASIC)) //
         .build();
 
     Moshi moshi = new Moshi.Builder()

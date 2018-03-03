@@ -14,6 +14,8 @@ import com.jakewharton.timber.bugsnag.BugsnagTree
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.android.UI
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.text.SimpleDateFormat
@@ -54,7 +56,10 @@ class SdkSearchApplication : Application() {
     }
 
     baseUrl = BaseUrl(PRODUCTION_DAC)
-    val client = OkHttpClient()
+    val client = OkHttpClient.Builder()
+        .addNetworkInterceptor(
+            HttpLoggingInterceptor { Timber.tag("HTTP").d(it) }.setLevel(BASIC))
+        .build()
 
     val service = DacComponent.builder()
         .baseUrl(baseUrl)

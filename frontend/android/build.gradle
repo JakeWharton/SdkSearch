@@ -108,6 +108,8 @@ dependencies {
   implementation deps.android.support.appCompat
   implementation deps.android.x.coreKtx
 
+  implementation deps.okhttp.logging
+
   implementation deps.timber
   implementation deps.bugsnag
   implementation project(':bugsnag-tree')
