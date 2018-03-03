@@ -10,14 +10,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.KeyEvent
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.ViewConfiguration
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
 import androidx.content.systemService
+import androidx.view.isVisible
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
@@ -84,7 +83,7 @@ class SearchViewBinder(
 
     val robotoMono = ResourcesCompat.getFont(context, R.font.roboto_mono)
     queryInput.onTextChanged {
-      queryClear.visibility = if (it.isEmpty()) INVISIBLE else VISIBLE
+      queryClear.isVisible = it.isNotEmpty()
       queryInput.typeface = if (it.isEmpty()) Typeface.DEFAULT else robotoMono
 
       events.accept(Event.QueryChanged(it.toString()))
