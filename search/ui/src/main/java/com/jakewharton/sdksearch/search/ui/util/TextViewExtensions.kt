@@ -17,7 +17,7 @@ internal inline fun TextView.onTextChanged(crossinline body: (text: CharSequence
 
 internal inline fun TextView.onEditorAction(crossinline body: (actionId: Int) -> Boolean) {
   setOnEditorActionListener(object : TextView.OnEditorActionListener {
-    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
+    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
       return body(actionId)
     }
   })
