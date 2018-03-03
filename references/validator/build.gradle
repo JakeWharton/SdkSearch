@@ -18,3 +18,5 @@ kotlin {
     coroutines 'enable'
   }
 }
+
+distTar.enabled = false
