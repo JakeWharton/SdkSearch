@@ -33,6 +33,7 @@ class SearchPresenter(
     val queryItems = _events
         .ofType<Event.QueryChanged>()
         .map(Event.QueryChanged::query)
+        .distinctUntilChanged()
         .switchMap { query ->
           val results = if (query.isBlank()) Observable.just(emptyList())
           else store.queryItems(query).delaySubscription(200, TimeUnit.MILLISECONDS)
