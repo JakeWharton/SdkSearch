@@ -1,5 +1,7 @@
 apply plugin: 'org.jetbrains.kotlin.platform.jvm'
 
+archivesBaseName = 'references'
+
 dependencies {
   expectedBy project(':references')
   implementation deps.kotlin.stdlib.jdk

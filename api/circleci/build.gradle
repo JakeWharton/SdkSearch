@@ -5,6 +5,8 @@ apply plugin: 'kotlin-kapt'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+archivesBaseName = 'api-circle-ci'
+
 dependencies {
   implementation deps.kotlin.stdlib.jdk
   api deps.kotlin.coroutines.jdk
