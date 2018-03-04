@@ -70,7 +70,8 @@
 -dontwarn android.support.**
 
 # Understand the @Keep support annotation.
--keep class android.support.annotation.Keep
+# CHANGE: There's no reason to retain this in the APK.
+# CHANGE: -keep class android.support.annotation.Keep
 
 -keep @android.support.annotation.Keep class * {*;}
 
