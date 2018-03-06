@@ -11,6 +11,7 @@ dependencies {
   implementation project(':references:jdk')
   implementation project(':api:dac:jdk')
   implementation deps.okhttp.client
+  implementation deps.argparser
 }
 
 kotlin {

@@ -104,6 +104,7 @@ buildscript {
       'truth': 'com.google.truth:truth:0.39',
       'sqlBrite': 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.2.0',
       'bugsnag': 'com.bugsnag:bugsnag-android:4.2.2',
+      'argparser': 'com.xenomachina:kotlin-argparser:2.0.4',
   ]
 
   ext.isCiBuild = System.getenv('CI') == 'true'
