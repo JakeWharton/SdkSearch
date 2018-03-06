@@ -1,7 +1,7 @@
 -dontobfuscate
 
-# Desugaring Java 8 language features happens after ProGuard.
--dontwarn java.lang.invoke.LambdaMetafactory
+# Retrofit does reflection on generic parameters and InnerClass is required to use Signature.
+-keepattributes Signature, InnerClasses
 
 # Many libraries use JSR 305 annotations for embedding nullability information.
 -dontwarn javax.annotation.**
