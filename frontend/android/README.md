@@ -59,22 +59,20 @@ All deploy builds require that the `upload.keystore` is present (see "Release" a
 
 ### Alpha
 
- 1. Ensure all tests pass:
+ 1. Ensure all tests pass and the app can be built:
  
-        ./gradlew clean :frontend:android:check :frontend:android:connectedCheck
+        ./gradlew clean build connectedCheck
 
  2. Update the version information in `build.gradle`.
  
  3. Update the information in `src/main/play` to reflect changes in style, app description, or
     what's new in the release.
 
- 4. Build the release APK
+ 4. Install the release APK onto a phone or emulator.
+
+        ./gradlew :frontend:android:installRelease
  
-        ./gradlew :frontend:android:assembleRelease
- 
- 5. Install the release APK onto a phone or emulator.
- 
- 6. Validate crash reporting works:
+ 5. Validate crash reporting works:
  
         adb shell am start -n com.jakewharton.sdksearch/.ui.MainActivity -e crash true
     

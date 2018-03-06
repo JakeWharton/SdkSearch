@@ -1,2 +1,5 @@
-* Fancy new icon! Thanks Nick Butcher (and Roman Nurik)!
-* Lower supported Android version to 7.0.
+* Dismiss keyboard on scroll.
+* Do not reload search results on rotation.
+* White navigation bar (when keyboard is not on screen).
+* Update source mapping to latest.
+* Fix all known crashes.
