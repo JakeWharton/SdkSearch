@@ -23,7 +23,7 @@ buildscript {
       'okhttp': '3.10.0',
       'retrofit': '2.3.0',
       'kotshi': '1.0.1',
-      'dagger': '2.14.1',
+      'dagger': '2.15',
   ]
 
   ext.deps = [
