@@ -31,6 +31,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.actor
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
+import net.nurik.roman.cheatsheet.CheatSheet
 import java.util.function.Consumer
 
 class SearchViewBinder(
@@ -77,6 +78,7 @@ class SearchViewBinder(
     results.layoutManager = layoutManager
     results.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
 
+    CheatSheet.setup(queryClear)
     queryClear.setOnClickListener {
       queryInput.setText("")
     }
