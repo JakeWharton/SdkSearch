@@ -2,7 +2,6 @@ package com.jakewharton.sdksearch.search.ui.util
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.widget.TextView
 
 internal inline fun TextView.onTextChanged(crossinline body: (text: CharSequence) -> Unit): TextWatcher {
@@ -16,9 +15,5 @@ internal inline fun TextView.onTextChanged(crossinline body: (text: CharSequence
 }
 
 internal inline fun TextView.onEditorAction(crossinline body: (actionId: Int) -> Boolean) {
-  setOnEditorActionListener(object : TextView.OnEditorActionListener {
-    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
-      return body(actionId)
-    }
-  })
+  setOnEditorActionListener { _, actionId, _ -> body(actionId) }
 }
