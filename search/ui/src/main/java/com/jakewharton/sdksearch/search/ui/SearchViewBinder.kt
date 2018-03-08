@@ -8,6 +8,7 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.TooltipCompat
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -31,7 +32,6 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.actor
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
-import net.nurik.roman.cheatsheet.CheatSheet
 import java.util.function.Consumer
 
 class SearchViewBinder(
@@ -78,7 +78,7 @@ class SearchViewBinder(
     results.layoutManager = layoutManager
     results.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
 
-    CheatSheet.setup(queryClear)
+    TooltipCompat.setTooltipText(queryClear, queryClear.contentDescription)
     queryClear.setOnClickListener {
       queryInput.setText("")
     }

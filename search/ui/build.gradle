@@ -27,7 +27,6 @@ android {
 }
 
 dependencies {
-  implementation project(':cheatsheet')
   implementation project(':roboto')
   api project(':search:presenter')
 
