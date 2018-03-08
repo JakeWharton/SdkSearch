@@ -8,6 +8,7 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.TooltipCompat
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -77,6 +78,7 @@ class SearchViewBinder(
     results.layoutManager = layoutManager
     results.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
 
+    TooltipCompat.setTooltipText(queryClear, queryClear.contentDescription)
     queryClear.setOnClickListener {
       queryInput.setText("")
     }
