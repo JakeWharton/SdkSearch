@@ -105,6 +105,7 @@ buildscript {
       'sqlBrite': 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.2.0',
       'bugsnag': 'com.bugsnag:bugsnag-android:4.2.2',
       'argparser': 'com.xenomachina:kotlin-argparser:2.0.4',
+      'byteunits': 'com.jakewharton.byteunits:byteunits:0.9.1',
   ]
 
   ext.isCiBuild = System.getenv('CI') == 'true'

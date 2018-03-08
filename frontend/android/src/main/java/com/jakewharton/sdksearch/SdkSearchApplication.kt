@@ -3,6 +3,7 @@ package com.jakewharton.sdksearch
 import android.annotation.SuppressLint
 import android.app.Application
 import com.bugsnag.android.Bugsnag
+import com.jakewharton.byteunits.BinaryByteUnit.MEBIBYTES
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
@@ -13,11 +14,13 @@ import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import com.jakewharton.timber.bugsnag.BugsnagTree
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.android.UI
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import timber.log.Timber
 import timber.log.Timber.DebugTree
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -57,6 +60,7 @@ class SdkSearchApplication : Application() {
 
     baseUrl = BaseUrl(PRODUCTION_DAC)
     val client = OkHttpClient.Builder()
+        .cache(Cache(File(cacheDir, "http"), MEBIBYTES.toBytes(10)))
         .addNetworkInterceptor(
             HttpLoggingInterceptor { Timber.tag("HTTP").d(it) }.setLevel(BASIC))
         .build()

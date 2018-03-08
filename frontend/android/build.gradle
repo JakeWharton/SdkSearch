@@ -114,6 +114,8 @@ dependencies {
 
   implementation deps.okhttp.logging
 
+  implementation deps.byteunits
+
   implementation deps.timber
   implementation deps.bugsnag
   implementation project(':bugsnag-tree')
