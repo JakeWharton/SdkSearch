@@ -60,7 +60,7 @@ class SdkSearchApplication : Application() {
 
     baseUrl = BaseUrl(PRODUCTION_DAC)
     val client = OkHttpClient.Builder()
-        .cache(Cache(File(cacheDir, "http"), MEBIBYTES.toBytes(10)))
+        .cache(Cache(cacheDir / "http", MEBIBYTES.toBytes(10)))
         .addNetworkInterceptor(
             HttpLoggingInterceptor { Timber.tag("HTTP").d(it) }.setLevel(BASIC))
         .build()
@@ -90,4 +90,6 @@ class SdkSearchApplication : Application() {
     val epochMillis = BuildConfig.COMMIT_UNIX_TIMESTAMP * 1000
     return formatter.format(Date(epochMillis))
   }
+
+  private operator fun File.div(pathSegment: String) = File(this, pathSegment)
 }
