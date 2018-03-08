@@ -208,6 +208,8 @@ task projectDependencyGraph {
           dot << "  \"${project.path}\" -> \"${dependency.path}\""
           if (config.name.toLowerCase().endsWith('implementation')) {
             dot << " [style=dotted]"
+          } else if (config.name == 'expectedBy') {
+            dot << " [style=dashed, arrowhead=none]"
           }
           dot << '\n'
         }
