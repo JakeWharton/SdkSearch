@@ -25,7 +25,7 @@ combineJs {
   source = [
       // Order is important!
       "$buildDir/kotlin-js-min/main/kotlin.js",
-      "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core-js.js",
+      "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core.js",
       "$buildDir/kotlin-js-min/main/kotlinx-serialization-runtime-js.js",
       "$buildDir/kotlin-js-min/main/api-dac.js",
       "$buildDir/kotlin-js-min/main/references.js",
