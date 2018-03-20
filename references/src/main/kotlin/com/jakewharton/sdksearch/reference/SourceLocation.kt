@@ -6,7 +6,7 @@ internal data class SourceLocation(
   val baseDir: String
 ) {
   init {
-    require(baseDir.endsWith('/'))
+    require(baseDir.endsWith('/')) { "Base dir must end with '/': $baseDir" }
   }
 
   fun branch(branch: String) = copy(branch = branch)
