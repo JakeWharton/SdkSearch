@@ -41,12 +41,30 @@ distZip.dependsOn(combineJs)
 distTar.enabled = false
 installDist.dependsOn(combineJs)
 
+def processManifest = project.tasks.create('processManifest') {
+  def inputManifest = "$projectDir/src/main/manifest.json"
+  def outputManifest = "$buildDir/manifest.json"
+
+  inputs.file(inputManifest)
+  inputs.property('version', buildConfig.version.name)
+  outputs.file(outputManifest)
+
+  doFirst {
+    def manifest = file(inputManifest).text
+    manifest = manifest.replace("{{version}}", buildConfig.version.name)
+    file(outputManifest).text = manifest
+  }
+}
+
+installDist.dependsOn(processManifest)
+distZip.dependsOn(processManifest)
+
 distributions {
   main {
     baseName = archivesBaseName
 
     contents {
-      from 'src/main/manifest.json'
+      from "$buildDir/manifest.json"
       from 'src/main/static'
       from "$buildDir/combined"
     }

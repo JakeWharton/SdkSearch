@@ -1,7 +1,7 @@
 {
   "name": "Android SDK Search",
   "description": "Omnibox search of the Android SDK classes",
-  "version": "1.0",
+  "version": "{{version}}",
   "manifest_version": 2,
   "icons": {
     "16": "icon_16.png",
