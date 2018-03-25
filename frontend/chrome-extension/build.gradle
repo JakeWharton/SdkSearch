@@ -1,12 +1,8 @@
 apply plugin: 'distribution'
 
-archivesBaseName = 'sdk-search'
-
-distTar.enabled = false
-
 distributions {
   main {
-    baseName = archivesBaseName
+    baseName = 'sdk-search'
 
     contents {
       from('manifest.json') {
@@ -20,3 +16,5 @@ distributions {
     }
   }
 }
+
+distTar.enabled = false
