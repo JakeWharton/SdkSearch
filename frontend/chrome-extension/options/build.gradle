@@ -27,3 +27,14 @@ combineJs {
   dest = file("$buildDir/combined/${archivesBaseName}.js")
 }
 combineJs.dependsOn(runDceKotlinJs)
+
+configurations {
+  content
+}
+
+artifacts {
+  content(combineJs.dest) {
+    builtBy combineJs
+  }
+  content file('options.html')
+}

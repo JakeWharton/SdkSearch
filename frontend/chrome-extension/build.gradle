@@ -1,5 +1,15 @@
 apply plugin: 'distribution'
 
+configurations {
+  content
+}
+
+dependencies {
+  content project(path: ':frontend:chrome-extension:background', configuration: 'content')
+  content project(path: ':frontend:chrome-extension:content', configuration: 'content')
+  content project(path: ':frontend:chrome-extension:options', configuration: 'content')
+}
+
 distributions {
   main {
     baseName = 'sdk-search'
@@ -8,11 +18,8 @@ distributions {
       from('manifest.json') {
         expand version: buildConfig.version.name
       }
-      from 'options.html'
       from 'icons'
-      from { project(':frontend:chrome-extension:background').combineJs.outputs.files }
-      from { project(':frontend:chrome-extension:content').combineJs.outputs.files }
-      from { project(':frontend:chrome-extension:options').combineJs.outputs.files }
+      from configurations.content
     }
   }
 }
