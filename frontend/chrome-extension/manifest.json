@@ -9,9 +9,6 @@
     "48": "icon_48.png",
     "128": "icon_128.png"
   },
-  "browser_action": {
-    "default_popup": "hello.html"
-  },
   "background": {
     "scripts": [
       "background.js"
