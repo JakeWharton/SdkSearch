@@ -7,6 +7,7 @@ import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.SdkSearchApplication
 import com.jakewharton.sdksearch.reference.AndroidReference
+import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.search.ui.SearchViewBinder
@@ -38,7 +39,7 @@ class MainActivity : Activity() {
     presenterJob = lastNonConfigurationInstance as Job? ?: presenter.start()
 
     val baseUrl = app.baseUrl
-    val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
+    val androidReference = AndroidReference(PRODUCTION_GIT_WEB, PRODUCTION_DAC)
     val onClick = OpenDocumentationItemHandler(this, baseUrl, androidReference)
     val onCopy = ClipboardCopyItemHandler(this, baseUrl)
     val onShare = ShareItemHandler(this, baseUrl)

@@ -12,33 +12,54 @@ val ITEM_LIST_URL_PATHS = mapOf(
     "arch" to "reference/android/arch/lists.js"
 )
 
-class AndroidReference(private val gitWebUrl: String) {
+private val PACKAGE = "^([a-z0-9]+.)+".toRegex()
+
+class AndroidReference(
+    private val gitWebUrl: String,
+    private val dacUrl: String
+) {
   init {
     require(gitWebUrl.endsWith('/')) { "Git web URL must end with '/': $gitWebUrl" }
+    require(dacUrl.endsWith('/')) { "DAC URL must end with '/': $dacUrl" }
+  }
+
+  private val referenceUrl = "${dacUrl}reference/"
+
+  fun sourceUrl(dacUrl: String): String? {
+    if (!dacUrl.startsWith(referenceUrl)) return null
+    if (!dacUrl.endsWith(".html")) return null
+    val fqcn = dacUrl.substring(referenceUrl.length, dacUrl.length - 5).replace('/', '.')
+    val range = PACKAGE.find(fqcn)?.range ?: return null
+    val packageName = fqcn.substring(range.start, range.endInclusive)
+    val className = fqcn.substring(range.endInclusive + 1)
+    return sourceUrl(packageName, className)
   }
 
   fun sourceUrl(packageName: String, className: String): String? {
-    val topLevelClassName = className.substringBefore('.')
-    if (topLevelClassName == "R") {
+    val path = findSourceLocation("$packageName.$className") ?: return null
+    return buildString {
+      append(gitWebUrl)
+      append(path.project.projectDir)
+      append("+/refs/heads/")
+      append(path.branch)
+      append('/')
+      append(path.baseDir)
+      append(packageName.replace('.', '/'))
+      append('/')
+      append(className.substringBeforeLast('.'))
+      append(".java")
+    }
+  }
+
+  private fun findSourceLocation(fqcn: String): SourceLocation? {
+    if (fqcn.contains(".R.") || fqcn.endsWith(".R")) {
       return null
     }
 
-    var lookup = "$packageName.$topLevelClassName"
+    var lookup = fqcn
     while (lookup.isNotEmpty()) {
       if (SOURCE_MAP.containsKey(lookup)) {
-        val path = SOURCE_MAP[lookup] ?: return null // Explicitly absent.
-        return buildString {
-          append(gitWebUrl)
-          append(path.project.projectDir)
-          append("+/refs/heads/")
-          append(path.branch)
-          append('/')
-          append(path.baseDir)
-          append(packageName.replace('.', '/'))
-          append('/')
-          append(topLevelClassName)
-          append(".java")
-        }
+        return SOURCE_MAP[lookup]
       }
       lookup = lookup.substringBeforeLast('.', missingDelimiterValue = "")
     }

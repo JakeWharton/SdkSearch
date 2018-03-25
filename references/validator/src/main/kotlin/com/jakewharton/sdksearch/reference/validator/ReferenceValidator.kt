@@ -54,7 +54,7 @@ fun main(vararg args: String) = runBlocking {
       .filter { fqcn -> config.packages.any { fqcn.startsWith(it) } }
       .sorted()
 
-  val reference = AndroidReference(config.gitWeb)
+  val reference = AndroidReference(config.gitWeb, config.dac)
 
   var pad = 0
   fun logStatus(message: String) {
