@@ -21,7 +21,7 @@ import java.util.regex.Pattern
 private val PACKAGE = Pattern.compile("^([a-z0-9]+.)+")
 
 private class CliConfig(parser: ArgParser) {
-  val gitWeb by parser.storing("--gitweb", argName = "HOST", help = "git web host (default: $PRODUCTION_GIT_WEB)")
+  val gitWeb by parser.storing("--git-web", argName = "HOST", help = "Git web host (default: $PRODUCTION_GIT_WEB)")
       .default(PRODUCTION_GIT_WEB)
 
   val dac by parser.storing("--dac", argName = "HOST", help = "DAC host (default: $PRODUCTION_DAC)")

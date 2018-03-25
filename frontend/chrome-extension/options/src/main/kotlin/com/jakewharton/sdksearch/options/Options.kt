@@ -2,7 +2,7 @@ package com.jakewharton.sdksearch.options
 
 import com.chrome.platform.Chrome
 import com.jakewharton.sdksearch.STORAGE_KEY_DAC_URL
-import com.jakewharton.sdksearch.STORAGE_KEY_GITWEB_URL
+import com.jakewharton.sdksearch.STORAGE_KEY_GIT_WEB_URL
 import com.jakewharton.sdksearch.STORE_NAME
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
@@ -24,11 +24,11 @@ private fun loadOptions(event: Event) {
   }
 
   Chrome.storage.sync.get(json(
-      STORAGE_KEY_GITWEB_URL to PRODUCTION_GIT_WEB,
+      STORAGE_KEY_GIT_WEB_URL to PRODUCTION_GIT_WEB,
       STORAGE_KEY_DAC_URL to PRODUCTION_DAC
   )) {
-    val gitwebUrl = it[STORAGE_KEY_GITWEB_URL] as String
-    document.getElementById("gitweb")!!.setAttribute("value", gitwebUrl)
+    val gitWebUrl = it[STORAGE_KEY_GIT_WEB_URL] as String
+    document.getElementById("git_web")!!.setAttribute("value", gitWebUrl)
 
     val dacUrl = it[STORAGE_KEY_DAC_URL] as String
     document.getElementById("dac")!!.setAttribute("value", dacUrl)
