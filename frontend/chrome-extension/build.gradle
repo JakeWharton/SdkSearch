@@ -30,6 +30,7 @@ distributions {
       from manifest
       from 'icons'
       from { project(':frontend:chrome-extension:background').combineJs.outputs.files }
+      from { project(':frontend:chrome-extension:content-script').combineJs.outputs.files }
     }
   }
 }

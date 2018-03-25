@@ -17,6 +17,16 @@
       "background.js"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://developer.android.com/reference/*"
+      ],
+      "js": [
+        "content-script.js"
+      ]
+    }
+  ],
   "omnibox": {
     "keyword": "ad2"
   },
