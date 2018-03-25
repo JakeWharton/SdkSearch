@@ -20,7 +20,7 @@
         "*://developer.android.com/reference/*"
       ],
       "js": [
-        "content-script.js"
+        "content.js"
       ]
     }
   ],

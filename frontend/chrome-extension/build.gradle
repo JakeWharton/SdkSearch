@@ -15,7 +15,7 @@ distributions {
       from 'options.html'
       from 'icons'
       from { project(':frontend:chrome-extension:background').combineJs.outputs.files }
-      from { project(':frontend:chrome-extension:content-script').combineJs.outputs.files }
+      from { project(':frontend:chrome-extension:content').combineJs.outputs.files }
       from { project(':frontend:chrome-extension:options').combineJs.outputs.files }
     }
   }
