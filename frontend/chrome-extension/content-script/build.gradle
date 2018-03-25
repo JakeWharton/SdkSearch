@@ -4,9 +4,13 @@ apply plugin: 'com.eriwen.gradle.js'
 
 dependencies {
   compile deps.kotlin.stdlib.js
-  compile project(':chrome-platform')
-  compile project(':references:js')
-  compile project(':frontend:chrome-extension:common')
+  compile project(':store:js')
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
 }
 
 combineJs {
@@ -15,7 +19,7 @@ combineJs {
           "$buildDir/kotlin-js-min/main/kotlin.js",
           "$buildDir/kotlin-js-min/main/chrome-platform.js",
           "$buildDir/kotlin-js-min/main/references.js",
-          "$buildDir/kotlin-js-min/main/common.js",
+          "$buildDir/kotlin-js-min/main/store.js",
           "$buildDir/kotlin-js-min/main/content-script.js",
   ]
   dest = file("$buildDir/combined/${archivesBaseName}.js")

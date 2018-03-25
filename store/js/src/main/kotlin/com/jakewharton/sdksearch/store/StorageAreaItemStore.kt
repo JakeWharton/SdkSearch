@@ -6,10 +6,9 @@ import kotlinx.coroutines.experimental.async
 import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.js.json
 
-class StorageAreaItemStore(
-  private val key: String,
-  private val storage: StorageArea
-) : ItemStore {
+private const val KEY = "items"
+
+class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
   private var currentJob: Job? = null
 
   private suspend fun <T> serially(body: suspend () -> T): T {
@@ -32,15 +31,15 @@ class StorageAreaItemStore(
   override suspend fun updateItems(items: List<Item>) {
     serially {
       suspendCoroutine<Unit> { continuation ->
-        storage.get(key) {
+        storage.get(KEY) {
           @Suppress("UNCHECKED_CAST")
-          val existingItems = it[key] as Array<Item>? ?: emptyArray()
+          val existingItems = it[KEY] as Array<Item>? ?: emptyArray()
           // TODO something not n^2? persist map of fqcn to item?
           val oldItems = existingItems.filter { existing ->
             items.any { it.packageName == existing.packageName && it.className == existing.className }
           }
           val newItems = oldItems + items
-          storage.set(json(key to newItems.toTypedArray())) {
+          storage.set(json(KEY to newItems.toTypedArray())) {
             continuation.resume(Unit)
           }
         }
@@ -49,9 +48,9 @@ class StorageAreaItemStore(
   }
 
   override suspend fun queryItems(term: String) = suspendCoroutine<List<Item>> { continuation ->
-    storage.get(key) {
+    storage.get(KEY) {
       @Suppress("UNCHECKED_CAST")
-      val allItems = it[key] as Array<Item>? ?: emptyArray()
+      val allItems = it[KEY] as Array<Item>? ?: emptyArray()
 
       val items = allItems
           .filter { it.className.contains(term, ignoreCase = true) }
@@ -71,9 +70,9 @@ class StorageAreaItemStore(
   }
 
   override suspend fun count() = suspendCoroutine<Int> { continuation ->
-    storage.get(key) {
+    storage.get(KEY) {
       @Suppress("UNCHECKED_CAST")
-      val allItems = it[key] as Array<Item>? ?: emptyArray()
+      val allItems = it[KEY] as Array<Item>? ?: emptyArray()
 
       continuation.resume(allItems.size)
     }

@@ -1,36 +1,28 @@
 package com.jakewharton.sdksearch.options
 
 import com.chrome.platform.Chrome
-import com.jakewharton.sdksearch.STORAGE_KEY_DAC_URL
-import com.jakewharton.sdksearch.STORAGE_KEY_GIT_WEB_URL
-import com.jakewharton.sdksearch.STORE_NAME
-import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
-import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
+import com.jakewharton.sdksearch.store.StorageAreaConfigStore
 import com.jakewharton.sdksearch.store.StorageAreaItemStore
 import kotlinx.coroutines.experimental.launch
 import org.w3c.dom.events.Event
 import kotlin.browser.document
-import kotlin.js.json
+
+private val itemStore = StorageAreaItemStore(Chrome.storage.local)
+private val configStore = StorageAreaConfigStore(Chrome.storage.sync)
 
 fun main(vararg args: String) {
   document.addEventListener("DOMContentLoaded", ::loadOptions)
 }
 
 private fun loadOptions(event: Event) {
-  val store = StorageAreaItemStore(STORE_NAME, Chrome.storage.local)
   launch {
-    val count = store.count()
+    val count = itemStore.count()
     document.getElementById("item-count")!!.textContent = count.toString()
   }
 
-  Chrome.storage.sync.get(json(
-      STORAGE_KEY_GIT_WEB_URL to PRODUCTION_GIT_WEB,
-      STORAGE_KEY_DAC_URL to PRODUCTION_DAC
-  )) {
-    val gitWebUrl = it[STORAGE_KEY_GIT_WEB_URL] as String
-    document.getElementById("git_web")!!.setAttribute("value", gitWebUrl)
-
-    val dacUrl = it[STORAGE_KEY_DAC_URL] as String
+  launch {
+    val (gitWebUrl, dacUrl) = configStore.load()
+    document.getElementById("git-web")!!.setAttribute("value", gitWebUrl)
     document.getElementById("dac")!!.setAttribute("value", dacUrl)
   }
 }

@@ -6,7 +6,6 @@ import com.chrome.platform.Chrome.tabs
 import com.chrome.platform.omnibox.DefaultSuggestResult
 import com.chrome.platform.omnibox.SuggestResult
 import com.chrome.platform.tabs.UpdateProperties
-import com.jakewharton.sdksearch.STORE_NAME
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
 import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
@@ -21,7 +20,7 @@ fun main(vararg args: String) {
   omnibox.setDefaultSuggestion(
       DefaultSuggestResult("Search Android SDK docs for <match>%s</match>"))
 
-  val store = StorageAreaItemStore(STORE_NAME, storage.local)
+  val store = StorageAreaItemStore(storage.local)
   val baseUrl = BaseUrl(PRODUCTION_DAC)
 
   var queryJob: Job? = null
