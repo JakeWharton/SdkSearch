@@ -4,30 +4,14 @@ archivesBaseName = 'sdk-search'
 
 distTar.enabled = false
 
-def manifestTemplate = "$projectDir/manifest.json"
-def manifest = "$buildDir/manifest.json"
-
-def processManifest = project.tasks.create('processManifest') {
-  inputs.file(manifestTemplate)
-  inputs.property('version', buildConfig.version.name)
-  outputs.file(manifest)
-
-  doFirst {
-    def contents = file(manifestTemplate).text
-    contents = contents.replace("{{version}}", buildConfig.version.name)
-    file(manifest).text = contents
-  }
-}
-
-installDist.dependsOn(processManifest)
-distZip.dependsOn(processManifest)
-
 distributions {
   main {
     baseName = archivesBaseName
 
     contents {
-      from manifest
+      from('manifest.json') {
+        expand version: buildConfig.version.name
+      }
       from 'icons'
       from { project(':frontend:chrome-extension:background').combineJs.outputs.files }
       from { project(':frontend:chrome-extension:content-script').combineJs.outputs.files }
