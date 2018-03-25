@@ -5,18 +5,10 @@ apply plugin: 'com.eriwen.gradle.js'
 dependencies {
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
-  compile deps.kotlin.serialization.js
   compile project(':frontend:chrome-extension:common')
-  compile project(':api:dac:js')
+  compile project(':chrome-platform')
   compile project(':references:js')
   compile project(':store:js')
-  compile project(':chrome-platform')
-}
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
 }
 
 combineJs {
@@ -24,13 +16,11 @@ combineJs {
           // Order is important!
           "$buildDir/kotlin-js-min/main/kotlin.js",
           "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core.js",
-          "$buildDir/kotlin-js-min/main/kotlinx-serialization-runtime-js.js",
           "$buildDir/kotlin-js-min/main/common.js",
-          "$buildDir/kotlin-js-min/main/api-dac.js",
+          "$buildDir/kotlin-js-min/main/chrome-platform.js",
           "$buildDir/kotlin-js-min/main/references.js",
           "$buildDir/kotlin-js-min/main/store.js",
-          "$buildDir/kotlin-js-min/main/chrome-platform.js",
-          "$buildDir/kotlin-js-min/main/background.js",
+          "$buildDir/kotlin-js-min/main/options.js",
   ]
   dest = file("$buildDir/combined/${archivesBaseName}.js")
 }

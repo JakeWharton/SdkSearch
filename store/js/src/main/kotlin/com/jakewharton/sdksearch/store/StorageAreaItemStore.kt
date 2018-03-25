@@ -69,4 +69,13 @@ class StorageAreaItemStore(
       continuation.resume(items)
     }
   }
+
+  override suspend fun count() = suspendCoroutine<Int> { continuation ->
+    storage.get(key) {
+      @Suppress("UNCHECKED_CAST")
+      val allItems = it[key] as Array<Item>? ?: emptyArray()
+
+      continuation.resume(allItems.size)
+    }
+  }
 }

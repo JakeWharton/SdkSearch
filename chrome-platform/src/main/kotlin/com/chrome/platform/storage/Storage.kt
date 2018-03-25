@@ -4,4 +4,6 @@ package com.chrome.platform.storage
 external interface Storage {
   /** https://developer.chrome.com/apps/storage#property-local */
   val local: StorageArea
+  /** https://developer.chrome.com/apps/storage#property-sync */
+  val sync: StorageArea
 }
