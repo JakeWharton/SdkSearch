@@ -14,7 +14,7 @@
   },
   "background": {
     "scripts": [
-      "sdk-search.js"
+      "background.js"
     ]
   },
   "omnibox": {

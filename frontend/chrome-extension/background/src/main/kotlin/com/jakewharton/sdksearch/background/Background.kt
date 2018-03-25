@@ -1,4 +1,4 @@
-package com.jakewharton.sdksearch
+package com.jakewharton.sdksearch.background
 
 import com.chrome.platform.Chrome.omnibox
 import com.chrome.platform.Chrome.storage
@@ -14,7 +14,6 @@ import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.StorageAreaItemStore
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 
 fun main(vararg args: String) {

@@ -1,58 +1,21 @@
-apply plugin: 'kotlin2js' // TODO why isn't this org.jetbrains.kotlin.js?
-apply plugin: 'kotlin-dce-js'
-apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'distribution'
 
 archivesBaseName = 'sdk-search'
 
-dependencies {
-  compile deps.kotlin.stdlib.js
-  compile deps.kotlin.coroutines.js
-  compile deps.kotlin.serialization.js
-  compile project(':api:dac:js')
-  compile project(':references:js')
-  compile project(':store:js')
-  compile project(':chrome-platform')
-}
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}
-
-combineJs {
-  source = [
-      // Order is important!
-      "$buildDir/kotlin-js-min/main/kotlin.js",
-      "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core.js",
-      "$buildDir/kotlin-js-min/main/kotlinx-serialization-runtime-js.js",
-      "$buildDir/kotlin-js-min/main/api-dac.js",
-      "$buildDir/kotlin-js-min/main/references.js",
-      "$buildDir/kotlin-js-min/main/store.js",
-      "$buildDir/kotlin-js-min/main/chrome-platform.js",
-      "$buildDir/kotlin-js-min/main/sdk-search.js",
-  ]
-  dest = file("$buildDir/combined/${archivesBaseName}.js")
-}
-combineJs.dependsOn(runDceKotlinJs)
-
-distZip.dependsOn(combineJs)
 distTar.enabled = false
-installDist.dependsOn(combineJs)
+
+def manifestTemplate = "$projectDir/manifest.json"
+def manifest = "$buildDir/manifest.json"
 
 def processManifest = project.tasks.create('processManifest') {
-  def inputManifest = "$projectDir/src/main/manifest.json"
-  def outputManifest = "$buildDir/manifest.json"
-
-  inputs.file(inputManifest)
+  inputs.file(manifestTemplate)
   inputs.property('version', buildConfig.version.name)
-  outputs.file(outputManifest)
+  outputs.file(manifest)
 
   doFirst {
-    def manifest = file(inputManifest).text
-    manifest = manifest.replace("{{version}}", buildConfig.version.name)
-    file(outputManifest).text = manifest
+    def contents = file(manifestTemplate).text
+    contents = contents.replace("{{version}}", buildConfig.version.name)
+    file(manifest).text = contents
   }
 }
 
@@ -64,9 +27,9 @@ distributions {
     baseName = archivesBaseName
 
     contents {
-      from "$buildDir/manifest.json"
-      from 'src/main/static'
-      from "$buildDir/combined"
+      from manifest
+      from 'icons'
+      from { project(':frontend:chrome-extension:background').combineJs.outputs.files }
     }
   }
 }
