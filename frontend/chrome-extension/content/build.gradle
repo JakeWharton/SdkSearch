@@ -17,6 +17,7 @@ combineJs {
   source = [
           // Order is important!
           "$buildDir/kotlin-js-min/main/kotlin.js",
+          "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core.js",
           "$buildDir/kotlin-js-min/main/chrome-platform.js",
           "$buildDir/kotlin-js-min/main/references.js",
           "$buildDir/kotlin-js-min/main/store.js",
