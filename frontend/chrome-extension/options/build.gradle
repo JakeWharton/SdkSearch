@@ -11,6 +11,12 @@ dependencies {
   compile project(':store:js')
 }
 
+kotlin {
+  experimental {
+    coroutines "enable"
+  }
+}
+
 combineJs {
   source = [
           // Order is important!
