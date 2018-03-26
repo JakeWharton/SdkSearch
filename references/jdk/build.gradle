@@ -1,3 +1,4 @@
+apply plugin: 'java-library'
 apply plugin: 'org.jetbrains.kotlin.platform.jvm'
 
 archivesBaseName = 'references'

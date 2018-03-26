@@ -194,6 +194,7 @@ task projectDependencyGraph {
 
     dot << 'digraph {\n'
     dot << "  graph [label=\"${rootProject.name}\\n \",labelloc=t,fontsize=30];\n"
+    dot << '  node [style=filled];\n'
     dot << '  rankdir=LR;\n\n'
 
     def rootProjects = []
@@ -206,6 +207,9 @@ task projectDependencyGraph {
 
     def projects = new LinkedHashSet<Project>()
     def commonProjects = []
+    def jsProjects = []
+    def androidProjects = []
+    def javaProjects = []
 
     queue = [rootProject]
     while (!queue.isEmpty()) {
@@ -215,6 +219,15 @@ task projectDependencyGraph {
       if (project.plugins.hasPlugin('org.jetbrains.kotlin.platform.common')) {
         commonProjects.add(project)
       }
+      if (project.plugins.hasPlugin('kotlin2js')) {
+        jsProjects.add(project)
+      }
+      if (project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
+        androidProjects.add(project)
+      }
+      if (project.plugins.hasPlugin('java-library') || project.plugins.hasPlugin('java')) {
+        javaProjects.add(project)
+      }
 
       project.configurations.all { config ->
         config.dependencies
@@ -222,6 +235,7 @@ task projectDependencyGraph {
                 .collect { it.dependencyProject }
                 .each { dependency ->
           projects.add(project)
+          projects.add(dependency)
           rootProjects.remove(dependency)
 
           dot << "  \"${project.path}\" -> \"${dependency.path}\""
@@ -238,14 +252,21 @@ task projectDependencyGraph {
     dot << '\n'
     for (project in projects) {
       def traits = []
-      if (commonProjects.contains(project)) {
+      if (rootProjects.contains(project)) {
+        traits.add('penwidth=2')
+        traits.add('shape=box')
+      } else if (commonProjects.contains(project)) {
         traits.add('style=dashed')
       }
-      if (rootProjects.contains(project)) {
-        traits.add('style=bold')
+      if (jsProjects.contains(project)) {
+        traits.add('fillcolor="#ffffba"')
+      } else if (androidProjects.contains(project)) {
+        traits.add('fillcolor="#baffc9"')
+      } else if (javaProjects.contains(project)) {
+        traits.add('fillcolor="#ffb3ba"')
       }
       if (!traits.isEmpty()) {
-        dot << "\"${project.path}\" [${traits.join(",")}];\n"
+        dot << "  \"${project.path}\" [${traits.join(", ")}];\n"
       }
     }
 
