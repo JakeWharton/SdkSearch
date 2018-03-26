@@ -5,7 +5,7 @@ task projectDependencyGraph {
 
     dot << 'digraph {\n'
     dot << "  graph [label=\"${rootProject.name}\\n \",labelloc=t,fontsize=30];\n"
-    dot << '  node [style=filled, color="#cccccc"];\n'
+    dot << '  node [style=filled, fillcolor="#bbbbbb"];\n'
     dot << '  rankdir=LR;\n\n'
 
     def rootProjects = []
