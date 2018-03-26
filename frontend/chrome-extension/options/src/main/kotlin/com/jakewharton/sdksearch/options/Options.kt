@@ -34,7 +34,7 @@ fun main(vararg args: String) {
   val loadConfig = { _: Event ->
     loadConfig(itemStore, configStore)
   }
-  document.onload = loadConfig
+  document.addEventListener("DOMContentLoaded", loadConfig)
   resetButton.onclick = loadConfig
 
   saveButton.onclick = {
