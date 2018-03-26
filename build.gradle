@@ -196,9 +196,18 @@ task projectDependencyGraph {
     dot << "  graph [label=\"${rootProject.name}\\n \",labelloc=t,fontsize=30];\n"
     dot << '  rankdir=LR;\n\n'
 
-    def projects = [rootProject]
-    while (!projects.isEmpty()) {
-      def project = projects.remove(0)
+    def projects = []
+    def commonProjects = []
+
+    def queue = [rootProject]
+    while (!queue.isEmpty()) {
+      def project = queue.remove(0)
+      projects.add(project)
+      queue.addAll(project.childProjects.values())
+
+      if (project.plugins.hasPlugin('org.jetbrains.kotlin.platform.common')) {
+        commonProjects.add(project)
+      }
 
       project.configurations.all { config ->
         config.dependencies
@@ -214,8 +223,17 @@ task projectDependencyGraph {
           dot << '\n'
         }
       }
+    }
 
-      projects.addAll(project.childProjects.values())
+    dot << '\n'
+    for (project in projects) {
+      def traits = []
+      if (commonProjects.contains(project)) {
+        traits.add('style=dashed')
+      }
+      if (!traits.isEmpty()) {
+        dot << "\"${project.path}\" [${traits.join(",")}];\n"
+      }
     }
 
     dot << '}\n'
