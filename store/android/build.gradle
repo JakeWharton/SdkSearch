@@ -31,6 +31,7 @@ dependencies {
   expectedBy project(':store')
 
   implementation deps.kotlin.stdlib.jdk
+  implementation deps.android.x.coreKtx
 
   api deps.rx.java
 
