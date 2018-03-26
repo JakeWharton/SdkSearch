@@ -196,13 +196,20 @@ task projectDependencyGraph {
     dot << "  graph [label=\"${rootProject.name}\\n \",labelloc=t,fontsize=30];\n"
     dot << '  rankdir=LR;\n\n'
 
-    def projects = []
-    def commonProjects = []
-
+    def rootProjects = []
     def queue = [rootProject]
     while (!queue.isEmpty()) {
       def project = queue.remove(0)
-      projects.add(project)
+      rootProjects.add(project)
+      queue.addAll(project.childProjects.values())
+    }
+
+    def projects = new LinkedHashSet<Project>()
+    def commonProjects = []
+
+    queue = [rootProject]
+    while (!queue.isEmpty()) {
+      def project = queue.remove(0)
       queue.addAll(project.childProjects.values())
 
       if (project.plugins.hasPlugin('org.jetbrains.kotlin.platform.common')) {
@@ -214,6 +221,9 @@ task projectDependencyGraph {
                 .withType(ProjectDependency)
                 .collect { it.dependencyProject }
                 .each { dependency ->
+          projects.add(project)
+          rootProjects.remove(dependency)
+
           dot << "  \"${project.path}\" -> \"${dependency.path}\""
           if (config.name.toLowerCase().endsWith('implementation')) {
             dot << " [style=dotted]"
@@ -230,6 +240,9 @@ task projectDependencyGraph {
       def traits = []
       if (commonProjects.contains(project)) {
         traits.add('style=dashed')
+      }
+      if (rootProjects.contains(project)) {
+        traits.add('style=bold')
       }
       if (!traits.isEmpty()) {
         dot << "\"${project.path}\" [${traits.join(",")}];\n"
