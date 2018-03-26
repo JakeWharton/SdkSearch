@@ -1,6 +1,8 @@
 package com.jakewharton.sdksearch.options
 
 import com.chrome.platform.Chrome
+import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
+import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.Config
 import com.jakewharton.sdksearch.store.ConfigStore
 import com.jakewharton.sdksearch.store.ItemStore
@@ -25,7 +27,7 @@ val saveButton = document.getElementById("save") as HTMLButtonElement
 
 fun main(vararg args: String) {
   val itemStore = StorageAreaItemStore(Chrome.storage.local)
-  val configStore = StorageAreaConfigStore(Chrome.storage.sync)
+  val configStore = StorageAreaConfigStore(Chrome.storage.sync, PRODUCTION_GIT_WEB, PRODUCTION_DAC)
 
   // TODO real-time validation of form values.
 

@@ -2,6 +2,8 @@ package com.jakewharton.sdksearch.content
 
 import com.chrome.platform.Chrome
 import com.jakewharton.sdksearch.reference.AndroidReference
+import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
+import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.StorageAreaConfigStore
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.launch
@@ -9,7 +11,7 @@ import kotlin.browser.document
 import kotlin.browser.window
 
 fun main(vararg args: String) {
-  val configStore = StorageAreaConfigStore(Chrome.storage.sync)
+  val configStore = StorageAreaConfigStore(Chrome.storage.sync, PRODUCTION_GIT_WEB, PRODUCTION_DAC)
 
   launch {
     val (gitWebUrl, dacUrl) = configStore.load()

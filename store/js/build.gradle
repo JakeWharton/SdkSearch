@@ -7,7 +7,6 @@ dependencies {
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
   compile project(':chrome-platform')
-  compile project(':references:js')
   testCompile deps.kotlin.test.js
 }
 

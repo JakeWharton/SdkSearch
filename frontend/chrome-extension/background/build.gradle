@@ -8,6 +8,7 @@ dependencies {
   compile deps.kotlin.serialization.js
   compile project(':api:dac:js')
   compile project(':store:js')
+  compile project(':references:js')
 }
 
 kotlin {

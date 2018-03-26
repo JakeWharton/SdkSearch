@@ -5,6 +5,7 @@ apply plugin: 'com.eriwen.gradle.js'
 dependencies {
   compile deps.kotlin.stdlib.js
   compile project(':store:js')
+  compile project(':references:js')
 }
 
 kotlin {
