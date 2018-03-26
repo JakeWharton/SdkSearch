@@ -5,7 +5,7 @@ task projectDependencyGraph {
 
     dot << 'digraph {\n'
     dot << "  graph [label=\"${rootProject.name}\\n \",labelloc=t,fontsize=30];\n"
-    dot << '  node [style=filled];\n'
+    dot << '  node [style=filled, color="#cccccc"];\n'
     dot << '  rankdir=LR;\n\n'
 
     def rootProjects = []
@@ -63,22 +63,24 @@ task projectDependencyGraph {
     dot << '\n'
     for (project in projects) {
       def traits = []
+
       if (rootProjects.contains(project)) {
-        traits.add('penwidth=2')
         traits.add('shape=box')
       } else if (commonProjects.contains(project)) {
-        traits.add('style=dashed')
+        traits.add('style=dashed, color=black')
       }
+
       if (jsProjects.contains(project)) {
         traits.add('fillcolor="#ffffba"')
       } else if (androidProjects.contains(project)) {
         traits.add('fillcolor="#baffc9"')
       } else if (javaProjects.contains(project)) {
         traits.add('fillcolor="#ffb3ba"')
+      } else {
+        traits.add('fillcolor="#eeeeee"')
       }
-      if (!traits.isEmpty()) {
-        dot << "  \"${project.path}\" [${traits.join(", ")}];\n"
-      }
+
+      dot << "  \"${project.path}\" [${traits.join(", ")}];\n"
     }
 
     dot << '}\n'
