@@ -13,7 +13,6 @@ import kotlinx.coroutines.experimental.launch
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
-import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.browser.window
 
@@ -31,13 +30,18 @@ fun main(vararg args: String) {
 
   // TODO real-time validation of form values.
 
-  val loadConfig = { _: Event ->
+  document.addEventListener("DOMContentLoaded", {
     loadConfig(itemStore, configStore)
-  }
-  document.addEventListener("DOMContentLoaded", loadConfig)
-  resetButton.onclick = loadConfig
+  })
 
   saveButton.onclick = {
+    saveConfig(configStore)
+  }
+
+  resetButton.onclick = {
+    gitWebInput.value = PRODUCTION_GIT_WEB
+    dacInput.value = PRODUCTION_DAC
+
     saveConfig(configStore)
   }
 }
@@ -68,8 +72,7 @@ private fun saveConfig(configStore: ConfigStore) {
     return
   }
 
-  saveButton.disabled = true
-  resetButton.disabled = true
+  setFormEnabled(false)
 
   val config = Config(gitWebUrl, dacUrl)
   launch {
@@ -79,7 +82,13 @@ private fun saveConfig(configStore: ConfigStore) {
     delay(1000)
 
     saveButton.textContent = "Save"
-    saveButton.disabled = false
-    resetButton.disabled = false
+    setFormEnabled(true)
   }
+}
+
+private fun setFormEnabled(enabled: Boolean) {
+  gitWebInput.disabled = !enabled
+  dacInput.disabled = !enabled
+  saveButton.disabled = !enabled
+  resetButton.disabled = !enabled
 }
