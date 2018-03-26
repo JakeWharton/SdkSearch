@@ -1,0 +1,94 @@
+task projectDependencyGraph {
+  doLast {
+    def dot = new File(rootProject.buildDir, 'project.dot')
+    dot.delete()
+
+    dot << 'digraph {\n'
+    dot << "  graph [label=\"${rootProject.name}\\n \",labelloc=t,fontsize=30];\n"
+    dot << '  node [style=filled];\n'
+    dot << '  rankdir=LR;\n\n'
+
+    def rootProjects = []
+    def queue = [rootProject]
+    while (!queue.isEmpty()) {
+      def project = queue.remove(0)
+      rootProjects.add(project)
+      queue.addAll(project.childProjects.values())
+    }
+
+    def projects = new LinkedHashSet<Project>()
+    def commonProjects = []
+    def jsProjects = []
+    def androidProjects = []
+    def javaProjects = []
+
+    queue = [rootProject]
+    while (!queue.isEmpty()) {
+      def project = queue.remove(0)
+      queue.addAll(project.childProjects.values())
+
+      if (project.plugins.hasPlugin('org.jetbrains.kotlin.platform.common')) {
+        commonProjects.add(project)
+      }
+      if (project.plugins.hasPlugin('kotlin2js')) {
+        jsProjects.add(project)
+      }
+      if (project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
+        androidProjects.add(project)
+      }
+      if (project.plugins.hasPlugin('java-library') || project.plugins.hasPlugin('java')) {
+        javaProjects.add(project)
+      }
+
+      project.configurations.all { config ->
+        config.dependencies
+                .withType(ProjectDependency)
+                .collect { it.dependencyProject }
+                .each { dependency ->
+          projects.add(project)
+          projects.add(dependency)
+          rootProjects.remove(dependency)
+
+          dot << "  \"${project.path}\" -> \"${dependency.path}\""
+          if (config.name.toLowerCase().endsWith('implementation')) {
+            dot << " [style=dotted]"
+          } else if (config.name == 'expectedBy') {
+            dot << " [style=dashed, arrowhead=none]"
+          }
+          dot << '\n'
+        }
+      }
+    }
+
+    dot << '\n'
+    for (project in projects) {
+      def traits = []
+      if (rootProjects.contains(project)) {
+        traits.add('penwidth=2')
+        traits.add('shape=box')
+      } else if (commonProjects.contains(project)) {
+        traits.add('style=dashed')
+      }
+      if (jsProjects.contains(project)) {
+        traits.add('fillcolor="#ffffba"')
+      } else if (androidProjects.contains(project)) {
+        traits.add('fillcolor="#baffc9"')
+      } else if (javaProjects.contains(project)) {
+        traits.add('fillcolor="#ffb3ba"')
+      }
+      if (!traits.isEmpty()) {
+        dot << "  \"${project.path}\" [${traits.join(", ")}];\n"
+      }
+    }
+
+    dot << '}\n'
+
+    def p = 'dot -Tpng -O project.dot'.execute([], rootProject.buildDir)
+    p.waitFor()
+    if (p.exitValue() != 0) {
+      throw new RuntimeException(p.errorStream.text)
+    }
+
+    println("Project module dependency graph created at ${dot.absolutePath}.png")
+  }
+}
