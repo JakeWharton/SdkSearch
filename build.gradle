@@ -99,7 +99,7 @@ buildscript {
       ],
       'okio': 'com.squareup.okio:okio:1.14.0',
       'moshi': 'com.squareup.moshi:moshi:1.5.0',
-      'timber': 'com.jakewharton.timber:timber:4.6.1',
+      'timber': 'com.jakewharton.timber:timber:4.7.0',
       'junit': 'junit:junit:4.12',
       'truth': 'com.google.truth:truth:0.39',
       'sqlBrite': 'com.squareup.sqlbrite3:sqlbrite-kotlin:3.2.0',
