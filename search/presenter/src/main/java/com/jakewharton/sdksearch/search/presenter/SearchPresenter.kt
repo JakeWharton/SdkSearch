@@ -75,22 +75,22 @@ class SearchPresenter(
   }
 
   sealed class Event {
-    data class QueryChanged(val query: String): Event()
+    data class QueryChanged(val query: String) : Event()
     object ClearSyncStatus : Event()
   }
 
   data class Model(
-      val count: Long = 0,
-      val queryResults: QueryResults = QueryResults(),
-      val syncStatus: SyncStatus = SyncStatus()
+    val count: Long = 0,
+    val queryResults: QueryResults = QueryResults(),
+    val syncStatus: SyncStatus = SyncStatus()
   ) {
     data class QueryResults(
-        val query: String = "",
-        val items: List<Item> = emptyList()
+      val query: String = "",
+      val items: List<Item> = emptyList()
     )
     data class SyncStatus(
-        val inFlight: Int = 0,
-        val failed: Int = 0
+      val inFlight: Int = 0,
+      val failed: Int = 0
     )
   }
 

@@ -8,9 +8,9 @@ private const val KEY_GIT_WEB_URL = "git_web_url"
 private const val KEY_DAC_URL = "dac_url"
 
 class StorageAreaConfigStore(
-    private val storageArea: StorageArea,
-    private val defaultGitWebUrl: String,
-    private val defaultDacUrl: String
+  private val storageArea: StorageArea,
+  private val defaultGitWebUrl: String,
+  private val defaultDacUrl: String
 ) : ConfigStore {
   override suspend fun load() = suspendCoroutine<Config> { continuation ->
     storageArea.get(json(

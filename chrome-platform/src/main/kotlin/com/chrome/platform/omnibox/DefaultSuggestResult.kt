@@ -6,7 +6,7 @@ external interface DefaultSuggestResult {
 }
 
 // TODO remove once https://youtrack.jetbrains.com/issue/KT-21653 is implemented.
-fun DefaultSuggestResult(description: String) : DefaultSuggestResult {
+fun DefaultSuggestResult(description: String): DefaultSuggestResult {
   val o = js("{}")
   o.description = description
   return o

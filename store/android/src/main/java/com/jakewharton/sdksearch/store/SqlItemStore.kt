@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 internal class SqlItemStore @Inject constructor(
-    private val db: BriteDatabase
+  private val db: BriteDatabase
 ) : ItemStore {
   private val insertItem by lazy { ItemModel.InsertItem(db.writableDatabase) }
   private val updateItem by lazy { ItemModel.UpdateItem(db.writableDatabase) }
@@ -57,5 +57,5 @@ private fun String.escapeLike(escapeChar: Char) =
         .replace("%", "$escapeChar%")
         .replace("_", "${escapeChar}_")
 
-private fun BriteDatabase.createQuery(query: SqlDelightQuery)
-    = query.let { createQuery(it.tables, it) }
+private fun BriteDatabase.createQuery(query: SqlDelightQuery) =
+    query.let { createQuery(it.tables, it) }

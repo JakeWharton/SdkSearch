@@ -15,8 +15,8 @@ val ITEM_LIST_URL_PATHS = mapOf(
 private val PACKAGE = "^([a-z0-9]+.)+".toRegex()
 
 class AndroidReference(
-    private val gitWebUrl: String,
-    private val dacUrl: String
+  private val gitWebUrl: String,
+  private val dacUrl: String
 ) {
   init {
     require(gitWebUrl.endsWith('/')) { "Git web URL must end with '/': $gitWebUrl" }

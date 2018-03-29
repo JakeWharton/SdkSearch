@@ -7,9 +7,9 @@ private const val KEY_GIT_WEB_URL = "git_web_url"
 private const val KEY_DAC_URL = "dac_url"
 
 class SharedPreferencesConfigStore(
-    private val preferences: SharedPreferences,
-    private val defaultGitWebUrl: String,
-    private val defaultDacUrl: String
+  private val preferences: SharedPreferences,
+  private val defaultGitWebUrl: String,
+  private val defaultDacUrl: String
 ) : ConfigStore {
   override suspend fun load(): Config {
     val gitWebUrl = preferences.getString(KEY_GIT_WEB_URL, defaultGitWebUrl)

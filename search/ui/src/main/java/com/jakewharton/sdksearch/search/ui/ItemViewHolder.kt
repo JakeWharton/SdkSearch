@@ -54,7 +54,7 @@ internal class ItemViewHolder(
     }
   }
 
-  override fun onMenuItemClick(menuItem: MenuItem) = when(menuItem.itemId) {
+  override fun onMenuItemClick(menuItem: MenuItem) = when (menuItem.itemId) {
     R.id.copy -> {
       callback.onItemCopied(item!!)
       true

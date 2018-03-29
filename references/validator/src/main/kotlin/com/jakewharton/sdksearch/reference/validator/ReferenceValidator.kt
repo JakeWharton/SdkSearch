@@ -101,5 +101,5 @@ fun main(vararg args: String) = runBlocking {
 
   // Shut down OkHttpClient resources so that the JVM can exit cleanly.
   client.dispatcher().executorService().shutdown()
-  client.connectionPool().evictAll();
+  client.connectionPool().evictAll()
 }
