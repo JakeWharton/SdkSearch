@@ -1,7 +1,7 @@
 package com.jakewharton.sdksearch.store
 
 import android.content.SharedPreferences
-import androidx.content.edit
+import androidx.core.content.edit
 
 private const val KEY_GIT_WEB_URL = "git_web_url"
 private const val KEY_DAC_URL = "dac_url"

@@ -15,7 +15,7 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.content.FileProvider
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
-import androidx.content.systemService
+import androidx.core.content.systemService
 import com.jakewharton.sdksearch.api.circleci.CircleCiComponent
 import com.jakewharton.sdksearch.api.circleci.Filter.SUCCESSFUL
 import com.jakewharton.sdksearch.api.circleci.VcsType.GITHUB

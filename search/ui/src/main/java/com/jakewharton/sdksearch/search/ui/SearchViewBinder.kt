@@ -16,8 +16,8 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
-import androidx.content.systemService
-import androidx.view.isVisible
+import androidx.core.content.systemService
+import androidx.core.view.isVisible
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus

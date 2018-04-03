@@ -2,7 +2,7 @@ package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
 import android.support.v4.app.ShareCompat.IntentBuilder
-import androidx.net.toUri
+import androidx.core.net.toUri
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.search.ui.ItemHandler

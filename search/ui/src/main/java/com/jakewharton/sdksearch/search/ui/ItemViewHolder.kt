@@ -15,9 +15,9 @@ import android.view.View.OnClickListener
 import android.widget.PopupMenu
 import android.widget.PopupMenu.OnMenuItemClickListener
 import android.widget.TextView
-import androidx.text.buildSpannedString
-import androidx.text.inSpans
-import androidx.text.toSpannable
+import androidx.core.text.buildSpannedString
+import androidx.core.text.inSpans
+import androidx.core.text.toSpannable
 import com.jakewharton.sdksearch.store.Item
 import kotlin.LazyThreadSafetyMode.NONE
 

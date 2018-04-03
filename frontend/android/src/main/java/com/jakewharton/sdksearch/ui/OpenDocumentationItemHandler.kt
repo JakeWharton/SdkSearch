@@ -4,8 +4,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.support.customtabs.CustomTabsIntent
-import androidx.graphics.drawable.toBitmap
-import androidx.net.toUri
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.net.toUri
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.reference.AndroidReference
