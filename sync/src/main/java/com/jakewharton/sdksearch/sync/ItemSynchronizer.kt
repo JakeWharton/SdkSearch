@@ -74,6 +74,7 @@ class ItemSynchronizer(
     } catch (e: RuntimeException) {
       Timber.i(e, "Unable to save $listing")
       loader.send(LoadResult(listing, false))
+      return
     }
 
     loader.send(LoadResult(listing, true))
