@@ -3,8 +3,6 @@ package com.jakewharton.sdksearch.search.ui
 import android.graphics.Typeface.BOLD
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.widget.RecyclerView.ViewHolder
-import android.text.Spannable
-import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
@@ -17,6 +15,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener
 import android.widget.TextView
 import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
+import androidx.core.text.set
 import androidx.core.text.toSpannable
 import com.jakewharton.sdksearch.store.Item
 import kotlin.LazyThreadSafetyMode.NONE
@@ -136,8 +135,3 @@ internal class ItemViewHolder(
 
 @Suppress("NOTHING_TO_INLINE") // Convenience alias to public API.
 private inline fun Int.withAlpha(alpha: Int) = ColorUtils.setAlphaComponent(this, alpha)
-
-@Suppress("NOTHING_TO_INLINE") // Convenience alias to public API.
-private inline operator fun Spannable.set(start: Int, end: Int, span: Any) {
-  setSpan(span, start, end, SPAN_INCLUSIVE_EXCLUSIVE)
-}
