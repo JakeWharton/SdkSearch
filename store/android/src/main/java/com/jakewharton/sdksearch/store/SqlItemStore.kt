@@ -50,12 +50,12 @@ internal class SqlItemStore @Inject constructor(
       return db.executeUpdateDelete(table, this)
     }
   }
+
+  private fun String.escapeLike(escapeChar: Char) =
+      this.replace("$escapeChar", "$escapeChar$escapeChar")
+          .replace("%", "$escapeChar%")
+          .replace("_", "${escapeChar}_")
+
+  private fun BriteDatabase.createQuery(query: SqlDelightQuery) =
+      query.let { createQuery(it.tables, it) }
 }
-
-private fun String.escapeLike(escapeChar: Char) =
-    this.replace("$escapeChar", "$escapeChar$escapeChar")
-        .replace("%", "$escapeChar%")
-        .replace("_", "${escapeChar}_")
-
-private fun BriteDatabase.createQuery(query: SqlDelightQuery) =
-    query.let { createQuery(it.tables, it) }

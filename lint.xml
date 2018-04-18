@@ -3,6 +3,10 @@
   <issue id="PrivateResource" severity="error"/>
   <issue id="UnusedIds" severity="error"/>
   <issue id="UnusedResources" severity="error"/>
+  <issue id="SyntheticAccessor" severity="error">
+    <ignore path="src/test*/**"/>
+    <ignore path="src/androidTest*/**"/>
+  </issue>
   <!-- No one cares. -->
   <issue id="GoogleAppIndexingWarning" severity="ignore"/>
 </lint>

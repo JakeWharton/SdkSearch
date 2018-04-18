@@ -127,11 +127,11 @@ internal class ItemViewHolder(
     }
   }
 
+  @Suppress("NOTHING_TO_INLINE") // Convenience alias to public API.
+  private inline fun Int.withAlpha(alpha: Int) = ColorUtils.setAlphaComponent(this, alpha)
+
   companion object {
     // We make it 20% 'smaller'
     private const val PERIOD_LETTER_SPACING = -0.2f
   }
 }
-
-@Suppress("NOTHING_TO_INLINE") // Convenience alias to public API.
-private inline fun Int.withAlpha(alpha: Int) = ColorUtils.setAlphaComponent(this, alpha)

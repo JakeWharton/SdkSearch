@@ -75,7 +75,9 @@ class SearchPresenter(
   }
 
   sealed class Event {
+    @SuppressWarnings("SyntheticAccessor") // TODO https://issuetracker.google.com/issues/78144888
     data class QueryChanged(val query: String) : Event()
+    @SuppressWarnings("SyntheticAccessor") // TODO https://issuetracker.google.com/issues/78144888
     object ClearSyncStatus : Event()
   }
 
