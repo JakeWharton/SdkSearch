@@ -17,9 +17,9 @@ buildscript {
   ext.versions = [
       'supportLibrary': '27.1.1',
       'atsl': '1.0.1',
-      'kotlin': '1.2.31',
+      'kotlin': '1.2.40',
       'kotlinCoroutines': '0.22.5',
-      'kotlinSerialization': '0.4',
+      'kotlinSerialization': '0.4.2',
       'okhttp': '3.10.0',
       'retrofit': '2.4.0',
       'kotshi': '1.0.3',
