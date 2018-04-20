@@ -1,20 +1,26 @@
 package com.jakewharton.sdksearch.debug.updater
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
-import com.jakewharton.sdksearch.debug.updater.BuildConfig.CIRCLE_CI_TOKEN
+import androidx.core.widget.toast
 
 class UpdateActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    if (CIRCLE_CI_TOKEN.isBlank()) {
-      Toast.makeText(this, "Circle CI token missing. Cannot update!", LENGTH_SHORT).show()
+    val config = UpdateConfig(
+        BuildConfig.CIRCLE_CI_TOKEN,
+        BuildConfig.COMMIT_TIMESTAMP,
+        "JakeWharton",
+        "SdkSearch",
+        "build/commit-timestamp.txt",
+        "build/outputs/apk/debug/sdk-search-debug.apk"
+    )
+
+    if (config.apiToken.isBlank()) {
+      toast("Circle CI token missing. Cannot update!")
     } else {
-      startService(Intent(this, UpdateService::class.java))
+      startUpdateService(config)
     }
 
     finish()

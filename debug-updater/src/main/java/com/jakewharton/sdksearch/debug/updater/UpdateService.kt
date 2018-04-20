@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_LOW
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_INSTALL_PACKAGE
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
@@ -13,13 +14,11 @@ import android.os.Build
 import android.support.annotation.StringRes
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.FileProvider
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.core.content.systemService
+import androidx.core.widget.toast
 import com.jakewharton.sdksearch.api.circleci.CircleCiComponent
 import com.jakewharton.sdksearch.api.circleci.Filter.SUCCESSFUL
 import com.jakewharton.sdksearch.api.circleci.VcsType.GITHUB
-import com.jakewharton.sdksearch.debug.updater.BuildConfig.COMMIT_TIMESTAMP
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import okio.Okio.buffer
@@ -28,11 +27,24 @@ import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
+private const val KEY_CONFIG = "config"
 private const val CHANNEL_ID = "debug-updater"
 private const val NOTIFICATION_ID = 1
 
+internal fun Context.startUpdateService(config: UpdateConfig) {
+  val intent = Intent(this, UpdateService::class.java)
+  intent.putExtra(KEY_CONFIG, config)
+  startService(intent)
+}
+
 class UpdateService : Service() {
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    val config = intent.getParcelableExtra<UpdateConfig>(KEY_CONFIG)
+    if (config == null) {
+      Timber.w("No config present in intent.")
+      return START_NOT_STICKY
+    }
+
     val notifications = systemService<NotificationManager>()
 
     if (Build.VERSION.SDK_INT >= 26 && notifications.getNotificationChannel(CHANNEL_ID) == null) {
@@ -45,12 +57,12 @@ class UpdateService : Service() {
 
     launch {
       val service = CircleCiComponent.builder()
-          .token(BuildConfig.CIRCLE_CI_TOKEN)
+          .token(config.apiToken)
           .build()
           .service()
 
       val artifacts = try {
-        service.listArtifacts(GITHUB, "JakeWharton", "SdkSearch", "master",
+        service.listArtifacts(GITHUB, config.user, config.project, config.branch,
             SUCCESSFUL).await()
             .filter { it.nodeIndex == 0 }
       } catch (e: IOException) {
@@ -62,9 +74,7 @@ class UpdateService : Service() {
         return@launch
       }
 
-      val timestampArtifact = artifacts.single {
-        it.prettyPath.endsWith("build/commit-timestamp.txt")
-      }
+      val timestampArtifact = artifacts.single { it.prettyPath.endsWith(config.timestampPath) }
       val timestamp = try {
         service.getArtifact(timestampArtifact.url).await().string().toLong()
       } catch (e: IOException) {
@@ -76,11 +86,11 @@ class UpdateService : Service() {
         return@launch
       }
 
-      Timber.d("This build: $COMMIT_TIMESTAMP, Latest build: $timestamp")
-      if (timestamp <= COMMIT_TIMESTAMP) {
+      Timber.d("This build: ${config.timestamp}, Latest build: $timestamp")
+      if (timestamp <= config.timestamp) {
         stopSelf(startId)
         launch(UI) {
-          Toast.makeText(this@UpdateService, "App is already up-to-date!", LENGTH_SHORT).show()
+          toast("App is already up-to-date!")
         }
         return@launch
       }
@@ -93,9 +103,7 @@ class UpdateService : Service() {
       updateDir.mkdirs()
       val apkFile = File(updateDir, "update.apk")
 
-      val apkArtifact = artifacts.single {
-        it.prettyPath.endsWith("build/outputs/apk/debug/sdk-search-debug.apk")
-      }
+      val apkArtifact = artifacts.single { it.prettyPath.endsWith(config.apkPath) }
       try {
         val apkResponse = service.getArtifact(apkArtifact.url).await()
 
