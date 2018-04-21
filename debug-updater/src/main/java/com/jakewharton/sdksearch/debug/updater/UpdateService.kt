@@ -11,6 +11,8 @@ import android.content.Intent.ACTION_INSTALL_PACKAGE
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.os.Build
+import android.support.annotation.RestrictTo
+import android.support.annotation.RestrictTo.Scope.LIBRARY
 import android.support.annotation.StringRes
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.FileProvider
@@ -37,6 +39,7 @@ internal fun Context.startUpdateService(config: UpdateConfig) {
   startService(intent)
 }
 
+@RestrictTo(LIBRARY) // Public for Android to create.
 class UpdateService : Service() {
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
     val config = intent.getParcelableExtra<UpdateConfig>(KEY_CONFIG)
