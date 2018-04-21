@@ -5,7 +5,9 @@ import com.jakewharton.sdksearch.debug.updater.UpdateActivityModule
 import com.jakewharton.sdksearch.ui.MainActivityModule
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
+@Singleton
 @Component(modules = [
   UpdateActivityModule::class,
   UpdateConfigModule::class,

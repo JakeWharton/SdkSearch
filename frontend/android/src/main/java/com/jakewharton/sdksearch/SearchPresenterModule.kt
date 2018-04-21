@@ -18,11 +18,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import timber.log.Timber
 import java.io.File
+import javax.inject.Singleton
 
 @Module
 object SearchPresenterModule {
   @JvmStatic
   @Provides
+  @Singleton
   fun provideSearchPresenter(application: Application, baseUrl: BaseUrl): SearchPresenter {
     val cacheDir = application.cacheDir / "http"
 
