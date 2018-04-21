@@ -13,7 +13,7 @@ import java.util.Locale
 import java.util.TimeZone
 
 class SdkSearchApplication : Application(), HasActivityInjector {
-  lateinit var appComponent: AppComponent
+  private lateinit var appComponent: AppComponent
 
   override fun onCreate() {
     super.onCreate()
