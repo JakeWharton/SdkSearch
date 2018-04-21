@@ -75,6 +75,7 @@ android {
       signingConfig signingConfigs.debug
 
       buildConfigField 'boolean', 'IS_CI_BUILD', isCiBuild.toString()
+      buildConfigField 'String', 'CIRCLE_CI_TOKEN', "\"${propOrEmpty('SDK_SEARCH_CIRCLE_CI_TOKEN')}\""
     }
     release {
       if (file('upload.keystore').exists()) {

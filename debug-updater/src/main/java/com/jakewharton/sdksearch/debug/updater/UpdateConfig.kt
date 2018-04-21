@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-internal data class UpdateConfig(
+data class UpdateConfig(
   val apiToken: String,
   val timestamp: Long,
   val user: String,

@@ -10,10 +10,6 @@ android {
 
   defaultConfig {
     minSdkVersion buildConfig.minSdk
-
-    buildConfigField 'String', 'CIRCLE_CI_TOKEN', "\"${propOrEmpty('SDK_SEARCH_CIRCLE_CI_TOKEN')}\""
-    // TODO how can we inject this from the enclosing application instead of the build config?
-    buildConfigField 'long', 'COMMIT_TIMESTAMP', gitTimestamp().toString()
   }
 
   compileOptions {
@@ -40,6 +36,11 @@ dependencies {
   implementation deps.timber
   implementation deps.okio
   implementation deps.android.support.coreUtils
+
+  implementation deps.dagger.runtime
+  implementation deps.dagger.androidRuntime
+  kapt deps.dagger.compiler
+  kapt deps.dagger.androidCompiler
 }
 
 kotlin {
