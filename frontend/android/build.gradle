@@ -119,6 +119,11 @@ dependencies {
   implementation deps.timber
   implementation deps.bugsnag
   implementation project(':bugsnag-tree')
+
+  implementation deps.dagger.runtime
+  implementation deps.dagger.androidRuntime
+  kapt deps.dagger.compiler
+  kapt deps.dagger.androidCompiler
 }
 
 kotlin {

@@ -96,6 +96,8 @@ buildscript {
       'dagger': [
           'runtime': "com.google.dagger:dagger:${versions.dagger}",
           'compiler': "com.google.dagger:dagger-compiler:${versions.dagger}",
+          'androidRuntime': "com.google.dagger:dagger-android:${versions.dagger}",
+          'androidCompiler': "com.google.dagger:dagger-android-processor:${versions.dagger}",
       ],
       'okio': 'com.squareup.okio:okio:1.14.0',
       'moshi': 'com.squareup.moshi:moshi:1.5.0',

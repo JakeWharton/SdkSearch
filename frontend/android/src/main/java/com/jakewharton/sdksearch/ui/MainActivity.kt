@@ -5,18 +5,25 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.SdkSearchApplication
+import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.search.ui.SearchViewBinder
+import dagger.Module
+import dagger.android.AndroidInjection
+import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 class MainActivity : Activity() {
+  @Inject lateinit var presenter: SearchPresenter
+  @Inject lateinit var baseUrl: BaseUrl
+
   private lateinit var presenterJob: Job
   private lateinit var binderJob: Job
 
@@ -33,12 +40,10 @@ class MainActivity : Activity() {
       throw RuntimeException("Crash! Bang! Pow! This is only a test...")
     }
 
-    val app = application as SdkSearchApplication
+    AndroidInjection.inject(this)
 
-    val presenter = app.presenter
     presenterJob = lastNonConfigurationInstance as Job? ?: presenter.start()
 
-    val baseUrl = app.baseUrl
     val androidReference = AndroidReference(PRODUCTION_GIT_WEB, PRODUCTION_DAC)
     val onClick = OpenDocumentationItemHandler(this, baseUrl, androidReference)
     val onCopy = ClipboardCopyItemHandler(this, baseUrl)
@@ -72,4 +77,10 @@ class MainActivity : Activity() {
       presenterJob.cancel()
     }
   }
+}
+
+@Module
+abstract class MainActivityModule {
+  @ContributesAndroidInjector
+  abstract fun contributeMainActivity(): MainActivity
 }
