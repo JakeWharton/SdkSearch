@@ -19,7 +19,7 @@ class SdkSearchApplication : Application(), HasActivityInjector {
     super.onCreate()
 
     if (BuildConfig.IS_CI_BUILD || !BuildConfig.DEBUG) {
-      require(BuildConfig.BUGSNAG_API_KEY.isNotBlank()) {
+      check(BuildConfig.BUGSNAG_API_KEY.isNotBlank()) {
         "Bugsnag API key is blank. Check the README and your Gradle configuration!"
       }
 
