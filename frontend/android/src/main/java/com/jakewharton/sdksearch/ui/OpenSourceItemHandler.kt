@@ -2,7 +2,6 @@ package com.jakewharton.sdksearch.ui
 
 import android.content.Context
 import android.support.customtabs.CustomTabsIntent
-import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.widget.toast
 import com.jakewharton.sdksearch.R
