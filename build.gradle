@@ -86,7 +86,7 @@ buildscript {
           'converterMoshi': "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
       ],
       'rx': [
-          'java': 'io.reactivex.rxjava2:rxjava:2.1.12',
+          'java': 'io.reactivex.rxjava2:rxjava:2.1.13',
           'relay': 'com.jakewharton.rxrelay2:rxrelay:2.0.0',
       ],
       'kotshi': [
