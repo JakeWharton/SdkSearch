@@ -14,6 +14,7 @@ import com.jakewharton.sdksearch.search.ui.SearchViewBinder
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
+import io.reactivex.functions.Consumer
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.launch
@@ -55,7 +56,7 @@ class MainActivity : Activity() {
     } else null
 
     setContentView(R.layout.main)
-    val binder = SearchViewBinder(window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
+    val binder = SearchViewBinder(window.decorView, Consumer<SearchPresenter.Event>() { presenter._events.accept(it) }, onClick, onCopy, onShare, onSource)
     defaultQuery?.let { binder.init(it) }
 
     binderJob = launch(Unconfined) {

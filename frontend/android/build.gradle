@@ -105,6 +105,8 @@ dependencies {
 
   debugImplementation project(':debug-updater')
 
+  implementation deps.rx.relay
+
   implementation deps.kotlin.stdlib.jdk
   implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android

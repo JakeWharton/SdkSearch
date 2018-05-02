@@ -14,7 +14,6 @@ import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.rx2.openSubscription
 import kotlinx.coroutines.experimental.selects.select
 import java.util.concurrent.TimeUnit
-import java.util.function.Consumer
 
 class SearchPresenter(
   private val context: CoroutineDispatcher,
@@ -24,8 +23,7 @@ class SearchPresenter(
   private val _models = ConflatedBroadcastChannel<Model>()
   val models: ReceiveChannel<Model> get() = _models.openSubscription()
 
-  private val _events = PublishRelay.create<Event>()
-  val events: Consumer<Event> get() = Consumer { _events.accept(it) }
+  val _events = PublishRelay.create<Event>()
 
   fun start(): Job {
     val itemCount = store.count().openSubscription()

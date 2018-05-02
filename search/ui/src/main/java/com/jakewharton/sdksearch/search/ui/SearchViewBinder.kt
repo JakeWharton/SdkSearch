@@ -32,15 +32,14 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.actor
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
-import java.util.function.Consumer
 
 class SearchViewBinder(
-  view: View,
-  private val events: Consumer<Event>,
-  private val onClick: ItemHandler,
-  private val onCopy: ItemHandler,
-  private val onShare: ItemHandler,
-  private val onSource: ItemHandler
+    view: View,
+    private val events: io.reactivex.functions.Consumer<Event>,
+    private val onClick: ItemHandler,
+    private val onCopy: ItemHandler,
+    private val onShare: ItemHandler,
+    private val onSource: ItemHandler
 ) {
   private val context = view.context
   private val resources = view.resources
