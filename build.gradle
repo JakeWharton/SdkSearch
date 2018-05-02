@@ -1,7 +1,7 @@
 buildscript {
   ext.buildConfig = [
       'compileSdk': 27,
-      'minSdk': 24,
+      'minSdk': 21,
       'targetSdk': 27,
 
       'version': [

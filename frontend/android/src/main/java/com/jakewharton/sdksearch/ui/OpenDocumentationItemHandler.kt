@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.support.customtabs.CustomTabsIntent
+import android.support.v4.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.jakewharton.sdksearch.R
@@ -13,15 +14,15 @@ import com.jakewharton.sdksearch.search.ui.ItemHandler
 import com.jakewharton.sdksearch.store.Item
 
 internal class OpenDocumentationItemHandler(
-  private val context: Context,
-  private val baseUrl: BaseUrl,
-  private val androidReference: AndroidReference
+    private val context: Context,
+    private val baseUrl: BaseUrl,
+    private val androidReference: AndroidReference
 ) : ItemHandler {
   override fun invoke(item: Item) {
     val uri = baseUrl.resolve(item.link).toUri()
     val sourceUri = androidReference.sourceUrl(item.packageName, item.className)?.toUri()
     CustomTabsIntent.Builder()
-        .setToolbarColor(context.getColor(R.color.green))
+        .setToolbarColor(ContextCompat.getColor(context, R.color.green))
         .addDefaultShareMenuItem()
         .apply {
           if (sourceUri != null) {

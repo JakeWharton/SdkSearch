@@ -1,6 +1,7 @@
 package com.jakewharton.sdksearch.search.ui
 
 import android.graphics.Typeface.BOLD
+import android.os.Build
 import android.support.v4.graphics.ColorUtils
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.text.style.ForegroundColorSpan
@@ -21,16 +22,21 @@ import com.jakewharton.sdksearch.store.Item
 import kotlin.LazyThreadSafetyMode.NONE
 
 internal class ItemViewHolder(
-  private val root: View,
-  private val callback: ItemAdapter.Callback
+    private val root: View,
+    private val callback: ItemAdapter.Callback
 ) : ViewHolder(root), OnClickListener, OnMenuItemClickListener {
   private val packageNameText: TextView = root.findViewById(R.id.package_name)
   private val classNameText: TextView = root.findViewById(R.id.class_name)
   private val overflow: View = root.findViewById(R.id.more_options)
 
   private val popup by lazy(NONE) {
-    val window = PopupMenu(root.context, overflow, Gravity.NO_GRAVITY,
-            0, android.R.style.Widget_Material_PopupMenu_Overflow)
+    val window = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+      PopupMenu(root.context, overflow, Gravity.NO_GRAVITY,
+          0, android.R.style.Widget_Material_PopupMenu_Overflow)
+    } else {
+      PopupMenu(root.context, overflow, Gravity.NO_GRAVITY)
+    }
+
     overflow.setOnTouchListener(window.dragToOpenListener)
     window.menuInflater.inflate(R.menu.item, window.menu)
     window.setOnMenuItemClickListener(this)
