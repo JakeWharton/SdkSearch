@@ -83,9 +83,7 @@ class ItemSynchronizer(
   data class SyncStatus(val name: String, val failed: Boolean = false)
 
   private sealed class LoaderEvent {
-    @SuppressWarnings("SyntheticAccessor") // TODO https://issuetracker.google.com/issues/78144888
     object ForceSync : LoaderEvent()
-    @SuppressWarnings("SyntheticAccessor") // TODO https://issuetracker.google.com/issues/78144888
     data class LoadResult(val listing: String, val success: Boolean) : LoaderEvent()
   }
 }
