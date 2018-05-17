@@ -86,13 +86,13 @@ class ItemSynchronizer(
     object ForceSync : LoaderEvent()
     data class LoadResult(val listing: String, val success: Boolean) : LoaderEvent()
   }
-}
 
-private fun <T> MutableList<T>.updateIf(selector: (T) -> Boolean, operation: (T) -> T) {
-  for (index in indices) {
-    val item = get(index)
-    if (selector(item)) {
-      set(index, operation(item))
+  private fun <T> MutableList<T>.updateIf(selector: (T) -> Boolean, operation: (T) -> T) {
+    for (index in indices) {
+      val item = get(index)
+      if (selector(item)) {
+        set(index, operation(item))
+      }
     }
   }
 }
