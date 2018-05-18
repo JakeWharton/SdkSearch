@@ -21,7 +21,8 @@ jobs:
 
       - run:
           name: Assemble
-          command: ./gradlew assemble
+          command: ./gradlew assemble bundle
+          # TODO remove bundle https://issuetracker.google.com/issues/79936441
       - store_artifacts:
           path: frontend/android/build/outputs/
       - store_artifacts:
