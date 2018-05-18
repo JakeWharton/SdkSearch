@@ -108,7 +108,7 @@ android {
 }
 
 dependencies {
-  implementation project(':search:ui')
+  implementation project(':search:ui-android')
 
   debugImplementation project(':debug-updater')
 
