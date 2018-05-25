@@ -3,15 +3,6 @@ package com.jakewharton.sdksearch.reference
 const val PRODUCTION_DAC = "https://developer.android.com/"
 const val PRODUCTION_GIT_WEB = "https://android.googlesource.com/"
 
-val ITEM_LIST_URL_PATHS = mapOf(
-    "platform" to "reference/lists.js",
-    "support" to "reference/android/support/lists.js",
-    "wear" to "reference/android/support/wearable/lists.js",
-    "test" to "reference/android/support/test/lists.js",
-    "constraint" to "reference/android/support/constraint/lists.js",
-    "arch" to "reference/android/arch/lists.js"
-)
-
 private val PACKAGE = "^([a-z0-9]+.)+".toRegex()
 
 class AndroidReference(

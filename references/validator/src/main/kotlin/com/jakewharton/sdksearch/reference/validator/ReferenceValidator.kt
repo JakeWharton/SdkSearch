@@ -5,7 +5,6 @@ package com.jakewharton.sdksearch.reference.validator
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.reference.AndroidReference
-import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.xenomachina.argparser.ArgParser
@@ -46,11 +45,8 @@ fun main(vararg args: String) = runBlocking {
       .build()
       .documentationService()
 
-  val fqcns = ITEM_LIST_URL_PATHS.values
-      .map { service.list(it) }
-      .flatMap { it.await() }
-      .filter { it.type == "class" }
-      .map { it.label }
+  val fqcns = service.list().await().values.single()
+      .map { it.type }
       .filter { fqcn -> config.packages.any { fqcn.startsWith(it) } }
       .sorted()
 

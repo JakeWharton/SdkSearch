@@ -15,13 +15,9 @@ internal object DacModule {
   @JvmStatic
   @Provides
   @Singleton
-  fun documentationService(baseUrl: BaseUrl, graphClient: OkHttpClient): DocumentationService {
-    val client = graphClient.newBuilder()
-        .addInterceptor(JavascriptSkippingInterceptor())
-        .build()
-
+  fun documentationService(baseUrl: BaseUrl, client: OkHttpClient): DocumentationService {
     val contentType = MediaType.parse("application/json; charset=utf-8")!!
-    val json = JSON.unquoted
+    val json = JSON.nonstrict
 
     val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl.url)

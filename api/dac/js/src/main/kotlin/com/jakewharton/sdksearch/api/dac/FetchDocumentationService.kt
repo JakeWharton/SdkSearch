@@ -4,14 +4,16 @@ import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.asDeferred
 import kotlinx.serialization.json.JSON
 import kotlinx.serialization.list
+import kotlinx.serialization.map
+import kotlinx.serialization.serializer
 import kotlin.browser.window
 
 class FetchDocumentationService(
   private val baseUrl: BaseUrl
 ) : DocumentationService {
 
-  override fun list(relativeUrl: String): Deferred<List<Item>> = window
-      .fetch(baseUrl.resolve(relativeUrl))
+  override fun list(): Deferred<Map< String, List<Item>>> = window
+      .fetch(baseUrl.resolve("_s/getsuggestions?p=%2F&s=irina&c=3"))
       .then {
         if (it.status != 200.toShort()) {
           throw RuntimeException("HTTP ${it.status} ${it.statusText}")
@@ -19,14 +21,8 @@ class FetchDocumentationService(
           it.text()
         }
       }.then {
-        // Data starts with a "val SOMETHING =" prefix which we skip.
-        val startIndex = it.indexOf('=') + 1
-        // Data ends with a ";<newline>" suffix which we skip.
-        val endIndex = it.lastIndexOf(';')
-
-        val json = it.substring(startIndex, endIndex)
-
-        JSON.unquoted.parse(Item.serializer().list, json)
+        val mapSerializer = (String::class.serializer() to Item.serializer().list).map
+        JSON.unquoted.parse(mapSerializer, it)
       }
       .asDeferred()
 }

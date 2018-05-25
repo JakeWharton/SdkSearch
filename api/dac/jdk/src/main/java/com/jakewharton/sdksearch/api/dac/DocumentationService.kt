@@ -2,8 +2,8 @@ package com.jakewharton.sdksearch.api.dac
 
 import kotlinx.coroutines.experimental.Deferred
 import retrofit2.http.GET
-import retrofit2.http.Url
 
 actual interface DocumentationService {
-  @GET actual fun list(@Url relativeUrl: String): Deferred<List<Item>>
+  @GET("_s/getsuggestions?p=/&s=irina&c=3")
+  actual fun list(): Deferred<Map<String, List<Item>>>
 }
