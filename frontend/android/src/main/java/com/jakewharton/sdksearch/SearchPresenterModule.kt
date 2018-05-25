@@ -4,7 +4,6 @@ import android.app.Application
 import com.jakewharton.byteunits.BinaryByteUnit.MEBIBYTES
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
-import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.store.DbComponent
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
@@ -47,7 +46,7 @@ object SearchPresenterModule {
         .build()
         .itemStore()
 
-    val synchronizer = ItemSynchronizer(store, service, ITEM_LIST_URL_PATHS)
+    val synchronizer = ItemSynchronizer(store, service)
 
     return SearchPresenter(UI, store, synchronizer)
   }

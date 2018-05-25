@@ -8,7 +8,6 @@ import com.chrome.platform.omnibox.SuggestResult
 import com.chrome.platform.tabs.UpdateProperties
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
-import com.jakewharton.sdksearch.reference.ITEM_LIST_URL_PATHS
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.Item
@@ -73,15 +72,13 @@ fun main(vararg args: String) {
 
     val service = FetchDocumentationService(baseUrl)
 
-    ITEM_LIST_URL_PATHS.forEach { (listing, url) ->
-      launch {
-        val items = service.list(url).await()
-            .filter { it.type == "class" }
-            .map { Item.createForInsert(it.label, it.link, it.deprecated) }
-        itemStore.updateItems(items)
+    launch {
+      val items = service.list().await()
+          .values.single() // TODO gracefully degrade
+          .map { Item.createForInsert(it.type, it.link, it.metadata) }
+      itemStore.updateItems(items)
 
-        println("Updated $listing with ${items.size} items")
-      }
+      println("Updated with ${items.size} items")
     }
   }
 }

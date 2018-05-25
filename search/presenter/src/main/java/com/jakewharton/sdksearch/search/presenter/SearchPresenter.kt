@@ -1,6 +1,7 @@
 package com.jakewharton.sdksearch.search.presenter
 
 import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
@@ -57,12 +58,14 @@ class SearchPresenter(
             model.copy(queryResults = it)
           }
           synchronizer.state.onReceive {
-            val failed = it.count { it.failed }
-            val inFlight = it.size - failed
-            model.copy(syncStatus = Model.SyncStatus(inFlight, failed))
+            model.copy(syncStatus = when (it) {
+              ItemSynchronizer.SyncStatus.IDLE -> SyncStatus.IDLE
+              ItemSynchronizer.SyncStatus.SYNC -> SyncStatus.SYNC
+              ItemSynchronizer.SyncStatus.FAILED -> SyncStatus.FAILED
+            })
           }
           clearSyncStatus.onReceive {
-            model.copy(syncStatus = Model.SyncStatus(0, 0))
+            model.copy(syncStatus = SyncStatus.IDLE)
           }
         }
         _models.offer(model)
@@ -82,16 +85,15 @@ class SearchPresenter(
   data class Model(
     val count: Long = 0,
     val queryResults: QueryResults = QueryResults(),
-    val syncStatus: SyncStatus = SyncStatus()
+    val syncStatus: SyncStatus = SyncStatus.IDLE
   ) {
     data class QueryResults(
       val query: String = "",
       val items: List<Item> = emptyList()
     )
-    data class SyncStatus(
-      val inFlight: Int = 0,
-      val failed: Int = 0
-    )
+    enum class SyncStatus {
+      IDLE, SYNC, FAILED
+    }
   }
 
   private inline fun <reified T> Observable<*>.ofType(): Observable<T> = ofType(T::class.java)

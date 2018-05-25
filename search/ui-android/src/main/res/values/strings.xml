@@ -11,17 +11,6 @@
   <string name="clear_search_query">Clear search</string>
   <string name="dismiss">Dismiss</string>
   <string name="view_source">View source</string>
-
-  <plurals name="updating">
-    <item quantity="one">Updating %d class list…</item>
-    <item quantity="other">Updating %d class lists…</item>
-  </plurals>
-  <plurals name="updating_with_failed">
-    <item quantity="one">Updating %d class list… (%d failed)</item>
-    <item quantity="other">Updating %d class lists… (%d failed)</item>
-  </plurals>
-  <plurals name="updating_failed">
-    <item quantity="one">Failed to update %d class list.</item>
-    <item quantity="other">Failed to update %d class lists.</item>
-  </plurals>
+  <string name="updating">Updating class list…</string>
+  <string name="updating_failed">Failed to update class list.</string>
 </resources>

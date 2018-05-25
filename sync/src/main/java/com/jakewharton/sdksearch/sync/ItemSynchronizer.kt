@@ -15,37 +15,27 @@ import java.io.IOException
 
 class ItemSynchronizer(
   private val itemStore: ItemStore,
-  private val documentationService: DocumentationService,
-  private val references: Map<String, String>
+  private val documentationService: DocumentationService
 ) {
 
-  private val _state = ConflatedChannel<List<SyncStatus>>()
-  val state: ReceiveChannel<List<SyncStatus>> get() = _state
+  private val _state = ConflatedChannel<SyncStatus>()
+  val state: ReceiveChannel<SyncStatus> get() = _state
 
   private val loader = actor<LoaderEvent> {
-    val status = mutableListOf<SyncStatus>()
+    var status = SyncStatus.IDLE
 
+    // TODO we probably don't need an actor anymore.
     consumeEach { event ->
       when (event) {
         is ForceSync -> {
-          status.clear()
-          status.addAll(references.keys.map { SyncStatus(it) })
-
-          references.forEach { (listing, url) ->
-            launch {
-              load(listing, url)
-            }
-          }
+          status = SyncStatus.SYNC
+          launch { load() }
         }
         is LoadResult -> {
-          if (event.success) {
-            status.removeIf { it.name == event.listing }
-          } else {
-            status.updateIf({ it.name == event.listing }, { it.copy(failed = true) })
-          }
+          status = if (event.success) SyncStatus.IDLE else SyncStatus.FAILED
         }
       }
-      _state.offer(status.toList())
+      _state.offer(status)
     }
   }
 
@@ -53,46 +43,44 @@ class ItemSynchronizer(
     loader.offer(ForceSync)
   }
 
-  private suspend fun load(listing: String, url: String) {
-    Timber.d("Listing $listing...")
+  private suspend fun load() {
+    Timber.d("Listing items...")
 
-    val apiItems = try {
-      documentationService.list(url).await()
+    val result = try {
+      documentationService.list().await()
     } catch (e: IOException) {
-      Timber.i(e, "Unable to load $listing")
-      loader.send(LoadResult(listing, false))
+      Timber.i(e, "Unable to load items")
+      loader.send(LoadResult(false))
       return
     }
-    Timber.d("Listing $listing got ${apiItems.size} items")
 
-    val items = apiItems
-        .filter { it.type == "class" }
-        .map { Item.createForInsert(it.label, it.link, it.deprecated) }
+    val apiItems = result.values.singleOrNull()
+    if (apiItems == null) {
+      Timber.w("More than one key returned from listing: ${result.keys}")
+      loader.send(LoadResult(false))
+      return
+    }
 
+    Timber.d("Listing got ${apiItems.size} items")
+
+    val items = apiItems.map { Item.createForInsert(it.type, it.link, it.metadata) }
     try {
       itemStore.updateItems(items)
     } catch (e: RuntimeException) {
-      Timber.i(e, "Unable to save $listing")
-      loader.send(LoadResult(listing, false))
+      Timber.i(e, "Unable to save items")
+      loader.send(LoadResult(false))
       return
     }
 
-    loader.send(LoadResult(listing, true))
+    loader.send(LoadResult(true))
   }
 
-  data class SyncStatus(val name: String, val failed: Boolean = false)
+  enum class SyncStatus {
+    IDLE, SYNC, FAILED
+  }
 
   private sealed class LoaderEvent {
     object ForceSync : LoaderEvent()
-    data class LoadResult(val listing: String, val success: Boolean) : LoaderEvent()
-  }
-
-  private fun <T> MutableList<T>.updateIf(selector: (T) -> Boolean, operation: (T) -> T) {
-    for (index in indices) {
-      val item = get(index)
-      if (selector(item)) {
-        set(index, operation(item))
-      }
-    }
+    data class LoadResult(val success: Boolean) : LoaderEvent()
   }
 }

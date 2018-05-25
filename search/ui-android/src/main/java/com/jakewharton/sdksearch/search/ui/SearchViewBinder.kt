@@ -23,6 +23,9 @@ import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.QueryResults
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus.FAILED
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus.IDLE
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus.SYNC
 import com.jakewharton.sdksearch.search.ui.util.layoutInflater
 import com.jakewharton.sdksearch.search.ui.util.onEditorAction
 import com.jakewharton.sdksearch.search.ui.util.onKey
@@ -140,19 +143,8 @@ class SearchViewBinder(
       queryResultProcessor.offer(oldResults to newResults)
     }
 
-    val (inFlight, failed) = model.syncStatus
-    if (inFlight != 0 || failed != 0) {
-      val message = when {
-        failed == 0 -> {
-          resources.getQuantityString(R.plurals.updating, inFlight, inFlight)
-        }
-        inFlight == 0 -> {
-          resources.getQuantityString(R.plurals.updating_failed, failed, failed)
-        }
-        else -> {
-          resources.getQuantityString(R.plurals.updating_with_failed, inFlight, inFlight, failed)
-        }
-      }
+    if (model.syncStatus != IDLE) {
+      val message = if (model.syncStatus == SYNC) R.string.updating else R.string.updating_failed
 
       var snackbar = this.snackbar
       if (snackbar == null) {
@@ -163,7 +155,7 @@ class SearchViewBinder(
         snackbar.setText(message)
       }
 
-      if (failed > 0 && inFlight == 0) {
+      if (model.syncStatus == FAILED) {
         snackbar.setAction(R.string.dismiss) {
           events.accept(ClearSyncStatus)
         }
