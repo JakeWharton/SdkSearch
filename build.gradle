@@ -125,7 +125,7 @@ buildscript {
     classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:${versions.kotlinSerialization}"
     classpath 'com.squareup.sqldelight:gradle-plugin:0.7.0'
     classpath 'com.eriwen:gradle-js-plugin:1.12.1'
-    classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
+    classpath 'com.github.triplet.gradle:play-publisher:1.2.2'
     classpath 'gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:3.2.0'
   }
 }
