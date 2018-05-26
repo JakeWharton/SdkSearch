@@ -1,5 +1,1 @@
-* Dismiss keyboard on scroll.
-* Do not reload search results on rotation.
-* White navigation bar (when keyboard is not on screen).
-* Update source mapping to latest.
-* Fix all known crashes.
+Fixed crash on startup caused by the developer documentation deleting the damn data that this app was using!
