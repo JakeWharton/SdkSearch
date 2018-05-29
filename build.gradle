@@ -113,10 +113,11 @@ buildscript {
   ext.isCiBuild = System.getenv('CI') == 'true'
 
   repositories {
-    jcenter()
+    mavenCentral()
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
     gradlePluginPortal()
+    jcenter()
   }
 
   dependencies {
@@ -134,9 +135,10 @@ apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 allprojects {
   repositories {
-    jcenter()
+    mavenCentral()
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
+    jcenter()
   }
 
   // Force all of the primary support libraries to use the same version.
