@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.platform.android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.squareup.sqldelight'
 
 android {
   compileSdkVersion buildConfig.compileSdk
@@ -35,7 +34,8 @@ dependencies {
 
   api deps.rx.java
 
-  implementation deps.sqlBrite
+  implementation deps.sqldelight.android
+  implementation deps.sqldelight.rx2
   implementation deps.android.arch.dbFramework
 
   implementation deps.timber

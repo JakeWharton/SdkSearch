@@ -5,11 +5,11 @@ import kotlin.test.assertEquals
 
 class ItemTest {
   @Test fun fqcnParsing() {
-    assertEquals(Item(-1, "com.example", "Example", false, ""),
-        Item.createForInsert("com.example.Example", "", null))
-    assertEquals(Item(-1, "com.example", "Example.Nested", false, ""),
-        Item.createForInsert("com.example.Example.Nested", "", null))
-    assertEquals(Item(-1, "com.example", "R.attr", false, ""),
-        Item.createForInsert("com.example.R.attr", "", null))
+    assertEquals(Item.Impl(-1, "com.example", "Example", false, ""),
+        ItemUtil.createForInsert("com.example.Example", "", null))
+    assertEquals(Item.Impl(-1, "com.example", "Example.Nested", false, ""),
+        ItemUtil.createForInsert("com.example.Example.Nested", "", null))
+    assertEquals(Item.Impl(-1, "com.example", "R.attr", false, ""),
+        ItemUtil.createForInsert("com.example.R.attr", "", null))
   }
 }

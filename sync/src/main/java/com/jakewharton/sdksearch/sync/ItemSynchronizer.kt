@@ -1,8 +1,8 @@
 package com.jakewharton.sdksearch.sync
 
 import com.jakewharton.sdksearch.api.dac.DocumentationService
-import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
+import com.jakewharton.sdksearch.store.ItemUtil
 import com.jakewharton.sdksearch.sync.ItemSynchronizer.LoaderEvent.ForceSync
 import com.jakewharton.sdksearch.sync.ItemSynchronizer.LoaderEvent.LoadResult
 import kotlinx.coroutines.experimental.channels.ConflatedChannel
@@ -63,7 +63,7 @@ class ItemSynchronizer(
 
     Timber.d("Listing got ${apiItems.size} items")
 
-    val items = apiItems.map { Item.createForInsert(it.type, it.link, it.metadata) }
+    val items = apiItems.map { ItemUtil.createForInsert(it.type, it.link, it.metadata) }
     try {
       itemStore.updateItems(items)
     } catch (e: RuntimeException) {
