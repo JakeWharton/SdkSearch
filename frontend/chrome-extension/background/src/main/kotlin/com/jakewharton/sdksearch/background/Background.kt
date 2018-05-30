@@ -10,7 +10,7 @@ import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
-import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.store.ItemUtil
 import com.jakewharton.sdksearch.store.StorageAreaConfigStore
 import com.jakewharton.sdksearch.store.StorageAreaItemStore
 import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
@@ -75,7 +75,7 @@ fun main(vararg args: String) {
     launch {
       val items = service.list().await()
           .values.single() // TODO gracefully degrade
-          .map { Item.createForInsert(it.type, it.link, it.metadata) }
+          .map { ItemUtil.createForInsert(it.type, it.link, it.metadata) }
       itemStore.updateItems(items)
 
       println("Updated with ${items.size} items")

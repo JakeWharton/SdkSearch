@@ -1,5 +1,3 @@
-import java.lang.Boolean;
-
 CREATE TABLE item(
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   packageName TEXT NOT NULL,
@@ -9,6 +7,23 @@ CREATE TABLE item(
 
   UNIQUE (packageName, className)
 );
+
+CREATE VIRTUAL TABLE item_index USING fts4(content TEXT);
+
+CREATE TRIGGER populate_index
+AFTER INSERT ON item
+BEGIN
+  INSERT INTO item_index (docid, content)
+  VALUES (new.id, new.className);
+END;
+
+CREATE TRIGGER update_index
+AFTER UPDATE ON item
+BEGIN
+  UPDATE item_index
+  SET content = new.className
+  WHERE docid = new.id;
+END;
 
 insertItem:
 INSERT OR FAIL INTO item(packageName, className, deprecated, link) VALUES (?, ?, ?, ?)
@@ -29,8 +44,9 @@ FROM item
 
 queryTerm:
 SELECT item.*
-FROM item
-WHERE className LIKE '%' || ?1 || '%' ESCAPE '\'
+FROM item_index
+JOIN item ON (docid = item.id)
+WHERE content LIKE '%' || ?1 || '%' ESCAPE '\'
 ORDER BY
   -- deprecated classes are always last
   deprecated ASC,

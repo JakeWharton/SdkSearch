@@ -19,7 +19,7 @@ class ItemStoreTest {
 
   @Test fun query() = runBlocking {
     itemStore.updateItems(listOf(
-        Item.createForInsert("com.example.One", "one.html", false)
+        ItemUtil.createForInsert("com.example.One", "one.html", false)
     ))
 
     itemStore.queryItems("One")
@@ -36,7 +36,7 @@ class ItemStoreTest {
 
   @Test fun upsert() = runBlocking {
     itemStore.updateItems(listOf(
-        Item.createForInsert("com.example.One", "one.html", false)
+        ItemUtil.createForInsert("com.example.One", "one.html", false)
     ))
 
     val query = itemStore.queryItems("One").test()
@@ -52,7 +52,7 @@ class ItemStoreTest {
     }
 
     itemStore.updateItems(listOf(
-        Item.createForInsert("com.example.One", "two.html", true)
+        ItemUtil.createForInsert("com.example.One", "two.html", true)
     ))
 
     query.takeValue {
@@ -72,14 +72,14 @@ class ItemStoreTest {
     query.takeValue { assertEquals(0, it) }
 
     itemStore.updateItems(listOf(
-        Item.createForInsert("com.example.One", "one.html", false)
+        ItemUtil.createForInsert("com.example.One", "one.html", false)
     ))
 
     query.takeValue { assertEquals(1, it) }
 
     itemStore.updateItems(listOf(
-        Item.createForInsert("com.example.Two", "two.html", false),
-        Item.createForInsert("com.example.Three", "three.html", false)
+        ItemUtil.createForInsert("com.example.Two", "two.html", false),
+        ItemUtil.createForInsert("com.example.Three", "three.html", false)
     ))
 
     query.takeValue { assertEquals(3, it) }
@@ -88,9 +88,9 @@ class ItemStoreTest {
 
   @Test fun wildcards() = runBlocking {
     itemStore.updateItems(listOf(
-        Item.createForInsert("com.example.One%Two", "percent.html", false),
-        Item.createForInsert("com.example.One_Two", "underscore.html", false),
-        Item.createForInsert("com.example.One\\Two", "escape.html", false)
+        ItemUtil.createForInsert("com.example.One%Two", "percent.html", false),
+        ItemUtil.createForInsert("com.example.One_Two", "underscore.html", false),
+        ItemUtil.createForInsert("com.example.One\\Two", "escape.html", false)
     ))
 
     itemStore.queryItems("%")
