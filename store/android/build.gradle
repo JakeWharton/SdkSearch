@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.platform.android'
 apply plugin: 'kotlin-kapt'
 
+archivesBaseName = 'store-android'
+
 android {
   compileSdkVersion buildConfig.compileSdk
 
@@ -23,6 +25,10 @@ android {
 
     // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
     checkReleaseBuilds false
+  }
+
+  packagingOptions { // For test APK
+    exclude 'META-INF/*.kotlin_module'
   }
 }
 
