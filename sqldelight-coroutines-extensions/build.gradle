@@ -1,0 +1,16 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+  api deps.sqldelight.runtime.jdk
+  api deps.kotlin.coroutines.jdk
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

@@ -3,7 +3,7 @@ apply plugin: 'com.squareup.sqldelight'
 
 dependencies {
   implementation deps.kotlin.stdlib.common
-  implementation deps.sqldelight.runtimeCommon
+  implementation deps.sqldelight.runtime.common
 
   testImplementation deps.kotlin.test.common
   testImplementation deps.kotlin.test.annotations

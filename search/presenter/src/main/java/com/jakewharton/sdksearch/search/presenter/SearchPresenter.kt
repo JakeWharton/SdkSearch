@@ -29,7 +29,7 @@ class SearchPresenter(
   val events: Consumer<Event> get() = Consumer { _events.accept(it) }
 
   fun start(): Job {
-    val itemCount = store.count().openSubscription()
+    val itemCount = store.count()
 
     val queryItems = _events
         .ofType<Event.QueryChanged>()

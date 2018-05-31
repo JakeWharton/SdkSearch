@@ -10,6 +10,7 @@ import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -41,6 +42,7 @@ object SearchPresenterModule {
 
     val store = DbComponent.builder()
         .context(application)
+        .coroutineContext(CommonPool)
         .scheduler(Schedulers.io())
         .filename("sdk.db")
         .build()
