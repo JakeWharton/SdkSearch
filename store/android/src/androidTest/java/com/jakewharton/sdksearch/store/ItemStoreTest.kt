@@ -67,23 +67,23 @@ class ItemStoreTest {
   }
 
   @Test fun count() = runBlocking {
-    val query = itemStore.count().test()
+    val query = itemStore.count()
 
-    query.takeValue { assertEquals(0, it) }
+    assertEquals(0, query.receive())
 
     itemStore.updateItems(listOf(
         ItemUtil.createForInsert("com.example.One", "one.html", null)
     ))
 
-    query.takeValue { assertEquals(1, it) }
+    assertEquals(1, query.receive())
 
     itemStore.updateItems(listOf(
         ItemUtil.createForInsert("com.example.Two", "two.html", null),
         ItemUtil.createForInsert("com.example.Three", "three.html", null)
     ))
 
-    query.takeValue { assertEquals(3, it) }
-    query.dispose()
+    assertEquals(3, query.receive())
+    query.cancel()
   }
 
   @Test fun wildcards() = runBlocking {

@@ -111,9 +111,12 @@ buildscript {
       'sqldelight': [
           'android': "com.squareup.sqldelight:android-driver:${versions.sqldelight}",
           'rx2': "com.squareup.sqldelight:rxjava2-extensions:${versions.sqldelight}",
-          'runtimeCommon': "com.squareup.sqldelight:runtime-common:${versions.sqldelight}",
-          'runtimeJs': "com.squareup.sqldelight:runtime-js:${versions.sqldelight}",
-      ]
+          'runtime': [
+              'common': "com.squareup.sqldelight:runtime-common:${versions.sqldelight}",
+              'jdk': "com.squareup.sqldelight:runtime-jdk:${versions.sqldelight}",
+              'js': "com.squareup.sqldelight:runtime-js:${versions.sqldelight}",
+          ],
+      ],
   ]
 
   ext.isCiBuild = System.getenv('CI') == 'true'
