@@ -3,6 +3,8 @@ package com.jakewharton.sdksearch.store
 import com.chrome.platform.storage.StorageArea
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.js.json
 
@@ -47,7 +49,10 @@ class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
     }
   }
 
-  override suspend fun queryItems(term: String) = suspendCoroutine<List<Item>> { continuation ->
+  override fun queryItems(term: String): ReceiveChannel<List<Item>> {
+    // TODO use onChanged listener to update this value
+
+    val channel = ConflatedBroadcastChannel<List<Item>>()
     storage.get(KEY) {
       @Suppress("UNCHECKED_CAST")
       val allItems = it[KEY] as Array<Item>? ?: emptyArray()
@@ -65,16 +70,21 @@ class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
               else -> 6
             }
           })
-      continuation.resume(items)
+      channel.offer(items)
     }
+    return channel.openSubscription()
   }
 
-  override suspend fun count() = suspendCoroutine<Int> { continuation ->
+  override fun count(): ReceiveChannel<Long> {
+    // TODO use onChanged listener to update this value
+
+    val channel = ConflatedBroadcastChannel<Long>()
     storage.get(KEY) {
       @Suppress("UNCHECKED_CAST")
       val allItems = it[KEY] as Array<Item>? ?: emptyArray()
 
-      continuation.resume(allItems.size)
+      channel.offer(allItems.size.toLong())
     }
+    return channel.openSubscription()
   }
 }

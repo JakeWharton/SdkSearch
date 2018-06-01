@@ -48,7 +48,7 @@ fun main(vararg args: String) {
 
 private fun loadConfig(itemStore: ItemStore, configStore: ConfigStore) {
   launch {
-    val count = itemStore.count()
+    val count = itemStore.count().receive()
     itemCount.textContent = count.toString()
   }
 

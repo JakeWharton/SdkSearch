@@ -40,6 +40,7 @@ fun main(vararg args: String) {
         println("Searching $text")
 
         val items = itemStore.queryItems(text)
+            .receive()
             .take(5)
             .map {
               val matchStart = it.className.indexOf(text, ignoreCase = true)
