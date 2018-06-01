@@ -18,7 +18,6 @@ import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
 import androidx.core.content.systemService
 import androidx.core.view.isVisible
-import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
@@ -31,15 +30,16 @@ import com.jakewharton.sdksearch.search.ui.util.onEditorAction
 import com.jakewharton.sdksearch.search.ui.util.onKey
 import com.jakewharton.sdksearch.search.ui.util.onScroll
 import com.jakewharton.sdksearch.search.ui.util.onTextChanged
+import com.jakewharton.sdksearch.store.Item
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.channels.SendChannel
 import kotlinx.coroutines.experimental.channels.actor
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
-import java.util.function.Consumer
 
 class SearchViewBinder(
   view: View,
-  private val events: Consumer<Event>,
+  private val events: SendChannel<Event>,
   private val onClick: ItemHandler,
   private val onCopy: ItemHandler,
   private val onShare: ItemHandler,
@@ -91,7 +91,7 @@ class SearchViewBinder(
       queryClear.isVisible = it.isNotEmpty()
       queryInput.typeface = if (it.isEmpty()) Typeface.DEFAULT else robotoMono
 
-      events.accept(Event.QueryChanged(it.toString()))
+      events.offer(Event.QueryChanged(it.toString()))
     }
 
     val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
@@ -157,7 +157,7 @@ class SearchViewBinder(
 
       if (model.syncStatus == FAILED) {
         snackbar.setAction(R.string.dismiss) {
-          events.accept(ClearSyncStatus)
+          events.offer(ClearSyncStatus)
         }
       }
     } else {

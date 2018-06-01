@@ -28,12 +28,7 @@ dependencies {
   api project(':sync')
 
   implementation deps.kotlin.stdlib.jdk
-
   api deps.kotlin.coroutines.jdk
-  implementation deps.kotlin.coroutines.rx2
-
-  implementation deps.rx.java
-  implementation deps.rx.relay
 }
 
 kotlin {

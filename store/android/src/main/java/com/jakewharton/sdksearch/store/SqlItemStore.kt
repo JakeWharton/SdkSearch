@@ -2,8 +2,7 @@ package com.jakewharton.sdksearch.store
 
 import com.squareup.sqldelight.runtime.coroutines.asChannel
 import com.squareup.sqldelight.runtime.coroutines.mapToOne
-import com.squareup.sqldelight.runtime.rx.observe
-import io.reactivex.Scheduler
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.experimental.CoroutineContext
@@ -11,8 +10,7 @@ import kotlin.coroutines.experimental.CoroutineContext
 @Singleton
 internal class SqlItemStore @Inject constructor(
   private val db: ItemQueries,
-  private val context: CoroutineContext,
-  private val scheduler: Scheduler
+  private val context: CoroutineContext
 ) : ItemStore {
   override suspend fun updateItems(items: List<Item>) {
     db.transaction {
@@ -26,7 +24,7 @@ internal class SqlItemStore @Inject constructor(
   }
 
   override fun queryItems(term: String) =
-      db.queryTerm(term.escapeLike('\\')).observe(scheduler).mapToList()
+      db.queryTerm(term.escapeLike('\\')).asChannel(context).mapToList()
 
   private fun String.escapeLike(escapeChar: Char) =
       this.replace("$escapeChar", "$escapeChar$escapeChar")

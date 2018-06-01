@@ -1,21 +1,19 @@
 package com.jakewharton.sdksearch.search.presenter
 
-import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus
 import com.jakewharton.sdksearch.store.Item
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import io.reactivex.Observable
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.channels.RendezvousChannel
+import kotlinx.coroutines.experimental.channels.SendChannel
+import kotlinx.coroutines.experimental.channels.consumeEach
+import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.rx2.openSubscription
-import kotlinx.coroutines.experimental.selects.select
 import java.util.concurrent.TimeUnit
-import java.util.function.Consumer
 
 class SearchPresenter(
   private val context: CoroutineDispatcher,
@@ -25,50 +23,63 @@ class SearchPresenter(
   private val _models = ConflatedBroadcastChannel<Model>()
   val models: ReceiveChannel<Model> get() = _models.openSubscription()
 
-  private val _events = PublishRelay.create<Event>()
-  val events: Consumer<Event> get() = Consumer { _events.accept(it) }
+  private val _events = RendezvousChannel<Event>()
+  val events: SendChannel<Event> get() = _events
 
   fun start(): Job {
-    val itemCount = store.count()
+    val job = Job()
 
-    val queryItems = _events
-        .ofType<Event.QueryChanged>()
-        .map(Event.QueryChanged::query)
-        .distinctUntilChanged()
-        .switchMap { query ->
-          val results = if (query.isBlank()) Observable.just(emptyList())
-          else store.queryItems(query).delaySubscription(200, TimeUnit.MILLISECONDS)
+    var model = Model()
+    fun sendModel(newModel: Model) {
+      model = newModel
+      _models.offer(newModel)
+    }
 
-          results.map { Model.QueryResults(query, it) }
+    launch(context, parent = job) {
+      store.count().consumeEach {
+        sendModel(model.copy(count = it))
+      }
+    }
+
+    launch(context, parent = job) {
+      synchronizer.state.consumeEach {
+        sendModel(model.copy(syncStatus = when (it) {
+          ItemSynchronizer.SyncStatus.IDLE -> SyncStatus.IDLE
+          ItemSynchronizer.SyncStatus.SYNC -> SyncStatus.SYNC
+          ItemSynchronizer.SyncStatus.FAILED -> SyncStatus.FAILED
+        }))
+      }
+    }
+
+    launch(context, parent = job) {
+      var activeQuery = ""
+      var activeQueryJob: Job? = null
+
+      _events.consumeEach {
+        when (it) {
+          is Event.ClearSyncStatus -> {
+            sendModel(model.copy(syncStatus = SyncStatus.IDLE))
+          }
+          is Event.QueryChanged -> {
+            val query = it.query
+            if (query != activeQuery) {
+              activeQuery = query
+              activeQueryJob?.cancel()
+
+              if (query == "") {
+                sendModel(model.copy(queryResults = Model.QueryResults("", emptyList())))
+              } else {
+                activeQueryJob = launch(context) {
+                  delay(200, TimeUnit.MILLISECONDS)
+
+                  store.queryItems(query).consumeEach {
+                    sendModel(model.copy(queryResults = Model.QueryResults(activeQuery, it)))
+                  }
+                }
+              }
+            }
+          }
         }
-        .openSubscription()
-
-    val clearSyncStatus = _events
-        .ofType<Event.ClearSyncStatus>()
-        .openSubscription()
-
-    val job = launch(context, UNDISPATCHED) {
-      var model = Model()
-      while (isActive) {
-        model = select {
-          itemCount.onReceive {
-            model.copy(count = it)
-          }
-          queryItems.onReceive {
-            model.copy(queryResults = it)
-          }
-          synchronizer.state.onReceive {
-            model.copy(syncStatus = when (it) {
-              ItemSynchronizer.SyncStatus.IDLE -> SyncStatus.IDLE
-              ItemSynchronizer.SyncStatus.SYNC -> SyncStatus.SYNC
-              ItemSynchronizer.SyncStatus.FAILED -> SyncStatus.FAILED
-            })
-          }
-          clearSyncStatus.onReceive {
-            model.copy(syncStatus = SyncStatus.IDLE)
-          }
-        }
-        _models.offer(model)
       }
     }
 
@@ -95,6 +106,4 @@ class SearchPresenter(
       IDLE, SYNC, FAILED
     }
   }
-
-  private inline fun <reified T> Observable<*>.ofType(): Observable<T> = ofType(T::class.java)
 }

@@ -38,10 +38,7 @@ dependencies {
   implementation deps.kotlin.stdlib.jdk
   implementation deps.android.x.coreKtx
 
-  api deps.rx.java
-
   implementation deps.sqldelight.android
-  implementation deps.sqldelight.rx2
   implementation project(':sqldelight-coroutines-extensions')
   implementation deps.android.arch.dbFramework
 

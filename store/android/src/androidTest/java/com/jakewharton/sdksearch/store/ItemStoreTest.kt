@@ -1,8 +1,7 @@
 package com.jakewharton.sdksearch.store
 
 import android.support.test.InstrumentationRegistry
-import io.reactivex.observers.TestObserver
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -13,7 +12,7 @@ class ItemStoreTest {
   private val itemStore = DbComponent.builder()
       .context(InstrumentationRegistry.getContext())
       .filename(null)
-      .scheduler(Schedulers.trampoline())
+      .coroutineContext(CommonPool)
       .build()
       .itemStore()
 
@@ -22,16 +21,13 @@ class ItemStoreTest {
         ItemUtil.createForInsert("com.example.One", "one.html", null)
     ))
 
-    itemStore.queryItems("One")
-        .test()
-        .takeValue {
-          val item = it.single()
-          assertEquals("com.example", item.packageName)
-          assertEquals("One", item.className)
-          assertFalse(item.deprecated)
-          assertEquals("one.html", item.link)
-        }
-        .dispose()
+    val query = itemStore.queryItems("One")
+    val item = query.receive().single()
+    assertEquals("com.example", item.packageName)
+    assertEquals("One", item.className)
+    assertFalse(item.deprecated)
+    assertEquals("one.html", item.link)
+    query.cancel()
   }
 
   @Test fun upsert() = runBlocking {
@@ -39,31 +35,27 @@ class ItemStoreTest {
         ItemUtil.createForInsert("com.example.One", "one.html", null)
     ))
 
-    val query = itemStore.queryItems("One").test()
+    val query = itemStore.queryItems("One")
 
-    var id: Long = -1L
-    query.takeValue {
-      val item = it.single()
-      id = item.id
-      assertEquals("com.example", item.packageName)
-      assertEquals("One", item.className)
-      assertEquals("one.html", item.link)
-      assertFalse(item.deprecated)
-    }
+    val item1 = query.receive().single()
+    val id = item1.id
+    assertEquals("com.example", item1.packageName)
+    assertEquals("One", item1.className)
+    assertEquals("one.html", item1.link)
+    assertFalse(item1.deprecated)
 
     itemStore.updateItems(listOf(
         ItemUtil.createForInsert("com.example.One", "two.html", "deprecated")
     ))
 
-    query.takeValue {
-      val item = it.single()
-      assertEquals(id, item.id)
-      assertEquals("com.example", item.packageName)
-      assertEquals("One", item.className)
-      assertEquals("two.html", item.link)
-      assertTrue(item.deprecated)
-    }
-    query.dispose()
+    val item2 = query.receive().single()
+    assertEquals(id, item2.id)
+    assertEquals("com.example", item2.packageName)
+    assertEquals("One", item2.className)
+    assertEquals("two.html", item2.link)
+    assertTrue(item2.deprecated)
+
+    query.cancel()
   }
 
   @Test fun count() = runBlocking {
@@ -93,31 +85,19 @@ class ItemStoreTest {
         ItemUtil.createForInsert("com.example.One\\Two", "escape.html", null)
     ))
 
-    itemStore.queryItems("%")
-        .test()
-        .takeValue {
-          assertEquals("One%Two", it.single().className)
-        }
-        .dispose()
+    itemStore.queryItems("%").also {
+      assertEquals("One%Two", it.receive().single().className)
+      it.cancel()
+    }
 
-    itemStore.queryItems("_")
-        .test()
-        .takeValue {
-          assertEquals("One_Two", it.single().className)
-        }
-        .dispose()
+    itemStore.queryItems("_").also {
+      assertEquals("One_Two", it.receive().single().className)
+      it.cancel()
+    }
 
-    itemStore.queryItems("\\")
-        .test()
-        .takeValue {
-          assertEquals("One\\Two", it.single().className)
-        }
-        .dispose()
+    itemStore.queryItems("\\").also {
+      assertEquals("One\\Two", it.receive().single().className)
+      it.cancel()
+    }
   }
-}
-
-private fun <I> TestObserver<I>.takeValue(handler: (value: I) -> Unit): TestObserver<I> {
-  awaitCount(1)
-  handler(values().removeAt(0))
-  return this
 }

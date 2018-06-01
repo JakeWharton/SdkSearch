@@ -86,10 +86,6 @@ buildscript {
           'converterKotlinxSerialization': 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.0.1',
           'converterMoshi': "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
       ],
-      'rx': [
-          'java': 'io.reactivex.rxjava2:rxjava:2.1.14',
-          'relay': 'com.jakewharton.rxrelay2:rxrelay:2.0.0',
-      ],
       'kotshi': [
           'api': "se.ansman.kotshi:api:${versions.kotshi}",
           'compiler': "se.ansman.kotshi:compiler:${versions.kotshi}",
@@ -110,7 +106,6 @@ buildscript {
       'byteunits': 'com.jakewharton.byteunits:byteunits:0.9.1',
       'sqldelight': [
           'android': "com.squareup.sqldelight:android-driver:${versions.sqldelight}",
-          'rx2': "com.squareup.sqldelight:rxjava2-extensions:${versions.sqldelight}",
           'runtime': [
               'common': "com.squareup.sqldelight:runtime-common:${versions.sqldelight}",
               'jdk': "com.squareup.sqldelight:runtime-jdk:${versions.sqldelight}",

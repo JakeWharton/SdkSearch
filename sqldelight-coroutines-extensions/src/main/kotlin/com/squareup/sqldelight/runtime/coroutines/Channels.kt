@@ -4,8 +4,7 @@ import com.squareup.sqldelight.Query
 import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.channels.RendezvousChannel
-import kotlinx.coroutines.experimental.channels.consumeEach
-import kotlinx.coroutines.experimental.channels.produce
+import kotlinx.coroutines.experimental.channels.map
 import kotlinx.coroutines.experimental.launch
 import kotlin.coroutines.experimental.CoroutineContext
 
@@ -14,6 +13,10 @@ fun <T : Any> Query<T>.asChannel(context: CoroutineContext): ReceiveChannel<Quer
   val listenerChannel = ListenerReceiveChannel(this, context, channel)
 
   addListener(listenerChannel)
+
+  // Trigger initial emission.
+  listenerChannel.queryResultsChanged()
+
   return listenerChannel
 }
 
@@ -24,6 +27,7 @@ private class ListenerReceiveChannel<T : Any>(
   private val channel: Channel<Query<T>>
 ) : Query.Listener, ReceiveChannel<Query<T>> by channel {
   override fun queryResultsChanged() {
+    // TODO associate this job with the channel so that it gets canceled
     launch(context) {
       channel.send(query)
     }
@@ -35,20 +39,8 @@ private class ListenerReceiveChannel<T : Any>(
   }
 }
 
-fun <T : Any> ReceiveChannel<Query<T>>.mapToOne() = produce {
-  consumeEach {
-    send(it.executeAsOne())
-  }
-}
+fun <T : Any> ReceiveChannel<Query<T>>.mapToOne() = map { it.executeAsOne() }
 
-fun <T : Any> ReceiveChannel<Query<T>>.mapToList() = produce {
-  consumeEach {
-    send(it.executeAsList())
-  }
-}
+fun <T : Any> ReceiveChannel<Query<T>>.mapToList() = map { it.executeAsList() }
 
-fun <T : Any> ReceiveChannel<Query<T>>.mapToOneOrNull() = produce {
-  consumeEach {
-    send(it.executeAsOneOrNull())
-  }
-}
+fun <T : Any> ReceiveChannel<Query<T>>.mapToOneOrNull() = map { it.executeAsOneOrNull() }
