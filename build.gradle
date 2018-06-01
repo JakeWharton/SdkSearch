@@ -99,6 +99,7 @@ buildscript {
       'okio': 'com.squareup.okio:okio:1.14.0',
       'moshi': 'com.squareup.moshi:moshi:1.5.0',
       'timber': [
+          'common': 'com.jakewharton.timber:timber-common:5.0.0-SNAPSHOT',
           'jdk': 'com.jakewharton.timber:timber-jdk:5.0.0-SNAPSHOT',
           'android': 'com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT',
       ],

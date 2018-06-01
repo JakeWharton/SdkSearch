@@ -1,35 +1,11 @@
-apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'kotlin-kapt'
-
-android {
-  compileSdkVersion buildConfig.compileSdk
-
-  defaultConfig {
-    minSdkVersion buildConfig.minSdk
-  }
-
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
-
-  lintOptions {
-    textReport true
-    textOutput 'stdout'
-    lintConfig rootProject.file('lint.xml')
-
-    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
-    checkReleaseBuilds false
-  }
-}
+apply plugin: 'org.jetbrains.kotlin.platform.common'
 
 dependencies {
-  api project(':api:dac:jdk')
-  api project(':store:android')
-  implementation deps.kotlin.stdlib.jdk
-  api deps.kotlin.coroutines.jdk
-  implementation deps.timber.jdk
+  compile project(':api:dac')
+  compile project(':store')
+  implementation deps.kotlin.stdlib.common
+  compile deps.kotlin.coroutines.common
+  implementation deps.timber.common
 }
 
 kotlin {

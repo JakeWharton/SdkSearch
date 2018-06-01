@@ -13,7 +13,6 @@ import kotlinx.coroutines.experimental.channels.SendChannel
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import java.util.concurrent.TimeUnit
 
 class SearchPresenter(
   private val context: CoroutineDispatcher,
@@ -70,7 +69,7 @@ class SearchPresenter(
                 sendModel(model.copy(queryResults = Model.QueryResults("", emptyList())))
               } else {
                 activeQueryJob = launch(context) {
-                  delay(200, TimeUnit.MILLISECONDS)
+                  delay(200)
 
                   store.queryItems(query).consumeEach {
                     sendModel(model.copy(queryResults = Model.QueryResults(activeQuery, it)))

@@ -10,7 +10,6 @@ import timber.log.Timber
 import timber.log.debug
 import timber.log.info
 import timber.log.warn
-import java.io.IOException
 
 class ItemSynchronizer(
   private val itemStore: ItemStore,
@@ -32,7 +31,7 @@ class ItemSynchronizer(
 
     val result = try {
       documentationService.list().await()
-    } catch (e: IOException) {
+    } catch (e: Exception) {
       Timber.info(e) { "Unable to load items" }
       return false
     }
