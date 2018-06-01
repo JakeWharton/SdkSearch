@@ -3,12 +3,8 @@ package com.jakewharton.sdksearch.sync
 import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.store.ItemUtil
-import com.jakewharton.sdksearch.sync.ItemSynchronizer.LoaderEvent.ForceSync
-import com.jakewharton.sdksearch.sync.ItemSynchronizer.LoaderEvent.LoadResult
 import kotlinx.coroutines.experimental.channels.ConflatedChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.channels.actor
-import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
 import java.io.IOException
@@ -17,48 +13,31 @@ class ItemSynchronizer(
   private val itemStore: ItemStore,
   private val documentationService: DocumentationService
 ) {
-
   private val _state = ConflatedChannel<SyncStatus>()
   val state: ReceiveChannel<SyncStatus> get() = _state
 
-  private val loader = actor<LoaderEvent> {
-    var status = SyncStatus.IDLE
-
-    // TODO we probably don't need an actor anymore.
-    consumeEach { event ->
-      when (event) {
-        is ForceSync -> {
-          status = SyncStatus.SYNC
-          launch { load() }
-        }
-        is LoadResult -> {
-          status = if (event.success) SyncStatus.IDLE else SyncStatus.FAILED
-        }
-      }
-      _state.offer(status)
+  fun forceSync() {
+    _state.offer(SyncStatus.SYNC)
+    launch {
+      val result = if (load()) SyncStatus.IDLE else SyncStatus.FAILED
+      _state.offer(result)
     }
   }
 
-  fun forceSync() {
-    loader.offer(ForceSync)
-  }
-
-  private suspend fun load() {
+  private suspend fun load(): Boolean {
     Timber.d("Listing items...")
 
     val result = try {
       documentationService.list().await()
     } catch (e: IOException) {
       Timber.i(e, "Unable to load items")
-      loader.send(LoadResult(false))
-      return
+      return false
     }
 
     val apiItems = result.values.singleOrNull()
     if (apiItems == null) {
       Timber.w("More than one key returned from listing: ${result.keys}")
-      loader.send(LoadResult(false))
-      return
+      return false
     }
 
     Timber.d("Listing got ${apiItems.size} items")
@@ -68,19 +47,13 @@ class ItemSynchronizer(
       itemStore.updateItems(items)
     } catch (e: RuntimeException) {
       Timber.i(e, "Unable to save items")
-      loader.send(LoadResult(false))
-      return
+      return false
     }
 
-    loader.send(LoadResult(true))
+    return true
   }
 
   enum class SyncStatus {
     IDLE, SYNC, FAILED
-  }
-
-  private sealed class LoaderEvent {
-    object ForceSync : LoaderEvent()
-    data class LoadResult(val success: Boolean) : LoaderEvent()
   }
 }
