@@ -20,6 +20,6 @@ android {
 
 dependencies {
   implementation deps.kotlin.stdlib.jdk
-  api deps.timber
+  api deps.timber.jdk
   api deps.bugsnag
 }

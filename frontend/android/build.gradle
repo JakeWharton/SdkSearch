@@ -124,7 +124,7 @@ dependencies {
 
   implementation deps.byteunits
 
-  implementation deps.timber
+  implementation deps.timber.android
   implementation deps.bugsnag
   implementation project(':bugsnag-tree')
 

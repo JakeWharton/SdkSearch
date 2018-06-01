@@ -42,7 +42,7 @@ dependencies {
   implementation project(':sqldelight-coroutines-extensions')
   implementation deps.android.arch.dbFramework
 
-  implementation deps.timber
+  implementation deps.timber.jdk
 
   implementation deps.dagger.runtime
   kapt deps.dagger.compiler

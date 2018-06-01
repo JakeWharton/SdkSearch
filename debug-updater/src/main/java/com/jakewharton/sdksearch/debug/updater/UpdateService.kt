@@ -26,6 +26,9 @@ import kotlinx.coroutines.experimental.launch
 import okio.Okio.buffer
 import okio.Okio.sink
 import timber.log.Timber
+import timber.log.debug
+import timber.log.info
+import timber.log.warn
 import java.io.File
 import java.io.IOException
 
@@ -44,7 +47,7 @@ class UpdateService : Service() {
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
     val config = intent.getParcelableExtra<UpdateConfig>(KEY_CONFIG)
     if (config == null) {
-      Timber.w("No config present in intent.")
+      Timber.warn { "No config present in intent." }
       return START_NOT_STICKY
     }
 
@@ -69,7 +72,7 @@ class UpdateService : Service() {
             SUCCESSFUL).await()
             .filter { it.nodeIndex == 0 }
       } catch (e: IOException) {
-        Timber.i(e, "Failed to fetch artifacts.")
+        Timber.info(e) { "Failed to fetch artifacts." }
         stopSelf(startId)
         notifications.notify(NOTIFICATION_ID,
             createNotification(R.string.debug_updater_notification_title_failed,
@@ -81,7 +84,7 @@ class UpdateService : Service() {
       val timestamp = try {
         service.getArtifact(timestampArtifact.url).await().string().toLong()
       } catch (e: IOException) {
-        Timber.i(e, "Failed to fetch timestamp of latest build.")
+        Timber.info(e) { "Failed to fetch timestamp of latest build." }
         stopSelf(startId)
         notifications.notify(NOTIFICATION_ID,
             createNotification(R.string.debug_updater_notification_title_failed,
@@ -89,7 +92,7 @@ class UpdateService : Service() {
         return@launch
       }
 
-      Timber.d("This build: ${config.timestamp}, Latest build: $timestamp")
+      Timber.debug { "This build: ${config.timestamp}, Latest build: $timestamp" }
       if (timestamp <= config.timestamp) {
         stopSelf(startId)
         launch(UI) {
@@ -116,7 +119,7 @@ class UpdateService : Service() {
           }
         }
       } catch (e: IOException) {
-        Timber.i(e, "Failed to download latest build.")
+        Timber.info(e) { "Failed to download latest build." }
         stopSelf(startId)
         notifications.notify(NOTIFICATION_ID,
             createNotification(R.string.debug_updater_notification_title_failed,
@@ -124,7 +127,7 @@ class UpdateService : Service() {
         return@launch
       }
 
-      Timber.d("Downloaded APK to $apkFile")
+      Timber.debug { "Downloaded APK to $apkFile" }
 
       val fileProviderUri = FileProvider.getUriForFile(application,
           "com.jakewharton.sdksearch.updates", apkFile)

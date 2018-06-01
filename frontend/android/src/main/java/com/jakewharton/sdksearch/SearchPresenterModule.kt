@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import timber.log.Timber
+import timber.log.debug
 import java.io.File
 import javax.inject.Singleton
 
@@ -27,10 +28,11 @@ object SearchPresenterModule {
   fun provideSearchPresenter(application: Application, baseUrl: BaseUrl): SearchPresenter {
     val cacheDir = application.cacheDir / "http"
 
+    val logger = Timber.tagged("HTTP")
     val client = OkHttpClient.Builder()
         .cache(Cache(cacheDir, MEBIBYTES.toBytes(10)))
         .addNetworkInterceptor(
-            HttpLoggingInterceptor { Timber.tag("HTTP").d(it) }.setLevel(BASIC))
+            HttpLoggingInterceptor { logger.debug { it } }.setLevel(BASIC))
         .build()
 
     val service = DacComponent.builder()

@@ -98,7 +98,10 @@ buildscript {
       ],
       'okio': 'com.squareup.okio:okio:1.14.0',
       'moshi': 'com.squareup.moshi:moshi:1.5.0',
-      'timber': 'com.jakewharton.timber:timber:4.7.0',
+      'timber': [
+          'jdk': 'com.jakewharton.timber:timber-jdk:5.0.0-SNAPSHOT',
+          'android': 'com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT',
+      ],
       'junit': 'junit:junit:4.12',
       'truth': 'com.google.truth:truth:0.40',
       'bugsnag': 'com.bugsnag:bugsnag-android:4.2.2',
@@ -142,6 +145,7 @@ allprojects {
     mavenCentral()
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     jcenter()
   }
 

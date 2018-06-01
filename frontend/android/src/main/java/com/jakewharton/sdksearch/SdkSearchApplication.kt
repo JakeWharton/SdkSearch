@@ -5,8 +5,8 @@ import android.app.Application
 import com.bugsnag.android.Bugsnag
 import com.jakewharton.timber.bugsnag.BugsnagTree
 import dagger.android.HasActivityInjector
+import timber.log.LogcatTree
 import timber.log.Timber
-import timber.log.Timber.DebugTree
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -40,7 +40,7 @@ class SdkSearchApplication : Application(), HasActivityInjector {
     }
 
     if (BuildConfig.DEBUG) {
-      Timber.plant(DebugTree())
+      Timber.plant(LogcatTree())
     }
 
     appComponent = createAppComponent()

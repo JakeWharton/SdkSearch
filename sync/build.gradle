@@ -29,7 +29,7 @@ dependencies {
   api project(':store:android')
   implementation deps.kotlin.stdlib.jdk
   api deps.kotlin.coroutines.jdk
-  implementation deps.timber
+  implementation deps.timber.jdk
 }
 
 kotlin {

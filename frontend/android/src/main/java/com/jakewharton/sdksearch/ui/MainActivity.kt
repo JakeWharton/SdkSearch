@@ -18,6 +18,7 @@ import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
+import timber.log.error
 import javax.inject.Inject
 
 class MainActivity : Activity() {
@@ -36,7 +37,7 @@ class MainActivity : Activity() {
     }
 
     if ("true" == intent.getStringExtra("crash")) {
-      Timber.e("Synthetic crash signal detected. Throwing in 3.. 2.. 1..")
+      Timber.error { "Synthetic crash signal detected. Throwing in 3.. 2.. 1.." }
       throw RuntimeException("Crash! Bang! Pow! This is only a test...")
     }
 

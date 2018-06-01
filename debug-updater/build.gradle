@@ -33,7 +33,7 @@ dependencies {
   implementation deps.kotlin.stdlib.jdk
   implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
-  implementation deps.timber
+  implementation deps.timber.jdk
   implementation deps.okio
   implementation deps.android.support.coreUtils
 

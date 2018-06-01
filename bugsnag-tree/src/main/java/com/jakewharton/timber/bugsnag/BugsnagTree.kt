@@ -8,48 +8,50 @@ import android.util.Log.WARN
 import com.bugsnag.android.Client
 import com.bugsnag.android.Error
 import com.bugsnag.android.Severity
-import timber.log.Timber
+import timber.log.Tree
 import java.util.ArrayDeque
 import java.util.Locale.US
 
 /**
  * A logging implementation which buffers the last 200 messages and notifies on error exceptions.
  */
-class BugsnagTree(private val client: Client) : Timber.Tree() {
+class BugsnagTree(private val client: Client) : Tree() {
 
   // Adding one to the initial size accounts for the add before remove.
   private val buffer = ArrayDeque<String>(BUFFER_SIZE + 1)
 
-  override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+  override fun performLog(priority: Int, tag: String?, throwable: Throwable?, message: String?) {
     if (priority == VERBOSE || priority == DEBUG) {
       return
     }
 
-    val log = buildString(message.length + 16) {
-      append(System.currentTimeMillis())
-      append(' ')
-      append(when (priority) {
-        ERROR -> "E"
-        WARN -> "W"
-        INFO -> "I"
-        else -> priority.toString()
-      })
-      append(' ')
-      append(message)
-    }
-    // TODO replace with lock free?
-    synchronized(buffer) {
-      buffer.addLast(log)
-      if (buffer.size > BUFFER_SIZE) {
-        buffer.removeFirst()
+    if (message != null) {
+      val log = buildString(message.length + 16) {
+        append(System.currentTimeMillis())
+        append(' ')
+        append(when (priority) {
+          ERROR -> "E"
+          WARN -> "W"
+          INFO -> "I"
+          else -> priority.toString()
+        })
+        append(' ')
+        append(message)
+      }
+      // TODO replace with lock free?
+      synchronized(buffer) {
+        buffer.addLast(log)
+        if (buffer.size > BUFFER_SIZE) {
+          buffer.removeFirst()
+        }
       }
     }
 
-    if (t != null) {
+    if (throwable != null) {
       when (priority) {
-        ERROR -> client.notify(t, Severity.ERROR)
-        WARN -> client.notify(t, Severity.WARNING)
-        INFO -> client.notify(t, Severity.INFO)
+        ERROR -> client.notify(throwable, Severity.ERROR)
+        WARN -> client.notify(throwable, Severity.WARNING)
+        INFO -> client.notify(throwable, Severity.INFO)
       }
     }
   }
