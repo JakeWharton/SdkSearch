@@ -6,7 +6,7 @@ task projectDependencyGraph {
     dot << 'digraph {\n'
     dot << "  graph [label=\"${rootProject.name}\\n \",labelloc=t,fontsize=30];\n"
     dot << '  node [style=filled, fillcolor="#bbbbbb"];\n'
-    dot << '  rankdir=LR;\n\n'
+    dot << '  rankdir=LR;\n'
 
     def rootProjects = []
     def queue = [rootProject]
@@ -17,6 +17,7 @@ task projectDependencyGraph {
     }
 
     def projects = new LinkedHashSet<Project>()
+    def dependencies = new LinkedHashMap<Tuple2<Project, Project>, List<String>>()
     def commonProjects = []
     def jsProjects = []
     def androidProjects = []
@@ -49,18 +50,20 @@ task projectDependencyGraph {
           projects.add(dependency)
           rootProjects.remove(dependency)
 
-          dot << "  \"${project.path}\" -> \"${dependency.path}\""
+          def graphKey = new Tuple2<Project, Project>(project, dependency)
+          def traits = dependencies.computeIfAbsent(graphKey) { new ArrayList<String>() }
+
           if (config.name.toLowerCase().endsWith('implementation')) {
-            dot << " [style=dotted]"
+            traits.add('style=dotted')
           } else if (config.name == 'expectedBy') {
-            dot << " [style=dashed, arrowhead=none]"
+            traits.add('style=dashed')
+            traits.add('arrowhead=none')
           }
-          dot << '\n'
         }
       }
     }
 
-    dot << '\n'
+    dot << '\n  # Projects\n\n'
     for (project in projects) {
       def traits = []
 
@@ -81,6 +84,15 @@ task projectDependencyGraph {
       }
 
       dot << "  \"${project.path}\" [${traits.join(", ")}];\n"
+    }
+
+    dot << '\n  # Dependencies\n\n'
+    dependencies.forEach { key, traits ->
+      dot << "  \"${key.first.path}\" -> \"${key.second.path}\""
+      if (!traits.isEmpty()) {
+        dot << " [${traits.join(", ")}]"
+      }
+      dot << '\n'
     }
 
     dot << '}\n'
