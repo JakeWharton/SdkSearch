@@ -49,7 +49,6 @@ class ItemStoreTest {
     ))
 
     val item2 = query.receive().single()
-    assertEquals(id, item2.id)
     assertEquals("com.example", item2.packageName)
     assertEquals("One", item2.className)
     assertEquals("two.html", item2.link)
@@ -97,6 +96,30 @@ class ItemStoreTest {
 
     itemStore.queryItems("\\").also {
       assertEquals("One\\Two", it.receive().single().className)
+      it.cancel()
+    }
+  }
+
+  @Test fun partialMatching() = runBlocking<Unit> {
+    itemStore.updateItems(listOf(
+        ItemUtil.createForInsert("com.example.ConstraintLayout", "constraint.html", null),
+        ItemUtil.createForInsert("com.example.ConcurrentLinkedDeque", "concurrent.html", null)
+    ))
+
+    itemStore.queryItems("ConL").also {
+      val results = it.receive()
+      assertEquals("ConstraintLayout", results[0].className)
+      assertEquals("ConcurrentLinkedDeque", results[1].className)
+      it.cancel()
+    }
+
+    itemStore.queryItems("ConLa").also {
+      assertEquals("ConstraintLayout", it.receive().single().className)
+      it.cancel()
+    }
+
+    itemStore.queryItems("Conla").also {
+      assertEquals(0, it.receive().size)
       it.cancel()
     }
   }

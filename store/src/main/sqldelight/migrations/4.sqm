@@ -1,0 +1,9 @@
+DROP TRIGGER populate_index;
+DROP TRIGGER update_index;
+
+CREATE TRIGGER delete_index
+AFTER DELETE ON item
+BEGIN
+  DELETE FROM item_index
+  WHERE docid = old.id;
+END;
