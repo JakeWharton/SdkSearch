@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.platform.android'
 
+archivesBaseName = 'sync'
+
 android {
   compileSdkVersion buildConfig.compileSdk
 

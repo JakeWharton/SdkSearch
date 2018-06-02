@@ -10,14 +10,19 @@ import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
-import com.jakewharton.sdksearch.store.ItemUtil
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.QueryChanged
 import com.jakewharton.sdksearch.store.StorageAreaConfigStore
 import com.jakewharton.sdksearch.store.StorageAreaItemStore
-import kotlinx.coroutines.experimental.CoroutineStart.UNDISPATCHED
-import kotlinx.coroutines.experimental.Job
+import com.jakewharton.sdksearch.sync.ItemSynchronizer
+import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch
+import timber.log.ConsoleTree
+import timber.log.Timber
 
 fun main(vararg args: String) {
+  Timber.plant(ConsoleTree())
+
   val itemStore = StorageAreaItemStore(storage.local)
   val configStore = StorageAreaConfigStore(storage.sync, PRODUCTION_GIT_WEB, PRODUCTION_DAC)
 
@@ -28,23 +33,26 @@ fun main(vararg args: String) {
         DefaultSuggestResult("Search Android SDK docs for <match>%s</match>"))
 
     val baseUrl = BaseUrl(config.dacUrl)
+    val service = FetchDocumentationService(baseUrl)
+    val itemSynchronizer = ItemSynchronizer(itemStore, service)
+    val presenter = SearchPresenter(DefaultDispatcher, itemStore, itemSynchronizer)
+    val events = presenter.events
+    val models = presenter.models
 
-    var queryJob: Job? = null
+    var currentSuggestions: ((Array<SuggestResult>) -> Unit)? = null
     omnibox.onInputChanged.addListener { text, suggestions ->
-      queryJob?.cancel()
-      if (text.isEmpty()) {
-        return@addListener
-      }
+      events.offer(QueryChanged(text))
+      currentSuggestions = suggestions
+    }
 
-      queryJob = launch(start = UNDISPATCHED) {
-        println("Searching $text")
+    launch {
+      for (model in models) {
+        val (query, items) = model.queryResults
 
-        val items = itemStore.queryItems(text)
-            .receive()
-            .take(5)
+        val results = items.take(5)
             .map {
-              val matchStart = it.className.indexOf(text, ignoreCase = true)
-              val matchEnd = matchStart + text.length
+              val matchStart = it.className.indexOf(query, ignoreCase = true)
+              val matchEnd = matchStart + query.length
               val description = buildString {
                 append("<dim>")
                 append(it.packageName)
@@ -57,7 +65,8 @@ fun main(vararg args: String) {
               }
               SuggestResult(baseUrl.resolve(it.link), description, false)
             }.toTypedArray()
-        suggestions(items)
+
+        currentSuggestions?.invoke(results)
       }
     }
 
@@ -71,15 +80,6 @@ fun main(vararg args: String) {
       tabs.update(UpdateProperties(url = url))
     }
 
-    val service = FetchDocumentationService(baseUrl)
-
-    launch {
-      val items = service.list().await()
-          .values.single() // TODO gracefully degrade
-          .map { ItemUtil.createForInsert(it.type, it.link, it.metadata) }
-      itemStore.updateItems(items)
-
-      println("Updated with ${items.size} items")
-    }
+    itemSynchronizer.forceSync()
   }
 }

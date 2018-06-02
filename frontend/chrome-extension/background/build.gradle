@@ -6,9 +6,8 @@ dependencies {
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
   compile deps.kotlin.serialization.js
-  compile project(':api:dac:js')
-  compile project(':store:js')
-  compile project(':references:js')
+  compile project(':search:presenter:js')
+  compile deps.timber.js
 }
 
 kotlin {
@@ -21,11 +20,16 @@ combineJs {
   source = [
           // Order is important!
           "$buildDir/kotlin-js-min/main/kotlin.js",
+          "$buildDir/kotlin-js-min/main/atomicfu.js",
           "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core.js",
           "$buildDir/kotlin-js-min/main/kotlinx-serialization-runtime-js.js",
           "$buildDir/kotlin-js-min/main/api-dac.js",
           "$buildDir/kotlin-js-min/main/references.js",
+          "$buildDir/kotlin-js-min/main/sqldelight-runtime-js.js",
           "$buildDir/kotlin-js-min/main/store.js",
+          "$buildDir/kotlin-js-min/main/timber.js",
+          "$buildDir/kotlin-js-min/main/sync.js",
+          "$buildDir/kotlin-js-min/main/search-presenter.js",
           "$buildDir/kotlin-js-min/main/chrome-platform.js",
           "$buildDir/kotlin-js-min/main/background.js",
   ]

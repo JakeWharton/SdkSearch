@@ -101,6 +101,7 @@ buildscript {
       'timber': [
           'common': 'com.jakewharton.timber:timber-common:5.0.0-SNAPSHOT',
           'jdk': 'com.jakewharton.timber:timber-jdk:5.0.0-SNAPSHOT',
+          'js': 'com.jakewharton.timber:timber-js:5.0.0-SNAPSHOT',
           'android': 'com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT',
       ],
       'junit': 'junit:junit:4.12',
