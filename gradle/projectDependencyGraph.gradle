@@ -63,6 +63,8 @@ task projectDependencyGraph {
       }
     }
 
+    projects = projects.sort { it.path }
+
     dot << '\n  # Projects\n\n'
     for (project in projects) {
       def traits = []
