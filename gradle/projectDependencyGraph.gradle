@@ -6,7 +6,7 @@ task projectDependencyGraph {
     dot << 'digraph {\n'
     dot << "  graph [label=\"${rootProject.name}\\n \",labelloc=t,fontsize=30];\n"
     dot << '  node [style=filled, fillcolor="#bbbbbb"];\n'
-    dot << '  rankdir=LR;\n'
+    dot << '  rankdir=TB;\n'
 
     def rootProjects = []
     def queue = [rootProject]
@@ -85,6 +85,14 @@ task projectDependencyGraph {
 
       dot << "  \"${project.path}\" [${traits.join(", ")}];\n"
     }
+
+    dot << '\n  {rank = same;'
+    for (project in projects) {
+      if (rootProjects.contains(project)) {
+        dot << " \"${project.path}\";"
+      }
+    }
+    dot << '}\n'
 
     dot << '\n  # Dependencies\n\n'
     dependencies.forEach { key, traits ->
