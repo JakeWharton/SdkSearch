@@ -16,7 +16,7 @@ class ItemStoreTest {
       .build()
       .itemStore()
 
-  @Test fun query() = runBlocking {
+  @Test fun query() = runBlocking<Unit> {
     itemStore.updateItems(listOf(
         ItemUtil.createForInsert("com.example.One", "one.html", null)
     ))
@@ -30,7 +30,7 @@ class ItemStoreTest {
     query.cancel()
   }
 
-  @Test fun upsert() = runBlocking {
+  @Test fun upsert() = runBlocking<Unit> {
     itemStore.updateItems(listOf(
         ItemUtil.createForInsert("com.example.One", "one.html", null)
     ))
@@ -58,7 +58,7 @@ class ItemStoreTest {
     query.cancel()
   }
 
-  @Test fun count() = runBlocking {
+  @Test fun count() = runBlocking<Unit> {
     val query = itemStore.count()
 
     assertEquals(0, query.receive())
@@ -78,7 +78,7 @@ class ItemStoreTest {
     query.cancel()
   }
 
-  @Test fun wildcards() = runBlocking {
+  @Test fun wildcards() = runBlocking<Unit> {
     itemStore.updateItems(listOf(
         ItemUtil.createForInsert("com.example.One%Two", "percent.html", null),
         ItemUtil.createForInsert("com.example.One_Two", "underscore.html", null),
