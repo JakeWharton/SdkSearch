@@ -10,7 +10,7 @@ import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
-import com.jakewharton.sdksearch.search.ui.SearchViewBinder
+import com.jakewharton.sdksearch.search.ui.SearchUiBinder
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
@@ -52,11 +52,11 @@ class MainActivity : Activity() {
     val onSource = OpenSourceItemHandler(this, androidReference)
 
     val defaultQuery = if (savedInstanceState == null) {
-      SearchViewBinder.Args(intent.getStringExtra("query"))
+      SearchUiBinder.Args(intent.getStringExtra("query"))
     } else null
 
     setContentView(R.layout.main)
-    val binder = SearchViewBinder(window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
+    val binder = SearchUiBinder(window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
     defaultQuery?.let { binder.init(it) }
 
     binderJob = launch(Unconfined) {

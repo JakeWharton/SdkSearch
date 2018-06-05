@@ -37,7 +37,7 @@ import kotlinx.coroutines.experimental.channels.actor
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 
-class SearchViewBinder(
+class SearchUiBinder(
   view: View,
   private val events: SendChannel<Event>,
   private val onClick: ItemHandler,

@@ -9,7 +9,7 @@ import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.NonElementParentNode
 
-class OptionsViewBinder(
+class OptionsUiBinder(
   parent: NonElementParentNode,
   private val events: SendChannel<Event>
 ) {

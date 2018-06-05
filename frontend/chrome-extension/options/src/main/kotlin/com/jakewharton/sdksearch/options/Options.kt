@@ -2,7 +2,7 @@ package com.jakewharton.sdksearch.options
 
 import com.chrome.platform.Chrome
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter
-import com.jakewharton.sdksearch.options.ui.OptionsViewBinder
+import com.jakewharton.sdksearch.options.ui.OptionsUiBinder
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.StorageAreaConfigStore
@@ -18,7 +18,7 @@ fun main(vararg args: String) {
   val presenter = OptionsPresenter(DefaultDispatcher, itemStore, configStore)
   presenter.start()
 
-  val binder = OptionsViewBinder(document, presenter.events)
+  val binder = OptionsUiBinder(document, presenter.events)
 
   document.addEventListener("DOMContentLoaded", {
     launch(Unconfined) {
