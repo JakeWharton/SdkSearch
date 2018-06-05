@@ -5,8 +5,7 @@ apply plugin: 'com.eriwen.gradle.js'
 dependencies {
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
-  compile project(':store:js')
-  compile project(':references:js')
+  compile project(':options:presenter:js')
 }
 
 kotlin {
@@ -19,10 +18,13 @@ combineJs {
   source = [
           // Order is important!
           "$buildDir/kotlin-js-min/main/kotlin.js",
+          "$buildDir/kotlin-js-min/main/atomicfu.js",
           "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core.js",
           "$buildDir/kotlin-js-min/main/chrome-platform.js",
           "$buildDir/kotlin-js-min/main/references.js",
+          "$buildDir/kotlin-js-min/main/sqldelight-runtime-js.js",
           "$buildDir/kotlin-js-min/main/store.js",
+          "$buildDir/kotlin-js-min/main/options-presenter.js",
           "$buildDir/kotlin-js-min/main/options.js",
   ]
   dest = file("$buildDir/combined/${archivesBaseName}.js")

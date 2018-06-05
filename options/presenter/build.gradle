@@ -1,0 +1,15 @@
+apply plugin: 'org.jetbrains.kotlin.platform.common'
+
+dependencies {
+  compile project(':store')
+  compile project(':references')
+
+  implementation deps.kotlin.stdlib.common
+  implementation deps.kotlin.coroutines.common
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}
