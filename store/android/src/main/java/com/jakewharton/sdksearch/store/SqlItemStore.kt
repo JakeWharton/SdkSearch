@@ -6,6 +6,7 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.experimental.CoroutineContext
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
 
 @Singleton
 internal class SqlItemStore @Inject constructor(
@@ -15,21 +16,18 @@ internal class SqlItemStore @Inject constructor(
   override suspend fun updateItems(items: List<Item>) {
     db.transaction {
       for (item in items) {
-        val affected = db.updateItem(item.deprecated, item.link, item.packageName, item.className)
-        if (affected == 0L) {
-          db.insertItem(item.packageName, item.className, item.deprecated, item.link)
-        }
+        db.insertItem(item.packageName, item.className, item.deprecated, item.link)
+        db.insertItemIndex(item.className.asTerms().joinToString(" "))
       }
     }
   }
 
-  override fun queryItems(term: String) =
-      db.queryTerm(term.escapeLike('\\')).asChannel(context).mapToList()
-
-  private fun String.escapeLike(escapeChar: Char) =
-      this.replace("$escapeChar", "$escapeChar$escapeChar")
-          .replace("%", "$escapeChar%")
-          .replace("_", "${escapeChar}_")
+  override fun queryItems(term: String): ReceiveChannel<List<Item>> {
+    val terms = term.asTerms().joinToString(" ") { "$it*" }
+    return db.queryTerm("\"$terms\"")
+        .asChannel(context)
+        .mapToList()
+  }
 
   override fun count() = db.count().asChannel(context).mapToOne()
 }

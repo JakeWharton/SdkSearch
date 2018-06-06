@@ -18,6 +18,7 @@ import androidx.core.text.inSpans
 import androidx.core.text.set
 import androidx.core.text.toSpannable
 import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.store.asTerms
 import kotlin.LazyThreadSafetyMode.NONE
 
 internal class ItemViewHolder(
@@ -105,8 +106,19 @@ internal class ItemViewHolder(
     }
 
     val className = item.className.toSpannable()
-    val start = item.className.indexOf(query, ignoreCase = true)
-    className[start, start + query.length] = StyleSpan(BOLD)
+    query.asTerms().fold(0) { lastIndex, term ->
+      var start = item.className.indexOf(term, ignoreCase = term[0].isLowerCase(), startIndex = lastIndex)
+      if (start == -1) {
+        // Find it always ignoring case - there are some situations that we don't account for like
+        // the 'x' in R.xml
+        start = item.className.indexOf(term, ignoreCase = true, startIndex = lastIndex)
+      }
+      if (start == -1) {
+        throw IllegalStateException("Couldnt find term $term for item $item starting at $lastIndex")
+      }
+      className[start, start + term.length] = StyleSpan(BOLD)
+      return@fold start + 1
+    }
 
     var dotIndex = item.className.indexOf('.')
     while (dotIndex >= 0) {
