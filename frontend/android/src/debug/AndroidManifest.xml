@@ -9,5 +9,14 @@
           android:resource="@xml/shortcuts"
           />
     </activity>
+    <activity
+        android:name=".ui.OptionsActivity"
+        android:label="Options"
+        >
+      <intent-filter>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        <action android:name="android.intent.action.MAIN"/>
+      </intent-filter>
+    </activity>
   </application>
 </manifest>

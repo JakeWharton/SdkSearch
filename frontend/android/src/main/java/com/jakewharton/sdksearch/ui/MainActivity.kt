@@ -55,7 +55,7 @@ class MainActivity : Activity() {
       SearchUiBinder.Args(intent.getStringExtra("query"))
     } else null
 
-    setContentView(R.layout.main)
+    setContentView(R.layout.search)
     val binder = SearchUiBinder(window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
     defaultQuery?.let { binder.init(it) }
 

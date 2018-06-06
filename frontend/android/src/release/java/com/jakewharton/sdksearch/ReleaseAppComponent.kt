@@ -10,6 +10,7 @@ import javax.inject.Singleton
 @Component(modules = [
   MainActivityModule::class,
   ProductionDacModule::class,
+  ItemStoreModule::class,
   SearchPresenterModule::class
 ])
 interface ReleaseAppComponent : AppComponent {

@@ -5,11 +5,10 @@ import com.jakewharton.byteunits.BinaryByteUnit.MEBIBYTES
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
-import com.jakewharton.sdksearch.store.DbComponent
+import com.jakewharton.sdksearch.store.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -18,14 +17,16 @@ import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import timber.log.Timber
 import timber.log.debug
 import java.io.File
-import javax.inject.Singleton
 
 @Module
 object SearchPresenterModule {
   @JvmStatic
   @Provides
-  @Singleton
-  fun provideSearchPresenter(application: Application, baseUrl: BaseUrl): SearchPresenter {
+  fun provideSearchPresenter(
+    application: Application,
+    baseUrl: BaseUrl,
+    store: ItemStore
+  ): SearchPresenter {
     val cacheDir = application.cacheDir / "http"
 
     val logger = Timber.tagged("HTTP")
@@ -40,13 +41,6 @@ object SearchPresenterModule {
         .client(client)
         .build()
         .documentationService()
-
-    val store = DbComponent.builder()
-        .context(application)
-        .coroutineContext(CommonPool)
-        .filename("sdk.db")
-        .build()
-        .itemStore()
 
     val synchronizer = ItemSynchronizer(store, service)
 
