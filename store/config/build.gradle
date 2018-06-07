@@ -1,0 +1,15 @@
+apply plugin: 'org.jetbrains.kotlin.platform.common'
+
+dependencies {
+  implementation deps.kotlin.stdlib.common
+  implementation deps.kotlin.coroutines.common
+
+  testImplementation deps.kotlin.test.common
+  testImplementation deps.kotlin.test.annotations
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

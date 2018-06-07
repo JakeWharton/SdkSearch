@@ -5,7 +5,7 @@ import com.jakewharton.byteunits.BinaryByteUnit.MEBIBYTES
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
-import com.jakewharton.sdksearch.store.ItemStore
+import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import dagger.Module
 import dagger.Provides

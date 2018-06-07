@@ -4,7 +4,8 @@ apply plugin: 'com.eriwen.gradle.js'
 
 dependencies {
   compile deps.kotlin.stdlib.js
-  compile project(':store:js')
+  compile project(':store:config:js')
+  compile project(':store:item:js')
   compile project(':references:js')
 }
 
@@ -21,7 +22,7 @@ combineJs {
           "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core.js",
           "$buildDir/kotlin-js-min/main/chrome-platform.js",
           "$buildDir/kotlin-js-min/main/references.js",
-          "$buildDir/kotlin-js-min/main/store.js",
+          "$buildDir/kotlin-js-min/main/store-config.js",
           "$buildDir/kotlin-js-min/main/content.js",
   ]
   dest = file("$buildDir/combined/${archivesBaseName}.js")

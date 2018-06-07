@@ -5,8 +5,8 @@ import com.jakewharton.sdksearch.options.presenter.OptionsPresenter
 import com.jakewharton.sdksearch.options.ui.OptionsUiBinder
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
-import com.jakewharton.sdksearch.store.StorageAreaConfigStore
-import com.jakewharton.sdksearch.store.StorageAreaItemStore
+import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
+import com.jakewharton.sdksearch.store.item.StorageAreaItemStore
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.launch

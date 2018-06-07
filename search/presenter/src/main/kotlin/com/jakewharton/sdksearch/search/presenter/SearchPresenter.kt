@@ -1,8 +1,8 @@
 package com.jakewharton.sdksearch.search.presenter
 
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus
-import com.jakewharton.sdksearch.store.Item
-import com.jakewharton.sdksearch.store.ItemStore
+import com.jakewharton.sdksearch.store.item.Item
+import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.Job

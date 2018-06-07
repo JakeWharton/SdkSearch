@@ -1,8 +1,8 @@
 package com.jakewharton.sdksearch
 
 import android.app.Application
-import com.jakewharton.sdksearch.store.DbComponent
-import com.jakewharton.sdksearch.store.ItemStore
+import com.jakewharton.sdksearch.store.item.DbComponent
+import com.jakewharton.sdksearch.store.item.ItemStore
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.experimental.CommonPool

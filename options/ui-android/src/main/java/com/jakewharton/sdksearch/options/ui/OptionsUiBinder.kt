@@ -4,7 +4,7 @@ import android.support.design.widget.TextInputLayout
 import android.view.View
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Event
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Model
-import com.jakewharton.sdksearch.store.Config
+import com.jakewharton.sdksearch.store.config.Config
 import kotlinx.coroutines.experimental.channels.SendChannel
 
 class OptionsUiBinder(

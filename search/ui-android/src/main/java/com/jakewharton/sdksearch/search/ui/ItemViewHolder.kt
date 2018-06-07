@@ -17,7 +17,7 @@ import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
 import androidx.core.text.set
 import androidx.core.text.toSpannable
-import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.store.item.Item
 import kotlin.LazyThreadSafetyMode.NONE
 
 internal class ItemViewHolder(

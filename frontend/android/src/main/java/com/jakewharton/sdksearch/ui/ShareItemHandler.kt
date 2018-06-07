@@ -6,7 +6,7 @@ import androidx.core.net.toUri
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.search.ui.ItemHandler
-import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.store.item.Item
 
 internal class ShareItemHandler(
   private val activity: Activity,

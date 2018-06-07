@@ -26,7 +26,8 @@ android {
 dependencies {
   expectedBy project(':options:presenter')
 
-  api project(':store:android')
+  api project(':store:item:android')
+  api project(':store:config:android')
   api project(':references:jdk')
 
   implementation deps.kotlin.stdlib.jdk

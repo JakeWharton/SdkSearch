@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
-import com.jakewharton.sdksearch.store.ConfigStore
-import com.jakewharton.sdksearch.store.SharedPreferencesConfigStore
+import com.jakewharton.sdksearch.store.config.ConfigStore
+import com.jakewharton.sdksearch.store.config.SharedPreferencesConfigStore
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

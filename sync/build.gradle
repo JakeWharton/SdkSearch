@@ -2,7 +2,7 @@ apply plugin: 'org.jetbrains.kotlin.platform.common'
 
 dependencies {
   compile project(':api:dac')
-  compile project(':store')
+  compile project(':store:item')
   implementation deps.kotlin.stdlib.common
   compile deps.kotlin.coroutines.common
   implementation deps.timber.common

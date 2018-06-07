@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.platform.android'
+
+archivesBaseName = 'store-config'
+
+android {
+  compileSdkVersion buildConfig.compileSdk
+
+  defaultConfig {
+    minSdkVersion buildConfig.minSdk
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    lintConfig rootProject.file('lint.xml')
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+}
+
+dependencies {
+  expectedBy project(':store:config')
+
+  implementation deps.kotlin.stdlib.jdk
+  implementation deps.android.x.coreKtx
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

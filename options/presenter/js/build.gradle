@@ -5,7 +5,8 @@ archivesBaseName = 'options-presenter'
 dependencies {
   expectedBy project(':options:presenter')
 
-  compile project(':store:js')
+  compile project(':store:config:js')
+  compile project(':store:item:js')
   compile project(':references:js')
 
   implementation deps.kotlin.stdlib.js

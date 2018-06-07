@@ -30,7 +30,7 @@ import com.jakewharton.sdksearch.search.ui.util.onEditorAction
 import com.jakewharton.sdksearch.search.ui.util.onKey
 import com.jakewharton.sdksearch.search.ui.util.onScroll
 import com.jakewharton.sdksearch.search.ui.util.onTextChanged
-import com.jakewharton.sdksearch.store.Item
+import com.jakewharton.sdksearch.store.item.Item
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.SendChannel
 import kotlinx.coroutines.experimental.channels.actor

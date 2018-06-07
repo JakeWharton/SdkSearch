@@ -12,8 +12,8 @@ import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.QueryChanged
-import com.jakewharton.sdksearch.store.StorageAreaConfigStore
-import com.jakewharton.sdksearch.store.StorageAreaItemStore
+import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
+import com.jakewharton.sdksearch.store.item.StorageAreaItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch

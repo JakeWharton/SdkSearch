@@ -2,9 +2,9 @@ package com.jakewharton.sdksearch.options.presenter
 
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
-import com.jakewharton.sdksearch.store.Config
-import com.jakewharton.sdksearch.store.ConfigStore
-import com.jakewharton.sdksearch.store.ItemStore
+import com.jakewharton.sdksearch.store.config.Config
+import com.jakewharton.sdksearch.store.config.ConfigStore
+import com.jakewharton.sdksearch.store.item.ItemStore
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel

@@ -1,8 +1,8 @@
 package com.jakewharton.sdksearch.sync
 
 import com.jakewharton.sdksearch.api.dac.DocumentationService
-import com.jakewharton.sdksearch.store.ItemStore
-import com.jakewharton.sdksearch.store.ItemUtil
+import com.jakewharton.sdksearch.store.item.ItemStore
+import com.jakewharton.sdksearch.store.item.ItemUtil
 import kotlinx.coroutines.experimental.channels.ConflatedChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.launch

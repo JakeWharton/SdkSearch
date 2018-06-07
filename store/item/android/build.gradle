@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.platform.android'
+apply plugin: 'kotlin-kapt'
+
+archivesBaseName = 'store-item'
+
+android {
+  compileSdkVersion buildConfig.compileSdk
+
+  defaultConfig {
+    minSdkVersion buildConfig.minSdk
+
+    testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    lintConfig rootProject.file('lint.xml')
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+
+  packagingOptions { // For test APK
+    exclude 'META-INF/*.kotlin_module'
+  }
+}
+
+dependencies {
+  expectedBy project(':store:item')
+
+  implementation deps.kotlin.stdlib.jdk
+
+  implementation deps.sqldelight.android
+  implementation project(':sqldelight-coroutines-extensions')
+  implementation deps.android.arch.dbFramework
+
+  implementation deps.timber.jdk
+
+  implementation deps.dagger.runtime
+  kapt deps.dagger.compiler
+
+  androidTestImplementation deps.android.test.runner
+  androidTestImplementation deps.truth
+  androidTestImplementation deps.kotlin.coroutines.jdk
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}
