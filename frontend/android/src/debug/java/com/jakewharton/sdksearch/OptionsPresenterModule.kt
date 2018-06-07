@@ -2,7 +2,6 @@ package com.jakewharton.sdksearch
 
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter
 import com.jakewharton.sdksearch.store.config.ConfigStore
-import com.jakewharton.sdksearch.store.item.ItemStore
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.experimental.android.UI
@@ -11,7 +10,7 @@ import kotlinx.coroutines.experimental.android.UI
 object OptionsPresenterModule {
   @JvmStatic
   @Provides
-  fun provideOptionsPresenter(itemStore: ItemStore, configStore: ConfigStore): OptionsPresenter {
-    return OptionsPresenter(UI, itemStore, configStore)
+  fun provideOptionsPresenter(configStore: ConfigStore): OptionsPresenter {
+    return OptionsPresenter(UI, configStore)
   }
 }

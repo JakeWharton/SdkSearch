@@ -6,16 +6,14 @@ import com.jakewharton.sdksearch.options.ui.OptionsUiBinder
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
-import com.jakewharton.sdksearch.store.item.StorageAreaItemStore
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.launch
 import kotlin.browser.document
 
 fun main(vararg args: String) {
-  val itemStore = StorageAreaItemStore(Chrome.storage.local)
   val configStore = StorageAreaConfigStore(Chrome.storage.sync, PRODUCTION_GIT_WEB, PRODUCTION_DAC)
-  val presenter = OptionsPresenter(DefaultDispatcher, itemStore, configStore)
+  val presenter = OptionsPresenter(DefaultDispatcher, configStore)
   presenter.start()
 
   val binder = OptionsUiBinder(document, presenter.events)

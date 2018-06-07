@@ -6,15 +6,12 @@ import com.jakewharton.sdksearch.store.config.Config
 import kotlinx.coroutines.experimental.channels.SendChannel
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
-import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.NonElementParentNode
 
 class OptionsUiBinder(
   parent: NonElementParentNode,
   private val events: SendChannel<Event>
 ) {
-  private val itemCount = parent.getElementById("item-count") as HTMLSpanElement
-
   private val gitWebInput = parent.getElementById("git-web") as HTMLInputElement
   private val dacInput = parent.getElementById("dac") as HTMLInputElement
 
@@ -35,8 +32,6 @@ class OptionsUiBinder(
   }
 
   fun bind(model: Model, oldModel: Model?) {
-    itemCount.textContent = model.itemCount.toString()
-
     val config = model.config
     if (config != null) {
       gitWebInput.value = config.gitWebUrl

@@ -4,7 +4,6 @@ import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.config.Config
 import com.jakewharton.sdksearch.store.config.ConfigStore
-import com.jakewharton.sdksearch.store.item.ItemStore
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
@@ -16,7 +15,6 @@ import kotlinx.coroutines.experimental.launch
 
 class OptionsPresenter(
   private val dispatcher: CoroutineDispatcher,
-  private val itemStore: ItemStore,
   private val configStore: ConfigStore
 ) {
   private val _models = ConflatedBroadcastChannel<Model>()
@@ -32,12 +30,6 @@ class OptionsPresenter(
     fun sendModel(newModel: Model) {
       model = newModel
       _models.offer(newModel)
-    }
-
-    launch(dispatcher, parent = job) {
-      itemStore.count().consumeEach {
-        sendModel(model.copy(itemCount = it))
-      }
     }
 
     launch(dispatcher, parent = job) {
@@ -68,7 +60,6 @@ class OptionsPresenter(
   }
 
   data class Model(
-    val itemCount: Long = 0,
     val disableUpdates: Boolean = true,
     val config: Config? = null
   )

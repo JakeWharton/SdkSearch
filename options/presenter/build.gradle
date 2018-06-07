@@ -2,7 +2,6 @@ apply plugin: 'org.jetbrains.kotlin.platform.common'
 
 dependencies {
   compile project(':store:config')
-  compile project(':store:item')
   compile project(':references')
 
   implementation deps.kotlin.stdlib.common
