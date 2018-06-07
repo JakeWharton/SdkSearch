@@ -21,7 +21,7 @@ jobs:
 
       - run:
           name: Assemble
-          command: ./gradlew assemble bundle :store:android:assembleAndroidTest
+          command: ./gradlew assemble bundle :store:item:android:assembleAndroidTest
           # TODO remove bundle https://issuetracker.google.com/issues/79936441
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/80464227
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/79934948
