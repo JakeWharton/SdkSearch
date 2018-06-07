@@ -1,7 +1,6 @@
 package com.jakewharton.sdksearch.store.item
 
 import com.chrome.platform.storage.StorageArea
-import com.jakewharton.sdksearch.store.item.ItemStore
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel

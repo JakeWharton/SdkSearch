@@ -46,6 +46,8 @@ dependencies {
   implementation deps.dagger.runtime
   kapt deps.dagger.compiler
 
+  testImplementation deps.kotlin.test.jdk
+
   androidTestImplementation deps.android.test.runner
   androidTestImplementation deps.truth
   androidTestImplementation deps.kotlin.coroutines.jdk

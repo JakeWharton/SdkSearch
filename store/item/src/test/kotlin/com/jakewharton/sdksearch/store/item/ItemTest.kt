@@ -1,6 +1,5 @@
-package com.jakewharton.sdksearch.store
+package com.jakewharton.sdksearch.store.item
 
-import com.jakewharton.sdksearch.store.item.ItemUtil
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
