@@ -17,10 +17,12 @@ import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import timber.log.Timber
 import timber.log.debug
 import java.io.File
+import javax.inject.Singleton
 
 @Module
 object SearchPresenterModule {
   @JvmStatic
+  @Singleton // TODO unscope. The UI should handle passing through the non-config instance.
   @Provides
   fun provideSearchPresenter(
     application: Application,
