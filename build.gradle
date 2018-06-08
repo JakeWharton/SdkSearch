@@ -15,7 +15,7 @@ buildscript {
   ext.buildConfig.version['code'] = buildConfig.version.major * 1000000 + buildConfig.version.minor * 10000 + buildConfig.version.patch * 100 + buildConfig.version.build
 
   ext.versions = [
-      'supportLibrary': '27.1.1',
+      'supportLibrary': '28.0.0-alpha3',
       'atsl': '1.0.1',
       'kotlin': '1.2.41',
       'kotlinCoroutines': '0.23.0-dev-1',
