@@ -65,7 +65,7 @@ buildscript {
               'customTabs': "com.android.support:customtabs:${versions.supportLibrary}",
               'appCompat': "com.android.support:appcompat-v7:${versions.supportLibrary}",
               'design': "com.android.support:design:${versions.supportLibrary}",
-              'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.1',
+              'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.2',
           ],
           'x': [
               'coreKtx': 'androidx.core:core-ktx:0.3',
