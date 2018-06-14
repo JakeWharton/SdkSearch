@@ -10,3 +10,9 @@ dependencies {
   compile deps.kotlin.coroutines.js
   implementation deps.timber.js
 }
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}
