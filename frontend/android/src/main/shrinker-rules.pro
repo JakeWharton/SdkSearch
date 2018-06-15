@@ -12,7 +12,7 @@
 }
 
 # Enum.valueOf(Class, String) and others invoke this method reflectively.
--keepclassmembers enum * {
+-keepclassmembers,allowoptimization enum * {
     public static **[] values();
 }
 
