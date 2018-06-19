@@ -24,7 +24,7 @@ buildscript {
       'retrofit': '2.4.0',
       'kotshi': '1.0.4',
       'dagger': '2.16',
-      'sqldelight': '1.0.0-alpha3',
+      'sqldelight': '1.0.0-alpha4',
   ]
 
   ext.deps = [

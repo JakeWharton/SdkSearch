@@ -15,7 +15,7 @@ internal abstract class DbModule {
     @JvmStatic
     @Provides
     fun queryWrapper(context: Context, filename: String?): QueryWrapper {
-      return QueryWrapper(QueryWrapper.Companion.create(context, filename))
+      return QueryWrapper(QueryWrapper.Helper.create(context, filename))
     }
 
     @JvmStatic
