@@ -80,22 +80,8 @@ All deploy builds require that the `upload.keystore` is present (see "Release" a
 
 At this point you have a verified APK that's ready to release.
 
-Uploading the alpha to the Google Play developer console is handled by a Gradle plugin. You must
-have an `upload.p12` file and the following in your `~/.gradle/gradle.properties`:
-
-```
-SDK_SEARCH_UPLOAD_PLAY_EMAIL=<email>
-```
-(replacing `<email>` with the actual email, obviously)
-
-More information on the `.p12` file and the email can be found at
-https://github.com/Triple-T/gradle-play-publisher#authentication
-
-Upload the new APK to the alpha channel:
-
-    ./gradlew :frontend:android:publishRelease
-
-
+Visit the Play Developer Console at https://play.google.com/apps/publish and publish the tested APK
+to the alpha channel.
 
 
 ### Production

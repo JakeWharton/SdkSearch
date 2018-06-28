@@ -1,19 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.github.triplet.play'
 
 archivesBaseName = 'sdk-search'
 
 android {
   compileSdkVersion buildConfig.compileSdk
-
-  playAccountConfigs {
-    production {
-      serviceAccountEmail = propOrEmpty('SDK_SEARCH_UPLOAD_PLAY_EMAIL')
-      pk12File = file('upload.p12')
-    }
-  }
 
   defaultConfig {
     applicationId 'com.jakewharton.sdksearch'
@@ -30,8 +22,6 @@ android {
     buildConfigField 'boolean', 'IS_CI_BUILD', 'false' // May be overridden by a build type.
     buildConfigField 'String', 'COMMIT_SHA', "\"${gitSha()}\""
     buildConfigField 'long', 'COMMIT_UNIX_TIMESTAMP', gitTimestamp().toString() + "L"
-
-    playAccountConfig = playAccountConfigs.production
   }
 
   compileOptions {
@@ -136,9 +126,4 @@ kotlin {
   experimental {
     coroutines 'enable'
   }
-}
-
-play {
-  track = 'alpha'
-  uploadImages = true
 }
