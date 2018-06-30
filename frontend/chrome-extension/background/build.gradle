@@ -7,7 +7,7 @@ dependencies {
   compile deps.kotlin.coroutines.js
   compile deps.kotlin.serialization.js
   compile project(':search:presenter:js')
-  compile project(':store:config:js')
+  compile project(':store:config:js-storage-area')
   compile deps.timber.js
 }
 

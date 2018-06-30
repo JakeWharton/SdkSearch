@@ -4,8 +4,8 @@ apply plugin: 'com.eriwen.gradle.js'
 
 dependencies {
   compile deps.kotlin.stdlib.js
-  compile project(':store:config:js')
-  compile project(':store:item:js')
+  compile project(':store:config:js-storage-area')
+  compile project(':store:item:js-storage-area')
   compile project(':references:js')
 }
 

@@ -28,7 +28,7 @@ android {
 dependencies {
   expectedBy project(':sync')
   api project(':api:dac:jdk')
-  api project(':store:item:android')
+  api project(':store:item:android-sql')
   implementation deps.kotlin.stdlib.jdk
   api deps.kotlin.coroutines.jdk
   implementation deps.timber.jdk
