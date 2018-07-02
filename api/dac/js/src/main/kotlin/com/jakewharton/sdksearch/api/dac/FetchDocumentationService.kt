@@ -21,8 +21,8 @@ class FetchDocumentationService(
           it.text()
         }
       }.then {
-        val mapSerializer = (String::class.serializer() to Item.serializer().list).map
-        JSON.unquoted.parse(mapSerializer, it)
+        val mapSerializer = (String.serializer() to Item.serializer().list).map
+        JSON.nonstrict.parse(mapSerializer, it)
       }
       .asDeferred()
 }

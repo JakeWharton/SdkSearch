@@ -1,0 +1,30 @@
+apply plugin: 'kotlin2js'
+apply plugin: 'kotlin-dce-js'
+apply plugin: 'org.jetbrains.kotlin.frontend'
+
+dependencies {
+  compile project(':search:presenter:js')
+  compile project(':references:js')
+
+  compile deps.kotlin.stdlib.js
+  compile deps.kotlin.coroutines.js
+  compile deps.timber.js
+}
+
+kotlinFrontend {
+  webpackBundle {
+    bundleName = 'sdk-search'
+    contentPath = file('src/main/web')
+    mode = 'none'
+  }
+}
+
+compileKotlin2Js {
+  kotlinOptions.moduleKind = 'commonjs'
+}
+
+kotlin {
+  experimental {
+    coroutines "enable"
+  }
+}
