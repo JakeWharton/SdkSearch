@@ -12,6 +12,10 @@ dependencies {
   testCompile deps.kotlin.test.js
 }
 
+compileKotlin2Js {
+  kotlinOptions.moduleKind = 'commonjs'
+}
+
 kotlin {
   experimental {
     coroutines 'enable'

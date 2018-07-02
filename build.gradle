@@ -125,15 +125,16 @@ buildscript {
     mavenCentral()
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     gradlePluginPortal()
   }
 
   dependencies {
     classpath 'com.android.tools.build:gradle:3.2.0-beta02'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+    classpath 'org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.32'
     classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:${versions.kotlinSerialization}"
     classpath "com.squareup.sqldelight:gradle-plugin:${versions.sqldelight}"
-    classpath 'com.eriwen:gradle-js-plugin:1.12.1'
     classpath 'com.github.triplet.gradle:play-publisher:1.2.2'
     classpath 'gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:3.2.0'
   }

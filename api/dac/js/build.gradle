@@ -9,3 +9,7 @@ dependencies {
   compile deps.kotlin.coroutines.js
   compile deps.kotlin.serialization.js
 }
+
+compileKotlin2Js {
+  kotlinOptions.moduleKind = 'commonjs'
+}

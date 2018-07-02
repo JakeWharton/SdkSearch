@@ -3,3 +3,7 @@ apply plugin: 'kotlin2js'
 dependencies {
   compile deps.kotlin.stdlib.js
 }
+
+compileKotlin2Js {
+  kotlinOptions.moduleKind = 'commonjs'
+}

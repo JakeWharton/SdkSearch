@@ -9,6 +9,10 @@ dependencies {
   compile project(':chrome-platform')
 }
 
+compileKotlin2Js {
+  kotlinOptions.moduleKind = 'commonjs'
+}
+
 kotlin {
   experimental {
     coroutines 'enable'

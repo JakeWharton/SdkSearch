@@ -11,7 +11,7 @@
   },
   "background": {
     "scripts": [
-      "background.js"
+      "background.bundle.js"
     ]
   },
   "content_scripts": [
@@ -20,7 +20,7 @@
         "*://developer.android.com/reference/*"
       ],
       "js": [
-        "content.js"
+        "content.bundle.js"
       ]
     }
   ],

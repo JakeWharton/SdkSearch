@@ -1,6 +1,6 @@
 apply plugin: 'kotlin2js'
 apply plugin: 'kotlin-dce-js'
-apply plugin: 'com.eriwen.gradle.js'
+apply plugin: 'org.jetbrains.kotlin.frontend'
 
 dependencies {
   compile deps.kotlin.stdlib.js
@@ -15,26 +15,22 @@ kotlin {
   }
 }
 
-combineJs {
-  source = [
-          // Order is important!
-          "$buildDir/kotlin-js-min/main/kotlin.js",
-          "$buildDir/kotlin-js-min/main/kotlinx-coroutines-core.js",
-          "$buildDir/kotlin-js-min/main/chrome-platform.js",
-          "$buildDir/kotlin-js-min/main/references.js",
-          "$buildDir/kotlin-js-min/main/store-config.js",
-          "$buildDir/kotlin-js-min/main/content.js",
-  ]
-  dest = file("$buildDir/combined/${archivesBaseName}.js")
+kotlinFrontend {
+  webpackBundle {
+    mode = 'production' // Non-production uses eval() which isn't supported in a Chrome extension.
+  }
 }
-combineJs.dependsOn(runDceKotlinJs)
+
+compileKotlin2Js {
+  kotlinOptions.moduleKind = 'commonjs'
+}
 
 configurations {
   content
 }
 
 artifacts {
-  content(combineJs.dest) {
-    builtBy combineJs
+  content(file("$buildDir/bundle/${name}.bundle.js")) {
+    builtBy 'bundle'
   }
 }
