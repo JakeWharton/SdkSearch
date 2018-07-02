@@ -8,6 +8,8 @@ dependencies {
   compile deps.kotlin.serialization.js
   compile project(':search:presenter:js')
   compile project(':store:config:js-storage-area')
+  compile project(':store:item:js-storage-area')
+  compile project(':references:js')
   compile deps.timber.js
 }
 

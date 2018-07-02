@@ -1,0 +1,16 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.platform.jvm'
+
+archivesBaseName = 'store-config'
+
+dependencies {
+  expectedBy project(':store:config')
+
+  implementation deps.kotlin.stdlib.jdk
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

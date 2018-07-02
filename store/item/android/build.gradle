@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.platform.android'
 
+archivesBaseName = 'store-item'
+
 android {
   compileSdkVersion buildConfig.compileSdk
 
@@ -24,12 +26,13 @@ android {
 }
 
 dependencies {
-  expectedBy project(':search:presenter')
-
-  api project(':sync:android')
+  expectedBy project(':store:item')
 
   implementation deps.kotlin.stdlib.jdk
-  api deps.kotlin.coroutines.jdk
+  implementation deps.kotlin.coroutines.jdk
+  implementation deps.sqldelight.android
+
+  testCompile deps.kotlin.test.jdk
 }
 
 kotlin {

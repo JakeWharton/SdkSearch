@@ -1,12 +1,15 @@
 apply plugin: 'org.jetbrains.kotlin.platform.js'
 
-archivesBaseName = 'store-config-storage-area'
+archivesBaseName = 'store-item'
 
 dependencies {
-  compile project(':store:config:js')
+  expectedBy project(':store:item')
+
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
-  compile project(':chrome-platform')
+  compile deps.sqldelight.runtime.js
+
+  testCompile deps.kotlin.test.js
 }
 
 kotlin {

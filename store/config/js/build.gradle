@@ -1,12 +1,11 @@
 apply plugin: 'org.jetbrains.kotlin.platform.js'
 
-archivesBaseName = 'store-config-storage-area'
+archivesBaseName = 'store-config'
 
 dependencies {
-  compile project(':store:config:js')
+  expectedBy project(':store:config')
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
-  compile project(':chrome-platform')
 }
 
 kotlin {

@@ -96,7 +96,11 @@ android {
 
 dependencies {
   implementation project(':search:ui-android')
-  implementation project(':options:ui-android')
+  implementation project(':store:item:android-sql')
+  implementation project(':references:jdk')
+
+  debugImplementation project(':options:ui-android')
+  debugImplementation project(':store:config:android-preferences')
 
   debugImplementation project(':debug-updater')
 

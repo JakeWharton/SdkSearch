@@ -5,7 +5,7 @@ archivesBaseName = 'sync'
 dependencies {
   expectedBy project(':sync')
   compile project(':api:dac:js')
-  compile project(':store:item:js-storage-area')
+  compile project(':store:item:js')
   implementation deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
   implementation deps.timber.js

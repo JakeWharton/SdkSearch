@@ -5,7 +5,6 @@ archivesBaseName = 'search-presenter'
 dependencies {
   expectedBy project(':search:presenter')
 
-  compile project(':references:js')
   compile project(':sync:js')
 
   implementation deps.kotlin.stdlib.js

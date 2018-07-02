@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.platform.android'
 apply plugin: 'kotlin-kapt'
 
-archivesBaseName = 'store-item'
+archivesBaseName = 'store-item-sql'
 
 android {
   compileSdkVersion buildConfig.compileSdk
@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-  expectedBy project(':store:item')
+  api project(':store:item:android')
 
   implementation deps.kotlin.stdlib.jdk
 
@@ -45,8 +45,6 @@ dependencies {
 
   implementation deps.dagger.runtime
   kapt deps.dagger.compiler
-
-  testImplementation deps.kotlin.test.jdk
 
   androidTestImplementation deps.android.test.runner
   androidTestImplementation deps.truth

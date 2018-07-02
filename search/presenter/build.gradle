@@ -1,7 +1,6 @@
 apply plugin: 'org.jetbrains.kotlin.platform.common'
 
 dependencies {
-  compile project(':references')
   compile project(':sync')
 
   implementation deps.kotlin.stdlib.common
