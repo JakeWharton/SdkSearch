@@ -55,9 +55,6 @@ task projectDependencyGraph {
 
           if (config.name.toLowerCase().endsWith('implementation')) {
             traits.add('style=dotted')
-          } else if (config.name == 'expectedBy') {
-            traits.add('style=dashed')
-            traits.add('arrowhead=none')
           }
         }
       }
@@ -98,6 +95,10 @@ task projectDependencyGraph {
 
     dot << '\n  # Dependencies\n\n'
     dependencies.forEach { key, traits ->
+      if (!commonProjects.contains(key.first) && commonProjects.contains(key.second)) {
+        // Don't link platform modules to their common counterparts. It destroys the graph.
+        return
+      }
       dot << "  \"${key.first.path}\" -> \"${key.second.path}\""
       if (!traits.isEmpty()) {
         dot << " [${traits.join(", ")}]"
