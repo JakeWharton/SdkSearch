@@ -1,6 +1,7 @@
 apply plugin: 'kotlin2js'
 apply plugin: 'kotlin-dce-js'
 apply plugin: 'org.jetbrains.kotlin.frontend'
+apply plugin: 'distribution'
 
 dependencies {
   compile project(':search:presenter:js')
@@ -18,6 +19,19 @@ kotlinFrontend {
     mode = 'none'
   }
 }
+
+distributions {
+  main {
+    baseName = 'sdk-search'
+
+    contents {
+      from 'src/main/web'
+      from "$buildDir/bundle/sdk-search.bundle.js"
+    }
+  }
+}
+
+distTar.enabled = false
 
 compileKotlin2Js {
   kotlinOptions.moduleKind = 'commonjs'
