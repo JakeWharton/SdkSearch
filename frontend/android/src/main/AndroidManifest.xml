@@ -25,6 +25,10 @@
         android:name=".ui.MainActivity"
         android:launchMode="singleInstance"
         >
+      <meta-data
+          android:name="default-url"
+          android:value="https://sdksearch.app/"
+          />
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.DEFAULT"/>
