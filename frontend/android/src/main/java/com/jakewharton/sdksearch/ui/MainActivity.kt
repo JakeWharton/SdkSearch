@@ -52,7 +52,10 @@ class MainActivity : Activity() {
     val onSource = OpenSourceItemHandler(this, androidReference)
 
     val defaultQuery = if (savedInstanceState == null) {
-      SearchUiBinder.Args(intent.getStringExtra("query"))
+      val data = intent.data
+      if (data != null && data.host == "sdksearch.app" && data.pathSegments.size == 1) {
+        SearchUiBinder.Args(data.pathSegments[0])
+      } else null
     } else null
 
     setContentView(R.layout.search)
