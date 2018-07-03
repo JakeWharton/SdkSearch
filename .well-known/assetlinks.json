@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.jakewharton.sdksearch",
+      "sha256_cert_fingerprints": [
+        "97:A3:A7:B0:FC:49:F1:BA:97:CB:49:6E:9C:F8:D5:E0:40:E2:AD:49:B9:02:C4:AD:99:1E:C6:FB:AD:E6:F2:C8"
+      ]
+    }
+  }
+]
