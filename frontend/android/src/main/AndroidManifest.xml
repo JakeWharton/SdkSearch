@@ -1,7 +1,15 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jakewharton.sdksearch"
+    android:targetSandboxVersion="2"
+    tools:targetApi="26"
     >
+  <!--
+  Sandbox version 2 is required for instant apps. Normally this is added by default by the instant
+  plugin, but since we are creating the instant zip of our single APK manually, it must be
+  explicitly specified.
+  -->
 
   <uses-permission android:name="android.permission.INTERNET"/>
 

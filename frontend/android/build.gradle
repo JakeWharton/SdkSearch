@@ -92,6 +92,23 @@ android {
       enableSplit = false // We currently only have one language.
     }
   }
+
+  // Build an instant app zip of our single APK. This saves having to create a feature module, an
+  // instant app module, and a traditional application module just to get an aab and instant zip.
+  applicationVariants.all { variant ->
+    variant.outputs.all { output ->
+      if (output.outputFile.name.endsWith('.apk')) {
+        def zipInstant = tasks.create("zipInstant${variant.name.capitalize()}", Zip) {
+          from(output.outputFile)
+
+          archiveName = "instant-${output.name}.zip"
+          destinationDir = output.outputFile.parentFile
+        }
+        zipInstant.dependsOn(output.assemble)
+        tasks.getByName('assemble').dependsOn(zipInstant)
+      }
+    }
+  }
 }
 
 dependencies {
