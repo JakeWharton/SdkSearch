@@ -8,7 +8,7 @@ buildscript {
           'major': 1,
           'minor': 3,
           'patch': 1,
-          'build': 1,
+          'build': 2,
       ],
   ]
   ext.buildConfig.version['name'] = "${buildConfig.version.major}.${buildConfig.version.minor}.${buildConfig.version.patch}"
