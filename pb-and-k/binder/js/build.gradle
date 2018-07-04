@@ -1,0 +1,9 @@
+apply plugin: 'org.jetbrains.kotlin.platform.js'
+
+archivesBaseName = 'pb-and-k-binder'
+
+dependencies {
+  expectedBy project(':pb-and-k:binder')
+  compile deps.kotlin.stdlib.js
+  compile deps.kotlin.coroutines.js
+}

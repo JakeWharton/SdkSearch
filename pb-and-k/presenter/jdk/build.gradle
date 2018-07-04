@@ -1,0 +1,10 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.platform.jvm'
+
+archivesBaseName = 'pb-and-k-presenter'
+
+dependencies {
+  expectedBy project(':pb-and-k:presenter')
+  implementation deps.kotlin.stdlib.jdk
+  api deps.kotlin.coroutines.jdk
+}

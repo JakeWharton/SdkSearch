@@ -1,5 +1,8 @@
 package com.jakewharton.sdksearch.options.presenter
 
+import com.jakewharton.pbandk.Presenter
+import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Event
+import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Model
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.config.Config
@@ -16,12 +19,12 @@ import kotlinx.coroutines.experimental.launch
 class OptionsPresenter(
   private val dispatcher: CoroutineDispatcher,
   private val configStore: ConfigStore
-) {
+) : Presenter<Model, Event> {
   private val _models = ConflatedBroadcastChannel<Model>()
-  val models: ReceiveChannel<Model> get() = _models.openSubscription()
+  override val models: ReceiveChannel<Model> get() = _models.openSubscription()
 
   private val _events = RendezvousChannel<Event>()
-  val events: SendChannel<Event> get() = _events
+  override val events: SendChannel<Event> get() = _events
 
   fun start(): Job {
     val job = Job()

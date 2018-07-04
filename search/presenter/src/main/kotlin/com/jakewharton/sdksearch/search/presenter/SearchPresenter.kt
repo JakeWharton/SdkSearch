@@ -1,5 +1,8 @@
 package com.jakewharton.sdksearch.search.presenter
 
+import com.jakewharton.pbandk.Presenter
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
+import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus
 import com.jakewharton.sdksearch.store.item.Item
 import com.jakewharton.sdksearch.store.item.ItemStore
@@ -18,12 +21,12 @@ class SearchPresenter(
   private val context: CoroutineDispatcher,
   private val store: ItemStore,
   private val synchronizer: ItemSynchronizer
-) {
+) : Presenter<Model, Event> {
   private val _models = ConflatedBroadcastChannel<Model>()
-  val models: ReceiveChannel<Model> get() = _models.openSubscription()
+  override val models: ReceiveChannel<Model> get() = _models.openSubscription()
 
   private val _events = RendezvousChannel<Event>()
-  val events: SendChannel<Event> get() = _events
+  override val events: SendChannel<Event> get() = _events
 
   fun start(): Job {
     val job = Job()

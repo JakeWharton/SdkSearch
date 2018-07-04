@@ -10,6 +10,8 @@ dependencies {
 
   implementation deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
+
+  compile project(':pb-and-k:presenter:js')
 }
 
 kotlin {

@@ -1,5 +1,6 @@
 package com.jakewharton.sdksearch.options.ui
 
+import com.jakewharton.pbandk.UiBinder
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Event
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Model
 import com.jakewharton.sdksearch.store.config.Config
@@ -11,7 +12,7 @@ import org.w3c.dom.NonElementParentNode
 class OptionsUiBinder(
   parent: NonElementParentNode,
   private val events: SendChannel<Event>
-) {
+) : UiBinder<Model> {
   private val gitWebInput = parent.getElementById("git-web") as HTMLInputElement
   private val dacInput = parent.getElementById("dac") as HTMLInputElement
 
@@ -31,7 +32,7 @@ class OptionsUiBinder(
     // TODO validation of form values.
   }
 
-  fun bind(model: Model, oldModel: Model?) {
+  override fun bind(model: Model, oldModel: Model?) {
     val config = model.config
     if (config != null) {
       gitWebInput.value = config.gitWebUrl

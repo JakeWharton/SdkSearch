@@ -1,0 +1,6 @@
+apply plugin: 'org.jetbrains.kotlin.platform.common'
+
+dependencies {
+  implementation deps.kotlin.stdlib.common
+  compile deps.kotlin.coroutines.common
+}

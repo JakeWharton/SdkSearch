@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.options.ui
 
 import android.support.design.widget.TextInputLayout
 import android.view.View
+import com.jakewharton.pbandk.UiBinder
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Event
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Model
 import com.jakewharton.sdksearch.store.config.Config
@@ -10,7 +11,7 @@ import kotlinx.coroutines.experimental.channels.SendChannel
 class OptionsUiBinder(
   view: View,
   private val events: SendChannel<Event>
-) {
+) : UiBinder<Model> {
   private val gitWebUrlInput: TextInputLayout = view.findViewById(R.id.git_web_url)
   private val dacUrlInput: TextInputLayout = view.findViewById(R.id.dac_url)
   private val saveButton: View = view.findViewById(R.id.save)
@@ -29,7 +30,7 @@ class OptionsUiBinder(
     }
   }
 
-  fun bind(model: Model, oldModel: Model?) {
+  override fun bind(model: Model, oldModel: Model?) {
     val config = model.config
     if (config != null) {
       gitWebUrlInput.editText!!.setText(config.gitWebUrl)

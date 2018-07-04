@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
 import androidx.core.content.systemService
 import androidx.core.view.isVisible
+import com.jakewharton.pbandk.UiBinder
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
@@ -44,7 +45,7 @@ class SearchUiBinder(
   private val onCopy: ItemHandler,
   private val onShare: ItemHandler,
   private val onSource: ItemHandler
-) {
+) : UiBinder<Model> {
   private val context = view.context
   private val resources = view.resources
 
@@ -130,7 +131,7 @@ class SearchUiBinder(
     args.defaultQuery?.let(queryInput::setText)
   }
 
-  fun bind(model: Model, oldModel: Model?) {
+  override fun bind(model: Model, oldModel: Model?) {
     val count = model.count
     queryInput.hint = resources.getQuantityString(R.plurals.search_classes, count.toInt(), count)
 

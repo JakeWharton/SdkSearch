@@ -31,6 +31,8 @@ dependencies {
 
   implementation deps.kotlin.stdlib.jdk
   api deps.kotlin.coroutines.jdk
+
+  api project(':pb-and-k:presenter:jdk')
 }
 
 kotlin {

@@ -30,6 +30,8 @@ dependencies {
   implementation project(':roboto')
   api project(':search:presenter:android')
 
+  api project(':pb-and-k:binder:jdk')
+
   implementation deps.kotlin.stdlib.jdk
   implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
