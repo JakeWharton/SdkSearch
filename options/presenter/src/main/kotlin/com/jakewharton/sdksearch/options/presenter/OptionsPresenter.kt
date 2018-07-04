@@ -26,7 +26,7 @@ class OptionsPresenter(
   private val _events = RendezvousChannel<Event>()
   override val events: SendChannel<Event> get() = _events
 
-  fun start(): Job {
+  override fun start(): Job {
     val job = Job()
 
     var model = Model()
