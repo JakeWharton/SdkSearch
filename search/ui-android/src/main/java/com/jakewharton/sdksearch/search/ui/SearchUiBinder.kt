@@ -18,7 +18,7 @@ import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
 import androidx.core.content.systemService
 import androidx.core.view.isVisible
-import com.jakewharton.pbandk.UiBinder
+import com.jakewharton.presentation.UiBinder
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model

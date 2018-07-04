@@ -4,9 +4,9 @@ import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-import com.jakewharton.pbandk.Location
-import com.jakewharton.pbandk.bindTo
-import com.jakewharton.pbandk.startLocation
+import com.jakewharton.presentation.Presentation
+import com.jakewharton.presentation.bindTo
+import com.jakewharton.presentation.startPresentation
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.reference.AndroidReference
@@ -27,7 +27,7 @@ class MainActivity : Activity() {
   @Inject lateinit var searchPresenterProvider: Provider<SearchPresenter>
   @Inject lateinit var baseUrl: BaseUrl
 
-  private lateinit var location: Location
+  private lateinit var presentation: Presentation
   private lateinit var binderJob: Job
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +45,9 @@ class MainActivity : Activity() {
 
     AndroidInjection.inject(this)
 
-    location = lastNonConfigurationInstance as Location?
-        ?: searchPresenterProvider.get().startLocation()
-    val presenter = location.presenter as SearchPresenter
+    presentation = lastNonConfigurationInstance as Presentation?
+        ?: searchPresenterProvider.get().startPresentation()
+    val presenter = presentation.presenter as SearchPresenter
 
     val androidReference = AndroidReference(PRODUCTION_GIT_WEB, PRODUCTION_DAC)
     val onClick = OpenDocumentationItemHandler(this, baseUrl, androidReference)
@@ -69,14 +69,14 @@ class MainActivity : Activity() {
     binderJob = binder.bindTo(presenter)
   }
 
-  override fun onRetainNonConfigurationInstance() = location
+  override fun onRetainNonConfigurationInstance() = presentation
 
   override fun onDestroy() {
     super.onDestroy()
     binderJob.cancel()
 
     if (!isChangingConfigurations) {
-      location.stop()
+      presentation.stop()
     }
   }
 }

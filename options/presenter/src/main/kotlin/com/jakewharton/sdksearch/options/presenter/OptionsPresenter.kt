@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.options.presenter
 
-import com.jakewharton.pbandk.Presenter
+import com.jakewharton.presentation.Presenter
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Event
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Model
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC

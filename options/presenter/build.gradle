@@ -7,7 +7,7 @@ dependencies {
   implementation deps.kotlin.stdlib.common
   implementation deps.kotlin.coroutines.common
 
-  compile project(':pb-and-k:presenter')
+  compile project(':presentation:presenter')
 }
 
 kotlin {

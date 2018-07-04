@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.search.presenter
 
-import com.jakewharton.pbandk.Presenter
+import com.jakewharton.presentation.Presenter
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus

@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.options.ui
 
-import com.jakewharton.pbandk.UiBinder
+import com.jakewharton.presentation.UiBinder
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Event
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Model
 import com.jakewharton.sdksearch.store.config.Config

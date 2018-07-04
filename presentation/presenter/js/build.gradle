@@ -3,7 +3,7 @@ apply plugin: 'org.jetbrains.kotlin.platform.js'
 archivesBaseName = 'pb-and-k-presenter'
 
 dependencies {
-  expectedBy project(':pb-and-k:presenter')
+  expectedBy project(':presentation:presenter')
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
 }
