@@ -3,7 +3,7 @@ package com.jakewharton.sdksearch.sync
 import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.store.item.ItemUtil
-import kotlinx.coroutines.experimental.channels.ConflatedChannel
+import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
@@ -15,8 +15,8 @@ class ItemSynchronizer(
   private val itemStore: ItemStore,
   private val documentationService: DocumentationService
 ) {
-  private val _state = ConflatedChannel<SyncStatus>()
-  val state: ReceiveChannel<SyncStatus> get() = _state
+  private val _state = ConflatedBroadcastChannel<SyncStatus>()
+  val state: ReceiveChannel<SyncStatus> get() = _state.openSubscription()
 
   fun forceSync() {
     _state.offer(SyncStatus.SYNC)
