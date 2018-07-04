@@ -4,6 +4,13 @@ archivesBaseName = 'pb-and-k-binder'
 
 dependencies {
   expectedBy project(':pb-and-k:binder')
+  compile project(':pb-and-k:presenter:js')
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
 }

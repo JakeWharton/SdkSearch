@@ -5,6 +5,13 @@ archivesBaseName = 'pb-and-k-binder'
 
 dependencies {
   expectedBy project(':pb-and-k:binder')
+  api project(':pb-and-k:presenter:jdk')
   implementation deps.kotlin.stdlib.jdk
   api deps.kotlin.coroutines.jdk
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+import com.jakewharton.pbandk.bindTo
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.reference.AndroidReference
@@ -15,8 +16,6 @@ import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.Unconfined
-import kotlinx.coroutines.experimental.launch
 import timber.log.Timber
 import timber.log.error
 import javax.inject.Inject
@@ -62,13 +61,7 @@ class MainActivity : Activity() {
     val binder = SearchUiBinder(window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
     defaultQuery?.let { binder.init(it) }
 
-    binderJob = launch(Unconfined) {
-      var oldModel: SearchPresenter.Model? = null
-      for (model in presenter.models) {
-        binder.bind(model, oldModel)
-        oldModel = model
-      }
-    }
+    binderJob = binder.bindTo(presenter)
   }
 
   override fun onRetainNonConfigurationInstance() = presenterJob

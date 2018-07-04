@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.ui
 
 import android.app.Activity
 import android.os.Bundle
+import com.jakewharton.pbandk.bindTo
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter
 import com.jakewharton.sdksearch.options.ui.OptionsUiBinder
@@ -9,8 +10,6 @@ import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.Unconfined
-import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 
 class OptionsActivity : Activity() {
@@ -28,13 +27,7 @@ class OptionsActivity : Activity() {
     setContentView(R.layout.options)
     val binder = OptionsUiBinder(window.decorView, presenter.events)
 
-    binderJob = launch(Unconfined) {
-      var oldModel: OptionsPresenter.Model? = null
-      for (model in presenter.models) {
-        binder.bind(model, oldModel)
-        oldModel = model
-      }
-    }
+    binderJob = binder.bindTo(presenter)
   }
 
   override fun onRetainNonConfigurationInstance() = presenterJob
