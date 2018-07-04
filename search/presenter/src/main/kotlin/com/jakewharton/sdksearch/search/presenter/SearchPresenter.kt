@@ -68,7 +68,7 @@ class SearchPresenter(
               if (query == "") {
                 sendModel(model.copy(queryResults = Model.QueryResults("", emptyList())))
               } else {
-                activeQueryJob = launch(context) {
+                activeQueryJob = launch(context, parent = job) {
                   delay(200)
 
                   store.queryItems(query).consumeEach {
