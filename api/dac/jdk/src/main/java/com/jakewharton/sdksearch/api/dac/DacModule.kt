@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 import kotlinx.serialization.json.JSON
+import okhttp3.HttpUrl
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -15,12 +16,12 @@ internal object DacModule {
   @JvmStatic
   @Provides
   @Singleton
-  fun documentationService(baseUrl: BaseUrl, client: OkHttpClient): DocumentationService {
+  fun documentationService(baseUrl: HttpUrl, client: OkHttpClient): DocumentationService {
     val contentType = MediaType.parse("application/json; charset=utf-8")!!
     val json = JSON.nonstrict
 
     val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl.url)
+        .baseUrl(baseUrl)
         .client(client)
         .addConverterFactory(stringBased(contentType, json::parse, json::stringify))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())

@@ -2,7 +2,6 @@
 
 package com.jakewharton.sdksearch.reference.validator
 
-import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
@@ -12,6 +11,7 @@ import com.xenomachina.argparser.default
 import com.xenomachina.argparser.mainBody
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.runBlocking
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request.Builder
 import java.util.concurrent.TimeUnit.MINUTES
@@ -40,7 +40,7 @@ fun main(vararg args: String) = runBlocking {
 
   val client = OkHttpClient()
   val service = DacComponent.builder()
-      .baseUrl(BaseUrl(config.dac))
+      .baseUrl(HttpUrl.parse(config.dac)!!)
       .client(client)
       .build()
       .documentationService()

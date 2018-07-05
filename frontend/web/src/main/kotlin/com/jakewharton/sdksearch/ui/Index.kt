@@ -1,6 +1,5 @@
 package com.jakewharton.sdksearch.ui
 
-import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
@@ -30,8 +29,7 @@ fun main(vararg args: String) {
   val query = document.getElementById("query") as HTMLInputElement
   val items = document.getElementById("items") as HTMLUListElement
 
-  val baseUrl = BaseUrl(PRODUCTION_DAC)
-  val documentationService = FetchDocumentationService(baseUrl)
+  val documentationService = FetchDocumentationService(PRODUCTION_DAC)
   val store = InMemoryItemStore()
   val synchronizer = ItemSynchronizer(store, documentationService)
 

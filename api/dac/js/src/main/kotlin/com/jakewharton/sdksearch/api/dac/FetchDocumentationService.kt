@@ -6,14 +6,16 @@ import kotlinx.serialization.json.JSON
 import kotlinx.serialization.list
 import kotlinx.serialization.map
 import kotlinx.serialization.serializer
+import org.w3c.dom.url.URL
 import kotlin.browser.window
 
 class FetchDocumentationService(
-  private val baseUrl: BaseUrl
+  baseUrl: String
 ) : DocumentationService {
+  private val listUrl = URL(baseUrl, "_s/getsuggestions?p=%2F&s=irina&c=3").href
 
   override fun list(): Deferred<Map< String, List<Item>>> = window
-      .fetch(baseUrl.resolve("_s/getsuggestions?p=%2F&s=irina&c=3"))
+      .fetch(listUrl)
       .then {
         if (it.status != 200.toShort()) {
           throw RuntimeException("HTTP ${it.status} ${it.statusText}")

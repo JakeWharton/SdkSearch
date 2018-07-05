@@ -8,7 +8,6 @@ import com.jakewharton.presentation.Presentation
 import com.jakewharton.presentation.bindTo
 import com.jakewharton.presentation.startPresentation
 import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
@@ -18,6 +17,7 @@ import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.experimental.Job
+import okhttp3.HttpUrl
 import timber.log.Timber
 import timber.log.error
 import javax.inject.Inject
@@ -25,7 +25,7 @@ import javax.inject.Provider
 
 class MainActivity : Activity() {
   @Inject lateinit var searchPresenterProvider: Provider<SearchPresenter>
-  @Inject lateinit var baseUrl: BaseUrl
+  @Inject lateinit var baseUrl: HttpUrl
 
   private lateinit var presentation: Presentation
   private lateinit var binderJob: Job

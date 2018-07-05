@@ -6,7 +6,6 @@ import com.chrome.platform.Chrome.tabs
 import com.chrome.platform.omnibox.DefaultSuggestResult
 import com.chrome.platform.omnibox.SuggestResult
 import com.chrome.platform.tabs.UpdateProperties
-import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
@@ -17,6 +16,7 @@ import com.jakewharton.sdksearch.store.item.StorageAreaItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch
+import org.w3c.dom.url.URL
 import timber.log.ConsoleTree
 import timber.log.Timber
 
@@ -32,8 +32,7 @@ fun main(vararg args: String) {
     omnibox.setDefaultSuggestion(
         DefaultSuggestResult("Search Android SDK docs for <match>%s</match>"))
 
-    val baseUrl = BaseUrl(config.dacUrl)
-    val service = FetchDocumentationService(baseUrl)
+    val service = FetchDocumentationService(config.dacUrl)
     val itemSynchronizer = ItemSynchronizer(itemStore, service)
     val presenter = SearchPresenter(DefaultDispatcher, itemStore, itemSynchronizer)
     val events = presenter.events
@@ -63,7 +62,8 @@ fun main(vararg args: String) {
                 append("</match>")
                 append(it.className.substring(matchEnd))
               }
-              SuggestResult(baseUrl.resolve(it.link), description, false)
+              val result = URL(config.dacUrl, it.link).href
+              SuggestResult(result, description, false)
             }.toTypedArray()
 
         currentSuggestions?.invoke(results)

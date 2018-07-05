@@ -2,7 +2,6 @@ package com.jakewharton.sdksearch
 
 import android.app.Application
 import com.jakewharton.byteunits.BinaryByteUnit.MEBIBYTES
-import com.jakewharton.sdksearch.api.dac.BaseUrl
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.store.item.ItemStore
@@ -11,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.experimental.android.UI
 import okhttp3.Cache
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
@@ -24,7 +24,7 @@ object SearchPresenterModule {
   @Provides
   fun provideSearchPresenter(
     application: Application,
-    baseUrl: BaseUrl,
+    baseUrl: HttpUrl,
     store: ItemStore
   ): SearchPresenter {
     val cacheDir = application.cacheDir / "http"
