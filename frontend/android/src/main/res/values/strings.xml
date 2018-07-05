@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="application_name">SDK Search</string>
-
-  <string name="copied">%s URL copied to clipboard!</string>
-  <string name="share_title">Share %s URL</string>
-  <string name="view_class_source">View %s source</string>
-  <string name="unknown_source">Unknown source location!</string>
 </resources>

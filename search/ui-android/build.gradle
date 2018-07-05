@@ -29,13 +29,14 @@ android {
 dependencies {
   implementation project(':roboto')
   api project(':search:presenter:android')
-
+  api project(':references:jdk')
   api project(':presentation:binder:jdk')
 
   implementation deps.kotlin.stdlib.jdk
   implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
 
+  implementation deps.android.support.customTabs
   implementation deps.android.support.recyclerView
   implementation deps.android.support.constraintLayout
   implementation(deps.android.support.design) {

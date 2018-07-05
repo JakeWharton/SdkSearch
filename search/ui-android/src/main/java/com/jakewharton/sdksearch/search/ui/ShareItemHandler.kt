@@ -1,13 +1,11 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.search.ui
 
 import android.app.Activity
 import android.support.v4.app.ShareCompat.IntentBuilder
-import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.search.ui.ItemHandler
 import com.jakewharton.sdksearch.store.item.Item
 import okhttp3.HttpUrl
 
-internal class ShareItemHandler(
+class ShareItemHandler(
   private val activity: Activity,
   private val baseUrl: HttpUrl
 ) : ItemHandler {

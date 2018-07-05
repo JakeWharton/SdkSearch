@@ -13,4 +13,8 @@
   <string name="view_source">View source</string>
   <string name="updating">Updating class list…</string>
   <string name="updating_failed">Failed to update class list.</string>
+  <string name="copied">%s URL copied to clipboard!</string>
+  <string name="share_title">Share %s URL</string>
+  <string name="view_class_source">View %s source</string>
+  <string name="unknown_source">Unknown source location!</string>
 </resources>

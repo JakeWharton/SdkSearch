@@ -1,18 +1,17 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.search.ui
 
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.support.customtabs.CustomTabsIntent
+import android.util.TypedValue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
-import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.reference.AndroidReference
-import com.jakewharton.sdksearch.search.ui.ItemHandler
 import com.jakewharton.sdksearch.store.item.Item
 import okhttp3.HttpUrl
 
-internal class OpenDocumentationItemHandler(
+class OpenDocumentationItemHandler(
   private val context: Context,
   private val baseUrl: HttpUrl,
   private val androidReference: AndroidReference
@@ -20,8 +19,13 @@ internal class OpenDocumentationItemHandler(
   override fun invoke(item: Item) {
     val uri = baseUrl.resolve(item.link)!!.toString().toUri()
     val sourceUri = androidReference.sourceUrl(item.packageName, item.className)?.toUri()
+
+    val typedValue = TypedValue()
+    context.theme.resolveAttribute(android.R.attr.colorPrimary, typedValue, true)
+    val colorPrimary = typedValue.data
+
     CustomTabsIntent.Builder()
-        .setToolbarColor(context.getColor(R.color.green))
+        .setToolbarColor(colorPrimary)
         .addDefaultShareMenuItem()
         .apply {
           if (sourceUri != null) {

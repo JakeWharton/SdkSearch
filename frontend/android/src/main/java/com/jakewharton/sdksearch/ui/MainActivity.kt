@@ -12,7 +12,11 @@ import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
+import com.jakewharton.sdksearch.search.ui.ClipboardCopyItemHandler
+import com.jakewharton.sdksearch.search.ui.OpenDocumentationItemHandler
+import com.jakewharton.sdksearch.search.ui.OpenSourceItemHandler
 import com.jakewharton.sdksearch.search.ui.SearchUiBinder
+import com.jakewharton.sdksearch.search.ui.ShareItemHandler
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector

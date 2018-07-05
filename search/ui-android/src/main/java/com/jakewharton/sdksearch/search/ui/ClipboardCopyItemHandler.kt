@@ -1,16 +1,14 @@
-package com.jakewharton.sdksearch.ui
+package com.jakewharton.sdksearch.search.ui
 
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.core.content.systemService
 import androidx.core.widget.toast
-import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.search.ui.ItemHandler
 import com.jakewharton.sdksearch.store.item.Item
 import okhttp3.HttpUrl
 
-internal class ClipboardCopyItemHandler(
+class ClipboardCopyItemHandler(
   private val context: Context,
   private val baseUrl: HttpUrl
 ) : ItemHandler {
