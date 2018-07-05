@@ -12,7 +12,7 @@ import kotlin.browser.window
 class FetchDocumentationService(
   baseUrl: String
 ) : DocumentationService {
-  private val listUrl = URL(baseUrl, "_s/getsuggestions?p=%2F&s=irina&c=3").href
+  private val listUrl = URL("_s/getsuggestions?p=%2F&s=irina&c=3", baseUrl).href
 
   override fun list(): Deferred<Map< String, List<Item>>> = window
       .fetch(listUrl)

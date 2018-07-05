@@ -62,7 +62,7 @@ fun main(vararg args: String) {
                 append("</match>")
                 append(it.className.substring(matchEnd))
               }
-              val result = URL(config.dacUrl, it.link).href
+              val result = URL(it.link, config.dacUrl).href
               SuggestResult(result, description, false)
             }.toTypedArray()
 
