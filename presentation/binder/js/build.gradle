@@ -1,6 +1,6 @@
 apply plugin: 'org.jetbrains.kotlin.platform.js'
 
-archivesBaseName = 'pb-and-k-binder'
+archivesBaseName = 'presentation-binder'
 
 dependencies {
   expectedBy project(':presentation:binder')

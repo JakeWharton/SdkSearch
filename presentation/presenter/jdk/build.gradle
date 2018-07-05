@@ -1,7 +1,7 @@
 apply plugin: 'java-library'
 apply plugin: 'org.jetbrains.kotlin.platform.jvm'
 
-archivesBaseName = 'pb-and-k-presenter'
+archivesBaseName = 'presentation-presenter'
 
 dependencies {
   expectedBy project(':presentation:presenter')

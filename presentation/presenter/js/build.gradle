@@ -1,6 +1,6 @@
 apply plugin: 'org.jetbrains.kotlin.platform.js'
 
-archivesBaseName = 'pb-and-k-presenter'
+archivesBaseName = 'presentation-presenter'
 
 dependencies {
   expectedBy project(':presentation:presenter')
