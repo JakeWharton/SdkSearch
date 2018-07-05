@@ -11,10 +11,12 @@ import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.launch
+import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLLIElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.HTMLUListElement
+import org.w3c.dom.url.URL
 import timber.log.ConsoleTree
 import timber.log.Timber
 import timber.log.debug
@@ -45,9 +47,14 @@ fun main(vararg args: String) {
 
       items.clear()
       model.queryResults.items.forEach { item ->
-        val element = document.createElement("li") as HTMLLIElement
-        element.textContent = "${item.packageName}.${item.className}"
-        items.appendChild(element)
+        val link = document.createElement("a") as HTMLAnchorElement
+        link.textContent = "${item.packageName}.${item.className}"
+        link.href = URL(item.link, PRODUCTION_DAC).href
+
+        val listItem = document.createElement("li") as HTMLLIElement
+        listItem.appendChild(link)
+
+        items.appendChild(listItem)
       }
     }
   }
