@@ -1,0 +1,21 @@
+apply plugin: 'java'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+mainClassName = 'com.jakewharton.sdksearch.reference.legacy.ReferencePrinter'
+
+dependencies {
+  implementation project(':references:jdk')
+  implementation project(':api:dac:jdk')
+  implementation deps.okhttp.client
+}
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}
