@@ -14,12 +14,11 @@ private const val KEY = "items"
 private fun List<Item>.toJsArray(): dynamic {
   val array = js("[]")
   for (item in this) {
-    val js = js("{}")
-    js.id = item.id.toInt()
-    js.packageName = item.packageName
-    js.className = item.className
-    js.deprecated = item.deprecated
-    js.link = item.link
+    val js = js("[]")
+    js.push(item.packageName)
+    js.push(item.className)
+    js.push(if (item.deprecated) 1 else 0)
+    js.push(item.link)
     array.push(js)
   }
   return array
@@ -30,11 +29,11 @@ private fun fromJsArray(value: dynamic): List<Item> {
   val list = mutableListOf<Item>()
   for (item in value) {
     list.add(Item.Impl(
-        item.id.unsafeCast<Int>().toLong(),
-        item.packageName,
-        item.className,
-        item.deprecated,
-        item.link
+        -1,
+        item[0],
+        item[1],
+        item[2] == 1,
+        item[3]
     ))
   }
   return list
