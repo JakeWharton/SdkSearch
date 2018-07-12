@@ -10,6 +10,36 @@ import kotlin.js.json
 
 private const val KEY = "items"
 
+// TODO replace with https://github.com/Kotlin/kotlinx.serialization/issues/116
+private fun List<Item>.toJsArray(): dynamic {
+  val array = js("[]")
+  for (item in this) {
+    val js = js("{}")
+    js.id = item.id.toInt()
+    js.packageName = item.packageName
+    js.className = item.className
+    js.deprecated = item.deprecated
+    js.link = item.link
+    array.push(js)
+  }
+  return array
+}
+
+// TODO replace with https://github.com/Kotlin/kotlinx.serialization/issues/116
+private fun fromJsArray(value: dynamic): List<Item> {
+  val list = mutableListOf<Item>()
+  for (item in value) {
+    list.add(Item.Impl(
+        item.id.unsafeCast<Int>().toLong(),
+        item.packageName,
+        item.className,
+        item.deprecated,
+        item.link
+    ))
+  }
+  return list
+}
+
 class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
   private var currentJob: Job? = null
 
@@ -34,14 +64,13 @@ class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
     serially {
       suspendCoroutine<Unit> { continuation ->
         storage.get(KEY) {
-          @Suppress("UNCHECKED_CAST")
-          val existingItems = it[KEY] as Array<Item>? ?: emptyArray()
+          val existingItems = it[KEY]?.let(::fromJsArray) ?: emptyList()
           // TODO something not n^2? persist map of fqcn to item?
           val oldItems = existingItems.filter { existing ->
             items.any { it.packageName == existing.packageName && it.className == existing.className }
           }
           val newItems = oldItems + items
-          storage.set(json(KEY to newItems.toTypedArray())) {
+          storage.set(json(KEY to newItems.toJsArray())) {
             continuation.resume(Unit)
           }
         }
@@ -54,8 +83,7 @@ class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
 
     val channel = ConflatedBroadcastChannel<List<Item>>()
     storage.get(KEY) {
-      @Suppress("UNCHECKED_CAST")
-      val allItems = it[KEY] as Array<Item>? ?: emptyArray()
+      val allItems = it[KEY]?.let(::fromJsArray) ?: emptyList()
 
       val items = allItems
           .filter { it.className.contains(term, ignoreCase = true) }
@@ -80,9 +108,7 @@ class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
 
     val channel = ConflatedBroadcastChannel<Long>()
     storage.get(KEY) {
-      @Suppress("UNCHECKED_CAST")
-      val allItems = it[KEY] as Array<Item>? ?: emptyArray()
-
+      val allItems = it[KEY]?.let(::fromJsArray) ?: emptyList()
       channel.offer(allItems.size.toLong())
     }
     return channel.openSubscription()

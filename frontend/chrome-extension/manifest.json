@@ -29,6 +29,7 @@
   },
   "permissions": [
     "storage",
+    "unlimitedStorage",
     "https://developer.android.com/"
   ],
   "options_ui": {
