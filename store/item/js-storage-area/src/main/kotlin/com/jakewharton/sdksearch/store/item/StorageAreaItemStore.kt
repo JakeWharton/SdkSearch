@@ -1,10 +1,15 @@
 package com.jakewharton.sdksearch.store.item
 
+import com.chrome.platform.storage.Storage
 import com.chrome.platform.storage.StorageArea
+import com.chrome.platform.storage.StorageChange
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.channels.map
+import timber.log.Timber
+import timber.log.debug
 import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.js.json
 
@@ -41,8 +46,28 @@ private fun fromJsArray(value: dynamic): List<Item> {
   return list
 }
 
-class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
+// TODO maybe replace with https://github.com/JetBrains/kotlin-wrappers?
+private external object Object {
+  fun keys(o: Any): Array<String>
+}
+
+// TODO three parameters is stupid https://bugs.chromium.org/p/chromium/issues/detail?id=863277
+class StorageAreaItemStore(
+  storage: Storage,
+  storageName: String,
+  private val storageArea: StorageArea
+) : ItemStore {
+  private val items = ConflatedBroadcastChannel<List<Item>?>(null)
   private var currentJob: Job? = null
+
+  init {
+    storage.onChanged.addListener { objects, name ->
+      Timber.debug { """Storage change in "$name" of key(s) "${Object.keys(objects)}"""" }
+      if (name == storageName) {
+        objects[KEY]?.let { (it as StorageChange).newValue }?.let(::fromJsArray)?.let(items::offer)
+      }
+    }
+  }
 
   private suspend fun <T> serially(body: suspend () -> T): T {
     // TODO replace with actor once available in JS.
@@ -64,14 +89,14 @@ class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
   override suspend fun updateItems(items: List<Item>) {
     serially {
       suspendCoroutine<Unit> { continuation ->
-        storage.get(KEY) {
+        storageArea.get(KEY) {
           val existingItems = it[KEY]?.let(::fromJsArray) ?: emptyList()
           // TODO something not n^2? persist map of fqcn to item?
           val oldItems = existingItems.filter { existing ->
             items.any { it.packageName == existing.packageName && it.className == existing.className }
           }
           val newItems = oldItems + items
-          storage.set(json(KEY to newItems.toJsArray())) {
+          storageArea.set(json(KEY to newItems.toJsArray())) {
             continuation.resume(Unit)
           }
         }
@@ -80,13 +105,8 @@ class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
   }
 
   override fun queryItems(term: String): ReceiveChannel<List<Item>> {
-    // TODO use onChanged listener to update this value
-
-    val channel = ConflatedBroadcastChannel<List<Item>>()
-    storage.get(KEY) {
-      val allItems = it[KEY]?.let(::fromJsArray) ?: emptyList()
-
-      val items = allItems
+    return items.openSubscription().map {
+      (it ?: emptyList())
           .filter { it.className.contains(term, ignoreCase = true) }
           .sortedWith(compareBy {
             val name = it.className
@@ -99,19 +119,10 @@ class StorageAreaItemStore(private val storage: StorageArea) : ItemStore {
               else -> 6
             }
           })
-      channel.offer(items)
     }
-    return channel.openSubscription()
   }
 
   override fun count(): ReceiveChannel<Long> {
-    // TODO use onChanged listener to update this value
-
-    val channel = ConflatedBroadcastChannel<Long>()
-    storage.get(KEY) {
-      val allItems = it[KEY]?.let(::fromJsArray) ?: emptyList()
-      channel.offer(allItems.size.toLong())
-    }
-    return channel.openSubscription()
+    return items.openSubscription().map { it?.size?.toLong() ?: 0L }
   }
 }

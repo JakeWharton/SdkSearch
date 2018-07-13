@@ -23,7 +23,7 @@ import timber.log.Timber
 fun main(vararg args: String) {
   Timber.plant(ConsoleTree())
 
-  val itemStore = StorageAreaItemStore(storage.local)
+  val itemStore = StorageAreaItemStore(storage, "local", storage.local)
   val configStore = StorageAreaConfigStore(storage.sync, PRODUCTION_GIT_WEB, PRODUCTION_DAC)
 
   launch {
