@@ -7,5 +7,5 @@ import okhttp3.HttpUrl
 
 @Module
 object ProductionDacModule {
-  @JvmStatic @Provides fun provideBaseUrl() = HttpUrl.parse(PRODUCTION_DAC)!!
+  @JvmStatic @Provides fun provideBaseUrl() = HttpUrl.get(PRODUCTION_DAC)
 }

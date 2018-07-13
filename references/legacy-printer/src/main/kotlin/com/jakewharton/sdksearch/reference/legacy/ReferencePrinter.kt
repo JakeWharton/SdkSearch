@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
 fun main(vararg args: String) = runBlocking {
   val client = OkHttpClient()
   val service = DacComponent.builder()
-      .baseUrl(HttpUrl.parse(PRODUCTION_DAC)!!)
+      .baseUrl(HttpUrl.get(PRODUCTION_DAC))
       .client(client)
       .build()
       .documentationService()

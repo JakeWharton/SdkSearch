@@ -17,7 +17,7 @@ internal object DacModule {
   @Provides
   @Singleton
   fun documentationService(baseUrl: HttpUrl, client: OkHttpClient): DocumentationService {
-    val contentType = MediaType.parse("application/json; charset=utf-8")!!
+    val contentType = MediaType.get("application/json; charset=utf-8")
     val json = JSON.nonstrict
 
     val retrofit = Retrofit.Builder()

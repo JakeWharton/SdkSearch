@@ -40,7 +40,7 @@ fun main(vararg args: String) = runBlocking {
 
   val client = OkHttpClient()
   val service = DacComponent.builder()
-      .baseUrl(HttpUrl.parse(config.dac)!!)
+      .baseUrl(HttpUrl.get(config.dac))
       .client(client)
       .build()
       .documentationService()
