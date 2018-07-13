@@ -81,7 +81,5 @@ fun main(vararg args: String) {
 
       tabs.update(UpdateProperties(url = url))
     }
-
-    itemSynchronizer.forceSync()
   }
 }
