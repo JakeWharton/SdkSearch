@@ -105,7 +105,7 @@ buildscript {
           'android': 'com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT',
       ],
       'junit': 'junit:junit:4.12',
-      'truth': 'com.google.truth:truth:0.40',
+      'truth': 'com.google.truth:truth:0.42',
       'bugsnag': 'com.bugsnag:bugsnag-android:4.2.2',
       'argparser': 'com.xenomachina:kotlin-argparser:2.0.5',
       'byteunits': 'com.jakewharton.byteunits:byteunits:0.9.1',
