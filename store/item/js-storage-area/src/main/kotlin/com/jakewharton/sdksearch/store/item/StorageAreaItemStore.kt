@@ -11,6 +11,7 @@ import kotlin.js.json
 private const val KEY = "items"
 
 // TODO replace with https://github.com/Kotlin/kotlinx.serialization/issues/116
+// TODO stop golfing byte count https://bugs.chromium.org/p/chromium/issues/detail?id=863214
 private fun List<Item>.toJsArray(): dynamic {
   val array = js("[]")
   for (item in this) {
@@ -25,6 +26,7 @@ private fun List<Item>.toJsArray(): dynamic {
 }
 
 // TODO replace with https://github.com/Kotlin/kotlinx.serialization/issues/116
+// TODO stop golfing byte count https://bugs.chromium.org/p/chromium/issues/detail?id=863214
 private fun fromJsArray(value: dynamic): List<Item> {
   val list = mutableListOf<Item>()
   for (item in value) {
