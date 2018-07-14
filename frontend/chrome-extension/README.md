@@ -1,6 +1,8 @@
 SDK Search (Chrome Extension)
 =============================
 
+Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/android-sdk-search/elihjfnjglabmkeonphlglkpjppchoco).
+
 ![](frontend/chrome-extension/src/main/store/screenshots/1.png)
 
 
