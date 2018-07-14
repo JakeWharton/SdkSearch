@@ -1,6 +1,6 @@
 {
   "name": "Android SDK Search",
-  "description": "Omnibox search of the Android SDK classes",
+  "description": "Adds an 'ad' Omnibox command and 'view source' links for the Android SDK",
   "version": "$version",
   "manifest_version": 2,
   "icons": {

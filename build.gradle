@@ -8,10 +8,11 @@ buildscript {
           'major': 1,
           'minor': 3,
           'patch': 3,
-          'build': 0,
+          'build': 1,
       ],
   ]
   ext.buildConfig.version['name'] = "${buildConfig.version.major}.${buildConfig.version.minor}.${buildConfig.version.patch}"
+  ext.buildConfig.version['fullName'] = "${buildConfig.version.name}.${buildConfig.version.build}"
   ext.buildConfig.version['code'] = buildConfig.version.major * 1000000 + buildConfig.version.minor * 10000 + buildConfig.version.patch * 100 + buildConfig.version.build
 
   ext.versions = [

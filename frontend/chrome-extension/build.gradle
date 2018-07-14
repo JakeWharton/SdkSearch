@@ -16,7 +16,7 @@ distributions {
 
     contents {
       from('manifest.json') {
-        expand version: buildConfig.version.name
+        expand version: buildConfig.version.fullName
       }
       from 'icons'
       from configurations.content

@@ -1,5 +1,3 @@
-Adds an 'ad' omnibox command and view source links for the Android SDK.
-
 This very simple extension does two things:
 
 1. Adds an 'ad' command to the Chrome Omnibox. For example, typing 'ad ViewGro' will bring up a list of all class names in the Android SDK matching 'ViewGro'—selecting a list item navigates to the relevant Android SDK Reference URL on developer.android.com.
