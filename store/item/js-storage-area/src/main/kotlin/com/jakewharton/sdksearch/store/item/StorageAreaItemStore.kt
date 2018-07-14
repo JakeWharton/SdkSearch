@@ -3,6 +3,7 @@ package com.jakewharton.sdksearch.store.item
 import com.chrome.platform.storage.Storage
 import com.chrome.platform.storage.StorageArea
 import com.chrome.platform.storage.StorageChange
+import com.jakewharton.sdksearch.store.item.Item.Impl
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
@@ -17,34 +18,18 @@ private const val KEY = "items"
 
 // TODO replace with https://github.com/Kotlin/kotlinx.serialization/issues/116
 // TODO stop golfing byte count https://bugs.chromium.org/p/chromium/issues/detail?id=863214
-private fun List<Item>.toJsArray(): dynamic {
-  val array = js("[]")
-  for (item in this) {
-    val js = js("[]")
-    js.push(item.packageName)
-    js.push(item.className)
-    js.push(if (item.deprecated) 1 else 0)
-    js.push(item.link)
-    array.push(js)
-  }
-  return array
+
+private fun Item.toPacked() = arrayOf<dynamic>(packageName, className, if (deprecated) 1 else 0, link)
+private fun List<Item>.toPacked() = Array(size) { this[it].toPacked() }
+private fun Map<*, Item>.toPacked() = values.toList().toPacked()
+
+private fun unpackItem(value: dynamic): Item = Impl(-1, value[0], value[1], value[2] == 1, value[3])
+private fun unpackToItemList(value: dynamic) = (value as Array<dynamic>).map(::unpackItem)
+private fun unpackToMutableItemMap(value: dynamic): MutableMap<String, Item> {
+  return unpackToItemList(value).associateByTo(mutableMapOf(), Item::fqcn)
 }
 
-// TODO replace with https://github.com/Kotlin/kotlinx.serialization/issues/116
-// TODO stop golfing byte count https://bugs.chromium.org/p/chromium/issues/detail?id=863214
-private fun fromJsArray(value: dynamic): List<Item> {
-  val list = mutableListOf<Item>()
-  for (item in value) {
-    list.add(Item.Impl(
-        -1,
-        item[0],
-        item[1],
-        item[2] == 1,
-        item[3]
-    ))
-  }
-  return list
-}
+private val Item.fqcn get() = "$packageName.$className"
 
 // TODO maybe replace with https://github.com/JetBrains/kotlin-wrappers?
 private external object Object {
@@ -57,14 +42,24 @@ class StorageAreaItemStore(
   storageName: String,
   private val storageArea: StorageArea
 ) : ItemStore {
-  private val items = ConflatedBroadcastChannel<List<Item>?>(null)
+  private val items = ConflatedBroadcastChannel<List<Item>>()
   private var currentJob: Job? = null
 
   init {
-    storage.onChanged.addListener { objects, name ->
-      Timber.debug { """Storage change in "$name" of key(s) "${Object.keys(objects)}"""" }
-      if (name == storageName) {
-        objects[KEY]?.let { (it as StorageChange).newValue }?.let(::fromJsArray)?.let(items::offer)
+    storageArea.get(KEY) {
+      val existingItems = it[KEY]?.let(::unpackToItemList) ?: emptyList()
+      Timber.debug { "Loaded initial ${existingItems.size} items" }
+      items.offer(existingItems)
+
+      storage.onChanged.addListener { objects, name ->
+        Timber.debug { """Storage change in "$name" of key(s) "${Object.keys(objects)}"""" }
+        if (name == storageName) {
+          @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+          val change = objects[KEY] as StorageChange?
+          if (change != null) {
+            items.offer(unpackToItemList(change.newValue))
+          }
+        }
       }
     }
   }
@@ -90,13 +85,19 @@ class StorageAreaItemStore(
     serially {
       suspendCoroutine<Unit> { continuation ->
         storageArea.get(KEY) {
-          val existingItems = it[KEY]?.let(::fromJsArray) ?: emptyList()
-          // TODO something not n^2? persist map of fqcn to item?
-          val oldItems = existingItems.filter { existing ->
-            items.any { it.packageName == existing.packageName && it.className == existing.className }
+          val existingItems = it[KEY]
+
+          val newItems = if (existingItems == null) {
+            items.toPacked()
+          } else {
+            val mutableMap = unpackToMutableItemMap(existingItems)
+            for (item in items) {
+              mutableMap[item.fqcn] = item
+            }
+            mutableMap.toPacked()
           }
-          val newItems = oldItems + items
-          storageArea.set(json(KEY to newItems.toJsArray())) {
+
+          storageArea.set(json(KEY to newItems)) {
             continuation.resume(Unit)
           }
         }
@@ -106,8 +107,7 @@ class StorageAreaItemStore(
 
   override fun queryItems(term: String): ReceiveChannel<List<Item>> {
     return items.openSubscription().map {
-      (it ?: emptyList())
-          .filter { it.className.contains(term, ignoreCase = true) }
+      it.filter { it.className.contains(term, ignoreCase = true) }
           .sortedWith(compareBy {
             val name = it.className
             when {
@@ -123,6 +123,6 @@ class StorageAreaItemStore(
   }
 
   override fun count(): ReceiveChannel<Long> {
-    return items.openSubscription().map { it?.size?.toLong() ?: 0L }
+    return items.openSubscription().map { it.size.toLong() }
   }
 }
