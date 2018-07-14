@@ -18,8 +18,7 @@ class AndroidReference(
 
   fun sourceUrl(dacUrl: String): String? {
     if (!dacUrl.startsWith(referenceUrl)) return null
-    if (!dacUrl.endsWith(".html")) return null
-    val fqcn = dacUrl.substring(referenceUrl.length, dacUrl.length - 5).replace('/', '.')
+    val fqcn = dacUrl.substring(referenceUrl.length).replace('/', '.')
     val range = PACKAGE.find(fqcn)?.range ?: return null
     val packageName = fqcn.substring(range.start, range.endInclusive)
     val className = fqcn.substring(range.endInclusive + 1)

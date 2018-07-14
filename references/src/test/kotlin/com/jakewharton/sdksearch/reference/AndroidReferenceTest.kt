@@ -20,15 +20,15 @@ class AndroidReferenceTest {
   @Test fun sourceUrlForDacUrl() {
     val reference = AndroidReference("http://source.example.com/", "http://docs.example.com/")
 
-    assertNull(reference.sourceUrl("http://docs.example.com/reference/missing/entry/NotThere.html"))
-    assertNull(reference.sourceUrl("http://docs.example.com/reference/android/R.html"))
+    assertNull(reference.sourceUrl("http://docs.example.com/reference/missing/entry/NotThere"))
+    assertNull(reference.sourceUrl("http://docs.example.com/reference/android/R"))
 
     assertEquals(
         "http://source.example.com/platform/frameworks/base/+/refs/heads/master/core/java/android/widget/Toolbar.java",
-        reference.sourceUrl("http://docs.example.com/reference/android/widget/Toolbar.html"))
+        reference.sourceUrl("http://docs.example.com/reference/android/widget/Toolbar"))
     assertEquals(
         "http://source.example.com/platform/frameworks/base/+/refs/heads/master/core/java/android/widget/Toolbar.java",
-        reference.sourceUrl("http://docs.example.com/reference/android/widget/Toolbar.Nested.html"))
+        reference.sourceUrl("http://docs.example.com/reference/android/widget/Toolbar.Nested"))
   }
 
   @Test fun mustEndInSlash() {

@@ -7,6 +7,7 @@ dependencies {
   compile project(':store:config:js-storage-area')
   compile project(':store:item:js-storage-area')
   compile project(':references:js')
+  compile deps.timber.js
 }
 
 kotlin {
