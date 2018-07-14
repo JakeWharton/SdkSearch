@@ -34,7 +34,7 @@ fun main(vararg args: String) {
 
     val service = FetchDocumentationService(config.dacUrl)
     val itemSynchronizer = ItemSynchronizer(itemStore, service)
-    val presenter = SearchPresenter(DefaultDispatcher, itemStore, itemSynchronizer)
+    val presenter = SearchPresenter(DefaultDispatcher, itemStore, itemSynchronizer, 0L)
     presenter.start()
 
     val events = presenter.events

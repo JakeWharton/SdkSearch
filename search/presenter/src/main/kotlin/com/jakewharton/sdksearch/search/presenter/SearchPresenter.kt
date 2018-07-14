@@ -16,11 +16,14 @@ import kotlinx.coroutines.experimental.channels.SendChannel
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.timeunit.TimeUnit.MILLISECONDS
 
 class SearchPresenter(
   private val context: CoroutineDispatcher,
   private val store: ItemStore,
-  private val synchronizer: ItemSynchronizer
+  private val synchronizer: ItemSynchronizer,
+  /** The delay (in milliseconds) before the result query for an input occurs. */
+  private val queryDelay: Long = 200L
 ) : Presenter<Model, Event> {
   private val _models = ConflatedBroadcastChannel<Model>()
   override val models: ReceiveChannel<Model> get() = _models.openSubscription()
@@ -72,7 +75,7 @@ class SearchPresenter(
                 sendModel(model.copy(queryResults = Model.QueryResults("", emptyList())))
               } else {
                 activeQueryJob = launch(context, parent = job) {
-                  delay(200)
+                  delay(queryDelay, MILLISECONDS)
 
                   store.queryItems(query).consumeEach {
                     sendModel(model.copy(queryResults = Model.QueryResults(activeQuery, it)))
