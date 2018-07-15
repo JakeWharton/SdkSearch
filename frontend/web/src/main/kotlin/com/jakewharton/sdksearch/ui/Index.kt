@@ -66,8 +66,6 @@ fun main(vararg args: String) {
   query.addEventListener("input", {
     presenter.events.offer(Event.QueryChanged(query.value))
   })
-
-  synchronizer.forceSync()
 }
 
 class InMemoryItemStore : ItemStore {
