@@ -25,7 +25,7 @@
     }
   ],
   "omnibox": {
-    "keyword": "ad"
+    "keyword": "$keyword"
   },
   "permissions": [
     "storage",

@@ -11,12 +11,23 @@ dependencies {
 }
 
 distributions {
-  main {
-    baseName = 'sdk-search'
+  release {
+    baseName = 'sdk-search-release'
 
     contents {
       from('manifest.json') {
-        expand version: buildConfig.version.fullName
+        expand version: buildConfig.version.fullName, keyword: 'ad'
+      }
+      from 'icons'
+      from configurations.content
+    }
+  }
+  debug {
+    baseName = 'sdk-search-debug'
+
+    contents {
+      from('manifest.json') {
+        expand version: buildConfig.version.fullName, keyword: 'ad2'
       }
       from 'icons'
       from configurations.content
@@ -24,4 +35,5 @@ distributions {
   }
 }
 
-distTar.enabled = false
+releaseDistTar.enabled = false
+debugDistTar.enabled = false

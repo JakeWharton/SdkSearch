@@ -11,14 +11,17 @@ Building
 
 ### Local
 
-Running `./gradlew :frontend:chrome-extension:installDist` will create an "unpacked" extension
-in `build/install/sdk-search/`. This can be loaded into Chrome by visiting `chrome://extensions`
-and clicking "Load unpacked extension...".
+Running `./gradlew :frontend:chrome-extension:installDebugDist` will create an "unpacked" extension
+in `build/install/sdk-search-debug/`. This can be loaded into Chrome by visiting
+`chrome://extensions` and clicking "Load unpacked extension...".
+
+For convenience, this uses the 'ad2' omnibox keyword so that it can be used alongside the release
+extension.
 
 
 ### Release
 
-Running `./gradlew :frontend:chrome-extension:distZip` will create a zip file of the extension
+Running `./gradlew :frontend:chrome-extension:build` will create a zip file of the extension
 in `build/distributions/`
 
 
