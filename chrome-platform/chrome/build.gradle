@@ -1,0 +1,9 @@
+apply plugin: 'kotlin2js'
+
+dependencies {
+  compile project(':chrome-platform')
+}
+
+compileKotlin2Js {
+  kotlinOptions.moduleKind = 'commonjs'
+}
