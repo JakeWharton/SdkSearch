@@ -1,0 +1,13 @@
+apply plugin: 'kotlin2js'
+
+dependencies {
+  compile deps.kotlin.stdlib.js
+  compile deps.kotlin.coroutines.js
+  compile project(':search:presenter:js')
+  compile project(':presentation:binder:js')
+  compile project(":chrome-platform")
+}
+
+compileKotlin2Js {
+  kotlinOptions.moduleKind = 'commonjs'
+}

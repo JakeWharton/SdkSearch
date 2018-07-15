@@ -1,22 +1,18 @@
 package com.jakewharton.sdksearch.background
 
-import com.chrome.platform.Chrome.omnibox
+import com.chrome.platform.Chrome
 import com.chrome.platform.Chrome.storage
-import com.chrome.platform.Chrome.tabs
-import com.chrome.platform.omnibox.DefaultSuggestResult
-import com.chrome.platform.omnibox.SuggestResult
-import com.chrome.platform.tabs.UpdateProperties
+import com.jakewharton.presentation.bindTo
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
-import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.QueryChanged
+import com.jakewharton.sdksearch.search.ui.SearchUiBinder
 import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
 import com.jakewharton.sdksearch.store.item.StorageAreaItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch
-import org.w3c.dom.url.URL
 import timber.log.ConsoleTree
 import timber.log.Timber
 
@@ -29,57 +25,12 @@ fun main(vararg args: String) {
   launch {
     val config = configStore.load()
 
-    omnibox.setDefaultSuggestion(
-        DefaultSuggestResult("Search Android SDK docs for <match>%s</match>"))
-
     val service = FetchDocumentationService(config.dacUrl)
     val itemSynchronizer = ItemSynchronizer(itemStore, service)
+
     val presenter = SearchPresenter(DefaultDispatcher, itemStore, itemSynchronizer, 0L)
     presenter.start()
 
-    val events = presenter.events
-    val models = presenter.models
-
-    var currentSuggestions: ((Array<SuggestResult>) -> Unit)? = null
-    omnibox.onInputChanged.addListener { text, suggestions ->
-      events.offer(QueryChanged(text))
-      currentSuggestions = suggestions
-    }
-
-    launch {
-      for (model in models) {
-        val (query, items) = model.queryResults
-
-        val results = items.take(5)
-            .map {
-              val matchStart = it.className.indexOf(query, ignoreCase = true)
-              val matchEnd = matchStart + query.length
-              val description = buildString {
-                append("<dim>")
-                append(it.packageName)
-                append(".</dim>")
-                append(it.className.substring(0, matchStart))
-                append("<match>")
-                append(it.className.substring(matchStart, matchEnd))
-                append("</match>")
-                append(it.className.substring(matchEnd))
-              }
-              val result = URL(it.link, config.dacUrl).href
-              SuggestResult(result, description, false)
-            }.toTypedArray()
-
-        currentSuggestions?.invoke(results)
-      }
-    }
-
-    omnibox.onInputEntered.addListener { text, _ ->
-      val url = if (text.startsWith("http://") || text.startsWith("https://")) {
-        text
-      } else {
-        "${config.dacUrl}index.html?q=$text"
-      }
-
-      tabs.update(UpdateProperties(url = url))
-    }
+    SearchUiBinder(presenter.events, Chrome, config.dacUrl).bindTo(presenter)
   }
 }

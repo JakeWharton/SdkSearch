@@ -5,8 +5,7 @@ apply plugin: 'org.jetbrains.kotlin.frontend'
 dependencies {
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
-  compile deps.kotlin.serialization.js
-  compile project(':search:presenter:js')
+  compile project(':search:ui-omnibox')
   compile project(':store:config:js-storage-area')
   compile project(':store:item:js-storage-area')
   compile project(':references:js')
