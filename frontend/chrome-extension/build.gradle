@@ -16,7 +16,11 @@ distributions {
 
     contents {
       from('manifest.json') {
-        expand version: buildConfig.version.fullName, keyword: 'ad'
+        expand(
+            name: 'Android SDK Search',
+            version: buildConfig.version.fullName,
+            keyword: 'ad'
+        )
       }
       from 'icons'
       from configurations.content
@@ -27,7 +31,11 @@ distributions {
 
     contents {
       from('manifest.json') {
-        expand version: buildConfig.version.fullName, keyword: 'ad2'
+        expand(
+            name: 'Android SDK Search (Debug)',
+            version: buildConfig.version.fullName,
+            keyword: 'ad2'
+        )
       }
       from 'icons'
       from configurations.content

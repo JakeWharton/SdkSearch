@@ -1,5 +1,5 @@
 {
-  "name": "Android SDK Search",
+  "name": "$name",
   "description": "Adds an 'ad' Omnibox command and 'view source' links for the Android SDK",
   "version": "$version",
   "manifest_version": 2,
