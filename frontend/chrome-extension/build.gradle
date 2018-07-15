@@ -22,7 +22,7 @@ distributions {
             keyword: 'ad'
         )
       }
-      from 'icons'
+      from 'src/common/dist'
       from configurations.content
     }
   }
@@ -37,7 +37,7 @@ distributions {
             keyword: 'ad2'
         )
       }
-      from 'icons'
+      from 'src/common/dist'
       from configurations.content
     }
   }
