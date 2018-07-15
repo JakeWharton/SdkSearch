@@ -23,6 +23,8 @@ import timber.log.debug
 import kotlin.browser.document
 import kotlin.dom.clear
 
+private const val DAC_PROXY = "https://dac.sdksearch.app"
+
 fun main(vararg args: String) {
   Timber.plant(ConsoleTree())
 
@@ -31,7 +33,9 @@ fun main(vararg args: String) {
   val query = document.getElementById("query") as HTMLInputElement
   val items = document.getElementById("items") as HTMLUListElement
 
-  val documentationService = FetchDocumentationService(PRODUCTION_DAC)
+  // Because the real DAC lacks CORS headers, we're forced to jump through a proxy.
+  val documentationService = FetchDocumentationService(DAC_PROXY)
+
   val store = InMemoryItemStore()
   val synchronizer = ItemSynchronizer(store, documentationService)
 
