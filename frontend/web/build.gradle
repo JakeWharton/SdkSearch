@@ -13,8 +13,6 @@ dependencies {
 }
 
 kotlinFrontend {
-  downloadNodeJsVersion = 'latest'
-
   webpackBundle {
     bundleName = 'sdk-search'
     contentPath = file('src/main/web')

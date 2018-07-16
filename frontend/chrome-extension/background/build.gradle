@@ -20,8 +20,6 @@ kotlin {
 }
 
 kotlinFrontend {
-  downloadNodeJsVersion = 'latest'
-
   webpackBundle {
     mode = 'production' // Non-production uses eval() which isn't supported in a Chrome extension.
   }
