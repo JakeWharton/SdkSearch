@@ -27,7 +27,7 @@ class SearchUiBinder(
       val url = if (text.startsWith("http://") || text.startsWith("https://")) {
         text
       } else {
-        "${dacUrl}index.html?q=$text"
+        URL("/s/results/?q=$text&p=%2F", dacUrl).toString()
       }
 
       chrome.tabs.update(UpdateProperties(url = url))
