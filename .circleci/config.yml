@@ -8,7 +8,7 @@ jobs:
     working_directory: ~/SdkSearch
 
     docker:
-      - image: jakewharton/sdksearch:0.0.1
+      - image: jakewharton/sdksearch:0.0.2
 
     environment:
       TERM: dumb
@@ -21,7 +21,7 @@ jobs:
 
       - run:
           name: Assemble
-          command: ./gradlew assemble bundle :store:item:android:assembleAndroidTest
+          command: ./gradlew assemble bundle :store:item:android:assembleAndroidTest projectDependencyGraph
           # TODO remove bundle https://issuetracker.google.com/issues/79936441
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/80464227
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/79934948
@@ -37,6 +37,8 @@ jobs:
           path: references/validator/build/distributions/
       - store_artifacts:
           path: build/commit-timestamp.txt
+      - store_artifacts:
+          path: build/project.dot.png
 
       - run:
           name: Test
