@@ -1,4 +1,5 @@
 apply plugin: 'org.jetbrains.kotlin.platform.js'
+apply plugin: 'com.moowork.node'
 
 archivesBaseName = 'store-item'
 
@@ -15,6 +16,30 @@ dependencies {
 compileKotlin2Js {
   kotlinOptions.moduleKind = 'commonjs'
 }
+
+compileTestKotlin2Js {
+  kotlinOptions.moduleKind = 'commonjs'
+}
+
+task populateNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
+  from compileKotlin2Js.destinationDir
+  configurations.testCompile.each {
+    from zipTree(it.absolutePath).matching { include '*.js' }
+  }
+
+  into "$buildDir/node_modules"
+}
+
+task installTestRunner(type: NpmTask) {
+  args = ['install', 'mocha']
+}
+
+task runTests(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModules, installTestRunner]) {
+  script = file('node_modules/.bin/mocha')
+  args = [projectDir.toPath().relativize(file(compileTestKotlin2Js.outputFile).toPath())]
+}
+
+test.dependsOn(runTests)
 
 kotlin {
   experimental {
