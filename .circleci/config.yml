@@ -8,7 +8,7 @@ jobs:
     working_directory: ~/SdkSearch
 
     docker:
-      - image: circleci/android:api-28-node8-alpha
+      - image: jakewharton/sdksearch:0.0.1
 
     environment:
       TERM: dumb

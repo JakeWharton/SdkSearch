@@ -3,26 +3,13 @@ package com.jakewharton.sdksearch.reference
 const val PRODUCTION_DAC = "https://developer.android.com/"
 const val PRODUCTION_GIT_WEB = "https://android.googlesource.com/"
 
-private val PACKAGE = "^([a-z0-9]+.)+".toRegex()
-
 class AndroidReference(
-  private val gitWebUrl: String,
-  private val dacUrl: String
+  val gitWebUrl: String,
+  val dacUrl: String
 ) {
   init {
     require(gitWebUrl.endsWith('/')) { "Git web URL must end with '/': $gitWebUrl" }
     require(dacUrl.endsWith('/')) { "DAC URL must end with '/': $dacUrl" }
-  }
-
-  private val referenceUrl = "${dacUrl}reference/"
-
-  fun sourceUrl(dacUrl: String): String? {
-    if (!dacUrl.startsWith(referenceUrl)) return null
-    val fqcn = dacUrl.substring(referenceUrl.length).replace('/', '.')
-    val range = PACKAGE.find(fqcn)?.range ?: return null
-    val packageName = fqcn.substring(range.start, range.endInclusive)
-    val className = fqcn.substring(range.endInclusive + 1)
-    return sourceUrl(packageName, className)
   }
 
   fun sourceUrl(packageName: String, className: String): String? {
