@@ -15,9 +15,8 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request.Builder
 import java.util.concurrent.TimeUnit.MINUTES
-import java.util.regex.Pattern
 
-private val PACKAGE = Pattern.compile("^([a-z0-9]+.)+")
+private val PACKAGE = "^([a-z0-9]+.)+".toRegex()
 
 private class CliConfig(parser: ArgParser) {
   val gitWeb by parser.storing("--git-web", argName = "HOST", help = "Git web host (default: $PRODUCTION_GIT_WEB)")
@@ -69,12 +68,9 @@ fun main(vararg args: String) = runBlocking {
     logStatus(checking)
 
     val fqcn = fqcns[index]
-    val matcher = PACKAGE.matcher(fqcn)
-    if (!matcher.lookingAt()) {
-      throw IllegalArgumentException("FQCN '$fqcn' doesn't appear to be valid.")
-    }
-    val packageName = fqcn.substring(0, matcher.end() - 1)
-    val className = fqcn.substring(matcher.end())
+    val matcher = checkNotNull(PACKAGE.find(fqcn)) { "FQCN '$fqcn' doesn't appear to be valid." }
+    val packageName = fqcn.substring(0, matcher.range.endInclusive)
+    val className = fqcn.substring(matcher.range.endInclusive + 1)
 
     val url = reference.sourceUrl(packageName, className)
     if (url != null) {
