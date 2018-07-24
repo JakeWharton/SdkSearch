@@ -17,6 +17,17 @@ class AndroidReferenceTest {
         reference.sourceUrl("android.widget", "Toolbar"))
   }
 
+  @Test fun sourceUrlForNestedClass() {
+    val reference = AndroidReference("http://source.example.com/", "http://docs.example.com/")
+
+    assertEquals(
+        "http://source.example.com/platform/frameworks/base/+/refs/heads/master/core/java/android/widget/Toolbar.java",
+        reference.sourceUrl("android.widget", "Toolbar.Nested"))
+    assertEquals(
+        "http://source.example.com/platform/frameworks/base/+/refs/heads/master/core/java/android/widget/Toolbar.java",
+        reference.sourceUrl("android.widget", "Toolbar.Doubly.Nested"))
+  }
+
   @Test fun mustEndInSlash() {
     try {
       AndroidReference("http://source.example.com", "http://docs.example.com/")

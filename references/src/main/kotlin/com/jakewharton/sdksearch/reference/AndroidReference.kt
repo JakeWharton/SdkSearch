@@ -23,7 +23,7 @@ class AndroidReference(
       append(path.baseDir)
       append(packageName.replace('.', '/'))
       append('/')
-      append(className.substringBeforeLast('.'))
+      append(className.substringBefore('.'))
       append(".java")
     }
   }
