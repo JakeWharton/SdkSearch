@@ -46,6 +46,7 @@ fun main(vararg args: String) = runBlocking {
 
   val fqcns = service.list().await().values.single()
       .map { it.type }
+      .filterNot { it.contains(".R.") || it.endsWith(".R") }
       .filter { fqcn -> config.packages.any { fqcn.startsWith(it) } }
       .sorted()
 
