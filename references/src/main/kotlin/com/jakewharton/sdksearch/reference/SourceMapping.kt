@@ -355,7 +355,7 @@ internal val SOURCE_MAP = mapOf(
     "androidx.print" to SUPPORT.path("print/src/main/java/").branch("androidx-master-dev"),
     "androidx.recommendation" to SUPPORT.path("recommendation/src/main/java/").branch("androidx-master-dev"),
     "androidx.recyclerview" to SUPPORT.path("recyclerview/recyclerview/src/main/java/").branch("androidx-master-dev"),
-    "androidx.recyclerview.selection" to SUPPORT.path("recyclerview-selection/src/main/java/").branch("androidx-master-dev"),
+    "androidx.recyclerview.selection" to SUPPORT.path("recyclerview/selection/src/main/java/").branch("androidx-master-dev"),
     "androidx.room" to SUPPORT.path("room/common/src/main/java/").branch("androidx-master-dev"),
     "androidx.room.DatabaseConfiguration" to SUPPORT.path("room/runtime/src/main/java/").branch("androidx-master-dev"),
     "androidx.room.EmptyResultSetException" to SUPPORT.path("room/rxjava2/src/main/java/").branch("androidx-master-dev"),
