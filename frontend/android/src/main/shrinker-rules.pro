@@ -21,18 +21,6 @@
   public static final android.os.Parcelable$Creator CREATOR;
 }
 
-# For support library @Keep annotation. Remove once embedded rules ship.
--keep @android.support.annotation.Keep class * {*;}
--keepclasseswithmembers class * {
-    @android.support.annotation.Keep <methods>;
-}
--keepclasseswithmembers class * {
-    @android.support.annotation.Keep <fields>;
-}
--keepclasseswithmembers class * {
-    @android.support.annotation.Keep <init>(...);
-}
-
 # Retrofit does reflection on generic parameters and InnerClass is required to use Signature.
 -keepattributes Signature, InnerClasses
 
