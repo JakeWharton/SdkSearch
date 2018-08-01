@@ -21,7 +21,7 @@ jobs:
 
       - run:
           name: Assemble
-          command: ./gradlew --no-daemon assemble bundle test :store:item:android-sql:assembleAndroidTest :frontend:android:lint projectDependencyGraph
+          command: ./gradlew --no-daemon --init-script init.gradle -Dtrace assemble bundle test :store:item:android-sql:assembleAndroidTest :frontend:android:lint projectDependencyGraph
           # TODO remove bundle https://issuetracker.google.com/issues/79936441
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/80464227
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/79934948
@@ -41,6 +41,8 @@ jobs:
           path: build/commit-timestamp.txt
       - store_artifacts:
           path: build/project.dot.png
+      - store_artifacts:
+          path: build/trace.html
 
       - run:
           name: Aggregate Test Results

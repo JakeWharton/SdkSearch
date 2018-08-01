@@ -1,0 +1,11 @@
+initscript {
+  dependencies {
+    classpath files('gradle/chrome-trace.jar')
+  }
+}
+
+rootProject {
+  ext.chromeTraceFile = new File(rootProject.buildDir, 'trace.html')
+}
+
+apply plugin: org.gradle.trace.GradleTracingPlugin
