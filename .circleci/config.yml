@@ -21,12 +21,14 @@ jobs:
 
       - run:
           name: Assemble
-          command: ./gradlew assemble bundle :store:item:android-sql:assembleAndroidTest projectDependencyGraph
+          command: ./gradlew --no-daemon assemble bundle test :store:item:android-sql:assembleAndroidTest :frontend:android:lint projectDependencyGraph
           # TODO remove bundle https://issuetracker.google.com/issues/79936441
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/80464227
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/79934948
       - store_artifacts:
           path: frontend/android/build/outputs/
+      - store_artifacts:
+          path: frontend/android/build/reports/lint-results.html
       - store_artifacts:
           path: frontend/chrome-extension/build/distributions/
       - store_artifacts:
@@ -41,21 +43,14 @@ jobs:
           path: build/project.dot.png
 
       - run:
-          name: Test
+          name: Aggregate Test Results
           command: |
-            ./gradlew test
             mkdir -p ~/junit/
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp --parents {} ~/junit/ \;
       - store_test_results:
           path: ~/junit
       - store_artifacts:
           path: ~/junit
-
-      - run:
-          name: Android Lint
-          command: ./gradlew :frontend:android:lint
-      - store_artifacts:
-          path: frontend/android/build/reports/lint-results.html
 
       - save_cache:
           <<: *cache_key
