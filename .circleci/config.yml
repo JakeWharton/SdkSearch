@@ -12,6 +12,7 @@ jobs:
 
     environment:
       TERM: dumb
+      JAVA_TOOL_OPTIONS: "-Xmx1g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dkotlin.incremental=false"
 
     steps:
