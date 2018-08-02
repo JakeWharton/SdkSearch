@@ -1,6 +1,6 @@
 task projectDependencyGraph {
   doLast {
-    def dot = new File(rootProject.buildDir, 'project.dot')
+    def dot = new File(rootProject.buildDir, 'reports/dependency-graph/project.dot')
     dot.delete()
 
     dot << 'digraph {\n'

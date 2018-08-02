@@ -42,9 +42,7 @@ jobs:
       - store_artifacts:
           path: build/commit-timestamp.txt
       - store_artifacts:
-          path: build/project.dot.png
-      - store_artifacts:
-          path: build/trace.html
+          path: build/reports/
 
       - run:
           name: Aggregate Test Results
