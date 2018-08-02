@@ -59,6 +59,7 @@ jobs:
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
+            - ~/.npm
 
 workflows:
   version: 2
