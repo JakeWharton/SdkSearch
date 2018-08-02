@@ -109,7 +109,7 @@ task projectDependencyGraph {
 
     dot << '}\n'
 
-    def p = 'dot -Tpng -O project.dot'.execute([], rootProject.buildDir)
+    def p = 'dot -Tpng -O project.dot'.execute([], dot.parentFile)
     p.waitFor()
     if (p.exitValue() != 0) {
       throw new RuntimeException(p.errorStream.text)
