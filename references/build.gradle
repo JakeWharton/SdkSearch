@@ -1,5 +1,7 @@
 apply plugin: 'org.jetbrains.kotlin.platform.common'
 
+archivesBaseName = 'references-common'
+
 dependencies {
   implementation deps.kotlin.stdlib.common
   testImplementation deps.kotlin.test.common

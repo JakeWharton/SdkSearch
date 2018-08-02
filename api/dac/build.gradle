@@ -1,6 +1,8 @@
 apply plugin: 'org.jetbrains.kotlin.platform.common'
 apply plugin: 'kotlinx-serialization'
 
+archivesBaseName = 'api-dac-common'
+
 dependencies {
   implementation deps.kotlin.stdlib.common
   implementation deps.kotlin.coroutines.common
