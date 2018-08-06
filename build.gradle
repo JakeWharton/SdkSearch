@@ -20,7 +20,7 @@ buildscript {
       'atsl': '1.0.1',
       'kotlin': '1.2.60',
       'kotlinCoroutines': '0.24.0',
-      'kotlinSerialization': '0.6.1-SNAPSHOT',
+      'kotlinSerialization': '0.6.1',
       'okhttp': '3.11.0',
       'retrofit': '2.4.0',
       'kotshi': '1.0.4',
