@@ -32,7 +32,7 @@ class OpenDocumentationItemHandler(
             val sourceIntent = Intent(Intent.ACTION_VIEW, sourceUri)
             val pendingIntent = PendingIntent.getActivity(context, 123, sourceIntent, 0)
             setActionButton(
-                context.getDrawable(R.drawable.ic_code_black_24dp).toBitmap(),
+                context.getDrawable(R.drawable.ic_code_black_24dp)!!.toBitmap(),
                 context.getString(R.string.view_class_source, item.className),
                 pendingIntent,
                 true)
