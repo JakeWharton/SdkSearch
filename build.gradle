@@ -159,11 +159,6 @@ allprojects {
         if (details.requested.group == 'com.android.support') {
           details.useVersion versions.supportLibrary
         }
-
-        // TODO remove this once kotlinx.serialization is no longer a SNAPSHOT.
-        if (details.requested.group == 'org.jetbrains.kotlin' && details.requested.name == 'kotlin-stdlib') {
-          details.useVersion versions.kotlin
-        }
       }
     }
   }
