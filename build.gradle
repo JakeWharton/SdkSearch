@@ -24,7 +24,7 @@ buildscript {
       'okhttp': '3.11.0',
       'retrofit': '2.4.0',
       'kotshi': '1.0.4',
-      'dagger': '2.16',
+      'dagger': '2.17',
       'sqldelight': '1.0.0-alpha4',
   ]
 

@@ -4,6 +4,7 @@ import android.app.Application
 import com.jakewharton.sdksearch.ui.MainActivityModule
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
 
 @Singleton
@@ -11,7 +12,8 @@ import javax.inject.Singleton
   MainActivityModule::class,
   ProductionDacModule::class,
   ItemStoreModule::class,
-  SearchPresenterModule::class
+  SearchPresenterModule::class,
+  AndroidInjectionModule::class
 ])
 interface ReleaseAppComponent : AppComponent {
   @Component.Builder

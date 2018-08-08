@@ -6,6 +6,7 @@ import com.jakewharton.sdksearch.ui.MainActivityModule
 import com.jakewharton.sdksearch.ui.OptionsActivityModule
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
 
 @Singleton
@@ -18,7 +19,8 @@ import javax.inject.Singleton
   ItemStoreModule::class,
   ProductionDacModule::class,
   OptionsPresenterModule::class,
-  SearchPresenterModule::class
+  SearchPresenterModule::class,
+  AndroidInjectionModule::class
 ])
 interface DebugAppComponent : AppComponent {
   @Component.Builder
