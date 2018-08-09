@@ -3,6 +3,7 @@ package com.jakewharton.sdksearch.reference
 internal enum class SourceProject(val projectDir: String) {
   LIBCORE("platform/libcore/"),
   BASE("platform/frameworks/base/"),
+  CAR("platform/packages/services/Car/"),
   VOIP("platform/frameworks/opt/net/voip/"),
   TELEPHONY("platform/frameworks/opt/telephony/"),
   SUPPORT("platform/frameworks/support/"),

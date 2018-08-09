@@ -1,6 +1,7 @@
 package com.jakewharton.sdksearch.reference
 
 import com.jakewharton.sdksearch.reference.SourceProject.BASE
+import com.jakewharton.sdksearch.reference.SourceProject.CAR
 import com.jakewharton.sdksearch.reference.SourceProject.CONSTRAINT_LAYOUT
 import com.jakewharton.sdksearch.reference.SourceProject.DATABINDING
 import com.jakewharton.sdksearch.reference.SourceProject.ICU
@@ -35,6 +36,7 @@ internal val SOURCE_MAP = mapOf(
     "android.databinding.ObservableList" to DATABINDING.path("baseLibrary/src/main/java/").branch("studio-master-dev"),
     "android.databinding.ObservableMap" to DATABINDING.path("baseLibrary/src/main/java/").branch("studio-master-dev"),
 
+    "android.car" to CAR.path("car-lib/src/"),
     "android.drm" to BASE.path("drm/java/"),
     "android.drm.mobile1" to BASE.path("media/java/"),
     "android.renderscript" to BASE.path("rs/java/"),
