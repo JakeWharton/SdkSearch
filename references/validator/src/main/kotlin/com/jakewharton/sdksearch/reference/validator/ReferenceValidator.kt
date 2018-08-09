@@ -16,7 +16,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request.Builder
 import java.util.concurrent.TimeUnit.MINUTES
 
-private val PACKAGE = "^([a-z0-9]+.)+".toRegex()
+private val FQCN_PACKAGE = "^([a-z0-9]+\\.)+".toRegex()
+private val FQCN = "\\.[A-Z]".toRegex()
 
 private class CliConfig(parser: ArgParser) {
   val gitWeb by parser.storing("--git-web", argName = "HOST", help = "Git web host (default: $PRODUCTION_GIT_WEB)")
@@ -45,10 +46,13 @@ fun main(vararg args: String) = runBlocking {
       .documentationService()
 
   val fqcns = service.list().await().values.single()
+      .asSequence()
       .map { it.type }
+      .filter { FQCN.find(it) != null }
       .filterNot { it.contains(".R.") || it.endsWith(".R") }
       .filter { fqcn -> config.packages.any { fqcn.startsWith(it) } }
       .sorted()
+      .toList()
 
   val reference = AndroidReference(config.gitWeb, config.dac)
 
@@ -69,7 +73,7 @@ fun main(vararg args: String) = runBlocking {
     logStatus(checking)
 
     val fqcn = fqcns[index]
-    val matcher = checkNotNull(PACKAGE.find(fqcn)) { "FQCN '$fqcn' doesn't appear to be valid." }
+    val matcher = checkNotNull(FQCN_PACKAGE.find(fqcn)) { "FQCN '$fqcn' is not valid." }
     val packageName = fqcn.substring(0, matcher.range.endInclusive)
     val className = fqcn.substring(matcher.range.endInclusive + 1)
 
