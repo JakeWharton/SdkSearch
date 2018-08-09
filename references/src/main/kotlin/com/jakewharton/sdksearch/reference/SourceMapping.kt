@@ -84,7 +84,7 @@ internal val SOURCE_MAP = mapOf(
     "androidx.arch.core.util" to SUPPORT.path("arch/core-common/src/main/java/").branch("androidx-master-dev"),
     "androidx.asynclayoutinflater" to SUPPORT.path("asynclayoutinflater/src/main/java/").branch("androidx-master-dev"),
     "androidx.browser" to SUPPORT.path("browser/src/main/java/").branch("androidx-master-dev"),
-    "androidx.car" to SUPPORT.path("car/src/main/java/").branch("androidx-master-dev"),
+    "androidx.car" to SUPPORT.path("car/core/src/main/java/").branch("androidx-master-dev"),
     "androidx.cardview" to SUPPORT.path("cardview/src/main/java/").branch("androidx-master-dev"),
     "androidx.collection" to SUPPORT.path("collection/src/main/java/").branch("androidx-master-dev"),
     "androidx.contentpager" to SUPPORT.path("content/src/main/java/").branch("androidx-master-dev"),
