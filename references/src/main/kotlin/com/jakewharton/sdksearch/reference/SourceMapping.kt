@@ -93,7 +93,7 @@ internal val SOURCE_MAP = mapOf(
     "androidx.collection" to SUPPORT.path("collection/src/main/java/").branch("androidx-master-dev"),
     "androidx.contentpager" to SUPPORT.path("content/src/main/java/").branch("androidx-master-dev"),
     "androidx.coordinatorlayout" to SUPPORT.path("coordinatorlayout/src/main/java/").branch("androidx-master-dev"),
-    "androidx.core" to SUPPORT.path("compat/src/main/java/").branch("androidx-master-dev"),
+    "androidx.core" to SUPPORT.path("core/src/main/java/").branch("androidx-master-dev"),
     "androidx.cursoradapter" to SUPPORT.path("cursoradapter/src/main/java/").branch("androidx-master-dev"),
     "androidx.customview" to SUPPORT.path("customview/src/main/java/").branch("androidx-master-dev"),
     "androidx.documentfile" to SUPPORT.path("documentfile/src/main/java/").branch("androidx-master-dev"),
