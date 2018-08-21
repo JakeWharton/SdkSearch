@@ -32,7 +32,7 @@ dependencies {
   implementation deps.kotlin.coroutines.jdk
   implementation deps.sqldelight.android
 
-  testCompile deps.kotlin.test.jdk
+  testImplementation deps.kotlin.test.jdk
 }
 
 kotlin {
