@@ -19,6 +19,7 @@ import android.widget.EditText
 import androidx.core.content.systemService
 import androidx.core.view.isVisible
 import com.jakewharton.presentation.UiBinder
+import com.jakewharton.sdksearch.roboto.R as RobotoR
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
@@ -87,7 +88,7 @@ class SearchUiBinder(
       queryInput.setText("")
     }
 
-    val robotoMono = ResourcesCompat.getFont(context, R.font.roboto_mono)
+    val robotoMono = ResourcesCompat.getFont(context, RobotoR.font.roboto_mono)
     queryInput.onTextChanged {
       queryClear.isVisible = it.isNotEmpty()
       queryInput.typeface = if (it.isEmpty()) Typeface.DEFAULT else robotoMono
