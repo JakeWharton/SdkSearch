@@ -1,6 +1,3 @@
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.LibraryPlugin
-
 buildscript {
   ext.buildConfig = [
       'compileSdk': 28,
@@ -162,16 +159,6 @@ allprojects {
         if (details.requested.group == 'com.android.support') {
           details.useVersion versions.supportLibrary
         }
-      }
-    }
-  }
-
-  // Disable BuildConfig generation for Android library modules so javac can be skipped altogether.
-  plugins.whenPluginAdded {
-    if (it instanceof LibraryPlugin) {
-      extensions.getByType(LibraryExtension).libraryVariants.all {
-        // TODO replace with https://issuetracker.google.com/issues/72050365 once released.
-        it.generateBuildConfig.enabled = false
       }
     }
   }
