@@ -2,15 +2,11 @@ package com.jakewharton.sdksearch.reference
 
 import com.jakewharton.sdksearch.reference.SourceProject.BASE
 import com.jakewharton.sdksearch.reference.SourceProject.CAR
-import com.jakewharton.sdksearch.reference.SourceProject.CONSTRAINT_LAYOUT
 import com.jakewharton.sdksearch.reference.SourceProject.DATABINDING
 import com.jakewharton.sdksearch.reference.SourceProject.ICU
 import com.jakewharton.sdksearch.reference.SourceProject.LIBCORE
-import com.jakewharton.sdksearch.reference.SourceProject.MULTIDEX
 import com.jakewharton.sdksearch.reference.SourceProject.SUPPORT
 import com.jakewharton.sdksearch.reference.SourceProject.TELEPHONY
-import com.jakewharton.sdksearch.reference.SourceProject.TESTING
-import com.jakewharton.sdksearch.reference.SourceProject.UI_AUTOMATOR
 import com.jakewharton.sdksearch.reference.SourceProject.VOIP
 
 internal val SOURCE_MAP = mapOf(
