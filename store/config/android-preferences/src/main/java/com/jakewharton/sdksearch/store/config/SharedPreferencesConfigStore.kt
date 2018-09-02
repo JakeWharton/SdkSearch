@@ -12,8 +12,8 @@ class SharedPreferencesConfigStore(
   private val defaultDacUrl: String
 ) : ConfigStore {
   override suspend fun load(): Config {
-    val gitWebUrl = preferences.getString(KEY_GIT_WEB_URL, defaultGitWebUrl)
-    val dacUrl = preferences.getString(KEY_DAC_URL, defaultDacUrl)
+    val gitWebUrl = preferences.getString(KEY_GIT_WEB_URL, defaultGitWebUrl)!!
+    val dacUrl = preferences.getString(KEY_DAC_URL, defaultDacUrl)!!
     return Config(gitWebUrl, dacUrl)
   }
 
