@@ -15,6 +15,7 @@ dependencies {
   api deps.kotlin.serialization.jdk
 
   api deps.okhttp.client
+  api deps.okio
   testImplementation deps.okhttp.mockWebServer
 
   implementation deps.retrofit.client

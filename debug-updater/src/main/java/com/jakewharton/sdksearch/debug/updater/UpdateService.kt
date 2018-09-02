@@ -23,8 +23,8 @@ import com.jakewharton.sdksearch.api.circleci.Filter.SUCCESSFUL
 import com.jakewharton.sdksearch.api.circleci.VcsType.GITHUB
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
-import okio.Okio.buffer
-import okio.Okio.sink
+import okio.buffer
+import okio.sink
 import timber.log.Timber
 import timber.log.debug
 import timber.log.info
@@ -114,7 +114,7 @@ class UpdateService : Service() {
         val apkResponse = service.getArtifact(apkArtifact.url).await()
 
         apkResponse.use { response ->
-          buffer(sink(apkFile)).use { destination ->
+          apkFile.sink().buffer().use { destination ->
             response.source().readAll(destination)
           }
         }

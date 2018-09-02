@@ -16,6 +16,7 @@ dependencies {
   kapt deps.kotshi.compiler
 
   api deps.okhttp.client
+  api deps.okio
 
   implementation deps.retrofit.client
   implementation deps.retrofit.adapterKotlinCoroutines
