@@ -16,6 +16,8 @@ import kotlinx.coroutines.experimental.launch
 import timber.log.ConsoleTree
 import timber.log.Timber
 
+private const val THE_OTHER_SDK_SEARCH_ID = "hgcbffeicehlpmgmnhnkjbjoldkfhoin"
+
 fun main(vararg args: String) {
   Timber.plant(ConsoleTree())
 
@@ -32,5 +34,15 @@ fun main(vararg args: String) {
     presenter.start()
 
     SearchUiBinder(presenter.events, Chrome, config.dacUrl).bindTo(presenter)
+  }
+
+  Chrome.runtime.onInstalled.addListener { details ->
+    if (details["reason"] == "install") {
+      Chrome.management.get(THE_OTHER_SDK_SEARCH_ID) {
+        if (Chrome.runtime.lastError == null) {
+          // TODO let the user know
+        }
+      }
+    }
   }
 }

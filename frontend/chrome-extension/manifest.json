@@ -28,6 +28,7 @@
     "keyword": "$keyword"
   },
   "permissions": [
+    "management",
     "storage",
     "https://developer.android.com/"
   ],
