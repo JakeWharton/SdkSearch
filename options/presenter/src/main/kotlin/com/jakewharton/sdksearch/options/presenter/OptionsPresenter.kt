@@ -7,19 +7,15 @@ import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.config.Config
 import com.jakewharton.sdksearch.store.config.ConfigStore
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.channels.RendezvousChannel
 import kotlinx.coroutines.experimental.channels.SendChannel
 import kotlinx.coroutines.experimental.channels.consumeEach
+import kotlinx.coroutines.experimental.coroutineScope
 import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.plus
 
 class OptionsPresenter(
-  private val dispatcher: CoroutineDispatcher,
   private val configStore: ConfigStore
 ) : Presenter<Model, Event> {
   private val _models = ConflatedBroadcastChannel<Model>()
@@ -28,23 +24,20 @@ class OptionsPresenter(
   private val _events = RendezvousChannel<Event>()
   override val events: SendChannel<Event> get() = _events
 
-  override fun start(): Job {
-    val job = Job()
-    val scope = GlobalScope + job
-
+  override suspend fun start() = coroutineScope<Unit> {
     var model = Model()
     fun sendModel(newModel: Model) {
       model = newModel
       _models.offer(newModel)
     }
 
-    scope.launch(dispatcher) {
+    launch {
       // TODO make a full channel for real-time updates?
       val config = configStore.load()
       sendModel(model.copy(disableUpdates = false, config = config))
     }
 
-    scope.launch(dispatcher) {
+    launch {
       _events.consumeEach {
         when (it) {
           is Event.Save -> {
@@ -61,8 +54,6 @@ class OptionsPresenter(
         }
       }
     }
-
-    return job
   }
 
   data class Model(

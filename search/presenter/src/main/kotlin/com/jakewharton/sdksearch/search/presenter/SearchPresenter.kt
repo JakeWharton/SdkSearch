@@ -7,20 +7,17 @@ import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStat
 import com.jakewharton.sdksearch.store.item.Item
 import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.channels.RendezvousChannel
 import kotlinx.coroutines.experimental.channels.SendChannel
 import kotlinx.coroutines.experimental.channels.consumeEach
+import kotlinx.coroutines.experimental.coroutineScope
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.plus
 
 class SearchPresenter(
-  private val context: CoroutineDispatcher,
   private val store: ItemStore,
   private val synchronizer: ItemSynchronizer,
   /** The delay (in milliseconds) before the result query for an input occurs. */
@@ -32,23 +29,20 @@ class SearchPresenter(
   private val _events = RendezvousChannel<Event>()
   override val events: SendChannel<Event> get() = _events
 
-  override fun start(): Job {
-    val job = Job()
-    val scope = GlobalScope + job
-
+  override suspend fun start() = coroutineScope {
     var model = Model()
     fun sendModel(newModel: Model) {
       model = newModel
       _models.offer(newModel)
     }
 
-    scope.launch(context) {
+    launch {
       store.count().consumeEach {
         sendModel(model.copy(count = it))
       }
     }
 
-    scope.launch(context) {
+    launch {
       synchronizer.state.consumeEach {
         sendModel(model.copy(syncStatus = when (it) {
           ItemSynchronizer.SyncStatus.IDLE -> SyncStatus.IDLE
@@ -58,7 +52,7 @@ class SearchPresenter(
       }
     }
 
-    scope.launch(context) {
+    launch {
       var activeQuery = ""
       var activeQueryJob: Job? = null
 
@@ -76,7 +70,7 @@ class SearchPresenter(
               if (query == "") {
                 sendModel(model.copy(queryResults = Model.QueryResults("", emptyList())))
               } else {
-                activeQueryJob = scope.launch(context) {
+                activeQueryJob = launch {
                   delay(queryDelay)
 
                   store.queryItems(query).consumeEach {
@@ -91,8 +85,6 @@ class SearchPresenter(
     }
 
     synchronizer.forceSync()
-
-    return job
   }
 
   sealed class Event {

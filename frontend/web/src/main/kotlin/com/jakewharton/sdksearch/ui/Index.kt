@@ -7,7 +7,6 @@ import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.store.item.Item
 import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
@@ -40,8 +39,10 @@ fun main(vararg args: String) {
   val store = InMemoryItemStore()
   val synchronizer = ItemSynchronizer(store, documentationService)
 
-  val presenter = SearchPresenter(Dispatchers.Unconfined, store, synchronizer)
-  presenter.start()
+  val presenter = SearchPresenter(store, synchronizer)
+  GlobalScope.launch {
+    presenter.start()
+  }
 
   GlobalScope.launch {
     for (model in presenter.models) {

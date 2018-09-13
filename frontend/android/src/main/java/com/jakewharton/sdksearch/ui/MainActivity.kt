@@ -20,7 +20,9 @@ import com.jakewharton.sdksearch.search.ui.ShareItemHandler
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.Main
 import okhttp3.HttpUrl
 import timber.log.Timber
 import timber.log.error
@@ -50,7 +52,7 @@ class MainActivity : Activity() {
     AndroidInjection.inject(this)
 
     presentation = lastNonConfigurationInstance as Presentation?
-        ?: searchPresenterProvider.get().startPresentation()
+        ?: searchPresenterProvider.get().startPresentation(Dispatchers.Main)
     val presenter = presentation.presenter as SearchPresenter
 
     val androidReference = AndroidReference(PRODUCTION_GIT_WEB, PRODUCTION_DAC)

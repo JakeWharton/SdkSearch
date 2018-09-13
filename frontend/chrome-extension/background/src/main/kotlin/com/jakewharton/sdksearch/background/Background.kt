@@ -11,7 +11,6 @@ import com.jakewharton.sdksearch.search.ui.SearchUiBinder
 import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
 import com.jakewharton.sdksearch.store.item.StorageAreaItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
-import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
 import timber.log.ConsoleTree
@@ -29,8 +28,10 @@ fun main(vararg args: String) {
     val service = FetchDocumentationService(config.dacUrl)
     val itemSynchronizer = ItemSynchronizer(itemStore, service)
 
-    val presenter = SearchPresenter(Dispatchers.Default, itemStore, itemSynchronizer, 0L)
-    presenter.start()
+    val presenter = SearchPresenter(itemStore, itemSynchronizer, 0L)
+    launch {
+      presenter.start()
+    }
 
     SearchUiBinder(presenter.events, Chrome, config.dacUrl).bindTo(presenter)
   }

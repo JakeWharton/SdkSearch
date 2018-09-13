@@ -4,3 +4,9 @@ dependencies {
   implementation deps.kotlin.stdlib.common
   compile deps.kotlin.coroutines.common
 }
+
+kotlin {
+  experimental {
+    coroutines 'enable'
+  }
+}

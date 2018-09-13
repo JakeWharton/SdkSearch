@@ -11,7 +11,9 @@ import com.jakewharton.sdksearch.options.ui.OptionsUiBinder
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.Main
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -26,7 +28,7 @@ class OptionsActivity : Activity() {
     AndroidInjection.inject(this)
 
     presentation = lastNonConfigurationInstance as Presentation?
-        ?: optionsPresenterProvider.get().startPresentation()
+        ?: optionsPresenterProvider.get().startPresentation(Dispatchers.Main)
     val presenter = presentation.presenter as OptionsPresenter
 
     setContentView(R.layout.options)
