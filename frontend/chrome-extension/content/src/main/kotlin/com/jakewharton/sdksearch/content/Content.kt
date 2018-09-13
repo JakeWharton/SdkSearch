@@ -6,6 +6,7 @@ import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.reference.sourceUrl
 import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
 import timber.log.ConsoleTree
 import timber.log.Timber
@@ -19,7 +20,7 @@ fun main(vararg args: String) {
 
   val configStore = StorageAreaConfigStore(Chrome.storage.sync, PRODUCTION_GIT_WEB, PRODUCTION_DAC)
 
-  launch {
+  GlobalScope.launch {
     val (gitWebUrl, dacUrl) = configStore.load()
     val references = AndroidReference(gitWebUrl, dacUrl)
 

@@ -8,6 +8,7 @@ import com.jakewharton.sdksearch.store.item.Item
 import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
@@ -16,6 +17,7 @@ import kotlinx.coroutines.experimental.channels.SendChannel
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.plus
 
 class SearchPresenter(
   private val context: CoroutineDispatcher,
@@ -32,6 +34,7 @@ class SearchPresenter(
 
   override fun start(): Job {
     val job = Job()
+    val scope = GlobalScope + job
 
     var model = Model()
     fun sendModel(newModel: Model) {
@@ -39,13 +42,13 @@ class SearchPresenter(
       _models.offer(newModel)
     }
 
-    launch(context, parent = job) {
+    scope.launch(context) {
       store.count().consumeEach {
         sendModel(model.copy(count = it))
       }
     }
 
-    launch(context, parent = job) {
+    scope.launch(context) {
       synchronizer.state.consumeEach {
         sendModel(model.copy(syncStatus = when (it) {
           ItemSynchronizer.SyncStatus.IDLE -> SyncStatus.IDLE
@@ -55,7 +58,7 @@ class SearchPresenter(
       }
     }
 
-    launch(context, parent = job) {
+    scope.launch(context) {
       var activeQuery = ""
       var activeQueryJob: Job? = null
 
@@ -73,7 +76,7 @@ class SearchPresenter(
               if (query == "") {
                 sendModel(model.copy(queryResults = Model.QueryResults("", emptyList())))
               } else {
-                activeQueryJob = launch(context, parent = job) {
+                activeQueryJob = scope.launch(context) {
                   delay(queryDelay)
 
                   store.queryItems(query).consumeEach {

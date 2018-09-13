@@ -3,6 +3,7 @@ package com.jakewharton.sdksearch.sync
 import com.jakewharton.sdksearch.api.dac.DocumentationService
 import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.store.item.ItemUtil
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.launch
@@ -20,7 +21,7 @@ class ItemSynchronizer(
 
   fun forceSync() {
     _state.offer(SyncStatus.SYNC)
-    launch {
+    GlobalScope.launch {
       val result = if (load()) SyncStatus.IDLE else SyncStatus.FAILED
       _state.offer(result)
     }

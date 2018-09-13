@@ -8,7 +8,8 @@ import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.android.Main
 import okhttp3.Cache
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -44,7 +45,7 @@ object SearchPresenterModule {
 
     val synchronizer = ItemSynchronizer(store, service)
 
-    return SearchPresenter(UI, store, synchronizer)
+    return SearchPresenter(Dispatchers.Main, store, synchronizer)
   }
 
   private operator fun File.div(pathSegment: String) = File(this, pathSegment)

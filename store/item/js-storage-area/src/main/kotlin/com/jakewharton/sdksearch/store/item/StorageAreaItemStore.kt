@@ -4,6 +4,7 @@ import com.chrome.platform.storage.Storage
 import com.chrome.platform.storage.StorageArea
 import com.chrome.platform.storage.StorageChange
 import com.jakewharton.sdksearch.store.item.Item.Impl
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
@@ -70,7 +71,7 @@ class StorageAreaItemStore(
     while (true) {
       currentJob?.join() ?: break
     }
-    val job = async {
+    val job = GlobalScope.async {
       try {
         body()
       } finally {

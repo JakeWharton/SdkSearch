@@ -21,7 +21,9 @@ import androidx.core.widget.toast
 import com.jakewharton.sdksearch.api.circleci.CircleCiComponent
 import com.jakewharton.sdksearch.api.circleci.Filter.SUCCESSFUL
 import com.jakewharton.sdksearch.api.circleci.VcsType.GITHUB
-import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.android.Main
 import kotlinx.coroutines.experimental.launch
 import okio.buffer
 import okio.sink
@@ -61,7 +63,7 @@ class UpdateService : Service() {
     startForeground(NOTIFICATION_ID, createNotification(R.string.debug_updater_notification_title_checking,
         R.string.debug_updater_notification_text_checking_1))
 
-    launch {
+    GlobalScope.launch {
       val service = CircleCiComponent.builder()
           .token(config.apiToken)
           .build()
@@ -95,7 +97,7 @@ class UpdateService : Service() {
       Timber.debug { "This build: ${config.timestamp}, Latest build: $timestamp" }
       if (timestamp <= config.timestamp) {
         stopSelf(startId)
-        launch(UI) {
+        launch(Dispatchers.Main) {
           toast("App is already up-to-date!")
         }
         return@launch
@@ -135,7 +137,7 @@ class UpdateService : Service() {
       installIntent.addFlags(FLAG_ACTIVITY_NEW_TASK)
       installIntent.addFlags(FLAG_GRANT_READ_URI_PERMISSION)
 
-      launch(UI) {
+      launch(Dispatchers.Main) {
         startActivity(installIntent)
         stopSelf(startId)
       }

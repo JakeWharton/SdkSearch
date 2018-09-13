@@ -1,6 +1,7 @@
 package com.squareup.sqldelight.runtime.coroutines
 
 import com.squareup.sqldelight.Query
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.channels.RendezvousChannel
@@ -28,7 +29,7 @@ private class ListenerReceiveChannel<T : Any>(
 ) : Query.Listener, ReceiveChannel<Query<T>> by channel {
   override fun queryResultsChanged() {
     // TODO associate this job with the channel so that it gets canceled
-    launch(context) {
+    GlobalScope.launch(context) {
       channel.send(query)
     }
   }
