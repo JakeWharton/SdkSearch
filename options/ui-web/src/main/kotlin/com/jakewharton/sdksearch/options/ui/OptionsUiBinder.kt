@@ -12,7 +12,7 @@ import org.w3c.dom.NonElementParentNode
 class OptionsUiBinder(
   parent: NonElementParentNode,
   private val events: SendChannel<Event>
-) : UiBinder<Model> {
+) : UiBinder<Model>() {
   private val gitWebInput = parent.getElementById("git-web") as HTMLInputElement
   private val dacInput = parent.getElementById("dac") as HTMLInputElement
 

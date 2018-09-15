@@ -34,7 +34,6 @@ import com.jakewharton.sdksearch.search.ui.util.onScroll
 import com.jakewharton.sdksearch.search.ui.util.onTextChanged
 import com.jakewharton.sdksearch.store.item.Item
 import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.android.Main
 import kotlinx.coroutines.experimental.channels.SendChannel
 import kotlinx.coroutines.experimental.channels.actor
@@ -48,7 +47,7 @@ class SearchUiBinder(
   private val onCopy: ItemHandler,
   private val onShare: ItemHandler,
   private val onSource: ItemHandler
-) : UiBinder<Model> {
+) : UiBinder<Model>() {
   private val context = view.context
   private val resources = view.resources
 
@@ -62,7 +61,7 @@ class SearchUiBinder(
     override fun onItemShared(item: Item) = onShare(item)
     override fun onItemViewSource(item: Item) = onSource(item)
   })
-  private val queryResultProcessor = GlobalScope.actor<Pair<QueryResults, QueryResults>> {
+  private val queryResultProcessor = actor<Pair<QueryResults, QueryResults>>(Dispatchers.Default) {
     consumeEach { (oldResults, newResults) ->
       val diff = DiffUtil.calculateDiff(ItemDiffer(oldResults, newResults))
 
