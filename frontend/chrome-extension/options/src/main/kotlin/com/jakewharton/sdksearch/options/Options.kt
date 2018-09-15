@@ -7,6 +7,7 @@ import com.jakewharton.sdksearch.options.ui.OptionsUiBinder
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
 import kotlin.browser.document
@@ -21,6 +22,8 @@ fun main(vararg args: String) {
   val binder = OptionsUiBinder(document, presenter.events)
 
   document.addEventListener("DOMContentLoaded", {
-    binder.bindTo(presenter)
+    GlobalScope.launch(Dispatchers.Unconfined) {
+      binder.bindTo(presenter)
+    }
   })
 }

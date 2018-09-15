@@ -20,9 +20,11 @@ import com.jakewharton.sdksearch.search.ui.ShareItemHandler
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
+import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.Main
+import kotlinx.coroutines.experimental.launch
 import okhttp3.HttpUrl
 import timber.log.Timber
 import timber.log.error
@@ -30,11 +32,13 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class MainActivity : Activity() {
+  private val binderJob = Job()
+  private val scope = CoroutineScope(Dispatchers.Main + binderJob)
+
   @Inject lateinit var searchPresenterProvider: Provider<SearchPresenter>
   @Inject lateinit var baseUrl: HttpUrl
 
   private lateinit var presentation: Presentation
-  private lateinit var binderJob: Job
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -69,10 +73,13 @@ class MainActivity : Activity() {
     } else null
 
     setContentView(R.layout.search)
-    val binder = SearchUiBinder(window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
-    defaultQuery?.let { binder.init(it) }
 
-    binderJob = binder.bindTo(presenter)
+    scope.launch(Dispatchers.Unconfined) {
+      val binder = SearchUiBinder(this, window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
+      defaultQuery?.let { binder.init(it) }
+
+      binder.bindTo(presenter)
+    }
   }
 
   override fun onRetainNonConfigurationInstance() = presentation

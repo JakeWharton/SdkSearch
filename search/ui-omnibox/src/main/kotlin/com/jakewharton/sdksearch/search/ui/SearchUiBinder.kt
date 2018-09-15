@@ -15,7 +15,7 @@ class SearchUiBinder(
   events: SendChannel<Event>,
   chrome: ChromePlatform,
   private val dacUrl: String
-) : UiBinder<Model>() {
+) : UiBinder<Model> {
 
   private var currentSuggestions: (Array<SuggestResult>) -> Unit = {}
 

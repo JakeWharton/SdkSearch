@@ -11,7 +11,7 @@ import kotlinx.coroutines.experimental.channels.SendChannel
 class OptionsUiBinder(
   view: View,
   private val events: SendChannel<Event>
-) : UiBinder<Model>() {
+) : UiBinder<Model> {
   private val gitWebUrlInput: TextInputLayout = view.findViewById(R.id.git_web_url)
   private val dacUrlInput: TextInputLayout = view.findViewById(R.id.dac_url)
   private val saveButton: View = view.findViewById(R.id.save)

@@ -11,17 +11,21 @@ import com.jakewharton.sdksearch.options.ui.OptionsUiBinder
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
+import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.Main
+import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 import javax.inject.Provider
 
 class OptionsActivity : Activity() {
+  private val binderJob = Job()
+  private val scope = CoroutineScope(Dispatchers.Main + binderJob)
+
   @Inject lateinit var optionsPresenterProvider: Provider<OptionsPresenter>
 
   private lateinit var presentation: Presentation
-  private lateinit var binderJob: Job
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -32,9 +36,10 @@ class OptionsActivity : Activity() {
     val presenter = presentation.presenter as OptionsPresenter
 
     setContentView(R.layout.options)
-    val binder = OptionsUiBinder(window.decorView, presenter.events)
 
-    binderJob = binder.bindTo(presenter)
+    scope.launch(Dispatchers.Unconfined) {
+      OptionsUiBinder(window.decorView, presenter.events).bindTo(presenter)
+    }
   }
 
   override fun onRetainNonConfigurationInstance() = presentation
