@@ -1,8 +1,8 @@
 package com.jakewharton.sdksearch.store.item
 
 import com.squareup.sqldelight.runtime.coroutines.asChannel
-import com.squareup.sqldelight.runtime.coroutines.mapToOne
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import com.squareup.sqldelight.runtime.coroutines.mapToOne
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.experimental.CoroutineContext
@@ -24,12 +24,12 @@ internal class SqlItemStore @Inject constructor(
   }
 
   override fun queryItems(term: String) =
-      db.queryTerm(term.escapeLike('\\')).asChannel(context).mapToList()
+      db.queryTerm(term.escapeLike('\\')).asChannel().mapToList(context)
 
   private fun String.escapeLike(escapeChar: Char) =
       this.replace("$escapeChar", "$escapeChar$escapeChar")
           .replace("%", "$escapeChar%")
           .replace("_", "${escapeChar}_")
 
-  override fun count() = db.count().asChannel(context).mapToOne()
+  override fun count() = db.count().asChannel().mapToOne(context)
 }
