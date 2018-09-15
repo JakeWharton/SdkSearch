@@ -7,6 +7,7 @@ import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.store.item.Item
 import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
@@ -44,7 +45,7 @@ fun main(vararg args: String) {
     presenter.start()
   }
 
-  GlobalScope.launch {
+  GlobalScope.launch(Dispatchers.Unconfined) {
     for (model in presenter.models) {
       Timber.debug { model.toString() }
 

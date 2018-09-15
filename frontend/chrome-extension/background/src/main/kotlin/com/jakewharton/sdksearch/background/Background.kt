@@ -11,8 +11,10 @@ import com.jakewharton.sdksearch.search.ui.SearchUiBinder
 import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
 import com.jakewharton.sdksearch.store.item.StorageAreaItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withContext
 import timber.log.ConsoleTree
 import timber.log.Timber
 
@@ -33,6 +35,8 @@ fun main(vararg args: String) {
       presenter.start()
     }
 
-    SearchUiBinder(presenter.events, Chrome, config.dacUrl).bindTo(presenter)
+    withContext(Dispatchers.Unconfined) {
+      SearchUiBinder(presenter.events, Chrome, config.dacUrl).bindTo(presenter)
+    }
   }
 }
