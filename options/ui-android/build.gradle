@@ -35,10 +35,10 @@ dependencies {
   implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
 
-  implementation deps.android.support.constraintLayout
-  implementation deps.android.support.design
+  implementation deps.androidx.constraintLayout
+  implementation deps.androidx.core
 
-  implementation deps.android.x.coreKtx
+  implementation deps.material
 }
 
 kotlin {

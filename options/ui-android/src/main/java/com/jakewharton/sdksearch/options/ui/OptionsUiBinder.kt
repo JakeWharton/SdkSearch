@@ -1,7 +1,7 @@
 package com.jakewharton.sdksearch.options.ui
 
-import android.support.design.widget.TextInputLayout
 import android.view.View
+import com.google.android.material.textfield.TextInputLayout
 import com.jakewharton.presentation.UiBinder
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Event
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Model

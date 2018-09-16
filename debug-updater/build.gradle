@@ -29,13 +29,13 @@ android {
 
 dependencies {
   implementation project(':api:circleci')
-  implementation deps.android.x.coreKtx
+  implementation deps.androidx.core
   implementation deps.kotlin.stdlib.jdk
   implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
   implementation deps.timber.jdk
   implementation deps.okio
-  implementation deps.android.support.coreUtils
+  implementation deps.androidx.core
 
   implementation deps.dagger.runtime
   implementation deps.dagger.androidRuntime

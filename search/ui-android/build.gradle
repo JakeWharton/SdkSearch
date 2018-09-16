@@ -36,12 +36,12 @@ dependencies {
   implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
 
-  implementation deps.android.support.customTabs
-  implementation deps.android.support.recyclerView
-  implementation deps.android.support.constraintLayout
-  implementation deps.android.support.design
+  implementation deps.androidx.browser
+  implementation deps.androidx.constraintLayout
+  implementation deps.androidx.core
+  implementation deps.androidx.recyclerView
 
-  implementation deps.android.x.coreKtx
+  implementation deps.material
 }
 
 kotlin {

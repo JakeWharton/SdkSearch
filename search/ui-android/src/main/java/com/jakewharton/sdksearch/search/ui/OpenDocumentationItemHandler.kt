@@ -3,8 +3,8 @@ package com.jakewharton.sdksearch.search.ui
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.support.customtabs.CustomTabsIntent
 import android.util.TypedValue
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.jakewharton.sdksearch.reference.AndroidReference

@@ -11,13 +11,14 @@ import android.content.Intent.ACTION_INSTALL_PACKAGE
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.os.Build
-import android.support.annotation.RestrictTo
-import android.support.annotation.RestrictTo.Scope.LIBRARY
-import android.support.annotation.StringRes
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.FileProvider
-import androidx.core.content.systemService
-import androidx.core.widget.toast
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
+import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY
+import androidx.annotation.StringRes
+import androidx.core.app.NotificationCompat
+import androidx.core.content.FileProvider
+import androidx.core.content.getSystemService
 import com.jakewharton.sdksearch.api.circleci.CircleCiComponent
 import com.jakewharton.sdksearch.api.circleci.Filter.SUCCESSFUL
 import com.jakewharton.sdksearch.api.circleci.VcsType.GITHUB
@@ -53,7 +54,7 @@ class UpdateService : Service() {
       return START_NOT_STICKY
     }
 
-    val notifications = systemService<NotificationManager>()
+    val notifications = getSystemService<NotificationManager>()!!
 
     if (Build.VERSION.SDK_INT >= 26 && notifications.getNotificationChannel(CHANNEL_ID) == null) {
       val channel = NotificationChannel(CHANNEL_ID, "Debug Updates", IMPORTANCE_LOW)
@@ -98,7 +99,7 @@ class UpdateService : Service() {
       if (timestamp <= config.timestamp) {
         stopSelf(startId)
         launch(Dispatchers.Main) {
-          toast("App is already up-to-date!")
+          Toast.makeText(this@UpdateService, "App is already up-to-date!", LENGTH_SHORT).show()
         }
         return@launch
       }

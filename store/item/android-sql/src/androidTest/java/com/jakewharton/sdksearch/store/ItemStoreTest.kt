@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.store
 
-import android.support.test.InstrumentationRegistry
+import androidx.test.InstrumentationRegistry
 import com.jakewharton.sdksearch.store.item.DbComponent
 import com.jakewharton.sdksearch.store.item.ItemUtil
 import kotlinx.coroutines.experimental.CommonPool

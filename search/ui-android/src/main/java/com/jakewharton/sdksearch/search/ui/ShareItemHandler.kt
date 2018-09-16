@@ -1,7 +1,7 @@
 package com.jakewharton.sdksearch.search.ui
 
 import android.app.Activity
-import android.support.v4.app.ShareCompat.IntentBuilder
+import androidx.core.app.ShareCompat.IntentBuilder
 import com.jakewharton.sdksearch.store.item.Item
 import okhttp3.HttpUrl
 

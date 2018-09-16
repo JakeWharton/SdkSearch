@@ -2,9 +2,10 @@ package com.jakewharton.sdksearch.debug.updater
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.annotation.RestrictTo
-import android.support.annotation.RestrictTo.Scope.LIBRARY
-import androidx.core.widget.toast
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
+import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
@@ -19,7 +20,7 @@ class UpdateActivity : Activity() {
     AndroidInjection.inject(this)
 
     if (config.apiToken.isBlank()) {
-      toast("Circle CI token missing. Cannot update!")
+      Toast.makeText(this, "Circle CI token missing. Cannot update!", LENGTH_SHORT).show()
     } else {
       startUpdateService(config)
     }

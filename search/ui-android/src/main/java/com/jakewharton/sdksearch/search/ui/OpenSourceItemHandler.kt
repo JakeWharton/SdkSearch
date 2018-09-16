@@ -1,10 +1,11 @@
 package com.jakewharton.sdksearch.search.ui
 
 import android.content.Context
-import android.support.customtabs.CustomTabsIntent
 import android.util.TypedValue
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
-import androidx.core.widget.toast
 import com.jakewharton.sdksearch.store.item.Item
 import com.jakewharton.sdksearch.reference.AndroidReference
 
@@ -25,7 +26,7 @@ class OpenSourceItemHandler(
           .build()
           .launchUrl(context, url.toUri())
     } else {
-      context.toast(R.string.unknown_source)
+      Toast.makeText(context, R.string.unknown_source, LENGTH_SHORT).show()
     }
   }
 }
