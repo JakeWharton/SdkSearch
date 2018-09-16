@@ -16,16 +16,14 @@ buildscript {
   ext.buildConfig.version['code'] = buildConfig.version.major * 1000000 + buildConfig.version.minor * 10000 + buildConfig.version.patch * 100 + buildConfig.version.build
 
   ext.versions = [
-      'supportLibrary': '28.0.0-rc02',
-      'atsl': '1.0.1',
       'kotlin': '1.2.61',
       'kotlinCoroutines': '0.26.0',
       'kotlinSerialization': '0.6.1',
       'okhttp': '3.11.0',
       'retrofit': '2.4.0',
       'kotshi': '1.0.4',
-      'dagger': '2.17',
-      'sqldelight': '1.0.0-alpha5',
+      'dagger': '2.16', // TODO https://issuetracker.google.com/issues/115738511
+      'sqldelight': '1.0.0-SNAPSHOT',
   ]
 
   ext.deps = [
@@ -54,28 +52,20 @@ buildscript {
               'js': "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${versions.kotlinSerialization}",
           ],
       ],
-      'android': [
-          'arch': [
-              'dbFramework': 'android.arch.persistence:db-framework:1.0.0',
-          ],
-          'support': [
-              'annotations': "com.android.support:support-annotations:${versions.supportLibrary}",
-              'coreUtils': "com.android.support:support-core-utils:${versions.supportLibrary}",
-              'compat': "com.android.support:support-compat:${versions.supportLibrary}",
-              'recyclerView': "com.android.support:recyclerview-v7:${versions.supportLibrary}",
-              'customTabs': "com.android.support:customtabs:${versions.supportLibrary}",
-              'appCompat': "com.android.support:appcompat-v7:${versions.supportLibrary}",
-              'design': "com.android.support:design:${versions.supportLibrary}",
-              'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.3',
-          ],
-          'x': [
-              'coreKtx': 'androidx.core:core-ktx:0.3',
-          ],
+      'androidx': [
+          'annotations': 'androidx.annotation:annotation:1.0.0-rc02',
+          'appCompat': 'androidx.appcompat:appcompat:1.0.0-rc02',
+          'browser': 'androidx.browser:browser:1.0.0-rc02',
+          'constraintLayout': 'androidx.constraintlayout:constraintlayout:1.1.3',
+          'core': 'androidx.core:core-ktx:1.0.0-rc02',
+          'recyclerView': 'androidx.recyclerview:recyclerview:1.0.0-rc02',
+          'sqliteFramework': 'androidx.sqlite:sqlite-framework:1.0.0-rc02',
           'test': [
-              'runner': "com.android.support.test:runner:${versions.atsl}",
-              'rules': "com.android.support.test:rules${versions.atsl}",
+              'runner': 'androidx.test:runner:1.1.0-alpha4',
+              'rules': 'androidx.test:rules:1.1.0-alpha4',
           ],
       ],
+      'material': 'com.google.android.material:material:1.0.0-rc02',
       'okhttp': [
           'client': "com.squareup.okhttp3:okhttp:${versions.okhttp}",
           'logging': "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
@@ -127,6 +117,7 @@ buildscript {
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     gradlePluginPortal()
   }
 
@@ -150,17 +141,6 @@ allprojects {
     maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     jcenter()
-  }
-
-  // Force all of the primary support libraries to use the same version.
-  configurations.all {
-    resolutionStrategy {
-      eachDependency { details ->
-        if (details.requested.group == 'com.android.support') {
-          details.useVersion versions.supportLibrary
-        }
-      }
-    }
   }
 
   tasks.withType(Test) {

@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.search.ui.util
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 
 internal inline fun RecyclerView.onScroll(crossinline body: (dx: Int, dy: Int) -> Unit) {
   addOnScrollListener(object : RecyclerView.OnScrollListener() {

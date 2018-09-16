@@ -125,7 +125,7 @@ dependencies {
   implementation deps.kotlin.coroutines.jdk
   implementation deps.kotlin.coroutines.android
 
-  implementation deps.android.support.appCompat
+  implementation deps.androidx.appCompat
 
   implementation deps.okhttp.logging
 

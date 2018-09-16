@@ -1,14 +1,6 @@
 package com.jakewharton.sdksearch.search.ui
 
 import android.graphics.Typeface
-import android.support.design.widget.Snackbar
-import android.support.design.widget.Snackbar.LENGTH_INDEFINITE
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.TooltipCompat
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -16,8 +8,16 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
-import androidx.core.content.systemService
+import androidx.appcompat.widget.TooltipCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.jakewharton.presentation.UiBinder
 import com.jakewharton.sdksearch.roboto.R as RobotoR
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
@@ -106,7 +106,7 @@ class SearchUiBinder(
         if (totalDy >= touchSlop) {
           totalDy = 0
 
-          val inputMethodManager = context.systemService<InputMethodManager>()
+          val inputMethodManager = context.getSystemService<InputMethodManager>()!!
           inputMethodManager.hideSoftInputFromWindow(queryInput.windowToken, HIDE_NOT_ALWAYS)
         }
       }

@@ -29,7 +29,7 @@ dependencies {
   api project(':store:config:jdk')
 
   implementation deps.kotlin.stdlib.jdk
-  implementation deps.android.x.coreKtx
+  implementation deps.androidx.core
 }
 
 kotlin {

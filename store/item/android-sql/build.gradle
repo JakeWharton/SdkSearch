@@ -10,7 +10,7 @@ android {
   defaultConfig {
     minSdkVersion buildConfig.minSdk
 
-    testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
   }
 
   compileOptions {
@@ -39,14 +39,14 @@ dependencies {
 
   implementation deps.sqldelight.android
   implementation project(':sqldelight-coroutines-extensions')
-  implementation deps.android.arch.dbFramework
+  implementation deps.androidx.sqliteFramework
 
   implementation deps.timber.jdk
 
   implementation deps.dagger.runtime
   kapt deps.dagger.compiler
 
-  androidTestImplementation deps.android.test.runner
+  androidTestImplementation deps.androidx.test.runner
   androidTestImplementation deps.truth
   androidTestImplementation deps.kotlin.coroutines.jdk
 }

@@ -1,8 +1,6 @@
 package com.jakewharton.sdksearch.search.ui
 
 import android.graphics.Typeface.BOLD
-import android.support.v4.graphics.ColorUtils
-import android.support.v7.widget.RecyclerView.ViewHolder
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
@@ -13,10 +11,12 @@ import android.view.View.OnClickListener
 import android.widget.PopupMenu
 import android.widget.PopupMenu.OnMenuItemClickListener
 import android.widget.TextView
+import androidx.core.graphics.ColorUtils
 import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
 import androidx.core.text.set
 import androidx.core.text.toSpannable
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.jakewharton.sdksearch.store.item.Item
 import kotlin.LazyThreadSafetyMode.NONE
 
