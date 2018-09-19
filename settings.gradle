@@ -1,6 +1,7 @@
 include ':api:circleci'
 include ':api:dac'
 include ':api:dac:jdk'
+include ':api:dac:jdk-temp'
 include ':api:dac:js'
 include ':bugsnag-tree'
 include ':chrome-platform'
