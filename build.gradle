@@ -44,7 +44,6 @@ buildscript {
               'jdk': "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}",
               'js': "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinCoroutines}",
               'android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}",
-              'rx2': "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:${versions.kotlinCoroutines}",
           ],
           'serialization': [
               'common': "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${versions.kotlinSerialization}",
