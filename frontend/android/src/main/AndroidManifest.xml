@@ -1,15 +1,15 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.jakewharton.sdksearch"
     android:targetSandboxVersion="2"
     tools:targetApi="26"
     >
-  <!--
-  Sandbox version 2 is required for instant apps. Normally this is added by default by the instant
-  plugin, but since we are creating the instant zip of our single APK manually, it must be
-  explicitly specified.
-  -->
+  <!-- Sandbox version 2 was used for an old instant apps hack. We cannot downgrade it now. -->
+
+  <!-- Instruct the Play Store to create an instance app from our bundle. -->
+  <dist:module dist:instant="true" />
 
   <uses-permission android:name="android.permission.INTERNET"/>
 
