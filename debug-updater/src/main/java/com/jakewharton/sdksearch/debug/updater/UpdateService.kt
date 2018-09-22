@@ -71,8 +71,8 @@ class UpdateService : Service() {
           .service()
 
       val artifacts = try {
-        service.listArtifacts(GITHUB, config.user, config.project, config.branch,
-            SUCCESSFUL).await()
+        service.listArtifacts(GITHUB, config.user, config.project, config.branch, SUCCESSFUL)
+            .await()
             .filter { it.nodeIndex == 0 }
       } catch (e: IOException) {
         Timber.info(e) { "Failed to fetch artifacts." }
