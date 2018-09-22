@@ -23,7 +23,7 @@ buildscript {
       'retrofit': '2.4.0',
       'kotshi': '1.0.4',
       'dagger': '2.16', // TODO https://issuetracker.google.com/issues/115738511
-      'sqldelight': '1.0.0-SNAPSHOT',
+      'sqldelight': '1.0.0-alpha5',
   ]
 
   ext.deps = [
@@ -116,7 +116,6 @@ buildscript {
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     gradlePluginPortal()
   }
 
