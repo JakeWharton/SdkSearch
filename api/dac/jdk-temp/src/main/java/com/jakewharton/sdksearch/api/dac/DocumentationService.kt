@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.api.dac
 
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 
 actual interface DocumentationService {

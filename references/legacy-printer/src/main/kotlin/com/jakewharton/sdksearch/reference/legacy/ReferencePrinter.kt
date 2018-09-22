@@ -4,7 +4,7 @@ package com.jakewharton.sdksearch.reference.legacy
 
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import java.time.ZonedDateTime

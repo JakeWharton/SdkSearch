@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.api.circleci
 
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Path

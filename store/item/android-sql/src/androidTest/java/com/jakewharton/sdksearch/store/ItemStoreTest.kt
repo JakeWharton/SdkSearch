@@ -3,8 +3,8 @@ package com.jakewharton.sdksearch.store
 import androidx.test.InstrumentationRegistry
 import com.jakewharton.sdksearch.store.item.DbComponent
 import com.jakewharton.sdksearch.store.item.ItemUtil
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.CommonPool
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

@@ -13,10 +13,4 @@ dependencies {
   implementation deps.okhttp.client
 }
 
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}
-
 distTar.enabled = false

@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.api.dac
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.stringBased
 import dagger.Module
 import dagger.Provides

@@ -40,9 +40,3 @@ dependencies {
 
   implementation deps.material
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

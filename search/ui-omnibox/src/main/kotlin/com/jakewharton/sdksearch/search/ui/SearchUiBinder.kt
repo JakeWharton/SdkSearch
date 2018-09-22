@@ -8,7 +8,7 @@ import com.jakewharton.presentation.UiBinder
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.QueryChanged
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
-import kotlinx.coroutines.experimental.channels.SendChannel
+import kotlinx.coroutines.channels.SendChannel
 import org.w3c.dom.url.URL
 
 class SearchUiBinder(

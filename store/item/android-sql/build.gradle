@@ -50,9 +50,3 @@ dependencies {
   androidTestImplementation deps.truth
   androidTestImplementation deps.kotlin.coroutines.jdk
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

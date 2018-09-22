@@ -14,10 +14,4 @@ dependencies {
   implementation deps.argparser
 }
 
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}
-
 distTar.enabled = false

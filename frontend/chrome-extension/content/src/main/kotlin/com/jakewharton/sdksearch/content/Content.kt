@@ -6,8 +6,8 @@ import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.reference.sourceUrl
 import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.ConsoleTree
 import timber.log.Timber
 import timber.log.debug

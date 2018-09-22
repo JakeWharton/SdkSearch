@@ -34,9 +34,3 @@ dependencies {
 
   testImplementation deps.kotlin.test.jdk
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

@@ -1,7 +1,7 @@
 package com.jakewharton.presentation
 
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.channels.SendChannel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.SendChannel
 
 interface Presenter<ModelT : Any, EventT : Any> {
   val models: ReceiveChannel<ModelT>

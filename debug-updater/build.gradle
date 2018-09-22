@@ -43,12 +43,6 @@ dependencies {
   kapt deps.dagger.androidCompiler
 }
 
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}
-
 androidExtensions {
   experimental = true
 }
