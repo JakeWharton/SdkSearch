@@ -10,12 +10,6 @@ dependencies {
   compile project(':chrome-platform:chrome')
 }
 
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}
-
 kotlinFrontend {
   webpackBundle {
     mode = 'production' // Non-production uses eval() which isn't supported in a Chrome extension.

@@ -10,12 +10,6 @@ dependencies {
   testImplementation deps.kotlin.test.annotations
 }
 
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}
-
 sqldelight {
   packageName = 'com.jakewharton.sdksearch.store.item'
 }

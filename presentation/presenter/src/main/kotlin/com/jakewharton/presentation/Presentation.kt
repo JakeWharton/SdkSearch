@@ -1,9 +1,9 @@
 package com.jakewharton.presentation
 
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 fun Presenter<*, *>.startPresentation(dispatcher: CoroutineDispatcher): Presentation {
   val job = GlobalScope.launch(dispatcher) { start() }

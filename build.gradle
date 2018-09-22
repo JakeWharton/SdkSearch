@@ -16,14 +16,14 @@ buildscript {
   ext.buildConfig.version['code'] = buildConfig.version.major * 1000000 + buildConfig.version.minor * 10000 + buildConfig.version.patch * 100 + buildConfig.version.build
 
   ext.versions = [
-      'kotlin': '1.2.70',
-      'kotlinCoroutines': '0.26.1',
-      'kotlinSerialization': '0.6.2',
+      'kotlin': '1.3.0-rc-57',
+      'kotlinCoroutines': '0.26.1-eap13',
+      'kotlinSerialization': '0.8.0-rc13',
       'okhttp': '3.11.0',
       'retrofit': '2.4.0',
       'kotshi': '1.0.4',
       'dagger': '2.16', // TODO https://issuetracker.google.com/issues/115738511
-      'sqldelight': '1.0.0-SNAPSHOT',
+      'sqldelight': '1.0.0-alpha5',
   ]
 
   ext.deps = [
@@ -72,8 +72,8 @@ buildscript {
       ],
       'retrofit': [
           'client': "com.squareup.retrofit2:retrofit:${versions.retrofit}",
-          'adapterKotlinCoroutines': 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0',
-          'converterKotlinxSerialization': 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.0.1',
+          'adapterKotlinCoroutines': 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2',
+          'converterKotlinxSerialization': 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.1.0',
           'converterMoshi': "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
       ],
       'kotshi': [
@@ -116,15 +116,14 @@ buildscript {
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     gradlePluginPortal()
   }
 
   dependencies {
     classpath 'com.android.tools.build:gradle:3.3.0-alpha11'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+    classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
     classpath 'org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.32'
-    classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:${versions.kotlinSerialization}"
     classpath "com.squareup.sqldelight:gradle-plugin:${versions.sqldelight}"
     classpath 'gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:5.0.0'
     classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
@@ -138,6 +137,7 @@ allprojects {
     mavenCentral()
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     jcenter()
   }

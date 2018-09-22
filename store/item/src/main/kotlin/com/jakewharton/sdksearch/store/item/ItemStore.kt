@@ -1,6 +1,6 @@
 package com.jakewharton.sdksearch.store.item
 
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.channels.ReceiveChannel
 
 interface ItemStore {
   fun count(): ReceiveChannel<Long>

@@ -8,9 +8,3 @@ dependencies {
   api deps.sqldelight.runtime.jdk
   api deps.kotlin.coroutines.jdk
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

@@ -4,7 +4,7 @@ import com.jakewharton.presentation.UiBinder
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Event
 import com.jakewharton.sdksearch.options.presenter.OptionsPresenter.Model
 import com.jakewharton.sdksearch.store.config.Config
-import kotlinx.coroutines.experimental.channels.SendChannel
+import kotlinx.coroutines.channels.SendChannel
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.NonElementParentNode

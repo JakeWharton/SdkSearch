@@ -40,9 +40,3 @@ task runTests(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModu
 }
 
 test.dependsOn(runTests)
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

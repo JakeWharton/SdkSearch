@@ -1,7 +1,8 @@
 package com.jakewharton.sdksearch.store.config
 
 import com.chrome.platform.storage.StorageArea
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlin.js.json
 
 private const val KEY_GIT_WEB_URL = "git_web_url"

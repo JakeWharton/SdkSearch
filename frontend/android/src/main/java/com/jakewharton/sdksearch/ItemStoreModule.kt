@@ -5,8 +5,8 @@ import com.jakewharton.sdksearch.store.item.DbComponent
 import com.jakewharton.sdksearch.store.item.ItemStore
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.IO
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import javax.inject.Singleton
 
 @Module

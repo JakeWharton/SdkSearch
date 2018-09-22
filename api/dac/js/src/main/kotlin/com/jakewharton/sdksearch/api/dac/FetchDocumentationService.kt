@@ -1,7 +1,7 @@
 package com.jakewharton.sdksearch.api.dac
 
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.asDeferred
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.asDeferred
 import kotlinx.serialization.json.JSON
 import kotlinx.serialization.list
 import kotlinx.serialization.map

@@ -123,9 +123,3 @@ dependencies {
   kapt deps.dagger.compiler
   kapt deps.dagger.androidCompiler
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

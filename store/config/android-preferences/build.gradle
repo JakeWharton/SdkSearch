@@ -31,9 +31,3 @@ dependencies {
   implementation deps.kotlin.stdlib.jdk
   implementation deps.androidx.core
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

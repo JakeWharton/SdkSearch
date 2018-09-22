@@ -22,10 +22,10 @@ import androidx.core.content.getSystemService
 import com.jakewharton.sdksearch.api.circleci.CircleCiComponent
 import com.jakewharton.sdksearch.api.circleci.Filter.SUCCESSFUL
 import com.jakewharton.sdksearch.api.circleci.VcsType.GITHUB
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.android.Main
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.android.Main
+import kotlinx.coroutines.launch
 import okio.buffer
 import okio.sink
 import timber.log.Timber

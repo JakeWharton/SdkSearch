@@ -34,9 +34,3 @@ dependencies {
 
   api project(':presentation:presenter:jdk')
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

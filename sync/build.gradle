@@ -7,9 +7,3 @@ dependencies {
   compile deps.kotlin.coroutines.common
   implementation deps.timber.common
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

@@ -9,9 +9,3 @@ dependencies {
 
   compile project(':presentation:presenter')
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}

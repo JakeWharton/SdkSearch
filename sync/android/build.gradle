@@ -33,9 +33,3 @@ dependencies {
   api deps.kotlin.coroutines.jdk
   implementation deps.timber.jdk
 }
-
-kotlin {
-  experimental {
-    coroutines 'enable'
-  }
-}
