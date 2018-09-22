@@ -23,7 +23,7 @@ jobs:
 
       - run:
           name: Assemble
-          command: ./gradlew --init-script init.gradle -Dtrace projectDependencyGraph assemble bundle :store:item:android-sql:assembleAndroidTest test :frontend:android:lint
+          command: ./gradlew --stacktrace --init-script init.gradle -Dtrace projectDependencyGraph assemble bundle :store:item:android-sql:assembleAndroidTest test :frontend:android:lint
           # TODO remove bundle https://issuetracker.google.com/issues/79936441
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/80464227
           # TODO remove assembleAndroidTest https://issuetracker.google.com/issues/79934948
