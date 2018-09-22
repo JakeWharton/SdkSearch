@@ -61,8 +61,48 @@ jobs:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
 
+  validate:
+    working_directory: ~/SdkSearch
+
+    docker:
+      - image: jakewharton/sdksearch:0.0.2
+
+    environment:
+      TERM: dumb
+      JAVA_TOOL_OPTIONS: "-Xmx1g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          <<: *cache_key
+
+      - run:
+          name: Assemble
+          command: ./gradlew --stacktrace :references:validator:installDist
+
+      - run:
+          name: Validate
+          command: ./references/validator/build/install/validator/bin/validator | tee validation_report.txt
+
+      - store_artifacts:
+          path: validation_report.txt
+
 workflows:
   version: 2
-  build_and_test:
+
+  commit:
     jobs:
       - build
+
+  validation:
+    jobs:
+      - validate
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
