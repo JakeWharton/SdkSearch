@@ -12,25 +12,20 @@ fun <T : Any> Query<T>.asChannel(): ReceiveChannel<Query<T>> {
   // Ensure consumers immediately run the query.
   channel.offer(this)
 
-  val listenerChannel = ListenerReceiveChannel(this, channel)
-  addListener(listenerChannel)
+  val listener = object : Query.Listener, (Throwable?) -> Unit {
+    override fun queryResultsChanged() {
+      channel.offer(this@asChannel)
+    }
 
-  return listenerChannel
-}
-
-/** A single type which is both the query listener and receive channel delegate to save memory. */
-private class ListenerReceiveChannel<T : Any>(
-  private val query: Query<T>,
-  private val channel: Channel<Query<T>>
-) : Query.Listener, ReceiveChannel<Query<T>> by channel {
-  override fun queryResultsChanged() {
-    channel.offer(query)
+    override fun invoke(cause: Throwable?) {
+      removeListener(this)
+    }
   }
 
-  override fun cancel(cause: Throwable?): Boolean {
-    query.removeListener(this)
-    return channel.cancel(cause)
-  }
+  addListener(listener)
+  channel.invokeOnClose(listener)
+
+  return channel
 }
 
 fun <T : Any> ReceiveChannel<Query<T>>.mapToOne(context: CoroutineContext) = map(context) { it.executeAsOne() }
