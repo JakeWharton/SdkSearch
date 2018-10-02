@@ -2,13 +2,13 @@ package com.squareup.sqldelight.runtime.coroutines
 
 import com.squareup.sqldelight.Query
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ConflatedChannel
+import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.map
 import kotlin.coroutines.CoroutineContext
 
 fun <T : Any> Query<T>.asChannel(): ReceiveChannel<Query<T>> {
-  val channel = ConflatedChannel<Query<T>>()
+  val channel = Channel<Query<T>>(CONFLATED)
   // Ensure consumers immediately run the query.
   channel.offer(this)
 
