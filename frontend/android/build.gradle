@@ -85,7 +85,6 @@ android {
     exclude '**/*.kotlin_metadata'
     exclude 'META-INF/*.kotlin_module'
     exclude 'META-INF/*.version'
-    exclude 'META-INF/proguard/*' // TODO https://issuetracker.google.com/issues/109857884
   }
 
   bundle {
