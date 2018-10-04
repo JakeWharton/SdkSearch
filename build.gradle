@@ -142,6 +142,14 @@ allprojects {
     jcenter()
   }
 
+  tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+      freeCompilerArgs = [
+          '-progressive'
+      ]
+    }
+  }
+
   tasks.withType(Test) {
     testLogging {
       events "skipped", "failed", "passed"
