@@ -142,6 +142,16 @@ allprojects {
     jcenter()
   }
 
+  // TODO this hasn't landed in the compiler yet
+  //afterEvaluate {
+  //  def kotlin = extensions.findByName('kotlin')
+  //  if (kotlin != null) {
+  //    kotlin.experimental {
+  //      newInference 'enable'
+  //    }
+  //  }
+  //}
+
   tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
       freeCompilerArgs = [
