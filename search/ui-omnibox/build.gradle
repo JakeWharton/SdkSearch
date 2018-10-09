@@ -3,8 +3,8 @@ apply plugin: 'kotlin2js'
 dependencies {
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
-  compile project(':search:presenter:js')
-  compile project(':presentation:binder:js')
+  compile project(':search:presenter')
+  compile project(':presentation:binder')
   compile project(":chrome-platform")
 }
 

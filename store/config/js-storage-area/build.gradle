@@ -1,9 +1,9 @@
-apply plugin: 'org.jetbrains.kotlin.platform.js'
+apply plugin: 'kotlin2js'
 
 archivesBaseName = 'store-config-storage-area'
 
 dependencies {
-  compile project(':store:config:js')
+  compile project(':store:config')
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js
   compile project(':chrome-platform')

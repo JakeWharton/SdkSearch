@@ -4,8 +4,8 @@ apply plugin: 'org.jetbrains.kotlin.frontend'
 apply plugin: 'distribution'
 
 dependencies {
-  compile project(':search:presenter:js')
-  compile project(':references:js')
+  compile project(':search:presenter')
+  compile project(':references')
 
   compile deps.kotlin.stdlib.js
   compile deps.kotlin.coroutines.js

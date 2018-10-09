@@ -27,9 +27,9 @@ android {
 }
 
 dependencies {
-  api project(':options:presenter:android')
+  api project(':options:presenter')
 
-  api project(':presentation:binder:jdk')
+  api project(':presentation:binder')
 
   implementation deps.kotlin.stdlib.jdk
   implementation deps.kotlin.coroutines.jdk

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.platform.android'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 archivesBaseName = 'store-config-preferences'
 
@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-  api project(':store:config:jdk')
+  api project(':store:config')
 
   implementation deps.kotlin.stdlib.jdk
   implementation deps.androidx.core

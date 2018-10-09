@@ -1,6 +1,6 @@
 apply plugin: 'java-library'
-apply plugin: 'org.jetbrains.kotlin.platform.jvm'
-apply plugin: 'kotlinx-serialization'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'kotlin-kapt'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -8,10 +8,16 @@ targetCompatibility = JavaVersion.VERSION_1_8
 archivesBaseName = 'api-dac-temp'
 
 dependencies {
-  expectedBy project(':api:dac')
+  api project(':api:dac')
   implementation deps.kotlin.stdlib.jdk
-  api deps.kotlin.coroutines.jdk
-  api deps.kotlin.serialization.jdk
+
+  api deps.okhttp.client
+  api deps.okio
 
   implementation deps.retrofit.client
+  implementation deps.retrofit.adapterKotlinCoroutines
+  implementation deps.retrofit.converterKotlinxSerialization
+
+  implementation deps.dagger.runtime
+  kapt deps.dagger.compiler
 }

@@ -28,9 +28,9 @@ android {
 
 dependencies {
   implementation project(':roboto')
-  api project(':search:presenter:android')
-  api project(':references:jdk')
-  api project(':presentation:binder:jdk')
+  api project(':search:presenter')
+  api project(':references')
+  api project(':presentation:binder')
 
   implementation deps.kotlin.stdlib.jdk
   implementation deps.kotlin.coroutines.jdk

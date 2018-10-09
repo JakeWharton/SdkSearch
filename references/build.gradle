@@ -1,9 +1,49 @@
-apply plugin: 'org.jetbrains.kotlin.platform.common'
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
 
-archivesBaseName = 'references-common'
+archivesBaseName = 'references'
 
-dependencies {
-  implementation deps.kotlin.stdlib.common
-  testImplementation deps.kotlin.test.common
-  testImplementation deps.kotlin.test.annotations
+// TODO work around https://youtrack.jetbrains.com/issue/KT-27170
+configurations {
+  compileClasspath
+}
+
+kotlin {
+  sourceSets {
+    commonMain {
+      dependencies {
+        api deps.kotlin.stdlib.common
+      }
+    }
+    commonTest {
+      dependencies {
+        implementation deps.kotlin.test.common
+        implementation deps.kotlin.test.annotations
+      }
+    }
+    jvmMain {
+      dependencies {
+        api deps.kotlin.stdlib.jdk
+      }
+    }
+    jvmTest {
+      dependencies {
+        implementation deps.kotlin.test.jdk
+      }
+    }
+    jsMain {
+      dependencies {
+        api deps.kotlin.stdlib.js
+      }
+    }
+    jsTest {
+      dependencies {
+        implementation deps.kotlin.test.js
+      }
+    }
+  }
+
+  targets {
+    fromPreset(presets.jvm, 'jvm')
+    fromPreset(presets.js, 'js')
+  }
 }

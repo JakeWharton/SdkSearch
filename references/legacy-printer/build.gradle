@@ -8,8 +8,8 @@ targetCompatibility = JavaVersion.VERSION_1_8
 mainClassName = 'com.jakewharton.sdksearch.reference.legacy.ReferencePrinter'
 
 dependencies {
-  implementation project(':references:jdk')
-  implementation project(':api:dac:jdk')
+  implementation project(':references')
+  implementation project(':api:dac:jdk-temp')
   implementation deps.okhttp.client
 }
 
