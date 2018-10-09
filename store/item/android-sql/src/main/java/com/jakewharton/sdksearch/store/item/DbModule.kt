@@ -1,7 +1,7 @@
 package com.jakewharton.sdksearch.store.item
 
 import android.content.Context
-import com.squareup.sqldelight.android.create
+import com.squareup.sqldelight.android.AndroidSqlDatabase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -15,7 +15,7 @@ internal abstract class DbModule {
     @JvmStatic
     @Provides
     fun queryWrapper(context: Context, filename: String?): QueryWrapper {
-      return QueryWrapper(QueryWrapper.create(context, filename))
+      return QueryWrapper(AndroidSqlDatabase(QueryWrapper.Schema, context, filename))
     }
 
     @JvmStatic

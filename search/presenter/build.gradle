@@ -1,10 +1,64 @@
-apply plugin: 'org.jetbrains.kotlin.platform.common'
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
+apply plugin: 'com.android.library'
 
-dependencies {
-  compile project(':sync')
+archivesBaseName = 'search-presenter'
 
-  implementation deps.kotlin.stdlib.common
-  implementation deps.kotlin.coroutines.common
+// TODO work around https://youtrack.jetbrains.com/issue/KT-27170
+configurations {
+  compileClasspath
+}
 
-  compile project(':presentation:presenter')
+kotlin {
+  sourceSets {
+    commonMain {
+      dependencies {
+        api project(':sync')
+        api project(':presentation:presenter')
+        api deps.kotlin.stdlib.common
+        api deps.kotlin.coroutines.common
+      }
+    }
+    jsMain {
+      dependencies {
+        api deps.kotlin.stdlib.js
+        api deps.kotlin.coroutines.js
+      }
+    }
+  }
+
+  targets {
+    fromPreset(presets.android, 'android')
+    fromPreset(presets.js, 'js')
+  }
+}
+
+/* android */ dependencies {
+  // TODO these two shouldn't be required to be duplicated here
+  api project(':sync')
+  api project(':presentation:presenter')
+
+  api deps.kotlin.stdlib.jdk
+  api deps.kotlin.coroutines.jdk
+}
+
+android {
+  compileSdkVersion buildConfig.compileSdk
+
+  defaultConfig {
+    minSdkVersion buildConfig.minSdk
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    lintConfig rootProject.file('lint.xml')
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
 }

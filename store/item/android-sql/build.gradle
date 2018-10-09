@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.platform.android'
+apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
 
 archivesBaseName = 'store-item-sql'
@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-  api project(':store:item:android')
+  api project(':store:item')
 
   implementation deps.kotlin.stdlib.jdk
 

@@ -1,28 +1,97 @@
-apply plugin: 'org.jetbrains.kotlin.platform.common'
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
 apply plugin: 'com.squareup.sqldelight'
+apply plugin: 'com.android.library'
 
-dependencies {
-  implementation deps.kotlin.stdlib.common
-  implementation deps.kotlin.coroutines.common
-  implementation deps.sqldelight.runtime.common
+archivesBaseName = 'store-item'
 
-  testImplementation deps.kotlin.test.common
-  testImplementation deps.kotlin.test.annotations
+// TODO work around https://youtrack.jetbrains.com/issue/KT-27170
+configurations {
+  compileClasspath
+}
+
+kotlin {
+  sourceSets {
+    commonMain {
+      dependencies {
+        api deps.kotlin.stdlib.common
+        api deps.kotlin.coroutines.common
+        api deps.sqldelight.runtime.common
+      }
+    }
+    commonTest {
+      dependencies {
+        implementation deps.kotlin.test.common
+        implementation deps.kotlin.test.annotations
+      }
+    }
+    jsMain {
+      dependencies {
+        api deps.kotlin.stdlib.js
+        api deps.kotlin.coroutines.js
+        api deps.sqldelight.runtime.js
+      }
+    }
+    jsTest {
+      dependencies {
+        implementation deps.kotlin.test.js
+      }
+    }
+  }
+
+  targets {
+    fromPreset(presets.android, 'android')
+    fromPreset(presets.js, 'js')
+  }
 }
 
 sqldelight {
   packageName = 'com.jakewharton.sdksearch.store.item'
 }
 
-compileKotlinCommon.dependsOn("generateSqlDelightInterface")
+/* android */ dependencies {
+  api deps.kotlin.stdlib.jdk
+  api deps.kotlin.coroutines.jdk
+  api deps.sqldelight.runtime.jdk
+
+  testImplementation deps.kotlin.test.jdk
+}
+
+android {
+  compileSdkVersion buildConfig.compileSdk
+
+  defaultConfig {
+    minSdkVersion buildConfig.minSdk
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    lintConfig rootProject.file('lint.xml')
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+}
+
+afterEvaluate {
+  compileKotlinJs.dependsOn("generateSqlDelightInterface")
+  compileReleaseKotlinAndroid.dependsOn("generateSqlDelightInterface")
+  compileDebugKotlinAndroid.dependsOn("generateSqlDelightInterface")
+}
 check.dependsOn("verifySqlDelightMigration")
 
 // TODO: Remove this when we can exclude build (https://github.com/JLLeitschuh/ktlint-gradle/issues/97)
-afterEvaluate {
-  ktlintMainCheck.doFirst {
-    ant.move(file: file('build/sqldelight'), todir: file('../tmp'))
-  }
-  ktlintMainCheck.doLast {
-    ant.move(file: file('../tmp/sqldelight'), todir: file('build'))
-  }
-}
+// TODO re-enable after https://github.com/JLLeitschuh/ktlint-gradle/issues/144
+//afterEvaluate {
+//  ktlintMainCheck.doFirst {
+//    ant.move(file: file('build/sqldelight'), todir: file('../tmp'))
+//  }
+//  ktlintMainCheck.doLast {
+//    ant.move(file: file('../tmp/sqldelight'), todir: file('build'))
+//  }
+//}

@@ -19,7 +19,7 @@ task projectDependencyGraph {
 
     def projects = new LinkedHashSet<Project>()
     def dependencies = new LinkedHashMap<Tuple2<Project, Project>, List<String>>()
-    def commonProjects = []
+    def multiplatformProjects = []
     def jsProjects = []
     def androidProjects = []
     def javaProjects = []
@@ -29,8 +29,8 @@ task projectDependencyGraph {
       def project = queue.remove(0)
       queue.addAll(project.childProjects.values())
 
-      if (project.plugins.hasPlugin('org.jetbrains.kotlin.platform.common')) {
-        commonProjects.add(project)
+      if (project.plugins.hasPlugin('org.jetbrains.kotlin.multiplatform')) {
+        multiplatformProjects.add(project)
       }
       if (project.plugins.hasPlugin('kotlin2js')) {
         jsProjects.add(project)
@@ -69,11 +69,11 @@ task projectDependencyGraph {
 
       if (rootProjects.contains(project)) {
         traits.add('shape=box')
-      } else if (commonProjects.contains(project)) {
-        traits.add('style=dashed, color=black')
       }
 
-      if (jsProjects.contains(project)) {
+      if (multiplatformProjects.contains(project)) {
+        traits.add('fillcolor="#ffd2b3"')
+      } else if (jsProjects.contains(project)) {
         traits.add('fillcolor="#ffffba"')
       } else if (androidProjects.contains(project)) {
         traits.add('fillcolor="#baffc9"')
@@ -96,10 +96,6 @@ task projectDependencyGraph {
 
     dot << '\n  # Dependencies\n\n'
     dependencies.forEach { key, traits ->
-      if (!commonProjects.contains(key.first) && commonProjects.contains(key.second)) {
-        // Don't link platform modules to their common counterparts. It destroys the graph.
-        return
-      }
       dot << "  \"${key.first.path}\" -> \"${key.second.path}\""
       if (!traits.isEmpty()) {
         dot << " [${traits.join(", ")}]"
