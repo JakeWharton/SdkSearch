@@ -7,10 +7,10 @@ old DAC's `lists.js` file.
 This allows us to easily update https://github.com/romannurik/AndroidSDKSearchExtension until
 `frontend/chrome-extension` is ready to use.
 
-Build a standalone jar by executing the `assemble` task.
+Build an executable with `./gradlew :references:legacy-printer:installDist`.
 
-Run the binary with `java -jar`:
+The printer can then be run by invoking the binary:
 ```
-java -jar build/libs/legacy-printer-all.jar
+./references/legacy-printer/build/install/legacy-printer/bin/legacy-printer
 ```
 The `lists.js`-style output will be written to stdout which you can then redirect to a file.
