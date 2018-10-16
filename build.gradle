@@ -129,6 +129,9 @@ buildscript {
     classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
   }
 }
+plugins { 
+  id("jmfayard.github.io.gradle-kotlin-dsl-libs") version "0.2.4" 
+}
 
 allprojects {
   apply plugin: 'org.jlleitschuh.gradle.ktlint'
