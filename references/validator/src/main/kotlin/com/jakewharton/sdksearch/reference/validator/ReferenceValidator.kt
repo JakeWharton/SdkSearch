@@ -9,12 +9,12 @@ import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
 import com.xenomachina.argparser.mainBody
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.time.delay
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request.Builder
-import java.util.concurrent.TimeUnit.MINUTES
+import java.time.Duration
 
 private val FQCN_PACKAGE = "^([a-z0-9]+\\.)+".toRegex()
 private val FQCN = "\\.[A-Z]".toRegex()
@@ -84,7 +84,7 @@ fun main(vararg args: String) = runBlocking {
         val code = it.code()
         if (code == 429) {
           logStatus("$checking Rate limited! Cooling off…")
-          delay(2, MINUTES)
+          delay(Duration.ofMinutes(2))
           index -= 1 // Try this index again.
         } else if (!it.isSuccessful) {
           logPrint("$code $fqcn $url")
