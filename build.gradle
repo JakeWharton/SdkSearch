@@ -143,6 +143,18 @@ allprojects {
     jcenter()
   }
 
+  configurations.all {
+    resolutionStrategy {
+      eachDependency { details ->
+        // Force all Kotlin stdlib artifacts to use the same version.
+        if (details.requested.group == 'org.jetbrains.kotlin'
+            && details.requested.name.startsWith('kotlin-stdlib')) {
+          details.useVersion versions.kotlin
+        }
+      }
+    }
+  }
+
   // TODO this hasn't landed in the compiler yet
   //afterEvaluate {
   //  def kotlin = extensions.findByName('kotlin')
