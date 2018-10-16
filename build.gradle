@@ -23,7 +23,7 @@ buildscript {
       'retrofit': '2.4.0',
       'kotshi': '1.0.4',
       'dagger': '2.16', // TODO https://issuetracker.google.com/issues/115738511
-      'sqldelight': '1.0.0-rc1',
+      'sqldelight': '1.0.0-rc2',
   ]
 
   ext.deps = [

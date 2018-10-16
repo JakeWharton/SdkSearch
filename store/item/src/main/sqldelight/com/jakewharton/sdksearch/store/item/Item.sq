@@ -37,6 +37,10 @@ WHERE packageName = ?1
   AND className = ?2
 ;
 
+changes:
+SELECT changes()
+;
+
 count:
 SELECT COUNT(id)
 FROM item
