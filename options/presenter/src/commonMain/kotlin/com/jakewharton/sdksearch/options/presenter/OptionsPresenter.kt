@@ -7,9 +7,10 @@ import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.store.config.Config
 import com.jakewharton.sdksearch.store.config.ConfigStore
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.RENDEZVOUS
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.RendezvousChannel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.coroutineScope
@@ -21,7 +22,7 @@ class OptionsPresenter(
   private val _models = ConflatedBroadcastChannel<Model>()
   override val models: ReceiveChannel<Model> get() = _models.openSubscription()
 
-  private val _events = RendezvousChannel<Event>()
+  private val _events = Channel<Event>(RENDEZVOUS)
   override val events: SendChannel<Event> get() = _events
 
   override suspend fun start() = coroutineScope<Unit> {
