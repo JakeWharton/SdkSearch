@@ -26,6 +26,8 @@ private class CliConfig(parser: ArgParser) {
   val dac by parser.storing("--dac", argName = "HOST", help = "DAC host (default: $PRODUCTION_DAC)")
       .default(PRODUCTION_DAC)
 
+  val quiet by parser.flagging("--quiet", help = "Disable progress output")
+
   val packages by parser.positionalList("PACKAGE", help = "package prefixes to validate (default: all)")
       .default(listOf(""))
 }
@@ -58,11 +60,17 @@ fun main(vararg args: String) = runBlocking {
 
   var pad = 0
   fun logStatus(message: String) {
-    print("\r$message".padEnd(pad))
-    pad = message.length + 1 // Account for \r
+    if (!config.quiet) {
+      print("\r$message".padEnd(pad))
+      pad = message.length + 1 // Account for \r
+    }
   }
   fun logPrint(message: String) {
-    println("\r$message".padEnd(pad))
+    if (config.quiet) {
+      println(message)
+    } else {
+      println("\r$message".padEnd(pad))
+    }
     pad = 0
   }
 
