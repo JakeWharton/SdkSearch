@@ -6,7 +6,6 @@ import com.jakewharton.sdksearch.store.item.ItemStore
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import javax.inject.Singleton
 
 @Module

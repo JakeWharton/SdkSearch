@@ -14,7 +14,6 @@ import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
