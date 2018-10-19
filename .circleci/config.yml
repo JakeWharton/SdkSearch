@@ -84,7 +84,7 @@ jobs:
 
       - run:
           name: Validate
-          command: ./references/validator/build/install/validator/bin/validator --quiet | tee validation_report.txt
+          command: ./references/validator/build/install/validator/bin/validator | tee validation_report.txt
 
       - store_artifacts:
           path: validation_report.txt
