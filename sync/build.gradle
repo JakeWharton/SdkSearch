@@ -1,5 +1,4 @@
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
-apply plugin: 'com.android.library'
 
 archivesBaseName = 'sync'
 
@@ -26,44 +25,18 @@ kotlin {
         implementation deps.timber.js
       }
     }
+    jvmMain {
+      dependencies {
+        api project(':api:dac:jdk-temp')
+        api deps.kotlin.stdlib.jdk
+        api deps.kotlin.coroutines.jdk
+        implementation deps.timber.jdk
+      }
+    }
   }
 
   targets {
-    fromPreset(presets.android, 'android')
+    fromPreset(presets.jvm, 'jvm')
     fromPreset(presets.js, 'js')
-  }
-}
-
-/* android */ dependencies {
-  // TODO these two shouldn't be required to be duplicated here
-  api project(':api:dac')
-  api project(':store:item')
-
-  api project(':api:dac:jdk-temp')
-
-  api deps.kotlin.stdlib.jdk
-  api deps.kotlin.coroutines.jdk
-  implementation deps.timber.jdk
-}
-
-android {
-  compileSdkVersion buildConfig.compileSdk
-
-  defaultConfig {
-    minSdkVersion buildConfig.minSdk
-  }
-
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
-
-  lintOptions {
-    textReport true
-    textOutput 'stdout'
-    lintConfig rootProject.file('lint.xml')
-
-    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
-    checkReleaseBuilds false
   }
 }

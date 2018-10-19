@@ -1,6 +1,5 @@
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
 apply plugin: 'com.squareup.sqldelight'
-apply plugin: 'com.android.library'
 
 archivesBaseName = 'store-item'
 
@@ -36,10 +35,22 @@ kotlin {
         implementation deps.kotlin.test.js
       }
     }
+    jvmMain {
+      dependencies {
+        api deps.kotlin.stdlib.jdk
+        api deps.kotlin.coroutines.jdk
+        api deps.sqldelight.runtime.jdk
+      }
+    }
+    jvmTest {
+      dependencies {
+        implementation deps.kotlin.test.jdk
+      }
+    }
   }
 
   targets {
-    fromPreset(presets.android, 'android')
+    fromPreset(presets.jvm, 'jvm')
     fromPreset(presets.js, 'js')
   }
 }
@@ -48,40 +59,9 @@ sqldelight {
   packageName = 'com.jakewharton.sdksearch.store.item'
 }
 
-/* android */ dependencies {
-  api deps.kotlin.stdlib.jdk
-  api deps.kotlin.coroutines.jdk
-  api deps.sqldelight.runtime.jdk
-
-  testImplementation deps.kotlin.test.jdk
-}
-
-android {
-  compileSdkVersion buildConfig.compileSdk
-
-  defaultConfig {
-    minSdkVersion buildConfig.minSdk
-  }
-
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
-
-  lintOptions {
-    textReport true
-    textOutput 'stdout'
-    lintConfig rootProject.file('lint.xml')
-
-    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
-    checkReleaseBuilds false
-  }
-}
-
 afterEvaluate {
   compileKotlinJs.dependsOn("generateSqlDelightInterface")
-  compileReleaseKotlinAndroid.dependsOn("generateSqlDelightInterface")
-  compileDebugKotlinAndroid.dependsOn("generateSqlDelightInterface")
+  compileKotlinJvm.dependsOn("generateSqlDelightInterface")
 }
 check.dependsOn("verifySqlDelightMigration")
 
