@@ -165,6 +165,20 @@ allprojects {
   //  }
   //}
 
+  tasks.withType(JavaCompile).all {
+    options.compilerArgs += [
+        '-Adagger.formatGeneratedSource=disabled'
+    ]
+  }
+  afterEvaluate {
+    def kapt = extensions.findByName('kapt')
+    if (kapt != null) {
+      kapt.arguments {
+        arg("dagger.formatGeneratedSource", "disabled")
+      }
+    }
+  }
+
   tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
       freeCompilerArgs = [
