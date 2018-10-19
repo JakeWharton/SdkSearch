@@ -3,7 +3,7 @@ package com.jakewharton.sdksearch.store
 import androidx.test.InstrumentationRegistry
 import com.jakewharton.sdksearch.store.item.DbComponent
 import com.jakewharton.sdksearch.store.item.ItemUtil
-import kotlinx.coroutines.CommonPool
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -14,7 +14,7 @@ class ItemStoreTest {
   private val itemStore = DbComponent.builder()
       .context(InstrumentationRegistry.getContext())
       .filename(null)
-      .coroutineContext(CommonPool)
+      .coroutineContext(Dispatchers.IO)
       .build()
       .itemStore()
 
