@@ -97,6 +97,16 @@ buildscript {
       ],
       'junit': 'junit:junit:4.12',
       'truth': 'com.google.truth:truth:0.42',
+      'compileTesting': 'com.google.testing.compile:compile-testing:0.15',
+      'javaPoet': 'com.squareup:javapoet:1.11.1',
+      'auto': [
+          'service': 'com.google.auto.service:auto-service:1.0-rc4',
+          'value': [
+              'annotations': 'com.google.auto.value:auto-value-annotations:1.6.2',
+              'compiler': 'com.google.auto.value:auto-value:1.6.2',
+          ],
+      ],
+      'jetbrainsAnnotations': 'org.jetbrains:annotations:16.0.3',
       'bugsnag': 'com.bugsnag:bugsnag-android:4.2.2',
       'argparser': 'com.xenomachina:kotlin-argparser:2.0.5',
       'byteunits': 'com.jakewharton.byteunits:byteunits:0.9.1',
