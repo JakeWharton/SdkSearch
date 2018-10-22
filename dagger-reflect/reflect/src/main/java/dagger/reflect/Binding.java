@@ -15,12 +15,21 @@
  */
 package dagger.reflect;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import javax.inject.Provider;
+import org.jetbrains.annotations.Nullable;
+
+import static dagger.reflect.Reflection.findQualifier;
+import static dagger.reflect.Reflection.tryInvoke;
 
 interface Binding<T> extends Provider<T> {
+  Key[] NO_DEPENDENCIES = new Key[0];
+
   boolean isLinked();
   Key[] dependencies();
-  Binding<T> link(Binding<?>[] links);
+  Binding<T> link(Binding<?>[] dependencies);
 
   abstract class LinkedBinding<T> implements Binding<T> {
     @Override public final boolean isLinked() {
@@ -31,7 +40,7 @@ interface Binding<T> extends Provider<T> {
       throw new UnsupportedOperationException();
     }
 
-    @Override public final Binding<T> link(Binding<?>[] links) {
+    @Override public final Binding<T> link(Binding<?>[] dependencies) {
       throw new UnsupportedOperationException();
     }
   }
@@ -55,6 +64,76 @@ interface Binding<T> extends Provider<T> {
 
     @Override public T get() {
       return value;
+    }
+  }
+
+  final class UnlinkedBinds<T> extends UnlinkedBinding<T> {
+    private final Method method;
+
+    UnlinkedBinds(Method method) {
+      this.method = method;
+    }
+
+    @Override public Key[] dependencies() {
+      Type[] parameterTypes = method.getGenericParameterTypes();
+      if (parameterTypes.length != 1) {
+        throw new IllegalArgumentException(
+            "@Binds methods must have a single parameter: " + method);
+      }
+      Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+      Key dependency = Key.of(findQualifier(parameterAnnotations[0]), parameterTypes[0]);
+      return new Key[] { dependency };
+    }
+
+    @Override public Binding<T> link(Binding<?>[] dependencies) {
+      return (Binding<T>) dependencies[0];
+    }
+  }
+
+  final class UnlinkedProvides<T> extends UnlinkedBinding<T> {
+    private final @Nullable Object instance;
+    private final Method method;
+
+    UnlinkedProvides(@Nullable Object instance, Method method) {
+      this.instance = instance;
+      this.method = method;
+    }
+
+    @Override public Key[] dependencies() {
+      Type[] parameterTypes = method.getGenericParameterTypes();
+      if (parameterTypes.length == 0) {
+        return NO_DEPENDENCIES;
+      }
+      Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+      Key[] dependencies = new Key[parameterTypes.length];
+      for (int i = 0; i < parameterTypes.length; i++) {
+        dependencies[i] = Key.of(findQualifier(parameterAnnotations[i]), parameterTypes[i]);
+      }
+      return dependencies;
+    }
+
+    @Override public Binding<T> link(Binding<?>[] dependencies) {
+      return new LinkedProvides<>(instance, method, dependencies);
+    }
+  }
+
+  final class LinkedProvides<T> extends LinkedBinding<T> {
+    private final @Nullable Object instance;
+    private final Method method;
+    private final Binding<?>[] dependencies;
+
+    LinkedProvides(@Nullable Object instance, Method method, Binding<?>[] dependencies) {
+      this.instance = instance;
+      this.method = method;
+      this.dependencies = dependencies;
+    }
+
+    @Override public T get() {
+      Object[] arguments = new Object[dependencies.length];
+      for (int i = 0; i < arguments.length; i++) {
+        arguments[i] = dependencies[i].get();
+      }
+      return (T) tryInvoke(instance, method, arguments);
     }
   }
 }

@@ -16,6 +16,9 @@
 package dagger.reflect;
 
 import dagger.Component;
+import java.lang.annotation.Annotation;
+
+import static dagger.reflect.Reflection.findScope;
 
 public final class DaggerReflect {
   public static <C> C create(Class<C> componentClass) {
@@ -42,7 +45,16 @@ public final class DaggerReflect {
       throw new IllegalArgumentException(builder.toString());
     }
 
-    throw notImplemented("Component create");
+    Annotation scope = findScope(componentClass.getAnnotations());
+    if (scope != null) {
+      throw notImplemented("Scoped components");
+    }
+
+    BindingGraph.Builder graphBuilder = new BindingGraph.Builder();
+    for (Class<?> module : component.modules()) {
+      ReflectiveModuleParser.parse(module, null, graphBuilder);
+    }
+    return ComponentInvocationHandler.create(componentClass, graphBuilder.build());
   }
 
   public static <C, B> B builder(Class<C> componentClass, Class<B> builderClass) {

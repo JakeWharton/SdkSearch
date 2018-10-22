@@ -35,7 +35,7 @@ public final class BindingGraphTest {
       return dependencies;
     }
 
-    @Override public Binding<Object> link(Binding<?>[] links) {
+    @Override public Binding<Object> link(Binding<?>[] dependencies) {
       return new Instance<>(value);
     }
 

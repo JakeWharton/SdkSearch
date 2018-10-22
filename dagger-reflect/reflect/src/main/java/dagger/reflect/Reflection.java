@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.inject.Qualifier;
+import javax.inject.Scope;
 import org.jetbrains.annotations.Nullable;
 
 final class Reflection {
@@ -37,6 +38,20 @@ final class Reflection {
     return qualifier;
   }
 
+  static @Nullable Annotation findScope(Annotation[] annotations) {
+    Annotation scope = null;
+    for (Annotation annotation : annotations) {
+      if (annotation.annotationType().getAnnotation(Scope.class) != null) {
+        if (scope != null) {
+          throw new IllegalArgumentException(
+              "Multiple scope annotations: " + scope + " and " + annotation);
+        }
+        scope = annotation;
+      }
+    }
+    return scope;
+  }
+
   static void trySet(Object instance, Field field, Object value) {
     try {
       field.set(instance, value);
@@ -45,9 +60,9 @@ final class Reflection {
     }
   }
 
-  static void tryInvoke(Object instance, Method method, Object... arguments) {
+  static Object tryInvoke(Object instance, Method method, Object... arguments) {
     try {
-      method.invoke(instance, arguments);
+      return method.invoke(instance, arguments);
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Unable to invoke " + method + " on " + instance, e);
     } catch (InvocationTargetException e) {
