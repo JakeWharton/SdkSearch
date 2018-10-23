@@ -34,4 +34,9 @@ public final class IntegrationTest {
             .build();
     assertThat(component.string()).isEqualTo("foo");
   }
+
+  @Test public void justInTimeConstructor() {
+    JustInTimeConstructor component = frontend.create(JustInTimeConstructor.class);
+    assertThat(component.thing()).isNotNull();
+  }
 }

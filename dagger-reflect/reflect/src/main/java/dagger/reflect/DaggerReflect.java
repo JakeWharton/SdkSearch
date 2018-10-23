@@ -53,7 +53,9 @@ public final class DaggerReflect {
       throw notImplemented("Scoped components");
     }
 
-    BindingGraph.Builder graphBuilder = new BindingGraph.Builder();
+    BindingGraph.Builder graphBuilder = new BindingGraph.Builder()
+        .justInTimeProvider(new ReflectiveJustInTimeProvider());
+
     for (Class<?> module : component.modules()) {
       ReflectiveModuleParser.parse(module, null, graphBuilder);
     }
@@ -88,8 +90,11 @@ public final class DaggerReflect {
     Set<Class<?>> dependencies = new LinkedHashSet<>();
     Collections.addAll(dependencies, component.dependencies());
 
-    return ComponentBuilderInvocationHandler.create(componentClass, builderClass, modules,
-        dependencies);
+    BindingGraph.Builder graphBuilder = new BindingGraph.Builder()
+        .justInTimeProvider(new ReflectiveJustInTimeProvider());
+
+    return ComponentBuilderInvocationHandler.create(componentClass, builderClass, graphBuilder,
+        modules, dependencies);
   }
 
   static RuntimeException notImplemented(String feature) {

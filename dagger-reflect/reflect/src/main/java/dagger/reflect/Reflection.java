@@ -16,6 +16,7 @@
 package dagger.reflect;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -60,7 +61,7 @@ final class Reflection {
     try {
       field.set(instance, value);
     } catch (IllegalAccessException e) {
-      throw new RuntimeException("Unable to set " + value + " to " + field + " on " + instance, e);
+      throw new AssertionError("Unable to set " + value + " to " + field + " on " + instance, e);
     }
   }
 
@@ -72,12 +73,28 @@ final class Reflection {
     try {
       return method.invoke(instance, arguments);
     } catch (IllegalAccessException e) {
-      throw new RuntimeException("Unable to invoke " + method + " on " + instance, e);
+      throw new AssertionError("Unable to invoke " + method + " on " + instance, e);
     } catch (InvocationTargetException e) {
       Throwable cause = e.getCause();
       if (cause instanceof RuntimeException) throw (RuntimeException) cause;
       if (cause instanceof Error) throw (Error) cause;
       throw new RuntimeException("Unable to invoke " + method + " on " + instance, cause);
+    }
+  }
+
+  static <T> T tryInstantiate(Constructor<T> constructor, Object[] arguments) {
+    if ((constructor.getModifiers() & Modifier.PUBLIC) == 0) {
+      constructor.setAccessible(true);
+    }
+    try {
+      return constructor.newInstance(arguments);
+    } catch (InstantiationException | IllegalAccessException e) {
+      throw new AssertionError("Unable to invoke " + constructor, e);
+    } catch (InvocationTargetException e) {
+      Throwable cause = e.getCause();
+      if (cause instanceof RuntimeException) throw (RuntimeException) cause;
+      if (cause instanceof Error) throw (Error) cause;
+      throw new RuntimeException("Unable to invoke " + constructor, cause);
     }
   }
 
