@@ -71,12 +71,11 @@ final class ComponentBuilderInvocationHandler implements InvocationHandler {
       if (parameterTypes.length != 0) {
         throw new IllegalStateException(); // TODO must be no-arg
       }
-      // TODO try to create instances of any remaining missingModules
-      if (!missingModules.isEmpty()) {
-        throw new IllegalStateException(); // TODO missingModules must have provided instances
-      }
       if (!missingDependencies.isEmpty()) {
         throw new IllegalStateException(); // TODO missingDependencies must have provided instances
+      }
+      for (Class<?> missingModule : missingModules) {
+        ReflectiveModuleParser.parse(missingModule, null, graphBuilder);
       }
 
       return ComponentInvocationHandler.create(componentClass, graphBuilder.build());

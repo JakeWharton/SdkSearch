@@ -47,4 +47,13 @@ public final class IntegrationTest {
     JustInTimeConstructor component = frontend.create(JustInTimeConstructor.class);
     assertThat(component.thing()).isNotNull();
   }
+
+  @Test public void builderImplicitModules() {
+    BuilderImplicitModules component =
+        frontend.builder(BuilderImplicitModules.class, BuilderImplicitModules.Builder.class)
+            .value(3L)
+            .build();
+
+    assertThat(component.string()).isEqualTo("3");
+  }
 }
