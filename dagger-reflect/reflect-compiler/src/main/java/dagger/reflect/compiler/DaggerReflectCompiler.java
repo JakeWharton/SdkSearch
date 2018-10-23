@@ -35,6 +35,7 @@ import javax.lang.model.element.TypeElement;
 
 import static java.util.Collections.singleton;
 import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.element.Modifier.STATIC;
 import static javax.tools.Diagnostic.Kind.ERROR;
@@ -97,6 +98,10 @@ public final class DaggerReflectCompiler extends AbstractProcessor {
   private static TypeSpec createComponent(ClassName component, ClassName builder) {
     TypeSpec.Builder type = TypeSpec.classBuilder("Dagger" + component.simpleName())
         .addModifiers(FINAL)
+        .addMethod(MethodSpec.constructorBuilder()
+            .addModifiers(PRIVATE)
+            .addStatement("throw new $T()", AssertionError.class)
+            .build())
         .addMethod(MethodSpec.methodBuilder("create")
             .addModifiers(PUBLIC, STATIC)
             .returns(component)
