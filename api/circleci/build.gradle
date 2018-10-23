@@ -23,5 +23,10 @@ dependencies {
   implementation deps.retrofit.converterMoshi
 
   implementation deps.dagger.runtime
-  kapt deps.dagger.compiler
+  if (useDaggerReflect()) {
+    implementation project(':dagger-reflect:reflect')
+    kapt project(':dagger-reflect:reflect-compiler')
+  } else {
+    kapt deps.dagger.compiler
+  }
 }
