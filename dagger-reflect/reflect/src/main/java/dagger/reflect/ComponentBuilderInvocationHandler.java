@@ -22,14 +22,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static dagger.reflect.DaggerReflect.notImplemented;
 import static dagger.reflect.Reflection.findQualifier;
 
 final class ComponentBuilderInvocationHandler implements InvocationHandler {
-  static <T> T create(Class<?> componentClass, Class<T> builderClass, Set<Class<?>> modules) {
+  static <T> T create(Class<?> componentClass, Class<T> builderClass, Set<Class<?>> modules,
+      Set<Class<?>> dependencies) {
     if ((componentClass.getModifiers() & Modifier.PUBLIC) == 0) {
       // Instances of proxies cannot create another proxy instance where the second interface is
       // not public. This prevents proxies of builders from creating proxies of the component.
@@ -39,21 +39,22 @@ final class ComponentBuilderInvocationHandler implements InvocationHandler {
     }
     return builderClass.cast(
         Proxy.newProxyInstance(builderClass.getClassLoader(), new Class[] { builderClass },
-            new ComponentBuilderInvocationHandler(componentClass, builderClass, modules)));
+            new ComponentBuilderInvocationHandler(componentClass, builderClass, modules,
+                dependencies)));
   }
 
   private final Class<?> componentClass;
   private final Class<?> builderClass;
   private final Set<Class<?>> missingModules;
+  private final Set<Class<?>> missingDependencies;
   private final BindingGraph.Builder graphBuilder = new BindingGraph.Builder();
 
-  ComponentBuilderInvocationHandler(
-      Class<?> componentClass,
-      Class<?> builderClass,
-      Set<Class<?>> missingModules) {
+  private ComponentBuilderInvocationHandler(Class<?> componentClass, Class<?> builderClass,
+      Set<Class<?>> missingModules, Set<Class<?>> missingDependencies) {
     this.componentClass = componentClass;
     this.builderClass = builderClass;
-    this.missingModules = new LinkedHashSet<>(missingModules);
+    this.missingModules = missingModules;
+    this.missingDependencies = missingDependencies;
   }
 
   @Override public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -73,9 +74,11 @@ final class ComponentBuilderInvocationHandler implements InvocationHandler {
       if (!missingModules.isEmpty()) {
         throw new IllegalStateException(); // TODO missingModules must have provided instances
       }
+      if (!missingDependencies.isEmpty()) {
+        throw new IllegalStateException(); // TODO missingDependencies must have provided instances
+      }
 
-      BindingGraph graph = graphBuilder.build();
-      return ComponentInvocationHandler.create(componentClass, graph);
+      return ComponentInvocationHandler.create(componentClass, graphBuilder.build());
     }
 
     if (returnType.equals(builderClass)) {

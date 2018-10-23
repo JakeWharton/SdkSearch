@@ -13,38 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dagger.reflect;
+package dagger;
 
-import dagger.Component;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-public final class DaggerReflectTest {
+public final class DaggerTest {
   @Component abstract static class AbstractClass {
     @Component.Builder interface Builder {}
   }
 
   @Test public void abstractClassCreateFails() {
     try {
-      DaggerReflect.create(AbstractClass.class);
+      Dagger.create(AbstractClass.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
-          .isEqualTo("dagger.reflect.DaggerReflectTest.AbstractClass is not an interface. "
+          .isEqualTo("dagger.DaggerTest.AbstractClass is not an interface. "
               + "Only interface components are supported.");
     }
   }
 
   @Test public void abstractClassBuilderFails() {
     try {
-      DaggerReflect.builder(AbstractClass.class, AbstractClass.Builder.class);
+      Dagger.builder(AbstractClass.class, AbstractClass.Builder.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
-          .isEqualTo("dagger.reflect.DaggerReflectTest.AbstractClass is not an interface. "
+          .isEqualTo("dagger.DaggerTest.AbstractClass is not an interface. "
               + "Only interface components are supported.");
     }
   }
@@ -55,21 +54,21 @@ public final class DaggerReflectTest {
 
   @Test public void noComponentAnnotationCreateFails() {
     try {
-      DaggerReflect.create(NoAnnotation.class);
+      Dagger.create(NoAnnotation.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
-          .isEqualTo("dagger.reflect.DaggerReflectTest.NoAnnotation lacks @Component annotation");
+          .isEqualTo("dagger.DaggerTest.NoAnnotation lacks @Component annotation");
     }
   }
 
   @Test public void noComponentAnnotationBuilderFails() {
     try {
-      DaggerReflect.builder(NoAnnotation.class, NoAnnotation.Builder.class);
+      Dagger.builder(NoAnnotation.class, NoAnnotation.Builder.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
-          .isEqualTo("dagger.reflect.DaggerReflectTest.NoAnnotation lacks @Component annotation");
+          .isEqualTo("dagger.DaggerTest.NoAnnotation lacks @Component annotation");
     }
   }
 
@@ -80,12 +79,12 @@ public final class DaggerReflectTest {
 
   @Test public void abstractBuilderClassFails() {
     try {
-      DaggerReflect.builder(AbstractBuilderClass.class, AbstractBuilderClass.Builder.class);
+      Dagger.builder(AbstractBuilderClass.class, AbstractBuilderClass.Builder.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
-          .isEqualTo("dagger.reflect.DaggerReflectTest.AbstractBuilderClass.Builder is not an "
-              + "interface. Only interface component builders are supported.");
+          .isEqualTo("dagger.DaggerTest.AbstractBuilderClass.Builder is not an interface. "
+              + "Only interface component builders are supported.");
     }
   }
 
@@ -97,11 +96,11 @@ public final class DaggerReflectTest {
   @Ignore("@Component.Builder does not have runtime retention")
   @Test public void noComponentBuilderAnnotationFails() {
     try {
-      DaggerReflect.builder(NoBuilderAnnotation.class, NoBuilderAnnotation.Builder.class);
+      Dagger.builder(NoBuilderAnnotation.class, NoBuilderAnnotation.Builder.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
-          .isEqualTo("dagger.reflect.DaggerReflectTest.NoBuilderAnnotation.Builder lacks "
+          .isEqualTo("dagger.DaggerTest.NoBuilderAnnotation.Builder lacks "
               + "@Component.Builder annotation");
     }
   }
@@ -111,13 +110,30 @@ public final class DaggerReflectTest {
 
   @Test public void componentWithDependenciesCreateFails() {
     try {
-      DaggerReflect.create(ComponentWithDependencies.class);
+      Dagger.create(ComponentWithDependencies.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
-          .isEqualTo("dagger.reflect.DaggerReflectTest.ComponentWithDependencies "
+          .isEqualTo("dagger.DaggerTest.ComponentWithDependencies "
               + "declares dependencies [java.lang.String, java.lang.Runnable] "
               + "and therefore must be created with a builder");
+    }
+  }
+
+  @Component
+  interface PackagePrivateComponent {
+    @Component.Builder
+    interface Builder {}
+  }
+
+  @Test public void packagePrivateComponentFails() {
+    try {
+      Dagger.builder(PackagePrivateComponent.class, PackagePrivateComponent.Builder.class);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertThat(e).hasMessageThat()
+          .isEqualTo("Component interface dagger.DaggerTest$PackagePrivateComponent "
+              + "must be public in order to be reflectively created");
     }
   }
 }

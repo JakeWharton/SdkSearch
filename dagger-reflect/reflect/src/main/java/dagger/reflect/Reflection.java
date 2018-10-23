@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import javax.inject.Qualifier;
 import javax.inject.Scope;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +53,10 @@ final class Reflection {
     return scope;
   }
 
-  static void trySet(Object instance, Field field, Object value) {
+  static void trySet(@Nullable Object instance, Field field, Object value) {
+    if ((field.getModifiers() & Modifier.PUBLIC) == 0) {
+      field.setAccessible(true);
+    }
     try {
       field.set(instance, value);
     } catch (IllegalAccessException e) {
@@ -60,7 +64,11 @@ final class Reflection {
     }
   }
 
-  static Object tryInvoke(Object instance, Method method, Object... arguments) {
+  @Nullable
+  static Object tryInvoke(@Nullable Object instance, Method method, Object... arguments) {
+    if ((method.getModifiers() & Modifier.PUBLIC) == 0) {
+      method.setAccessible(true);
+    }
     try {
       return method.invoke(instance, arguments);
     } catch (IllegalAccessException e) {

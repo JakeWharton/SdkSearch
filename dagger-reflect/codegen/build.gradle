@@ -1,0 +1,8 @@
+apply plugin: 'java-library'
+
+dependencies {
+  testImplementation deps.junit
+  testImplementation deps.truth
+  testImplementation deps.dagger.runtime
+  testAnnotationProcessor deps.dagger.compiler
+}

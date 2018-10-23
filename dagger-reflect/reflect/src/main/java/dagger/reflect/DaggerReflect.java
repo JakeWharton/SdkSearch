@@ -17,6 +17,9 @@ package dagger.reflect;
 
 import dagger.Component;
 import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static dagger.reflect.Reflection.findScope;
 
@@ -79,7 +82,14 @@ public final class DaggerReflect {
     //      builderClass.getName() + " lacks @Component.Builder annotation");
     //}
 
-    throw notImplemented("Component builder");
+    Set<Class<?>> modules = new LinkedHashSet<>();
+    Collections.addAll(modules, component.modules());
+
+    Set<Class<?>> dependencies = new LinkedHashSet<>();
+    Collections.addAll(dependencies, component.dependencies());
+
+    return ComponentBuilderInvocationHandler.create(componentClass, builderClass, modules,
+        dependencies);
   }
 
   static RuntimeException notImplemented(String feature) {
