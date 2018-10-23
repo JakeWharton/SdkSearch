@@ -35,6 +35,14 @@ public final class IntegrationTest {
     assertThat(component.string()).isEqualTo("foo");
   }
 
+  @Test public void bindsInstanceNull() {
+    InstanceBindingNull component =
+        frontend.builder(InstanceBindingNull.class, InstanceBindingNull.Builder.class)
+            .string(null)
+            .build();
+    assertThat(component.string()).isNull();
+  }
+
   @Test public void justInTimeConstructor() {
     JustInTimeConstructor component = frontend.create(JustInTimeConstructor.class);
     assertThat(component.thing()).isNotNull();

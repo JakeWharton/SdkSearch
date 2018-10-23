@@ -2,6 +2,7 @@ apply plugin: 'java-library'
 
 dependencies {
   implementation deps.dagger.runtime
+  implementation deps.jetbrainsAnnotations
   annotationProcessor deps.dagger.compiler
 
   testImplementation deps.junit

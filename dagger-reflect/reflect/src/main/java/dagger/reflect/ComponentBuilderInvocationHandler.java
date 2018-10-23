@@ -24,7 +24,6 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.Set;
 
-import static dagger.reflect.DaggerReflect.notImplemented;
 import static dagger.reflect.Reflection.findQualifier;
 
 final class ComponentBuilderInvocationHandler implements InvocationHandler {
@@ -90,10 +89,10 @@ final class ComponentBuilderInvocationHandler implements InvocationHandler {
         }
         Key key = Key.of(findQualifier(parameterAnnotations[0]), parameterTypes[0]);
         Object instance = args[0];
-        if (instance == null) {
-          // TODO check for nullable annotation
-          throw notImplemented("Nullable @BindsInstance");
-        }
+        // TODO most nullable annotations don't have runtime retention. so maybe just always allow?
+        //if (instance == null && !hasNullable(parameterAnnotations[0])) {
+        //  throw new NullPointerException(); // TODO message
+        //}
         graphBuilder.add(key, new Binding.Instance<>(instance));
       } else {
         throw new IllegalStateException(method.toString()); // TODO report unsupported builder shape
