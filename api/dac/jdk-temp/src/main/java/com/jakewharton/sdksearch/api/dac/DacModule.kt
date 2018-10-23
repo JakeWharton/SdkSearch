@@ -4,7 +4,6 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.stringBased
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 import kotlinx.serialization.json.JSON
 import okhttp3.HttpUrl
 import okhttp3.MediaType
@@ -15,7 +14,6 @@ import retrofit2.Retrofit
 internal object DacModule {
   @JvmStatic
   @Provides
-  @Singleton
   fun documentationService(baseUrl: HttpUrl, client: OkHttpClient): DocumentationService {
     val contentType = MediaType.get("application/json; charset=utf-8")
     val json = JSON.nonstrict

@@ -4,9 +4,7 @@ import dagger.BindsInstance
 import dagger.Component
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
-import javax.inject.Singleton
 
-@Singleton
 @Component(modules = [
   DacModule::class
 ])
