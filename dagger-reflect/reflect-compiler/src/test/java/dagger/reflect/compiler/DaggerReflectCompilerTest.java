@@ -87,7 +87,7 @@ public final class DaggerReflectCompilerTest {
         + "  }\n"
         + "\n"
         + "  public static TestComponent.Builder builder() {\n"
-        + "    return DaggerReflect.builder(TestComponent.class, TestComponent.Builder.class);\n"
+        + "    return DaggerReflect.builder(TestComponent.Builder.class);\n"
         + "  }\n"
         + "}\n"
     );

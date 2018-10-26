@@ -9,8 +9,8 @@ enum Frontend {
       return DaggerReflect.create(componentClass);
     }
 
-    @Override <C, B> B builder(Class<C> componentClass, Class<B> builderClass) {
-      return DaggerReflect.builder(componentClass, builderClass);
+    @Override <B> B builder(Class<B> builderClass) {
+      return DaggerReflect.builder(builderClass);
     }
   },
   CODEGEN {
@@ -18,11 +18,11 @@ enum Frontend {
       return DaggerCodegen.create(componentClass);
     }
 
-    @Override <C, B> B builder(Class<C> componentClass, Class<B> builderClass) {
-      return DaggerCodegen.builder(componentClass, builderClass);
+    @Override <B> B builder(Class<B> builderClass) {
+      return DaggerCodegen.builder(builderClass);
     }
   };
 
   abstract <C> C create(Class<C> componentClass);
-  abstract <C, B> B builder(Class<C> componentClass, Class<B> builderClass);
+  abstract <B> B builder(Class<B> builderClass);
 }

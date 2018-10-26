@@ -62,14 +62,19 @@ public final class DaggerReflect {
     return ComponentInvocationHandler.create(componentClass, graphBuilder.build());
   }
 
-  public static <C, B> B builder(Class<C> componentClass, Class<B> builderClass) {
-    if (!componentClass.isInterface()) {
-      throw new IllegalArgumentException(componentClass.getCanonicalName()
-          + " is not an interface. Only interface components are supported.");
-    }
+  public static <B> B builder(Class<B> builderClass) {
     if (!builderClass.isInterface()) {
       throw new IllegalArgumentException(builderClass.getCanonicalName()
           + " is not an interface. Only interface component builders are supported.");
+    }
+    Class<?> componentClass = builderClass.getEnclosingClass();
+    if (componentClass == null) {
+      throw new IllegalArgumentException(builderClass.getCanonicalName()
+          + " is not a nested type inside of a component interface.");
+    }
+    if (!componentClass.isInterface()) {
+      throw new IllegalArgumentException(componentClass.getCanonicalName()
+          + " is not an interface. Only interface components are supported.");
     }
 
     Component component = componentClass.getAnnotation(Component.class);

@@ -111,7 +111,7 @@ public final class DaggerReflectCompiler extends AbstractProcessor {
       type.addMethod(MethodSpec.methodBuilder("builder")
           .addModifiers(PUBLIC, STATIC)
           .returns(builder)
-          .addStatement("return $T.builder($T.class, $T.class)", DAGGER_REFLECT, component, builder)
+          .addStatement("return $T.builder($T.class)", DAGGER_REFLECT, builder)
           .build());
     }
     return type.build();

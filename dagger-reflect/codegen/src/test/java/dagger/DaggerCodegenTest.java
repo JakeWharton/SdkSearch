@@ -15,7 +15,6 @@
  */
 package dagger;
 
-import dagger.internal.DaggerCodegen;
 import org.junit.Test;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -26,8 +25,7 @@ public final class DaggerCodegenTest {
   }
 
   @Test public void builder() {
-    BuilderComponent.Builder actual =
-        Dagger.builder(BuilderComponent.class, BuilderComponent.Builder.class);
+    BuilderComponent.Builder actual = Dagger.builder(BuilderComponent.Builder.class);
     assertThat(actual).isInstanceOf(DaggerBuilderComponent.builder().getClass());
   }
 }

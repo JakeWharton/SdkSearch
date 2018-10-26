@@ -39,7 +39,7 @@ public final class DaggerTest {
 
   @Test public void abstractClassBuilderFails() {
     try {
-      Dagger.builder(AbstractClass.class, AbstractClass.Builder.class);
+      Dagger.builder(AbstractClass.Builder.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
@@ -64,7 +64,7 @@ public final class DaggerTest {
 
   @Test public void noComponentAnnotationBuilderFails() {
     try {
-      Dagger.builder(NoAnnotation.class, NoAnnotation.Builder.class);
+      Dagger.builder(NoAnnotation.Builder.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
@@ -79,7 +79,7 @@ public final class DaggerTest {
 
   @Test public void abstractBuilderClassFails() {
     try {
-      Dagger.builder(AbstractBuilderClass.class, AbstractBuilderClass.Builder.class);
+      Dagger.builder(AbstractBuilderClass.Builder.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
@@ -96,7 +96,7 @@ public final class DaggerTest {
   @Ignore("@Component.Builder does not have runtime retention")
   @Test public void noComponentBuilderAnnotationFails() {
     try {
-      Dagger.builder(NoBuilderAnnotation.class, NoBuilderAnnotation.Builder.class);
+      Dagger.builder(NoBuilderAnnotation.Builder.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()
@@ -128,7 +128,7 @@ public final class DaggerTest {
 
   @Test public void packagePrivateComponentFails() {
     try {
-      Dagger.builder(PackagePrivateComponent.class, PackagePrivateComponent.Builder.class);
+      Dagger.builder(PackagePrivateComponent.Builder.class);
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat()

@@ -22,8 +22,8 @@ public final class Dagger {
     return DaggerCodegen.create(componentClass);
   }
 
-  public static <C, B> B builder(Class<C> componentClass, Class<B> builderClass) {
-    return DaggerCodegen.builder(componentClass, builderClass);
+  public static <B> B builder(Class<B> builderClass) {
+    return DaggerCodegen.builder(builderClass);
   }
 
   private Dagger() {
