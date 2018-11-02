@@ -43,10 +43,12 @@ final class ReflectiveMembersInjector<T> implements MembersInjector<T> {
           continue;
         }
         if ((field.getModifiers() & Modifier.PRIVATE) != 0) {
-          throw new IllegalArgumentException(); // TODO report can't be private
+          throw new IllegalArgumentException("Dagger does not support injection into private fields: "
+                  + target.getCanonicalName() + "." + field.getName());
         }
         if ((field.getModifiers() & Modifier.STATIC) != 0) {
-          throw new IllegalArgumentException(); // TODO report can't be static
+          throw new IllegalArgumentException("Dagger does not support injection into static fields: "
+                  + target.getCanonicalName() + "." + field.getName());
         }
 
         Key key = Key.of(findQualifier(field.getDeclaredAnnotations()), field.getGenericType());
@@ -59,14 +61,17 @@ final class ReflectiveMembersInjector<T> implements MembersInjector<T> {
           continue;
         }
         if ((method.getModifiers() & Modifier.PRIVATE) != 0) {
-          throw new IllegalArgumentException(); // TODO report can't be private
+          throw new IllegalArgumentException("Dagger does not support injection into private methods: "
+                  + target.getCanonicalName() + "." + method.getName() + "()");
         }
         if ((method.getModifiers() & Modifier.STATIC) != 0) {
-          throw new IllegalArgumentException(); // TODO report can't be static
+          throw new IllegalArgumentException("Dagger does not support injection into static methods: "
+                  + target.getCanonicalName() + "." + method.getName() + "()");
         }
 
         Type[] parameterTypes = method.getGenericParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        @SuppressWarnings("rawtypes")
         Binding<?>[] bindings = new Binding[parameterTypes.length];
         for (int i = 0; i < parameterTypes.length; i++) {
           Key key = Key.of(findQualifier(parameterAnnotations[i]), parameterTypes[i]);
