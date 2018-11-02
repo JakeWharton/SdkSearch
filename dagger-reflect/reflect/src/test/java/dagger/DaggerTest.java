@@ -23,7 +23,9 @@ import static org.junit.Assert.fail;
 
 public final class DaggerTest {
   @Component abstract static class AbstractClass {
-    @Component.Builder interface Builder {}
+    @Component.Builder interface Builder {
+      AbstractClass build();
+    }
   }
 
   @Test public void abstractClassCreateFails() {
@@ -49,7 +51,10 @@ public final class DaggerTest {
   }
 
   interface NoAnnotation {
-    @Component.Builder interface Builder {}
+    // [dagger-compiler] error: @Component.Builder types must be nested within a @Component
+    @Component.Builder interface Builder {
+      NoAnnotation build();
+    }
   }
 
   @Test public void noComponentAnnotationCreateFails() {
@@ -123,7 +128,9 @@ public final class DaggerTest {
   @Component
   interface PackagePrivateComponent {
     @Component.Builder
-    interface Builder {}
+    interface Builder {
+      PackagePrivateComponent build();
+    }
   }
 
   @Test public void packagePrivateComponentFails() {
