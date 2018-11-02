@@ -27,7 +27,8 @@ import static org.junit.Assert.fail;
 @SuppressWarnings("ALL") // Unused fields/parameters and over-specified visibility for testing.
 public final class ReflectiveMembersInjectorTest {
   private static class PrivateField {
-    @Inject private String field;
+    // [dagger-compiler] error: Dagger does not support injection into private fields
+    @Inject private String privateField;
   }
 
   @Test public void privateFieldFails() {
@@ -36,12 +37,15 @@ public final class ReflectiveMembersInjectorTest {
       ReflectiveMembersInjector.create(PrivateField.class, graph);
       fail();
     } catch (IllegalArgumentException e) {
-      // TODO assert message
+      assertThat(e).hasMessageThat().startsWith("Dagger does not support injection into private fields");
+      assertThat(e).hasMessageThat().contains(PrivateField.class.getCanonicalName());
+      assertThat(e).hasMessageThat().contains("privateField");
     }
   }
 
   private static class StaticField {
-    @Inject static String field;
+    // [dagger-compiler] error: Dagger does not support injection into static fields
+    @Inject static String staticField;
   }
 
   @Test public void staticFieldFails() {
@@ -50,7 +54,9 @@ public final class ReflectiveMembersInjectorTest {
       ReflectiveMembersInjector.create(StaticField.class, graph);
       fail();
     } catch (IllegalArgumentException e) {
-      // TODO assert message
+      assertThat(e).hasMessageThat().startsWith("Dagger does not support injection into static fields");
+      assertThat(e).hasMessageThat().contains(StaticField.class.getCanonicalName());
+      assertThat(e).hasMessageThat().contains("staticField");
     }
   }
 
@@ -91,7 +97,8 @@ public final class ReflectiveMembersInjectorTest {
   }
 
   private static class PrivateMethod {
-    @Inject private void one(String one) {}
+    // [dagger-compiler] error: Dagger does not support injection into private methods
+    @Inject private void privateMethod(String one) {}
   }
 
   @Test public void privateMethodFails() {
@@ -100,12 +107,15 @@ public final class ReflectiveMembersInjectorTest {
       ReflectiveMembersInjector.create(PrivateMethod.class, graph);
       fail();
     } catch (IllegalArgumentException e) {
-      // TODO assert message
+      assertThat(e).hasMessageThat().startsWith("Dagger does not support injection into private methods");
+      assertThat(e).hasMessageThat().contains(PrivateMethod.class.getCanonicalName());
+      assertThat(e).hasMessageThat().contains("privateMethod()");
     }
   }
 
   private static class StaticMethod {
-    @Inject static void one(String one) {}
+    // [dagger-compiler] error: Dagger does not support injection into static methods
+    @Inject static void staticMethod(String one) {}
   }
 
   @Test public void staticMethodFails() {
@@ -114,7 +124,9 @@ public final class ReflectiveMembersInjectorTest {
       ReflectiveMembersInjector.create(StaticMethod.class, graph);
       fail();
     } catch (IllegalArgumentException e) {
-      // TODO assert message
+      assertThat(e).hasMessageThat().startsWith("Dagger does not support injection into static methods");
+      assertThat(e).hasMessageThat().contains(StaticMethod.class.getCanonicalName());
+      assertThat(e).hasMessageThat().contains("staticMethod()");
     }
   }
 
