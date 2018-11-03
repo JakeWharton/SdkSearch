@@ -31,8 +31,6 @@ import static dagger.reflect.Reflection.trySet;
 
 final class ReflectiveMembersInjector<T> implements MembersInjector<T> {
   static <T> MembersInjector<T> create(Class<T> cls, BindingGraph graph) {
-    // TODO throw if interface?
-
     Map<Field, Binding<?>> fieldBindings = new LinkedHashMap<>();
     Map<Method, Binding<?>[]> methodBindings = new LinkedHashMap<>();
 
@@ -63,6 +61,10 @@ final class ReflectiveMembersInjector<T> implements MembersInjector<T> {
         }
         if ((method.getModifiers() & Modifier.STATIC) != 0) {
           throw new IllegalArgumentException(); // TODO report can't be static
+        }
+        if ((method.getModifiers() & Modifier.ABSTRACT) != 0) {
+          throw new IllegalArgumentException("Methods with @Inject may not be abstract: "
+              + target.getCanonicalName() + "." + method.getName() + "()");
         }
 
         Type[] parameterTypes = method.getGenericParameterTypes();

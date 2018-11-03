@@ -249,4 +249,38 @@ public final class ReflectiveMembersInjectorTest {
     assertThat(instance.baseCalled).isTrue();
     assertThat(instance.subtypeCalled).isTrue();
   }
+
+  private static interface Interface {
+    // [dagger-compile] Methods with @Inject may not be abstract
+    @Inject void interfaceMethod(String one);
+  }
+
+  @Test public void interfaceInjectionFails() {
+    BindingGraph graph = new BindingGraph.Builder().build();
+    try {
+      ReflectiveMembersInjector.create(Interface.class, graph);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertThat(e).hasMessageThat().startsWith("Methods with @Inject may not be abstract");
+      assertThat(e).hasMessageThat().contains(Interface.class.getCanonicalName());
+      assertThat(e).hasMessageThat().contains("interfaceMethod");
+    }
+  }
+
+  private static abstract class Abstract {
+    // [dagger-compile] Methods with @Inject may not be abstract
+    @Inject abstract void abstractMethod(String one);
+  }
+
+  @Test public void abstractInjectionFails() {
+    BindingGraph graph = new BindingGraph.Builder().build();
+    try {
+      ReflectiveMembersInjector.create(Abstract.class, graph);
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertThat(e).hasMessageThat().startsWith("Methods with @Inject may not be abstract");
+      assertThat(e).hasMessageThat().contains(Abstract.class.getCanonicalName());
+      assertThat(e).hasMessageThat().contains("abstractMethod");
+    }
+  }
 }
