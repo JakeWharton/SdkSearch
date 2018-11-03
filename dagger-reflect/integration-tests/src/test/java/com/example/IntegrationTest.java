@@ -53,4 +53,10 @@ public final class IntegrationTest {
 
     assertThat(component.string()).isEqualTo("3");
   }
+
+  @Test public void intoSet() {
+    CollectIntoSet component = frontend.create(CollectIntoSet.class);
+    assertThat(component.set())
+        .containsExactly("providesStatic", "providesInstance", "providesNamed");
+  }
 }
