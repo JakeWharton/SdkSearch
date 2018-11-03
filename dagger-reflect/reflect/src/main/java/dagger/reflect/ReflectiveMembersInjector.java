@@ -68,6 +68,10 @@ final class ReflectiveMembersInjector<T> implements MembersInjector<T> {
           throw new IllegalArgumentException("Dagger does not support injection into static methods: "
                   + target.getCanonicalName() + "." + method.getName() + "()");
         }
+        if ((method.getModifiers() & Modifier.ABSTRACT) != 0) {
+          throw new IllegalArgumentException("Methods with @Inject may not be abstract: "
+              + target.getCanonicalName() + "." + method.getName() + "()");
+        }
 
         Type[] parameterTypes = method.getGenericParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
