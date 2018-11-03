@@ -1,5 +1,7 @@
 package dagger.reflect;
 
+import com.google.common.reflect.TypeParameter;
+import com.google.common.reflect.TypeToken;
 import dagger.Binds;
 import dagger.BindsOptionalOf;
 import dagger.Provides;
@@ -9,6 +11,7 @@ import dagger.multibindings.IntoSet;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 
 import static dagger.reflect.DaggerReflect.notImplemented;
@@ -29,6 +32,8 @@ final class ReflectiveModuleParser {
         }
 
         Binding<?> binding;
+        Type type = method.getGenericReturnType();
+
         if ((method.getModifiers() & ABSTRACT) != 0) {
           if (method.getAnnotation(Binds.class) != null) {
             binding = new Binding.UnlinkedBinds(method);
@@ -51,7 +56,8 @@ final class ReflectiveModuleParser {
         }
 
         if (method.getAnnotation(IntoSet.class) != null) {
-          throw notImplemented("@IntoSet");
+          type = setOf(TypeToken.of(type)).getType();
+          binding = new Binding.UnlinkedIntoSet(binding);
         }
         if (method.getAnnotation(ElementsIntoSet.class) != null) {
           throw notImplemented("@ElementsIntoSet");
@@ -61,8 +67,7 @@ final class ReflectiveModuleParser {
         }
 
         Annotation[] annotations = method.getAnnotations();
-        Type returnType = method.getGenericReturnType();
-        Key key = Key.of(findQualifier(annotations), returnType);
+        Key key = Key.of(findQualifier(annotations), type);
 
         Annotation scope = findScope(annotations);
         if (scope != null) {
@@ -74,5 +79,11 @@ final class ReflectiveModuleParser {
       }
       target = target.getSuperclass();
     }
+  }
+
+  @SuppressWarnings("UnstableApiUsage") // TODO replace with something more lightweight
+  static <E> TypeToken<Set<E>> setOf(TypeToken<E> elementType) {
+    return new TypeToken<Set<E>>() {}
+        .where(new TypeParameter<E>() {}, elementType);
   }
 }

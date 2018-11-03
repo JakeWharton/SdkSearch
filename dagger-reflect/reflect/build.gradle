@@ -11,4 +11,5 @@ dependencies {
   testImplementation deps.truth
 
   testAnnotationProcessor deps.auto.value.compiler
+  compile group: 'com.google.guava', name: 'guava', version: '27.0-android'
 }
