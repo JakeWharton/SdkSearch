@@ -197,12 +197,73 @@ public final class ReflectiveMembersInjectorTest {
     assertThat(instance.count).isEqualTo(3);
   }
 
+  static abstract class InjectionOrderBase {
+    @Inject String baseField; // 1
+    boolean baseCalled;
+
+    @Inject void baseMethod(String baseParam) { // 2
+      assertThat(baseParam).isEqualTo("one");
+      assertThat(baseField).isEqualTo("one");
+      //--- injection progress
+      assertThat(baseCalled).isFalse();
+      baseCalled = true;
+      assertThat(subField()).isNull();
+      assertThat(subCalled()).isFalse();
+    }
+
+    abstract String subField();
+    abstract boolean subCalled();
+  }
+  static class InjectionOrder extends InjectionOrderBase {
+    @Inject String subField; // 3
+
+    @Inject InjectionOrder() { // 0
+      //--- injection progress
+      assertThat(subField).isNull();
+      assertThat(subCalled).isFalse();
+      assertThat(baseField).isNull();
+      assertThat(baseCalled).isFalse();
+    }
+
+    boolean subCalled;
+    @Inject void subMethod(String subParam) { // 4
+      assertThat(subParam).isEqualTo("one");
+      assertThat(baseField).isEqualTo("one");
+      assertThat(baseCalled).isTrue();
+      assertThat(subField).isEqualTo("one");
+      //--- injection progress
+      assertThat(subCalled).isFalse();
+      subCalled = true;
+    }
+    @Override String subField() { return subField; }
+    @Override boolean subCalled() { return subCalled; }
+  }
+
+  /**
+   * [@Inject] Constructors are injected first, followed by fields, and then methods.
+   * Fields and methods in superclasses are injected before those in subclasses.
+   */
+  @Test public void injectionOrder() {
+    BindingGraph graph = new BindingGraph.Builder()
+        .add(Key.of(null, String.class), new Binding.Instance<>("one"))
+        .build();
+    MembersInjector<InjectionOrder> injector =
+        ReflectiveMembersInjector.create(InjectionOrder.class, graph);
+    InjectionOrder instance = new InjectionOrder();
+    injector.injectMembers(instance);
+    assertThat(instance.baseField).isEqualTo("one");
+    assertThat(instance.baseCalled).isTrue();
+    assertThat(instance.subField).isEqualTo("one");
+    assertThat(instance.subCalled).isTrue();
+    //--- injection progress
+  }
+
   private static class FieldsBeforeMethods {
     @Inject String one;
     boolean called;
 
     @Inject void one(String one) {
-      assertThat(one).isEqualTo("one");
+      assertThat(this.one).isEqualTo("one");
       called = true;
     }
   }
