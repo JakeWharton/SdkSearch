@@ -17,10 +17,22 @@ package dagger.reflect;
 
 import com.google.auto.value.AutoAnnotation;
 import javax.inject.Named;
+import javax.inject.Singleton;
+import org.junit.Test;
 
 final class Annotations {
   @AutoAnnotation
   static Named named(String value) {
     return new AutoAnnotation_Annotations_named(value);
+  }
+
+  @AutoAnnotation
+  static Singleton singleton() {
+    return new AutoAnnotation_Annotations_singleton();
+  }
+
+  @AutoAnnotation
+  static Test test() {
+    return new AutoAnnotation_Annotations_test();
   }
 }
