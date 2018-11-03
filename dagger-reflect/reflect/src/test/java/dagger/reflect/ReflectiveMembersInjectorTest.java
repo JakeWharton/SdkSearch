@@ -75,6 +75,55 @@ public final class ReflectiveMembersInjectorTest {
     assertThat(instance.three).isEqualTo(3);
   }
 
+  private static class EmptyClass {}
+
+  @Test public void emptyInjection() {
+    BindingGraph graph = new BindingGraph.Builder().build();
+    MembersInjector<EmptyClass> injector =
+        ReflectiveMembersInjector.create(EmptyClass.class, graph);
+    EmptyClass instance = new EmptyClass();
+
+    injector.injectMembers(instance);
+
+    // no state, nothing to verify, except it didn't throw
+  }
+
+  private static class NoInjectsClass {
+    protected String one;
+    Long two;
+    public int three;
+
+    private int count = 0;
+    public void one(String one) {
+      count++;
+    }
+    Long two(Long two) {
+      count++;
+      return two;
+    }
+    private void three(int three) {
+      count++;
+    }
+  }
+
+  @Test public void noInjection() {
+    BindingGraph graph = new BindingGraph.Builder()
+        .add(Key.of(null, String.class), new Binding.Instance<>("one"))
+        .add(Key.of(null, Long.class), new Binding.Instance<>(2L))
+        .add(Key.of(null, int.class), new Binding.Instance<>(3))
+        .build();
+    MembersInjector<NoInjectsClass> injector =
+        ReflectiveMembersInjector.create(NoInjectsClass.class, graph);
+    NoInjectsClass instance = new NoInjectsClass();
+
+    injector.injectMembers(instance);
+
+    assertThat(instance.one).isEqualTo(null);
+    assertThat(instance.two).isEqualTo(null);
+    assertThat(instance.three).isEqualTo(0);
+    assertThat(instance.count).isEqualTo(0);
+  }
+
   private static class FieldQualifier {
     @Inject @Named("tres") Long three;
   }

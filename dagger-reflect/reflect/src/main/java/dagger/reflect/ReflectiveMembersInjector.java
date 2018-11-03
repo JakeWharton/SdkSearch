@@ -79,7 +79,6 @@ final class ReflectiveMembersInjector<T> implements MembersInjector<T> {
       target = target.getSuperclass();
     }
 
-    // TODO what if both are empty?
     return new ReflectiveMembersInjector<>(fieldBindings, methodBindings);
   }
 
