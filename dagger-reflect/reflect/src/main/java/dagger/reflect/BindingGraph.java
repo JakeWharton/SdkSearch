@@ -15,6 +15,8 @@
  */
 package dagger.reflect;
 
+import dagger.reflect.Binding.UnlinkedIntoSet;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -115,12 +117,33 @@ final class BindingGraph {
       if (key == null) throw new NullPointerException("key == null");
       if (binding == null) throw new NullPointerException("binding == null");
 
+      Binding<?> original = bindings.get(key);
+      if (original != null) {
+        Binding<?> merged = merge(original, binding);
+        if (merged != null) {
+          bindings.remove(key);
+          binding = merged;
+        }
+      }
+
       Binding<?> replaced = bindings.put(key, binding);
       if (replaced != null) {
         throw new IllegalStateException(
             "Duplicate binding for " + key + ": " + replaced + " and " + binding);
       }
       return this;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private Binding<?> merge(Binding<?> oldBinding, Binding<?> newBinding) {
+      if (oldBinding instanceof Binding.UnlinkedIntoSet && newBinding instanceof Binding.UnlinkedIntoSet) {
+        Binding[] oldBindings = ((UnlinkedIntoSet) oldBinding).getBindings();
+        Binding[] newBindings = ((UnlinkedIntoSet) newBinding).getBindings();
+        Binding[] allBindings = Arrays.copyOf(oldBindings, oldBindings.length + newBindings.length);
+        System.arraycopy(newBindings, 0, allBindings, oldBindings.length, newBindings.length);
+        return new Binding.UnlinkedIntoSet(allBindings);
+      }
+      return null;
     }
 
     BindingGraph build() {

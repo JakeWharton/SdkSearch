@@ -20,6 +20,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import org.jetbrains.annotations.Nullable;
@@ -197,6 +203,50 @@ interface Binding<T> extends Provider<T> {
         arguments[i] = dependencies[i].get();
       }
       return tryInstantiate(constructor, arguments);
+    }
+  }
+
+  final class UnlinkedIntoSet<T> extends UnlinkedBinding<Set<T>> {
+    private final Binding<T>[] bindings;
+    public UnlinkedIntoSet(Binding<T>... bindings) {
+      this.bindings = bindings;
+    }
+    public Binding<?>[] getBindings() {
+      return bindings;
+    }
+    @Override public Key[] dependencies() {
+      List<Key> deps = new ArrayList<>();
+      for (Binding<?> binding : bindings) {
+        deps.addAll(Arrays.asList(binding.dependencies()));
+      }
+      return deps.toArray(new Key[0]);
+    }
+    @Override public Binding<Set<T>> link(Binding<?>[] dependencies) {
+      int consumed = 0;
+      @SuppressWarnings({"unchecked", "rawtypes"})
+      Binding<T>[] linkedBindings = new Binding[bindings.length];
+      for (int i = 0; i < bindings.length; i++) {
+        Binding<T> binding = bindings[i];
+        Binding<?>[] bindingDependencies = Arrays.copyOfRange(dependencies,
+            consumed, consumed + binding.dependencies().length);
+        consumed += bindingDependencies.length;
+        linkedBindings[i] = binding.link(bindingDependencies);
+      }
+      return new LinkedIntoSet<>(linkedBindings);
+    }
+  }
+
+  final class LinkedIntoSet<T> extends LinkedBinding<Set<T>> {
+    private final Binding<T>[] bindings;
+    public LinkedIntoSet(Binding<T>... bindings) {
+      this.bindings = bindings;
+    }
+    @Override public Set<T> get() {
+      Set<T> intoSet = new LinkedHashSet<>();
+      for (Binding<T> binding : bindings) {
+        intoSet.add(binding.get());
+      }
+      return Collections.unmodifiableSet(intoSet);
     }
   }
 }
