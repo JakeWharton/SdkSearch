@@ -9,6 +9,7 @@ import okhttp3.HttpUrl
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.create
 
 @Module
 internal object DacModule {
@@ -24,6 +25,6 @@ internal object DacModule {
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
-    return retrofit.create(DocumentationService::class.java)
+    return retrofit.create<DocumentationService>()
   }
 }

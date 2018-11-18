@@ -20,7 +20,7 @@ buildscript {
       'kotlinCoroutines': '1.0.1',
       'kotlinSerialization': '0.9.0',
       'okhttp': '3.12.0',
-      'retrofit': '2.4.0',
+      'retrofit': '2.5.0',
       'kotshi': '1.0.4',
       'dagger': '2.19',
       'sqldelight': '1.0.0-rc2',

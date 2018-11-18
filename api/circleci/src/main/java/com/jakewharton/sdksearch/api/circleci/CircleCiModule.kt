@@ -7,6 +7,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.OkHttpClient.Builder
 import retrofit2.Retrofit
+import retrofit2.create
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
@@ -39,6 +40,6 @@ internal object CircleCiModule {
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
-    return retrofit.create(CircleCiService::class.java)
+    return retrofit.create<CircleCiService>()
   }
 }
