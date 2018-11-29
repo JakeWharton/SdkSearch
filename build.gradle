@@ -131,7 +131,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.3.0-beta04'
+    classpath 'com.android.tools.build:gradle:3.3.0-rc01'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
     classpath 'org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.37'
