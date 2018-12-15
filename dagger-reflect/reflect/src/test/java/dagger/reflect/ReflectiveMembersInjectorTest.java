@@ -233,6 +233,31 @@ public final class ReflectiveMembersInjectorTest {
     assertThat(instance.called).isTrue();
   }
 
+  private static class MethodMultipleDependencies {
+    boolean called;
+
+    @Inject protected void multiple(String one, long two, long two2, @Named("tres") Integer three) {
+      assertThat(one).isEqualTo("one");
+      assertThat(two).isEqualTo(2L);
+      assertThat(two2).isEqualTo(2L);
+      assertThat(three).isEqualTo(3);
+      called = true;
+    }
+  }
+
+  @Test public void methodMultipleDependencies() {
+    BindingGraph graph = new BindingGraph.Builder()
+        .add(Key.of(null, String.class), new Binding.Instance<>("one"))
+        .add(Key.of(null, long.class), new Binding.Instance<>(2L))
+        .add(Key.of(named("tres"), Integer.class), new Binding.Instance<>(3))
+        .build();
+    MembersInjector<MethodMultipleDependencies> injector =
+        ReflectiveMembersInjector.create(MethodMultipleDependencies.class, graph);
+    MethodMultipleDependencies instance = new MethodMultipleDependencies();
+    injector.injectMembers(instance);
+    assertThat(instance.called).isTrue();
+  }
+
   private static class MethodReturnTypes {
     int count;
 
