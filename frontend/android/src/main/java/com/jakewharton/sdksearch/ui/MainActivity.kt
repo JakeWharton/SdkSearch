@@ -74,7 +74,7 @@ class MainActivity : Activity() {
     setContentView(R.layout.search)
 
     scope.launch(Dispatchers.Unconfined) {
-      val binder = SearchUiBinder(this, window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
+      val binder = SearchUiBinder(window.decorView, presenter.events, onClick, onCopy, onShare, onSource)
       defaultQuery?.let { binder.init(it) }
 
       binder.bindTo(presenter)

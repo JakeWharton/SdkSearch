@@ -20,9 +20,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.jakewharton.sdksearch.store.item.Item
 import kotlin.LazyThreadSafetyMode.NONE
 
-internal class ItemViewHolder(
+internal class ItemResultViewHolder(
   private val root: View,
-  private val callback: ItemAdapter.Callback
+  private val callback: ItemResultAdapter.Callback
 ) : ViewHolder(root), OnClickListener, OnMenuItemClickListener {
   private val packageNameText: TextView = root.findViewById(R.id.package_name)
   private val classNameText: TextView = root.findViewById(R.id.class_name)
@@ -42,7 +42,6 @@ internal class ItemViewHolder(
     overflow.setOnClickListener(this)
   }
 
-  private var query: String? = null
   private var item: Item? = null
 
   override fun onClick(view: View) {
@@ -69,25 +68,10 @@ internal class ItemViewHolder(
     else -> throw IllegalArgumentException("Unknown menu item: $menuItem")
   }
 
-  fun updateQuery(query: String) {
-    this.query = query
-    render()
-  }
-
-  fun updateItem(item: Item) {
+  fun update(itemResult: ItemResult) {
+    val query = itemResult.query
+    val item = itemResult.item
     this.item = item
-    render()
-  }
-
-  fun setItem(query: String, item: Item) {
-    this.query = query
-    this.item = item
-    render()
-  }
-
-  private fun render() {
-    val query = this.query!!
-    val item = this.item!!
 
     val letterSpacingSpan = LetterSpacingSpan(PERIOD_LETTER_SPACING)
     val nestedClassSeparatorColor = classNameText.currentTextColor.withAlpha(0x8A)
