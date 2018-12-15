@@ -9,21 +9,18 @@ import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
 import androidx.appcompat.widget.TooltipCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.getSystemService
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.jakewharton.presentation.UiBinder
-import com.jakewharton.sdksearch.roboto.R as RobotoR
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
-import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.QueryResults
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus.FAILED
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus.IDLE
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model.SyncStatus.SYNC
@@ -33,15 +30,10 @@ import com.jakewharton.sdksearch.search.ui.util.onKey
 import com.jakewharton.sdksearch.search.ui.util.onScroll
 import com.jakewharton.sdksearch.search.ui.util.onTextChanged
 import com.jakewharton.sdksearch.store.item.Item
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.SendChannel
-import kotlinx.coroutines.channels.actor
-import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.launch
+import com.jakewharton.sdksearch.roboto.R as RobotoR
 
 class SearchUiBinder(
-  scope: CoroutineScope,
   view: View,
   private val events: SendChannel<Event>,
   private val onClick: ItemHandler,
@@ -56,25 +48,12 @@ class SearchUiBinder(
   private val queryInput: EditText = view.findViewById(R.id.query)
   private val queryClear: View = view.findViewById(R.id.clear_query)
 
-  private val resultsAdapter = ItemAdapter(context.layoutInflater, object : ItemAdapter.Callback {
+  private val resultsAdapter = ItemResultAdapter(context.layoutInflater, object : ItemResultAdapter.Callback {
     override fun onItemClicked(item: Item) = onClick(item)
     override fun onItemCopied(item: Item) = onCopy(item)
     override fun onItemShared(item: Item) = onShare(item)
     override fun onItemViewSource(item: Item) = onSource(item)
   })
-  private val queryResultProcessor = scope.actor<Pair<QueryResults, QueryResults>>(Dispatchers.Default) {
-    consumeEach { (oldResults, newResults) ->
-      val diff = DiffUtil.calculateDiff(ItemDiffer(oldResults, newResults))
-
-      scope.launch {
-        resultsAdapter.updateItems(newResults)
-        diff.dispatchUpdatesTo(resultsAdapter)
-
-        // Always reset the scroll position to the top when the query changes.
-        results.scrollToPosition(0)
-      }
-    }
-  }
 
   private var snackbar: Snackbar? = null
 
@@ -138,13 +117,11 @@ class SearchUiBinder(
     val count = model.count
     queryInput.hint = resources.getQuantityString(R.plurals.search_classes, count.toInt(), count)
 
-    val oldResults = oldModel?.queryResults
-    val newResults = model.queryResults
-    if (oldResults == null) {
-      resultsAdapter.updateItems(newResults)
-      resultsAdapter.notifyDataSetChanged()
-    } else if (oldResults !== newResults) {
-      queryResultProcessor.offer(oldResults to newResults)
+    val queryResults = model.queryResults
+    val itemResults = queryResults.items.map { ItemResult(queryResults.query, it) }
+    resultsAdapter.submitList(itemResults) {
+      // Always reset the scroll position to the top when the query changes.
+      results.scrollToPosition(0)
     }
 
     if (model.syncStatus != IDLE) {
