@@ -97,7 +97,7 @@ public final class DaggerReflectCompiler extends AbstractProcessor {
 
   private static TypeSpec createComponent(ClassName component, ClassName builder) {
     TypeSpec.Builder type = TypeSpec.classBuilder("Dagger" + component.simpleName())
-        .addModifiers(FINAL)
+        .addModifiers(PUBLIC, FINAL)
         .addMethod(MethodSpec.constructorBuilder()
             .addModifiers(PRIVATE)
             .addStatement("throw new $T()", AssertionError.class)
