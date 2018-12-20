@@ -38,7 +38,9 @@ fun main(vararg args: String) = runBlocking {
     return@mainBody config
   }
 
-  val client = OkHttpClient()
+  val client = OkHttpClient.Builder()
+      .readTimeout(Duration.ofMinutes(1))
+      .build()
   val service = DacComponent.builder()
       .baseUrl(HttpUrl.get(config.dac))
       .client(client)
