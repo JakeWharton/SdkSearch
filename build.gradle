@@ -22,7 +22,7 @@ buildscript {
       'okhttp': '3.12.0',
       'retrofit': '2.5.0',
       'kotshi': '1.0.6',
-      'dagger': '2.19',
+      'dagger': '2.20',
       'sqldelight': '1.0.0-rc4',
   ]
 
