@@ -15,7 +15,7 @@ internal class SqlItemStore @Inject constructor(
   override suspend fun updateItems(items: List<Item>) {
     db.transaction {
       for (item in items) {
-        db.updateItem(item.deprecated, item.link, item.packageName, item.className)
+        db.updateItem(item.packageName, item.className, item.deprecated, item.link)
         if (db.changes().executeAsOne() == 0L) {
           db.insertItem(item.packageName, item.className, item.deprecated, item.link)
         }
