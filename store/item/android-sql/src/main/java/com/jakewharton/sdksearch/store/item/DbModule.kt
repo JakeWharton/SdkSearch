@@ -1,7 +1,7 @@
 package com.jakewharton.sdksearch.store.item
 
 import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqlDatabase
+import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -14,14 +14,14 @@ internal abstract class DbModule {
   internal object Providers {
     @JvmStatic
     @Provides
-    fun queryWrapper(context: Context, filename: String?): QueryWrapper {
-      return QueryWrapper(AndroidSqlDatabase(QueryWrapper.Schema, context, filename))
+    fun itemDatabase(context: Context, filename: String?): ItemDatabase {
+      return ItemDatabase(AndroidSqliteDriver(ItemDatabase.Schema, context, filename))
     }
 
     @JvmStatic
     @Provides
-    fun itemQueries(queryWrapper: QueryWrapper): ItemQueries {
-      return queryWrapper.itemQueries
+    fun itemQueries(database: ItemDatabase): ItemQueries {
+      return database.itemQueries
     }
   }
 }

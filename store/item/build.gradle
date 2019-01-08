@@ -57,6 +57,7 @@ kotlin {
 
 sqldelight {
   packageName = 'com.jakewharton.sdksearch.store.item'
+  className = 'ItemDatabase'
 }
 
 afterEvaluate {
