@@ -1,19 +1,24 @@
 version: 2.0
 
+config: &config
+  working_directory: ~/SdkSearch
+
+  docker:
+    - image: jakewharton/sdksearch:0.0.3
+
+  environment:
+    TERM: dumb
+    JAVA_TOOL_OPTIONS: "-Xmx1g"
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+
+
 cache_key: &cache_key
   key: jars-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
 
+
 jobs:
   build:
-    working_directory: ~/SdkSearch
-
-    docker:
-      - image: jakewharton/sdksearch:0.0.2
-
-    environment:
-      TERM: dumb
-      JAVA_TOOL_OPTIONS: "-Xmx1g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+    <<: *config
 
     steps:
       - checkout
@@ -61,16 +66,9 @@ jobs:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
 
+
   validate:
-    working_directory: ~/SdkSearch
-
-    docker:
-      - image: jakewharton/sdksearch:0.0.2
-
-    environment:
-      TERM: dumb
-      JAVA_TOOL_OPTIONS: "-Xmx1g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+    <<: *config
 
     steps:
       - checkout
@@ -88,6 +86,7 @@ jobs:
 
       - store_artifacts:
           path: validation_report.txt
+
 
 workflows:
   version: 2
