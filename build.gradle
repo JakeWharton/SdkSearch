@@ -240,8 +240,4 @@ def propOrEmpty(String name) {
   return hasProperty(name) ? getProperty(name) : ''
 }
 
-def useDaggerReflect() {
-  return hasProperty('dagger.reflect') ? getProperty('dagger.reflect') == 'true' : false
-}
-
 apply from: file('gradle/projectDependencyGraph.gradle')
