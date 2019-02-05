@@ -19,7 +19,7 @@ buildscript {
       'kotlin': '1.3.20',
       'kotlinCoroutines': '1.1.1',
       'kotlinSerialization': '0.10.0',
-      'okhttp': '3.12.1',
+      'okhttp': '3.13.0',
       'retrofit': '2.5.0',
       'kotshi': '1.0.6',
       'dagger': '2.21',
