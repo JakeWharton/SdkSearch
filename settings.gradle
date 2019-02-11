@@ -1,6 +1,6 @@
 include ':api:circleci'
 include ':api:dac'
-include ':api:dac:jdk-temp'
+include ':api:dac:jdk-temp' // TODO https://youtrack.jetbrains.com/issue/KT-26977
 include ':bugsnag-tree'
 include ':chrome-platform'
 include ':chrome-platform:chrome'
