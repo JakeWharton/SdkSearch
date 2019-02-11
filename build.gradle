@@ -107,7 +107,7 @@ buildscript {
           ],
       ],
       'jetbrainsAnnotations': 'org.jetbrains:annotations:16.0.3',
-      'bugsnag': 'com.bugsnag:bugsnag-android:4.2.2',
+      'bugsnag': 'com.bugsnag:bugsnag-android:4.11.0',
       'argparser': 'com.xenomachina:kotlin-argparser:2.0.5',
       'byteunits': 'com.jakewharton.byteunits:byteunits:0.9.1',
       'sqldelight': [
