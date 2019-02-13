@@ -127,11 +127,13 @@ buildscript {
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    maven { url 'http://storage.googleapis.com/r8-releases/raw/master' }
     gradlePluginPortal()
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.3.1'
+    classpath 'com.android.tools:r8:1872e9dd7d8c69ff734392165de1a04392261779'
+    classpath 'com.android.tools.build:gradle:3.5.0-alpha03'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
     classpath 'org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.44'

@@ -1,4 +1,4 @@
--dontoptimize
+#-dontoptimize
 -dontpreverify
 -dontobfuscate
 -dontskipnonpubliclibraryclasses
@@ -49,9 +49,3 @@
 # TODO determine if the -keepnames for this interface should have prevented.
 -keep class kotlinx.coroutines.internal.MainDispatcherFactory {}
 
-# TODO This only applies when -dontoptimze is remmoved.
-# R8 in full mode sees only a single subtype of this interface. As a result, it rewrites all
-# references to use that subtype and removes this interface. This breaks the Retrofit Converter for
-# Kotlin coroutines because it doesn't handle CompletableDeferred.
-# TODO Can we automate this rule https://github.com/square/retrofit/issues/3005?
--keep class kotlinx.coroutines.Deferred {}
