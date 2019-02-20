@@ -165,6 +165,22 @@ allprojects {
     }
   }
 
+  // TODO remove once https://github.com/Kotlin/kotlin-frontend-plugin/issues/141 is fixed
+  plugins.whenPluginAdded { plugin ->
+    if (plugin.class.name == 'org.jetbrains.kotlin.gradle.frontend.FrontendPlugin') {
+      def fixTask = tasks.register('webpack-config-fix') {
+        def dir = file('webpack.config.d')
+        it.outputs.dir(dir)
+        it.doLast { dir.mkdir() }
+      }
+      afterEvaluate {
+        tasks.named('webpack-config').configure {
+          it.dependsOn(fixTask)
+        }
+      }
+    }
+  }
+
   // TODO this hasn't landed in the compiler yet
   //afterEvaluate {
   //  def kotlin = extensions.findByName('kotlin')
