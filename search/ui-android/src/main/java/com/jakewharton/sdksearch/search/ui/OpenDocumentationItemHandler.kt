@@ -9,15 +9,13 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.store.item.Item
-import okhttp3.HttpUrl
 
 class OpenDocumentationItemHandler(
   private val context: Context,
-  private val baseUrl: HttpUrl,
   private val androidReference: AndroidReference
 ) : ItemHandler {
   override fun invoke(item: Item) {
-    val uri = baseUrl.resolve(item.link)!!.toString().toUri()
+    val uri = item.link.toUri()
     val sourceUri = androidReference.sourceUrl(item.packageName, item.className)?.toUri()
 
     val typedValue = TypedValue()

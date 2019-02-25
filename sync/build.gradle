@@ -11,7 +11,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        api project(':api:dac')
+        api project(':api:dac-proxy')
         api project(':store:item')
         api deps.kotlin.stdlib.common
         api deps.kotlin.coroutines.common
@@ -27,7 +27,7 @@ kotlin {
     }
     jvmMain {
       dependencies {
-        api project(':api:dac:jdk-temp')
+        api project(':api:dac-proxy:jdk-temp')
         api deps.kotlin.stdlib.jdk
         api deps.kotlin.coroutines.jdk
         implementation deps.timber.jdk

@@ -2,10 +2,10 @@ package com.jakewharton.sdksearch.content
 
 import com.chrome.platform.Chrome
 import com.jakewharton.sdksearch.reference.AndroidReference
-import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.reference.sourceUrl
 import com.jakewharton.sdksearch.store.config.StorageAreaConfigStore
+import com.jakewharton.sdksearch.store.config.PRODUCTION_DAC
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.ConsoleTree
@@ -15,14 +15,14 @@ import timber.log.warn
 import kotlin.browser.document
 import kotlin.browser.window
 
-fun main(vararg args: String) {
+fun main() {
   Timber.plant(ConsoleTree())
 
   val configStore = StorageAreaConfigStore(Chrome.storage.sync, PRODUCTION_GIT_WEB, PRODUCTION_DAC)
 
   GlobalScope.launch {
-    val (gitWebUrl, dacUrl) = configStore.load()
-    val references = AndroidReference(gitWebUrl, dacUrl)
+    val (gitWebUrl, _) = configStore.load()
+    val references = AndroidReference(gitWebUrl)
 
     val sourceUrl = references.sourceUrl(window.location.href)
     if (sourceUrl == null) {

@@ -1,0 +1,11 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+  implementation deps.kotlin.stdlib.jdk
+  api deps.kotlin.serialization.jdk
+  api deps.jaxRsApi
+}
