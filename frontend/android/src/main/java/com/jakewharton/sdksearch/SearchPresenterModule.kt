@@ -9,7 +9,6 @@ import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC

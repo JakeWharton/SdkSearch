@@ -7,7 +7,7 @@ import kotlin.test.fail
 
 class AndroidReferenceTest {
   @Test fun sourceUrlForPackageAndClass() {
-    val reference = AndroidReference("http://source.example.com/", "http://docs.example.com/")
+    val reference = AndroidReference("http://source.example.com/")
 
     assertNull(reference.sourceUrl("missing.entry", "NotThere"))
     assertNull(reference.sourceUrl("android", "R"))
@@ -18,7 +18,7 @@ class AndroidReferenceTest {
   }
 
   @Test fun sourceUrlForNestedClass() {
-    val reference = AndroidReference("http://source.example.com/", "http://docs.example.com/")
+    val reference = AndroidReference("http://source.example.com/")
 
     assertEquals(
         "http://source.example.com/platform/frameworks/base/+/refs/heads/master/core/java/android/widget/Toolbar.java",
@@ -30,16 +30,10 @@ class AndroidReferenceTest {
 
   @Test fun mustEndInSlash() {
     try {
-      AndroidReference("http://source.example.com", "http://docs.example.com/")
+      AndroidReference("http://source.example.com")
       fail()
     } catch (e: IllegalArgumentException) {
       assertEquals("Git web URL must end with '/': http://source.example.com", e.message)
-    }
-    try {
-      AndroidReference("http://source.example.com/", "http://docs.example.com")
-      fail()
-    } catch (e: IllegalArgumentException) {
-      assertEquals("DAC URL must end with '/': http://docs.example.com", e.message)
     }
   }
 }
