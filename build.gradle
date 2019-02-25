@@ -211,10 +211,12 @@ allprojects {
     }
   }
 
-  tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+  tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinCompile).all {
     kotlinOptions {
       freeCompilerArgs += [
-          '-progressive'
+          '-progressive',
+          '-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi',
+          '-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi',
       ]
     }
   }
