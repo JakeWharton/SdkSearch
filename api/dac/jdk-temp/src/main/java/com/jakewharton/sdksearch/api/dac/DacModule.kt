@@ -1,10 +1,10 @@
 package com.jakewharton.sdksearch.api.dac
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.serializationConverterFactory
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
-import kotlinx.serialization.json.JSON
+import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -21,7 +21,7 @@ internal object DacModule {
     val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(client)
-        .addConverterFactory(serializationConverterFactory(contentType, JSON.nonstrict))
+        .addConverterFactory(Json.nonstrict.asConverterFactory(contentType))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
