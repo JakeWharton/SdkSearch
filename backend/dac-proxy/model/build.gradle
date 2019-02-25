@@ -1,0 +1,37 @@
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
+apply plugin: 'kotlinx-serialization'
+
+archivesBaseName = 'dac-proxy-model'
+
+// TODO work around https://youtrack.jetbrains.com/issue/KT-27170
+configurations {
+  compileClasspath
+}
+
+kotlin {
+  sourceSets {
+    commonMain {
+      dependencies {
+        api deps.kotlin.stdlib.common
+        implementation deps.kotlin.serialization.common
+      }
+    }
+    jvmMain {
+      dependencies {
+        api deps.kotlin.stdlib.jdk
+        implementation deps.kotlin.serialization.jdk
+      }
+    }
+    jsMain {
+      dependencies {
+        api deps.kotlin.stdlib.js
+        implementation deps.kotlin.serialization.js
+      }
+    }
+  }
+
+  targets {
+    fromPreset(presets.jvm, 'jvm')
+    fromPreset(presets.js, 'js')
+  }
+}

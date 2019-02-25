@@ -1,0 +1,25 @@
+apply plugin: 'java'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'application'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+mainClassName = 'com.jakewharton.sdksearch.proxy.Proxy'
+
+dependencies {
+  implementation deps.kotlin.stdlib.jdk
+  implementation deps.kotlin.serialization.jdk
+  implementation deps.jetty
+  implementation deps.jerseyJetty
+  implementation deps.jerseyHk2
+  implementation deps.okhttp.client
+  implementation deps.okhttp.logging
+  implementation deps.moshi
+  implementation deps.jsoup
+  implementation deps.guava
+  implementation project(':backend:dac-proxy:model')
+  implementation project(':jax-rs-kotlinx-serialization')
+}
+
+distTar.enabled = false

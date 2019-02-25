@@ -5,10 +5,11 @@ import org.w3c.dom.url.URL
 private val PACKAGE = "^([a-z0-9]+.)+".toRegex()
 
 fun AndroidReference.sourceUrl(dacUrl: String): String? {
-  val referenceUrl = "${this.dacUrl}reference/"
-  if (!dacUrl.startsWith(referenceUrl)) return null
+  val url = URL(dacUrl)
+  if (url.hostname != "developer.android.com") return null
+  if (!url.pathname.startsWith("/reference/")) return null
 
-  val justUrl = URL(dacUrl).pathname.removePrefix("/reference/")
+  val justUrl = url.pathname.removePrefix("/reference/")
   val fqcn = justUrl.replace('/', '.')
   val range = PACKAGE.find(fqcn)?.range ?: return null
 

@@ -4,27 +4,19 @@ package com.jakewharton.sdksearch.reference.validator
 
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.reference.AndroidReference
-import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
 import com.xenomachina.argparser.mainBody
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request.Builder
 import java.time.Duration
 
-private val FQCN_PACKAGE = "^([a-z0-9]+\\.)+".toRegex()
-private val FQCN = "\\.[A-Z]".toRegex()
-
 private class CliConfig(parser: ArgParser) {
   val gitWeb by parser.storing("--git-web", argName = "HOST", help = "Git web host (default: $PRODUCTION_GIT_WEB)")
       .default(PRODUCTION_GIT_WEB)
-
-  val dac by parser.storing("--dac", argName = "HOST", help = "DAC host (default: $PRODUCTION_DAC)")
-      .default(PRODUCTION_DAC)
 
   val packages by parser.positionalList("PACKAGE", help = "package prefixes to validate (default: all)")
       .default(listOf(""))
@@ -42,21 +34,18 @@ fun main(vararg args: String) = runBlocking {
       .readTimeout(Duration.ofMinutes(1))
       .build()
   val service = DacComponent.builder()
-      .baseUrl(HttpUrl.get(config.dac))
       .client(client)
       .build()
       .documentationService()
 
-  val fqcns = service.list().await().values.single()
+  val fqcns = service.list().await()
       .asSequence()
-      .map { it.type }
-      .filter { FQCN.find(it) != null }
-      .filterNot { it.contains(".R.") || it.endsWith(".R") }
-      .filter { fqcn -> config.packages.any { fqcn.startsWith(it) } }
-      .sorted()
+      .filterNot { it.className == "R" || it.className.startsWith("R.") }
+      .filter { item -> config.packages.any { item.packageName.startsWith(it) } }
+      .sortedWith(compareBy({ it.packageName }, { it.className }))
       .toList()
 
-  val reference = AndroidReference(config.gitWeb, config.dac)
+  val reference = AndroidReference(config.gitWeb)
 
   var pad = 0
   fun logStatus(message: String) {
@@ -75,11 +64,7 @@ fun main(vararg args: String) = runBlocking {
     logStatus(checking)
 
     val fqcn = fqcns[index]
-    val matcher = checkNotNull(FQCN_PACKAGE.find(fqcn)) { "FQCN '$fqcn' is not valid." }
-    val packageName = fqcn.substring(0, matcher.range.endInclusive)
-    val className = fqcn.substring(matcher.range.endInclusive + 1)
-
-    val url = reference.sourceUrl(packageName, className)
+    val url = reference.sourceUrl(fqcn.packageName, fqcn.className)
     if (url != null) {
       val request = Builder().head().url(url).build()
       client.newCall(request).execute().use {

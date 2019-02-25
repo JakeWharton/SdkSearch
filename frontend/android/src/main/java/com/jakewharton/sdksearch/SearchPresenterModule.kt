@@ -23,7 +23,6 @@ object SearchPresenterModule {
   @Provides
   fun provideSearchPresenter(
     application: Application,
-    baseUrl: HttpUrl,
     store: ItemStore
   ): SearchPresenter {
     val cacheDir = application.cacheDir / "http"
@@ -36,7 +35,6 @@ object SearchPresenterModule {
         .build()
 
     val service = DacComponent.builder()
-        .baseUrl(baseUrl)
         .client(client)
         .build()
         .documentationService()

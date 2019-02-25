@@ -1,7 +1,6 @@
 package com.jakewharton.sdksearch.ui
 
 import com.jakewharton.sdksearch.api.dac.FetchDocumentationService
-import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.store.item.Item
@@ -17,16 +16,13 @@ import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLLIElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.HTMLUListElement
-import org.w3c.dom.url.URL
 import timber.log.ConsoleTree
 import timber.log.Timber
 import timber.log.debug
 import kotlin.browser.document
 import kotlin.dom.clear
 
-private const val DAC_PROXY = "https://dac.sdksearch.app"
-
-fun main(vararg args: String) {
+fun main() {
   Timber.plant(ConsoleTree())
 
   val count = document.getElementById("count") as HTMLSpanElement
@@ -34,11 +30,8 @@ fun main(vararg args: String) {
   val query = document.getElementById("query") as HTMLInputElement
   val items = document.getElementById("items") as HTMLUListElement
 
-  // Because the real DAC lacks CORS headers, we're forced to jump through a proxy.
-  val documentationService = FetchDocumentationService(DAC_PROXY)
-
   val store = InMemoryItemStore()
-  val synchronizer = ItemSynchronizer(store, documentationService)
+  val synchronizer = ItemSynchronizer(store, FetchDocumentationService)
 
   val presenter = SearchPresenter(store, synchronizer)
   GlobalScope.launch {
@@ -56,7 +49,7 @@ fun main(vararg args: String) {
       model.queryResults.items.forEach { item ->
         val link = document.createElement("a") as HTMLAnchorElement
         link.textContent = "${item.packageName}.${item.className}"
-        link.href = URL(item.link, PRODUCTION_DAC).href
+        link.href = item.link
 
         val listItem = document.createElement("li") as HTMLLIElement
         listItem.appendChild(link)

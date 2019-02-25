@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'application'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+mainClassName = 'com.jakewharton.sdksearch.api.dac.legacy.LegacyPrinter'
+
+dependencies {
+  implementation project(':api:dac-proxy:jdk-temp')
+  implementation deps.okhttp.client
+}
+
+distTar.enabled = false

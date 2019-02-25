@@ -9,7 +9,6 @@ import com.jakewharton.presentation.bindTo
 import com.jakewharton.presentation.startPresentation
 import com.jakewharton.sdksearch.R
 import com.jakewharton.sdksearch.reference.AndroidReference
-import com.jakewharton.sdksearch.reference.PRODUCTION_DAC
 import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.search.ui.ClipboardCopyItemHandler
@@ -24,7 +23,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import okhttp3.HttpUrl
 import timber.log.Timber
 import timber.log.error
 import javax.inject.Inject
@@ -35,7 +33,6 @@ class MainActivity : Activity() {
   private val scope = CoroutineScope(Dispatchers.Main + binderJob)
 
   @Inject lateinit var searchPresenterProvider: Provider<SearchPresenter>
-  @Inject lateinit var baseUrl: HttpUrl
 
   private lateinit var presentation: Presentation
 
@@ -58,10 +55,10 @@ class MainActivity : Activity() {
         ?: searchPresenterProvider.get().startPresentation(Dispatchers.Main)
     val presenter = presentation.presenter as SearchPresenter
 
-    val androidReference = AndroidReference(PRODUCTION_GIT_WEB, PRODUCTION_DAC)
-    val onClick = OpenDocumentationItemHandler(this, baseUrl, androidReference)
-    val onCopy = ClipboardCopyItemHandler(this, baseUrl)
-    val onShare = ShareItemHandler(this, baseUrl)
+    val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
+    val onClick = OpenDocumentationItemHandler(this, androidReference)
+    val onCopy = ClipboardCopyItemHandler(this)
+    val onShare = ShareItemHandler(this)
     val onSource = OpenSourceItemHandler(this, androidReference)
 
     val defaultQuery = if (savedInstanceState == null) {

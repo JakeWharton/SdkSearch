@@ -17,7 +17,6 @@ import javax.inject.Singleton
   OptionsActivityModule::class,
   ConfigStoreModule::class,
   ItemStoreModule::class,
-  ProductionDacModule::class,
   OptionsPresenterModule::class,
   SearchPresenterModule::class,
   AndroidInjectionModule::class

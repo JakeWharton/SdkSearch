@@ -118,6 +118,12 @@ buildscript {
               'js': "com.squareup.sqldelight:runtime-js:${versions.sqldelight}",
           ],
       ],
+      'jetty': 'org.eclipse.jetty:jetty-project:9.4.15.v20190215',
+      'jaxRsApi': 'javax.ws.rs:javax.ws.rs-api:2.1.1',
+      'jerseyJetty': 'org.glassfish.jersey.containers:jersey-container-jetty-http:2.28',
+      'jerseyHk2': 'org.glassfish.jersey.inject:jersey-hk2:2.28',
+      'jsoup': 'org.jsoup:jsoup:1.11.3',
+      'guava': 'com.google.guava:guava:27.0.1-jre',
   ]
 
   ext.isCiBuild = System.getenv('CI') == 'true'

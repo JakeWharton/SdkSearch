@@ -10,7 +10,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
   MainActivityModule::class,
-  ProductionDacModule::class,
   ItemStoreModule::class,
   SearchPresenterModule::class,
   AndroidInjectionModule::class
