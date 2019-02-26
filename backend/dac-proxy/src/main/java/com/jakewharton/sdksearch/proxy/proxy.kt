@@ -10,6 +10,7 @@ import io.ktor.features.Compression
 import io.ktor.features.DefaultHeaders
 import io.ktor.features.gzip
 import io.ktor.http.ContentType.Application
+import io.ktor.response.header
 import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
@@ -32,6 +33,7 @@ fun main() {
     }
     install(Routing) {
       get("/list") {
+        call.response.header("Access-Control-Allow-Origin", "https://sdksearch.app")
         call.respondText(jsonCache(), Application.Json)
       }
     }
