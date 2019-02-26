@@ -33,7 +33,7 @@ class MemoizedSuspendingSupplier<R> internal constructor(
   private val nanoSupplier: () -> Long,
   private val delegate: suspend () -> R
 ) {
-  private val durationNanos = duration.toNanos() // TODO handle saturation
+  private val durationNanos = duration.toNanos()
   private val lock = Mutex()
   @Volatile private var value: Any? = null
   @Volatile private var expirationNanos = 0L // The special value 0 means "not yet initialized".
