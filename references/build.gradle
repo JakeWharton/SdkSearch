@@ -44,6 +44,10 @@ kotlin {
 
   targets {
     fromPreset(presets.jvm, 'jvm')
-    fromPreset(presets.js, 'js')
+    fromPreset(presets.js, 'js') {
+      tasks.getByName(compilations.main.compileKotlinTaskName).kotlinOptions {
+        moduleKind = 'umd'
+      }
+    }
   }
 }

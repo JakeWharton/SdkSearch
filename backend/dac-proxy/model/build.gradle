@@ -25,13 +25,17 @@ kotlin {
     jsMain {
       dependencies {
         api deps.kotlin.stdlib.js
-        implementation deps.kotlin.serialization.js
+        api deps.kotlin.serialization.js
       }
     }
   }
 
   targets {
     fromPreset(presets.jvm, 'jvm')
-    fromPreset(presets.js, 'js')
+    fromPreset(presets.js, 'js') {
+      tasks.getByName(compilations.main.compileKotlinTaskName).kotlinOptions {
+        moduleKind = 'umd'
+      }
+    }
   }
 }

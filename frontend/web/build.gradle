@@ -34,5 +34,5 @@ distributions {
 distTar.enabled = false
 
 compileKotlin2Js {
-  kotlinOptions.moduleKind = 'commonjs'
+  kotlinOptions.moduleKind = 'umd'
 }
