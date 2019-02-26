@@ -9,5 +9,5 @@ dependencies {
 }
 
 compileKotlin2Js {
-  kotlinOptions.moduleKind = 'commonjs'
+  kotlinOptions.moduleKind = 'umd'
 }
