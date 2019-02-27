@@ -23,17 +23,19 @@ fun <R> memoizeWithExpiration(
   duration: Duration = Duration.ZERO,
   nanoSupplier: () -> Long = System::nanoTime,
   supplier: suspend () -> R
-): MemoizedSuspendingSupplier<R> {
+): suspend () -> R {
   require(!duration.isNegative) { "Duration must be positive: $duration" }
-  return MemoizedSuspendingSupplier(duration, nanoSupplier, supplier)
+  val durationNanos = duration.toNanos() // Throws when overflows.
+
+  // TODO remove ::invoke once https://youtrack.jetbrains.com/issue/KT-18707 ships
+  return MemoizedSuspendingSupplier(durationNanos, nanoSupplier, supplier)::invoke
 }
 
-class MemoizedSuspendingSupplier<R> internal constructor(
-  duration: Duration,
+private class MemoizedSuspendingSupplier<R>(
+  private val durationNanos: Long,
   private val nanoSupplier: () -> Long,
   private val delegate: suspend () -> R
 ) {
-  private val durationNanos = duration.toNanos()
   private val lock = Mutex()
   @Volatile private var value: Any? = null
   @Volatile private var expirationNanos = 0L // The special value 0 means "not yet initialized".
