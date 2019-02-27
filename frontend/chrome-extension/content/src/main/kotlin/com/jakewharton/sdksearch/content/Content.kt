@@ -38,6 +38,12 @@ fun main() {
       val link = document.createElement("a")
       link.setAttribute("href", sourceUrl)
       link.textContent = "view source"
+
+      val manifest = Chrome.runtime.getManifest()
+      if ("Debug" in manifest["name"].unsafeCast<String>()) {
+        link.textContent += " (debug)"
+      }
+
       targetElement.appendChild(link)
     } else {
       Timber.warn { "Could not find on-page element to add 'view source' link" }
