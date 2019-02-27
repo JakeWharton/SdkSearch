@@ -1,6 +1,7 @@
 apply plugin: 'java-library'
 apply plugin: 'org.jetbrains.kotlin.jvm'
 apply plugin: 'org.jetbrains.kotlin.kapt'
+apply plugin: 'kotlinx-serialization'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -9,18 +10,18 @@ archivesBaseName = 'api-circle-ci'
 
 dependencies {
   implementation deps.kotlin.stdlib.jdk
+  implementation deps.kotlin.serialization.jdk
   api deps.kotlin.coroutines.jdk
 
-  implementation deps.moshi
-  implementation deps.kotshi.api
-  kapt deps.kotshi.compiler
-
   api deps.okhttp.client
+  implementation deps.okhttp.logging
   api deps.okio
 
   implementation deps.retrofit.client
   implementation deps.retrofit.adapterKotlinCoroutines
-  implementation deps.retrofit.converterMoshi
+  implementation deps.retrofit.converterKotlinxSerialization
+
+  implementation deps.timber.jdk
 
   implementation deps.dagger.runtime
   kapt deps.dagger.compiler

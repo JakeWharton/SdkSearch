@@ -1,13 +1,13 @@
 package com.jakewharton.sdksearch.api.circleci
 
-import com.squareup.moshi.Json
-import se.ansman.kotshi.JsonSerializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonSerializable
+@Serializable
 data class BuildArtifact(
-  @Json(name = "pretty_path")
+  @SerialName("pretty_path")
   val prettyPath: String,
-  @Json(name = "node_index")
+  @SerialName("node_index")
   val nodeIndex: Int,
   val url: String
 )

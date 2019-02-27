@@ -1,20 +1,26 @@
 package com.jakewharton.sdksearch.api.circleci
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.squareup.moshi.Moshi
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.OkHttpClient.Builder
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import retrofit2.Retrofit
 import retrofit2.create
-import retrofit2.converter.moshi.MoshiConverterFactory
+import timber.log.Timber
+import timber.log.debug
 
 @Module
 internal object CircleCiModule {
   @JvmStatic
   @Provides
   fun documentationService(token: String, graphClient: OkHttpClient?): CircleCiService {
+    val logger = Timber.tagged("HTTP")
     val client = (graphClient?.newBuilder() ?: Builder())
         .addInterceptor { chain ->
           val request = chain.request()
@@ -27,19 +33,16 @@ internal object CircleCiModule {
               .url(newUrl)
               .build())
         }
-        .build()
-
-    val moshi = Moshi.Builder()
-        .add(CircleCiJsonAdapterFactory.INSTANCE)
+        .addInterceptor(HttpLoggingInterceptor { logger.debug { it } }.setLevel(BASIC))
         .build()
 
     val retrofit = Retrofit.Builder()
         .baseUrl("https://circleci.com/api/v1.1/")
         .client(client)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(Json.nonstrict.asConverterFactory(MediaType.get("application/json")))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
-    return retrofit.create<CircleCiService>()
+    return retrofit.create()
   }
 }
