@@ -7,7 +7,7 @@ dependencies {
   compile deps.kotlin.coroutines.js
   compile project(':search:ui-omnibox')
   compile project(':store:item:js-storage-area')
-  compile project(':chrome-platform:chrome')
+  compile project(':chrome-platform')
   compile deps.timber.js
 }
 

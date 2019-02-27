@@ -5,7 +5,7 @@ apply plugin: 'org.jetbrains.kotlin.frontend'
 dependencies {
   compile deps.kotlin.stdlib.js
   compile project(':references')
-  compile project(':chrome-platform:chrome')
+  compile project(':chrome-platform')
   compile deps.timber.js
 }
 
