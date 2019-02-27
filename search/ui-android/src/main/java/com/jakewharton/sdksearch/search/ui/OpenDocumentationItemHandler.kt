@@ -10,13 +10,10 @@ import androidx.core.net.toUri
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.store.item.Item
 
-class OpenDocumentationItemHandler(
-  private val context: Context,
-  private val androidReference: AndroidReference
-) : ItemHandler {
+class OpenDocumentationItemHandler(private val context: Context) : ItemHandler {
   override fun invoke(item: Item) {
     val uri = item.link.toUri()
-    val sourceUri = androidReference.sourceUrl(item.packageName, item.className)?.toUri()
+    val sourceUri = AndroidReference.sourceUrl(item.packageName, item.className)?.toUri()
 
     val typedValue = TypedValue()
     context.theme.resolveAttribute(android.R.attr.colorPrimary, typedValue, true)

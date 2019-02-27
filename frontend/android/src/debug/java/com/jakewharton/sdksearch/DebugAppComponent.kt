@@ -3,7 +3,6 @@ package com.jakewharton.sdksearch
 import android.app.Application
 import com.jakewharton.sdksearch.debug.updater.UpdateActivityModule
 import com.jakewharton.sdksearch.ui.MainActivityModule
-import com.jakewharton.sdksearch.ui.OptionsActivityModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -14,10 +13,7 @@ import javax.inject.Singleton
   UpdateActivityModule::class,
   UpdateConfigModule::class,
   MainActivityModule::class,
-  OptionsActivityModule::class,
-  ConfigStoreModule::class,
   ItemStoreModule::class,
-  OptionsPresenterModule::class,
   SearchPresenterModule::class,
   AndroidInjectionModule::class
 ])

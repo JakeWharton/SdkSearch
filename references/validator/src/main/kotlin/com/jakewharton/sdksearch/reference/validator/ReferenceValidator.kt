@@ -4,7 +4,6 @@ package com.jakewharton.sdksearch.reference.validator
 
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.reference.AndroidReference
-import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
 import com.xenomachina.argparser.mainBody
@@ -15,9 +14,6 @@ import okhttp3.Request.Builder
 import java.time.Duration
 
 private class CliConfig(parser: ArgParser) {
-  val gitWeb by parser.storing("--git-web", argName = "HOST", help = "Git web host (default: $PRODUCTION_GIT_WEB)")
-      .default(PRODUCTION_GIT_WEB)
-
   val packages by parser.positionalList("PACKAGE", help = "package prefixes to validate (default: all)")
       .default(listOf(""))
 }
@@ -45,8 +41,6 @@ fun main(vararg args: String) = runBlocking {
       .sortedWith(compareBy({ it.packageName }, { it.className }))
       .toList()
 
-  val reference = AndroidReference(config.gitWeb)
-
   var pad = 0
   fun logStatus(message: String) {
     print("\r$message".padEnd(pad))
@@ -64,7 +58,7 @@ fun main(vararg args: String) = runBlocking {
     logStatus(checking)
 
     val fqcn = fqcns[index]
-    val url = reference.sourceUrl(fqcn.packageName, fqcn.className)
+    val url = AndroidReference.sourceUrl(fqcn.packageName, fqcn.className)
     if (url != null) {
       val request = Builder().head().url(url).build()
       client.newCall(request).execute().use {

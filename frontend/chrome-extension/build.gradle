@@ -7,7 +7,6 @@ configurations {
 dependencies {
   content project(path: ':frontend:chrome-extension:background', configuration: 'content')
   content project(path: ':frontend:chrome-extension:content', configuration: 'content')
-  content project(path: ':frontend:chrome-extension:options', configuration: 'content')
 }
 
 distributions {

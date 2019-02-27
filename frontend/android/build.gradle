@@ -98,9 +98,6 @@ dependencies {
   implementation project(':search:ui-android')
   implementation project(':store:item:android-sql')
 
-  debugImplementation project(':options:ui-android')
-  debugImplementation project(':store:config:android-preferences')
-
   debugImplementation project(':debug-updater')
 
   implementation deps.kotlin.stdlib.jdk

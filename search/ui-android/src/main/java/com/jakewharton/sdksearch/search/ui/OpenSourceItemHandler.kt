@@ -6,15 +6,12 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
-import com.jakewharton.sdksearch.store.item.Item
 import com.jakewharton.sdksearch.reference.AndroidReference
+import com.jakewharton.sdksearch.store.item.Item
 
-class OpenSourceItemHandler(
-  private val context: Context,
-  private val androidReference: AndroidReference
-) : ItemHandler {
+class OpenSourceItemHandler(private val context: Context) : ItemHandler {
   override fun invoke(item: Item) {
-    val url = androidReference.sourceUrl(item.packageName, item.className)
+    val url = AndroidReference.sourceUrl(item.packageName, item.className)
     if (url != null) {
       val typedValue = TypedValue()
       context.theme.resolveAttribute(android.R.attr.colorPrimary, typedValue, true)

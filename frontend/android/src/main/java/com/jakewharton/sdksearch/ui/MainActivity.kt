@@ -8,8 +8,6 @@ import com.jakewharton.presentation.Presentation
 import com.jakewharton.presentation.bindTo
 import com.jakewharton.presentation.startPresentation
 import com.jakewharton.sdksearch.R
-import com.jakewharton.sdksearch.reference.AndroidReference
-import com.jakewharton.sdksearch.reference.PRODUCTION_GIT_WEB
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter
 import com.jakewharton.sdksearch.search.ui.ClipboardCopyItemHandler
 import com.jakewharton.sdksearch.search.ui.OpenDocumentationItemHandler
@@ -55,11 +53,10 @@ class MainActivity : Activity() {
         ?: searchPresenterProvider.get().startPresentation(Dispatchers.Main)
     val presenter = presentation.presenter as SearchPresenter
 
-    val androidReference = AndroidReference(PRODUCTION_GIT_WEB)
-    val onClick = OpenDocumentationItemHandler(this, androidReference)
+    val onClick = OpenDocumentationItemHandler(this)
     val onCopy = ClipboardCopyItemHandler(this)
     val onShare = ShareItemHandler(this)
-    val onSource = OpenSourceItemHandler(this, androidReference)
+    val onSource = OpenSourceItemHandler(this)
 
     val defaultQuery = if (savedInstanceState == null) {
       val data = intent.data

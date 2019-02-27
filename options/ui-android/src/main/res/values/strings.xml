@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="git_web_host">GitWeb host</string>
-  <string name="dac_host">Documentation host</string>
-  <string name="save">Save</string>
-  <string name="restore_defaults">Restore Defaults</string>
-</resources>
