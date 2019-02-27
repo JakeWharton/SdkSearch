@@ -61,7 +61,7 @@ fun main(vararg args: String) = runBlocking {
     val url = AndroidReference.sourceUrl(fqcn.packageName, fqcn.className)
     if (url != null) {
       val request = Builder().head().url(url).build()
-      client.newCall(request).execute().use {
+      client.newCall(request).await().use {
         val code = it.code()
         if (code == 429) {
           logStatus("$checking Rate limited! Cooling off…")
