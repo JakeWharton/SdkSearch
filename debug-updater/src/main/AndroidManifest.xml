@@ -3,6 +3,7 @@
     package="com.jakewharton.sdksearch.debug.updater"
     >
 
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
   <application>
