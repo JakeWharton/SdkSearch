@@ -30,9 +30,5 @@
   "permissions": [
     "storage",
     "https://api.sdksearch.app/"
-  ],
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
-  }
+  ]
 }

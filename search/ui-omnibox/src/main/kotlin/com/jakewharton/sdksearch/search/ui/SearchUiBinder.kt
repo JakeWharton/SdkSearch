@@ -9,12 +9,10 @@ import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.QueryChanged
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
 import kotlinx.coroutines.channels.SendChannel
-import org.w3c.dom.url.URL
 
 class SearchUiBinder(
   events: SendChannel<Event>,
-  chrome: ChromePlatform,
-  private val dacUrl: String
+  chrome: ChromePlatform
 ) : UiBinder<Model> {
 
   private var currentSuggestions: (Array<SuggestResult>) -> Unit = {}
@@ -27,7 +25,7 @@ class SearchUiBinder(
       val url = if (text.startsWith("http://") || text.startsWith("https://")) {
         text
       } else {
-        URL("/s/results/?q=$text&p=%2F", dacUrl).toString()
+        "https://developer.android.com/s/results/?q=$text&p=%2F"
       }
 
       chrome.tabs.update(UpdateProperties(url = url))
@@ -56,8 +54,7 @@ class SearchUiBinder(
             append("</match>")
             append(it.className.substring(matchEnd))
           }
-          val result = URL(it.link, dacUrl).href
-          SuggestResult(result, description, false)
+          SuggestResult(it.link, description, false)
         }.toTypedArray()
 
     currentSuggestions(results)

@@ -4,8 +4,6 @@ apply plugin: 'org.jetbrains.kotlin.frontend'
 
 dependencies {
   compile deps.kotlin.stdlib.js
-  compile project(':store:config:js-storage-area')
-  compile project(':store:item:js-storage-area')
   compile project(':references')
   compile project(':chrome-platform:chrome')
   compile deps.timber.js

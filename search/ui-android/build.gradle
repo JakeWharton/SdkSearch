@@ -29,7 +29,7 @@ android {
 dependencies {
   implementation project(':roboto')
   api project(':search:presenter')
-  api project(':references')
+  implementation project(':references')
   api project(':presentation:binder')
 
   implementation deps.kotlin.stdlib.jdk
