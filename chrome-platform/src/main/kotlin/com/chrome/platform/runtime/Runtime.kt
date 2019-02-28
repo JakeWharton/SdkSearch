@@ -4,5 +4,5 @@ import kotlin.js.Json
 
 /** https://developer.chrome.com/extensions/runtime */
 external interface Runtime {
-  fun getManifest(): Json
+  val manifest: Json @JsName("getManifest") get
 }

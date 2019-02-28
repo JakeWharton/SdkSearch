@@ -32,8 +32,7 @@ fun main() {
       link.setAttribute("href", sourceUrl)
       link.textContent = "view source"
 
-      val manifest = Chrome.runtime.getManifest()
-      if ("Debug" in manifest["name"].unsafeCast<String>()) {
+      if ("Debug" in Chrome.runtime.manifest["name"].unsafeCast<String>()) {
         link.textContent += " (debug)"
       }
 
