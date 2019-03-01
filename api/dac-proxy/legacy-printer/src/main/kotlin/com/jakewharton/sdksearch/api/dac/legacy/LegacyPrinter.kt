@@ -3,12 +3,11 @@
 package com.jakewharton.sdksearch.api.dac.legacy
 
 import com.jakewharton.sdksearch.api.dac.DacComponent
-import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-fun main() = runBlocking {
+suspend fun main() {
   val client = OkHttpClient()
   val service = DacComponent.builder()
       .client(client)

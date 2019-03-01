@@ -7,7 +7,6 @@ import com.jakewharton.sdksearch.reference.AndroidReference
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
 import com.xenomachina.argparser.mainBody
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
 import okhttp3.OkHttpClient
 import okhttp3.Request.Builder
@@ -18,7 +17,7 @@ private class CliConfig(parser: ArgParser) {
       .default(listOf(""))
 }
 
-fun main(vararg args: String) = runBlocking {
+suspend fun main(vararg args: String) {
   val config = mainBody {
     val parser = ArgParser(args)
     val config = CliConfig(parser)
