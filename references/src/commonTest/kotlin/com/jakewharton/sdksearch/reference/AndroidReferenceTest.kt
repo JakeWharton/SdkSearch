@@ -26,4 +26,8 @@ class AndroidReferenceTest {
         "https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/widget/Toolbar.java",
         reference.sourceUrl("android.widget", "Toolbar.Doubly.Nested"))
   }
+
+  @Test fun noSourceUrlForUnknown() {
+    assertNull(AndroidReference.sourceUrl("com.example", "Foo"))
+  }
 }
