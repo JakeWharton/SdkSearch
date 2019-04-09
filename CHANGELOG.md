@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version 1.4.1.0
+---------------
+
+*2019-04-09*
+
+* Fix: Purge existing items on update so that only those from the proxy are cached. This is required
+  because the format of a storage column changed and so existing installs still saw old data in
+  search results which then crashed when clicked on.
+
+
 Version 1.4.0.0
 ---------------
 
