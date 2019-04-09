@@ -16,7 +16,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.js.json
 
-private const val KEY = "items"
+// Increment the number suffix for versioning.
+private const val KEY = "items_2"
 
 // TODO replace with https://github.com/Kotlin/kotlinx.serialization/issues/116
 // TODO stop golfing byte count https://bugs.chromium.org/p/chromium/issues/detail?id=863214
