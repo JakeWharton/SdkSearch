@@ -42,5 +42,7 @@ distributions {
   }
 }
 
+releaseDistZip.inputs.property('fullName', buildConfig.version.fullName)
 releaseDistTar.enabled = false
+debugDistZip.inputs.property('fullName', buildConfig.version.fullName)
 debugDistTar.enabled = false
