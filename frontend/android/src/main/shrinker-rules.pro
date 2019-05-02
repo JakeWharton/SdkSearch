@@ -4,7 +4,8 @@
 -dontskipnonpubliclibraryclasses
 -verbose
 
--keepattributes *Annotation*
+# Keep annotations with RUNTIME retention and their defaults.
+-keepattributes RuntimeVisible*Annotations, AnnotationDefault
 
 # For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
 -keepclasseswithmembernames class * {
