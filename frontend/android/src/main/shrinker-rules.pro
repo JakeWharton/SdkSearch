@@ -1,7 +1,5 @@
 -dontoptimize
--dontpreverify
 -dontobfuscate
--dontskipnonpubliclibraryclasses
 -verbose
 
 # Keep annotations with RUNTIME retention and their defaults.
