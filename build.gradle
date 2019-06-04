@@ -22,7 +22,7 @@ buildscript {
       'ktor': '1.1.3',
       'okhttp': '3.14.0',
       'retrofit': '2.5.0',
-      'dagger': '2.22.1',
+      'dagger': '2.23.1',
       'sqldelight': '1.1.1',
   ]
 
@@ -191,20 +191,6 @@ allprojects {
   //    }
   //  }
   //}
-
-  tasks.withType(JavaCompile).all {
-    options.compilerArgs += [
-        '-Adagger.formatGeneratedSource=disabled'
-    ]
-  }
-  afterEvaluate {
-    def kapt = extensions.findByName('kapt')
-    if (kapt != null) {
-      kapt.arguments {
-        arg("dagger.formatGeneratedSource", "disabled")
-      }
-    }
-  }
 
   tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinCompile).all {
     kotlinOptions {
