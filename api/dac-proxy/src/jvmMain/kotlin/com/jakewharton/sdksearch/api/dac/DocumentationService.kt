@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 actual interface DocumentationService {
   @GET("list")
-  actual fun list(): Deferred<List<DocumentedType>>
+  actual suspend fun list(): List<DocumentedType>
 }

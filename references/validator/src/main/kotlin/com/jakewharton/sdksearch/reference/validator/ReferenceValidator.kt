@@ -33,7 +33,7 @@ suspend fun main(vararg args: String) {
       .build()
       .documentationService()
 
-  val fqcns = service.list().await()
+  val fqcns = service.list()
       .asSequence()
       .filterNot { it.className == "R" || it.className.startsWith("R.") }
       .filter { item -> config.packages.any { item.packageName.startsWith(it) } }

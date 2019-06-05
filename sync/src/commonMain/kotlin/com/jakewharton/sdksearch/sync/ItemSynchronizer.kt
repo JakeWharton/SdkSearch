@@ -30,7 +30,7 @@ class ItemSynchronizer(
     Timber.debug { "Listing items..." }
 
     val apiItems = try {
-      documentationService.list().await()
+      documentationService.list()
     } catch (e: Exception) {
       Timber.info(e) { "Unable to load items" }
       return false

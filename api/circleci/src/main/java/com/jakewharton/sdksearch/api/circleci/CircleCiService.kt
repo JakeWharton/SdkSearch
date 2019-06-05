@@ -19,5 +19,5 @@ interface CircleCiService {
   ): Deferred<List<BuildArtifact>>
 
   @GET @Streaming
-  fun getArtifact(@Url path: String): Deferred<ResponseBody>
+  suspend fun getArtifact(@Url path: String): ResponseBody
 }

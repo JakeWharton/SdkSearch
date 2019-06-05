@@ -84,7 +84,7 @@ class UpdateService : Service() {
 
       val timestampArtifact = artifacts.single { it.prettyPath.endsWith(config.timestampPath) }
       val timestamp = try {
-        service.getArtifact(timestampArtifact.url).await().string().toLong()
+        service.getArtifact(timestampArtifact.url).string().toLong()
       } catch (e: IOException) {
         Timber.info(e) { "Failed to fetch timestamp of latest build." }
         stopSelf(startId)
@@ -113,7 +113,7 @@ class UpdateService : Service() {
 
       val apkArtifact = artifacts.single { it.prettyPath.endsWith(config.apkPath) }
       try {
-        val apkResponse = service.getArtifact(apkArtifact.url).await()
+        val apkResponse = service.getArtifact(apkArtifact.url)
 
         apkResponse.use { response ->
           apkFile.sink().buffer().use { destination ->

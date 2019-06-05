@@ -1,6 +1,5 @@
 package com.jakewharton.sdksearch.api.circleci
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -40,7 +39,6 @@ internal object CircleCiModule {
         .baseUrl("https://circleci.com/api/v1.1/")
         .client(client)
         .addConverterFactory(Json.nonstrict.asConverterFactory(MediaType.get("application/json")))
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
     return retrofit.create()
