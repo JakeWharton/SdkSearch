@@ -1,6 +1,5 @@
 package com.jakewharton.sdksearch.api.dac
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -21,7 +20,6 @@ internal object DacModule {
         .baseUrl(PRODUCTION_PROXY)
         .client(client)
         .addConverterFactory(Json.asConverterFactory(contentType))
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
     return retrofit.create()

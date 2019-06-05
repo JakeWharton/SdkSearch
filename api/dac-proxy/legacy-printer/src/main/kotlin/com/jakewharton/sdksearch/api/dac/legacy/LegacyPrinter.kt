@@ -14,7 +14,7 @@ suspend fun main() {
       .build()
       .documentationService()
 
-  val items = service.list().await().sortedWith(compareBy({ it.packageName }, { it.className }))
+  val items = service.list().sortedWith(compareBy({ it.packageName }, { it.className }))
 
   // Shut down OkHttpClient resources so that the JVM can exit cleanly.
   client.dispatcher().executorService().shutdown()

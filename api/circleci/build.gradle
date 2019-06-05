@@ -18,7 +18,6 @@ dependencies {
   api deps.okio
 
   implementation deps.retrofit.client
-  implementation deps.retrofit.adapterKotlinCoroutines
   implementation deps.retrofit.converterKotlinxSerialization
 
   implementation deps.timber.jdk

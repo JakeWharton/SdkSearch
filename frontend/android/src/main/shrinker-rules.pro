@@ -34,12 +34,6 @@
   <1>.<2>$Companion Companion;
 }
 
-# TODO Remove after updating to Retrofit 2.6.0. See https://github.com/square/retrofit/issues/3005.
-# With R8 full mode, it sees no subtypes of Retrofit interfaces since they are created with a Proxy
-# and replaces all potential values with null. Explicitly keeping the interfaces prevents this.
--if interface * { @retrofit2.http.* <methods>; }
--keep,allowobfuscation interface <1>
-
 # TODO This only applies when -dontoptimze is remmoved.
 # R8 in full mode sees only a single subtype of this interface. As a result, it rewrites all
 # references to use that subtype and removes this interface. This breaks the ServiceLoader because
