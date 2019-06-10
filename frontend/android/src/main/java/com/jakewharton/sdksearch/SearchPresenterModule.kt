@@ -12,6 +12,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
+import okhttp3.logging.HttpLoggingInterceptor.Logger
 import timber.log.Timber
 import timber.log.debug
 import java.io.File
@@ -30,7 +31,9 @@ object SearchPresenterModule {
     val client = OkHttpClient.Builder()
         .cache(Cache(cacheDir, MEBIBYTES.toBytes(10)))
         .addNetworkInterceptor(
-            HttpLoggingInterceptor { logger.debug { it } }.setLevel(BASIC))
+            HttpLoggingInterceptor(object : Logger {
+              override fun log(message: String) = logger.debug { message }
+            }).apply { level = BASIC })
         .build()
 
     val service = DacComponent.create(client)

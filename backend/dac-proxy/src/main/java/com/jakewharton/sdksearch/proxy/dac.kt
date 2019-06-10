@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
+import okhttp3.logging.HttpLoggingInterceptor.Logger
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 
@@ -32,7 +33,11 @@ suspend fun listDocumentedTypes(): List<DocumentedType> {
 
 private val logger = LoggerFactory.getLogger("com.jakewharton.sdksearch.proxy")
 private val client = OkHttpClient.Builder()
-    .addInterceptor(HttpLoggingInterceptor(logger::info).setLevel(BASIC))
+    .addInterceptor(HttpLoggingInterceptor(object : Logger {
+        override fun log(message: String) = logger.info(message)
+      })
+      .apply { level = BASIC }
+    )
     .build()
 
 private suspend fun listTypes(url: String): List<DocumentedType> {

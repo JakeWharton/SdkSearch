@@ -4,11 +4,12 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.OkHttpClient.Builder
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
+import okhttp3.logging.HttpLoggingInterceptor.Logger
 import retrofit2.Retrofit
 import retrofit2.create
 import timber.log.Timber
@@ -23,7 +24,7 @@ internal object CircleCiModule {
     val client = (graphClient?.newBuilder() ?: Builder())
         .addInterceptor { chain ->
           val request = chain.request()
-          val newUrl = request.url()
+          val newUrl = request.url
               .newBuilder()
               .addQueryParameter("circle-token", token)
               .build()
@@ -32,13 +33,15 @@ internal object CircleCiModule {
               .url(newUrl)
               .build())
         }
-        .addInterceptor(HttpLoggingInterceptor { logger.debug { it } }.setLevel(BASIC))
+        .addInterceptor(HttpLoggingInterceptor(object : Logger {
+          override fun log(message: String) = logger.debug { message }
+        }).apply { level = BASIC })
         .build()
 
     val retrofit = Retrofit.Builder()
         .baseUrl("https://circleci.com/api/v1.1/")
         .client(client)
-        .addConverterFactory(Json.nonstrict.asConverterFactory(MediaType.get("application/json")))
+        .addConverterFactory(Json.nonstrict.asConverterFactory("application/json".toMediaType()))
         .build()
 
     return retrofit.create()

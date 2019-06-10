@@ -4,7 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.create
@@ -14,7 +14,7 @@ internal object DacModule {
   @JvmStatic
   @Provides
   fun documentationService(client: OkHttpClient): DocumentationService {
-    val contentType = MediaType.get("application/json; charset=utf-8")
+    val contentType = "application/json; charset=utf-8".toMediaType()
 
     val retrofit = Retrofit.Builder()
         .baseUrl(PRODUCTION_PROXY)

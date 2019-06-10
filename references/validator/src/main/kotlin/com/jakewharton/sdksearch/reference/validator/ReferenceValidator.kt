@@ -59,7 +59,7 @@ suspend fun main(vararg args: String) {
     if (url != null) {
       val request = Builder().head().url(url).build()
       client.newCall(request).await().use {
-        val code = it.code()
+        val code = it.code
         if (code == 429) {
           logStatus("$checking Rate limited! Cooling off…")
           delay(Duration.ofMinutes(2))
@@ -75,6 +75,6 @@ suspend fun main(vararg args: String) {
   logPrint("Checked $index references!")
 
   // Shut down OkHttpClient resources so that the JVM can exit cleanly.
-  client.dispatcher().executorService().shutdown()
-  client.connectionPool().evictAll()
+  client.dispatcher.executorService.shutdown()
+  client.connectionPool.evictAll()
 }

@@ -15,9 +15,9 @@ suspend fun Call.awaitBody(): ResponseBody {
     enqueue(object : Callback {
       override fun onResponse(call: Call, response: Response) {
         if (response.isSuccessful) {
-          it.resume(response.body()!!)
+          it.resume(response.body!!)
         } else {
-          it.resumeWithException(IOException("HTTP ${response.code()} ${response.message()}"))
+          it.resumeWithException(IOException("HTTP ${response.code} ${response.message}"))
         }
       }
       override fun onFailure(call: Call, e: IOException) {
