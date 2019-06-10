@@ -60,8 +60,8 @@ buildscript {
           'recyclerView': 'androidx.recyclerview:recyclerview:1.1.0-alpha01',
           'sqliteFramework': 'androidx.sqlite:sqlite-framework:1.0.0',
           'test': [
-              'runner': 'androidx.test:runner:1.1.0-alpha4',
-              'rules': 'androidx.test:rules:1.1.0-alpha4',
+              'runner': 'androidx.test:runner:1.2.0',
+              'rules': 'androidx.test:rules:1.2.0',
           ],
       ],
       'material': 'com.google.android.material:material:1.0.0',
