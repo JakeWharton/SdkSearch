@@ -10,13 +10,10 @@ import okhttp3.OkHttpClient
 interface DacComponent {
   fun documentationService(): DocumentationService
 
-  @Component.Builder
-  interface Builder {
-    @BindsInstance fun client(client: OkHttpClient): Builder
-    fun build(): DacComponent
+  @Component.Factory
+  interface Factory {
+    fun create(@BindsInstance client: OkHttpClient): DacComponent
   }
 
-  companion object {
-    fun builder(): Builder = DaggerDacComponent.builder()
-  }
+  companion object : Factory by DaggerDacComponent.factory()
 }

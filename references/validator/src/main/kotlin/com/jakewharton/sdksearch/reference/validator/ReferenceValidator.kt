@@ -28,9 +28,7 @@ suspend fun main(vararg args: String) {
   val client = OkHttpClient.Builder()
       .readTimeout(Duration.ofMinutes(1))
       .build()
-  val service = DacComponent.builder()
-      .client(client)
-      .build()
+  val service = DacComponent.create(client)
       .documentationService()
 
   val fqcns = service.list()

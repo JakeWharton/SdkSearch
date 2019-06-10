@@ -15,13 +15,10 @@ import javax.inject.Singleton
   AndroidInjectionModule::class
 ])
 interface ReleaseAppComponent : AppComponent {
-  @Component.Builder
-  interface Builder {
-    @BindsInstance fun application(application: Application): Builder
-    fun build(): ReleaseAppComponent
+  @Component.Factory
+  interface Factory {
+    fun create(@BindsInstance application: Application): ReleaseAppComponent
   }
 }
 
-fun Application.createAppComponent() = DaggerReleaseAppComponent.builder()
-    .application(this)
-    .build()
+fun Application.createAppComponent() = DaggerReleaseAppComponent.factory().create(this)

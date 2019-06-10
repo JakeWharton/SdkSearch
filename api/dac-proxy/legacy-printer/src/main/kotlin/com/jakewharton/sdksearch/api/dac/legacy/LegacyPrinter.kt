@@ -9,9 +9,7 @@ import java.time.format.DateTimeFormatter
 
 suspend fun main() {
   val client = OkHttpClient()
-  val service = DacComponent.builder()
-      .client(client)
-      .build()
+  val service = DacComponent.create(client)
       .documentationService()
 
   val items = service.list().sortedWith(compareBy({ it.packageName }, { it.className }))

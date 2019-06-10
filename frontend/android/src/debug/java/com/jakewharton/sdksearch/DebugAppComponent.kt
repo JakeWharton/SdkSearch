@@ -18,13 +18,10 @@ import javax.inject.Singleton
   AndroidInjectionModule::class
 ])
 interface DebugAppComponent : AppComponent {
-  @Component.Builder
-  interface Builder {
-    @BindsInstance fun application(application: Application): Builder
-    fun build(): DebugAppComponent
+  @Component.Factory
+  interface Factory {
+    fun create(@BindsInstance application: Application): DebugAppComponent
   }
 }
 
-fun Application.createAppComponent() = DaggerDebugAppComponent.builder()
-    .application(this)
-    .build()
+fun Application.createAppComponent() = DaggerDebugAppComponent.factory().create(this)

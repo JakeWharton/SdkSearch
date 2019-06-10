@@ -33,9 +33,7 @@ object SearchPresenterModule {
             HttpLoggingInterceptor { logger.debug { it } }.setLevel(BASIC))
         .build()
 
-    val service = DacComponent.builder()
-        .client(client)
-        .build()
+    val service = DacComponent.create(client)
         .documentationService()
 
     val synchronizer = ItemSynchronizer(store, service)
