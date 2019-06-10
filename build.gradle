@@ -80,7 +80,7 @@ buildscript {
           'androidRuntime': "com.google.dagger:dagger-android:${versions.dagger}",
           'androidCompiler': "com.google.dagger:dagger-android-processor:${versions.dagger}",
       ],
-      'okio': 'com.squareup.okio:okio:2.1.0',
+      'okio': 'com.squareup.okio:okio:2.2.2',
       'moshi': 'com.squareup.moshi:moshi:1.8.0',
       'timber': [
           'common': 'com.jakewharton.timber:timber-common:5.0.0-SNAPSHOT',
