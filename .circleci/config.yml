@@ -53,7 +53,7 @@ jobs:
           name: Aggregate Test Results
           command: |
             mkdir -p ~/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp --parents {} ~/junit/ \;
+            find . -type f -regex ".*/build/test-results/.*xml" -print -exec cp --parents {} ~/junit/ \;
           when: always
       - store_test_results:
           path: ~/junit

@@ -67,7 +67,7 @@ if (!jsTargets.isEmpty()) {
   }
 
   def npmInstallMocha = tasks.create('npmInstallMocha', NpmTask) {
-    args = ['install', 'mocha@4.1.0', 'source-map-support@0.5.3', '--no-save']
+    args = ['install', 'mocha@6.1.4', 'source-map-support@0.5.3', 'mocha-junit-reporter@1.23.0', '--no-save']
   }
 
   jsTargets.all { target->
@@ -104,7 +104,13 @@ if (!jsTargets.isEmpty()) {
       description = "Runs tests with Mocha for 'test' compilation of target '${target.name}'"
 
       script = file("$node.nodeModulesDir/node_modules/mocha/bin/mocha")
-      args = [testCompilationTask.outputFile, '--require', 'source-map-support/register']
+      def results = new File(buildDir, 'test-results/jsTest/test-results.xml')
+      args = [
+          testCompilationTask.outputFile,
+          '--require', 'source-map-support/register',
+          '--reporter', 'mocha-junit-reporter',
+          '--reporter-options', "mochaFile=$results.absolutePath"
+      ]
     }
     mochaTask.dependsOn(testCompilationTask, npmInstallMocha)
 
