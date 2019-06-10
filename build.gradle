@@ -53,7 +53,6 @@ buildscript {
           ],
       ],
       'androidx': [
-          'annotations': 'androidx.annotation:annotation:1.0.0',
           'appCompat': 'androidx.appcompat:appcompat:1.0.0',
           'browser': 'androidx.browser:browser:1.0.0',
           'constraintLayout': 'androidx.constraintlayout:constraintlayout:1.1.3',
