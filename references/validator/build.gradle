@@ -9,7 +9,7 @@ mainClassName = 'com.jakewharton.sdksearch.reference.validator.ReferenceValidato
 
 dependencies {
   implementation project(':references')
-  implementation project(':api:dac-proxy:jdk-temp')
+  implementation project(':api:dac-proxy')
   implementation deps.kotlin.coroutines.jdk8
   implementation deps.okhttp.client
   implementation deps.argparser

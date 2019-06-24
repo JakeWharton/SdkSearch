@@ -8,7 +8,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 mainClassName = 'com.jakewharton.sdksearch.api.dac.legacy.LegacyPrinter'
 
 dependencies {
-  implementation project(':api:dac-proxy:jdk-temp')
+  implementation project(':api:dac-proxy')
   implementation deps.okhttp.client
 }
 

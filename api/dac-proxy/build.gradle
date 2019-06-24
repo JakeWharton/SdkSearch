@@ -1,5 +1,6 @@
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
 apply plugin: 'kotlinx-serialization'
+apply plugin: 'kotlin-kapt'
 
 archivesBaseName = 'api-dac-proxy'
 
@@ -24,6 +25,10 @@ kotlin {
         api deps.kotlin.coroutines.jdk
         implementation deps.kotlin.serialization.jdk
         implementation deps.retrofit.client
+        implementation deps.retrofit.converterKotlinxSerialization
+        api deps.okhttp.client
+        api deps.okio
+        implementation deps.dagger.runtime
       }
     }
     jsMain {
@@ -43,4 +48,8 @@ kotlin {
       }
     }
   }
+}
+
+dependencies {
+  kapt deps.dagger.compiler
 }

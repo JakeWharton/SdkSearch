@@ -1,7 +1,6 @@
 include ':api:circleci'
 include ':api:dac-proxy'
 include ':api:dac-proxy:legacy-printer'
-include ':api:dac-proxy:jdk-temp' // TODO https://youtrack.jetbrains.com/issue/KT-26977
 include ':backend:dac-proxy'
 include ':backend:dac-proxy:model'
 include ':bugsnag-tree'

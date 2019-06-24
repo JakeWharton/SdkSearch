@@ -27,7 +27,7 @@ kotlin {
     }
     jvmMain {
       dependencies {
-        api project(':api:dac-proxy:jdk-temp')
+        api project(':api:dac-proxy')
         api deps.kotlin.stdlib.jdk
         api deps.kotlin.coroutines.jdk
         implementation deps.timber.jdk
