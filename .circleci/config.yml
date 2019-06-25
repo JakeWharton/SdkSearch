@@ -4,7 +4,7 @@ config: &config
   working_directory: ~/SdkSearch
 
   docker:
-    - image: jakewharton/sdksearch:0.0.4
+    - image: jakewharton/sdksearch:0.0.5
 
   environment:
     TERM: dumb
@@ -39,7 +39,7 @@ jobs:
       - store_artifacts:
           path: frontend/chrome-extension/build/distributions/
       - store_artifacts:
-          path: frontend/web/build/distributions/
+          path: frontend/web/build/sdk-search.zip
       - store_artifacts:
           path: references/legacy-printer/build/distributions/
       - store_artifacts:

@@ -1,9 +1,11 @@
-apply plugin: 'kotlin2js'
+apply plugin: 'org.jetbrains.kotlin.js'
 
 dependencies {
-  compile deps.kotlin.stdlib.js
+  api deps.kotlin.stdlib.js
 }
 
-compileKotlin2Js {
-  kotlinOptions.moduleKind = 'umd'
+kotlin {
+  target {
+    browser()
+  }
 }

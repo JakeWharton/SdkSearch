@@ -1,15 +1,17 @@
-apply plugin: 'kotlin2js'
+apply plugin: 'org.jetbrains.kotlin.js'
 
 archivesBaseName = 'store-item-storage-area'
 
 dependencies {
-  compile project(':store:item')
-  compile deps.kotlin.stdlib.js
-  compile deps.kotlin.coroutines.js
-  compile project(':chrome-platform:flow')
-  compile deps.timber.js
+  api project(':store:item')
+  api deps.kotlin.stdlib.js
+  implementation deps.kotlin.coroutines.js
+  implementation project(':chrome-platform:flow')
+  implementation deps.timber.js
 }
 
-compileKotlin2Js {
-  kotlinOptions.moduleKind = 'umd'
+kotlin {
+  target {
+    browser()
+  }
 }

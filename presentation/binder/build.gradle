@@ -5,15 +5,13 @@ archivesBaseName = 'presentation-binder'
 kotlin {
   jvm()
   js {
-    compilations.main.kotlinOptions {
-      moduleKind = 'umd'
-    }
+    browser()
   }
 
   sourceSets {
     commonMain {
       dependencies {
-        api project(':presentation:presenter')
+        api project(':presentation:presenter2')
         api deps.kotlin.stdlib.common
         api deps.kotlin.coroutines.common
       }
