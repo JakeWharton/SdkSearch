@@ -169,16 +169,6 @@ allprojects {
     }
   }
 
-  // TODO this hasn't landed in the compiler yet
-  //afterEvaluate {
-  //  def kotlin = extensions.findByName('kotlin')
-  //  if (kotlin != null) {
-  //    kotlin.experimental {
-  //      newInference 'enable'
-  //    }
-  //  }
-  //}
-
   plugins.withType(com.android.build.gradle.BasePlugin).configureEach { plugin ->
     plugin.extension.compileOptions {
       sourceCompatibility = JavaVersion.VERSION_1_8
@@ -200,6 +190,7 @@ allprojects {
   tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinCompile).configureEach { task ->
     task.kotlinOptions {
       freeCompilerArgs += [
+          '-XXLanguage:+NewInference',
           '-progressive',
           '-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi',
           '-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi',
