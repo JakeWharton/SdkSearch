@@ -3,9 +3,6 @@ apply plugin: 'org.jetbrains.kotlin.jvm'
 apply plugin: 'org.jetbrains.kotlin.kapt'
 apply plugin: 'kotlinx-serialization'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
 archivesBaseName = 'api-circle-ci'
 
 dependencies {

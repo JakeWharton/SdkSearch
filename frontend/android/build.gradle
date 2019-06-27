@@ -24,11 +24,6 @@ android {
     buildConfigField 'long', 'COMMIT_UNIX_TIMESTAMP', gitTimestamp().toString() + "L"
   }
 
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
-
   lintOptions {
     textReport true
     textOutput 'stdout'
