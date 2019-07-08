@@ -2,7 +2,7 @@ package com.jakewharton.sdksearch.store
 
 import androidx.test.InstrumentationRegistry
 import com.jakewharton.sdksearch.store.item.DbComponent
-import com.jakewharton.sdksearch.store.item.ItemUtil
+import com.jakewharton.sdksearch.store.item.Item.Impl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -20,7 +20,7 @@ class ItemStoreTest {
 
   @Test fun query() = runBlocking<Unit> {
     itemStore.updateItems(listOf(
-        ItemUtil.createForInsert("com.example.One", "one.html", null)
+        Impl(-1, "com.example", "One", false, "one.html")
     ))
 
     itemStore.queryItems("One").test {
@@ -36,7 +36,7 @@ class ItemStoreTest {
 
   @Test fun upsert() = runBlocking<Unit> {
     itemStore.updateItems(listOf(
-        ItemUtil.createForInsert("com.example.One", "one.html", null)
+        Impl(-1, "com.example", "One", false, "one.html")
     ))
 
     itemStore.queryItems("One").test {
@@ -48,7 +48,7 @@ class ItemStoreTest {
       assertFalse(item1.deprecated)
 
       itemStore.updateItems(listOf(
-          ItemUtil.createForInsert("com.example.One", "two.html", "deprecated")
+          Impl(-1, "com.example", "One", true, "two.html")
       ))
 
       val item2 = expectItem().single()
@@ -64,16 +64,16 @@ class ItemStoreTest {
 
   @Test fun oldItemsDeleted() = runBlocking<Unit> {
     itemStore.updateItems(listOf(
-        ItemUtil.createForInsert("com.example.Example1", "one.html", null),
-        ItemUtil.createForInsert("com.example.Example2", "two.html", null)
+        Impl(-1, "com.example", "Example1", false, "one.html"),
+        Impl(-1, "com.example", "Example2", false, "two.html")
     ))
 
     itemStore.queryItems("Example").test {
       assertEquals(listOf("Example1", "Example2"), expectItem().map { it.className })
 
       itemStore.updateItems(listOf(
-          ItemUtil.createForInsert("com.example.Example1", "uno.html", null),
-          ItemUtil.createForInsert("com.example.Example3", "tres.html", null)
+          Impl(-1, "com.example", "Example1", false, "uno.html"),
+          Impl(-1, "com.example", "Example3", false, "tres.html")
       ))
       assertEquals(listOf("Example1", "Example3"), expectItem().map { it.className })
 
@@ -86,14 +86,14 @@ class ItemStoreTest {
       assertEquals(0, expectItem())
 
       itemStore.updateItems(listOf(
-          ItemUtil.createForInsert("com.example.One", "one.html", null)
+          Impl(-1, "com.example", "One", false, "one.html")
       ))
 
       assertEquals(1, expectItem())
 
       itemStore.updateItems(listOf(
-          ItemUtil.createForInsert("com.example.One", "one.html", null),
-          ItemUtil.createForInsert("com.example.Two", "two.html", null)
+          Impl(-1, "com.example", "One", false, "one.html"),
+          Impl(-1, "com.example", "Two", false, "two.html")
       ))
 
       assertEquals(2, expectItem())
@@ -103,9 +103,9 @@ class ItemStoreTest {
 
   @Test fun wildcards() = runBlocking<Unit> {
     itemStore.updateItems(listOf(
-        ItemUtil.createForInsert("com.example.One%Two", "percent.html", null),
-        ItemUtil.createForInsert("com.example.One_Two", "underscore.html", null),
-        ItemUtil.createForInsert("com.example.One\\Two", "escape.html", null)
+        Impl(-1, "com.example", "One%Two", false, "percent.html"),
+        Impl(-1, "com.example", "One_Two", false, "underscore.html"),
+        Impl(-1, "com.example", "One\\Two", false, "escape.html")
     ))
 
     itemStore.queryItems("%").test {
