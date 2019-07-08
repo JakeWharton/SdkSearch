@@ -14,12 +14,18 @@ internal class SqlItemStore @Inject constructor(
 ) : ItemStore {
   override suspend fun updateItems(items: List<Item>) {
     db.transaction {
+      val ids = ArrayList<Long>(items.size)
       for (item in items) {
         db.updateItem(item.packageName, item.className, item.deprecated, item.link)
-        if (db.changes().executeAsOne() == 0L) {
+        val id = if (db.changes().executeAsOne() != 0L) {
+          db.findItemId(item.packageName, item.className).executeAsOne()
+        } else {
           db.insertItem(item.packageName, item.className, item.deprecated, item.link)
+          db.findInsertRowid().executeAsOne()
         }
+        ids.add(id)
       }
+      db.deleteOldItems(ids)
     }
   }
 

@@ -62,6 +62,25 @@ class ItemStoreTest {
     }
   }
 
+  @Test fun oldItemsDeleted() = runBlocking<Unit> {
+    itemStore.updateItems(listOf(
+        ItemUtil.createForInsert("com.example.Example1", "one.html", null),
+        ItemUtil.createForInsert("com.example.Example2", "two.html", null)
+    ))
+
+    itemStore.queryItems("Example").test {
+      assertEquals(listOf("Example1", "Example2"), expectItem().map { it.className })
+
+      itemStore.updateItems(listOf(
+          ItemUtil.createForInsert("com.example.Example1", "uno.html", null),
+          ItemUtil.createForInsert("com.example.Example3", "tres.html", null)
+      ))
+      assertEquals(listOf("Example1", "Example3"), expectItem().map { it.className })
+
+      cancel()
+    }
+  }
+
   @Test fun count() = runBlocking<Unit> {
     itemStore.count().test {
       assertEquals(0, expectItem())
@@ -73,11 +92,11 @@ class ItemStoreTest {
       assertEquals(1, expectItem())
 
       itemStore.updateItems(listOf(
-          ItemUtil.createForInsert("com.example.Two", "two.html", null),
-          ItemUtil.createForInsert("com.example.Three", "three.html", null)
+          ItemUtil.createForInsert("com.example.One", "one.html", null),
+          ItemUtil.createForInsert("com.example.Two", "two.html", null)
       ))
 
-      assertEquals(3, expectItem())
+      assertEquals(2, expectItem())
       cancel()
     }
   }

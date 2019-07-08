@@ -29,6 +29,17 @@ insertItem:
 INSERT OR FAIL INTO item(packageName, className, deprecated, link) VALUES (?, ?, ?, ?)
 ;
 
+findItemId:
+SELECT id
+FROM item
+WHERE packageName = ?1
+  AND className = ?2
+;
+
+findInsertRowid:
+SELECT last_insert_rowid()
+;
+
 updateItem:
 UPDATE item
 SET deprecated = ?3,
@@ -36,6 +47,10 @@ SET deprecated = ?3,
 WHERE packageName = ?1
   AND className = ?2
 ;
+
+deleteOldItems:
+DELETE FROM item
+WHERE id NOT IN ?;
 
 changes:
 SELECT changes()
