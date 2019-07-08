@@ -13,7 +13,7 @@ class ClipboardCopyItemHandler(
 ) : ItemHandler {
   override fun invoke(item: Item) {
     val clipboard = context.getSystemService<ClipboardManager>()!!
-    clipboard.primaryClip = ClipData.newPlainText(item.className, item.link)
+    clipboard.setPrimaryClip(ClipData.newPlainText(item.className, item.link))
     Toast.makeText(context, context.getString(R.string.copied, item.className), LENGTH_SHORT).show()
   }
 }

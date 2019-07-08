@@ -4,7 +4,7 @@ config: &config
   working_directory: ~/SdkSearch
 
   docker:
-    - image: jakewharton/sdksearch:0.0.3
+    - image: jakewharton/sdksearch:0.0.4
 
   environment:
     TERM: dumb
