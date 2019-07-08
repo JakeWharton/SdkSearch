@@ -4,6 +4,18 @@ apply plugin: 'application'
 
 mainClassName = 'com.jakewharton.sdksearch.proxy.Proxy'
 
+sourceSets {
+  functionalTest {
+    compileClasspath += sourceSets.main.output
+    runtimeClasspath += sourceSets.main.output
+  }
+}
+
+configurations {
+  functionalTestImplementation.extendsFrom implementation
+  functionalTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
 dependencies {
   implementation deps.kotlin.stdlib.jdk
   implementation deps.kotlin.serialization.jdk
@@ -16,6 +28,17 @@ dependencies {
   implementation deps.ktor.netty
   implementation deps.logback
   implementation project(':backend:dac-proxy:model')
+
+  functionalTestImplementation deps.junit
+  functionalTestImplementation deps.truth
+}
+
+task functionalTest(type: Test) {
+  description = 'Run functional tests'
+  group = 'verification'
+
+  testClassesDirs = sourceSets.functionalTest.output.classesDirs
+  classpath = sourceSets.functionalTest.runtimeClasspath
 }
 
 distTar.enabled = false

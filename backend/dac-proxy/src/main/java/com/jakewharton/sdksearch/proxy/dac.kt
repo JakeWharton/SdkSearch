@@ -3,6 +3,7 @@ package com.jakewharton.sdksearch.proxy
 import com.jakewharton.sdksearch.proxy.model.DocumentedType
 import com.squareup.moshi.JsonReader
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -11,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import okhttp3.logging.HttpLoggingInterceptor.Logger
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
+import java.time.Duration
 
 private val dac = "https://developer.android.com"
 private val urls = listOf(
@@ -26,13 +28,14 @@ private val urls = listOf(
 suspend fun listDocumentedTypes(): List<DocumentedType> {
   return coroutineScope {
     urls.map { url -> async { listTypes(url) } }
-        .map { it.await() }
+        .awaitAll()
         .flatten()
   }
 }
 
 private val logger = LoggerFactory.getLogger("com.jakewharton.sdksearch.proxy")
 private val client = OkHttpClient.Builder()
+    .callTimeout(Duration.ofSeconds(30))
     .addInterceptor(HttpLoggingInterceptor(object : Logger {
         override fun log(message: String) = logger.info(message)
       })

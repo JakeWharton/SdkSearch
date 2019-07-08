@@ -67,7 +67,7 @@ jobs:
             - ~/.gradle/wrapper
 
 
-  validate:
+  references_validator:
     <<: *config
 
     steps:
@@ -88,6 +88,24 @@ jobs:
           path: validation_report.txt
 
 
+  dac_proxy_functional_tests:
+    <<: *config
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          <<: *cache_key
+
+      - run:
+          name: Test
+          command: ./gradlew --stacktrace :backend:dac-proxy:functionalTest
+      - store_test_results:
+          path: backend/dac-proxy/build/test-results/functionalTest
+      - store_artifacts:
+          path: backend/dac-proxy/build/test-results/functionalTest
+
+
 workflows:
   version: 2
 
@@ -97,7 +115,8 @@ workflows:
 
   validation:
     jobs:
-      - validate
+      - references_validator
+      - dac_proxy_functional_tests
     triggers:
       - schedule:
           cron: "0 0 * * *"
