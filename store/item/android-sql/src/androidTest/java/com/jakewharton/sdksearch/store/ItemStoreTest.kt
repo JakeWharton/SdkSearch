@@ -23,13 +23,15 @@ class ItemStoreTest {
         ItemUtil.createForInsert("com.example.One", "one.html", null)
     ))
 
-    val query = itemStore.queryItems("One")
-    val item = query.receive().single()
-    assertEquals("com.example", item.packageName)
-    assertEquals("One", item.className)
-    assertFalse(item.deprecated)
-    assertEquals("one.html", item.link)
-    query.cancel()
+    itemStore.queryItems("One").test {
+      val item = expectItem().single()
+      assertEquals("com.example", item.packageName)
+      assertEquals("One", item.className)
+      assertFalse(item.deprecated)
+      assertEquals("one.html", item.link)
+
+      cancel()
+    }
   }
 
   @Test fun upsert() = runBlocking<Unit> {
@@ -37,47 +39,47 @@ class ItemStoreTest {
         ItemUtil.createForInsert("com.example.One", "one.html", null)
     ))
 
-    val query = itemStore.queryItems("One")
+    itemStore.queryItems("One").test {
+      val item1 = expectItem().single()
+      val id = item1.id
+      assertEquals("com.example", item1.packageName)
+      assertEquals("One", item1.className)
+      assertEquals("one.html", item1.link)
+      assertFalse(item1.deprecated)
 
-    val item1 = query.receive().single()
-    val id = item1.id
-    assertEquals("com.example", item1.packageName)
-    assertEquals("One", item1.className)
-    assertEquals("one.html", item1.link)
-    assertFalse(item1.deprecated)
+      itemStore.updateItems(listOf(
+          ItemUtil.createForInsert("com.example.One", "two.html", "deprecated")
+      ))
 
-    itemStore.updateItems(listOf(
-        ItemUtil.createForInsert("com.example.One", "two.html", "deprecated")
-    ))
+      val item2 = expectItem().single()
+      assertEquals(id, item2.id)
+      assertEquals("com.example", item2.packageName)
+      assertEquals("One", item2.className)
+      assertEquals("two.html", item2.link)
+      assertTrue(item2.deprecated)
 
-    val item2 = query.receive().single()
-    assertEquals(id, item2.id)
-    assertEquals("com.example", item2.packageName)
-    assertEquals("One", item2.className)
-    assertEquals("two.html", item2.link)
-    assertTrue(item2.deprecated)
-
-    query.cancel()
+      cancel()
+    }
   }
 
   @Test fun count() = runBlocking<Unit> {
-    val query = itemStore.count()
+    itemStore.count().test {
+      assertEquals(0, expectItem())
 
-    assertEquals(0, query.receive())
+      itemStore.updateItems(listOf(
+          ItemUtil.createForInsert("com.example.One", "one.html", null)
+      ))
 
-    itemStore.updateItems(listOf(
-        ItemUtil.createForInsert("com.example.One", "one.html", null)
-    ))
+      assertEquals(1, expectItem())
 
-    assertEquals(1, query.receive())
+      itemStore.updateItems(listOf(
+          ItemUtil.createForInsert("com.example.Two", "two.html", null),
+          ItemUtil.createForInsert("com.example.Three", "three.html", null)
+      ))
 
-    itemStore.updateItems(listOf(
-        ItemUtil.createForInsert("com.example.Two", "two.html", null),
-        ItemUtil.createForInsert("com.example.Three", "three.html", null)
-    ))
-
-    assertEquals(3, query.receive())
-    query.cancel()
+      assertEquals(3, expectItem())
+      cancel()
+    }
   }
 
   @Test fun wildcards() = runBlocking<Unit> {
@@ -87,19 +89,19 @@ class ItemStoreTest {
         ItemUtil.createForInsert("com.example.One\\Two", "escape.html", null)
     ))
 
-    itemStore.queryItems("%").also {
-      assertEquals("One%Two", it.receive().single().className)
-      it.cancel()
+    itemStore.queryItems("%").test {
+      assertEquals("One%Two", expectItem().single().className)
+      cancel()
     }
 
-    itemStore.queryItems("_").also {
-      assertEquals("One_Two", it.receive().single().className)
-      it.cancel()
+    itemStore.queryItems("_").test {
+      assertEquals("One_Two", expectItem().single().className)
+      cancel()
     }
 
-    itemStore.queryItems("\\").also {
-      assertEquals("One\\Two", it.receive().single().className)
-      it.cancel()
+    itemStore.queryItems("\\").test {
+      assertEquals("One\\Two", expectItem().single().className)
+      cancel()
     }
   }
 }

@@ -33,7 +33,7 @@ dependencies {
   implementation deps.kotlin.stdlib.jdk
 
   implementation deps.sqldelight.android
-  implementation project(':sqldelight-coroutines-extensions')
+  implementation deps.sqldelight.coroutines
   implementation deps.androidx.sqliteFramework
 
   implementation deps.timber.jdk

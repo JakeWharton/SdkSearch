@@ -9,7 +9,9 @@ import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLInputElement
@@ -68,7 +70,7 @@ class InMemoryItemStore : ItemStore {
   private var items = emptyList<Item>()
   private val countChannel = ConflatedBroadcastChannel(0L)
 
-  override fun count() = countChannel.openSubscription()
+  override fun count() = countChannel.asFlow()
 
   override suspend fun updateItems(items: List<Item>) {
     Timber.debug { "Updating ${items.size} items" }
@@ -76,7 +78,7 @@ class InMemoryItemStore : ItemStore {
     countChannel.offer(items.size.toLong())
   }
 
-  override fun queryItems(term: String): ReceiveChannel<List<Item>> {
+  override fun queryItems(term: String): Flow<List<Item>> {
     // TODO store in a map and requery when updated?
 
     val items = items
@@ -93,6 +95,6 @@ class InMemoryItemStore : ItemStore {
           }
         })
 
-    return ConflatedBroadcastChannel(items).openSubscription()
+    return flowOf(items)
   }
 }

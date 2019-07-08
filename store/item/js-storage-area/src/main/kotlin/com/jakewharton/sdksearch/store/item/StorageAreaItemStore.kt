@@ -8,8 +8,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.map
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import timber.log.debug
 import kotlin.coroutines.resume
@@ -108,8 +109,8 @@ class StorageAreaItemStore(
     }
   }
 
-  override fun queryItems(term: String): ReceiveChannel<List<Item>> {
-    return items.openSubscription().map {
+  override fun queryItems(term: String): Flow<List<Item>> {
+    return items.asFlow().map {
       it.filter { it.className.contains(term, ignoreCase = true) }
           .sortedWith(compareBy {
             val name = it.className
@@ -125,7 +126,7 @@ class StorageAreaItemStore(
     }
   }
 
-  override fun count(): ReceiveChannel<Long> {
-    return items.openSubscription().map { it.size.toLong() }
+  override fun count(): Flow<Long> {
+    return items.asFlow().map { it.size.toLong() }
   }
 }

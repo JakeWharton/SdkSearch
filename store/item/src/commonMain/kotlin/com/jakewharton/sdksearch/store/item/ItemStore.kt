@@ -1,9 +1,9 @@
 package com.jakewharton.sdksearch.store.item
 
-import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.flow.Flow
 
 interface ItemStore {
-  fun count(): ReceiveChannel<Long>
+  fun count(): Flow<Long>
   suspend fun updateItems(items: List<Item>)
-  fun queryItems(term: String): ReceiveChannel<List<Item>>
+  fun queryItems(term: String): Flow<List<Item>>
 }

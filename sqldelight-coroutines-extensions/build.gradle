@@ -1,7 +1,0 @@
-apply plugin: 'java-library'
-apply plugin: 'org.jetbrains.kotlin.jvm'
-
-dependencies {
-  api deps.sqldelight.runtime.jdk
-  api deps.kotlin.coroutines.jdk
-}

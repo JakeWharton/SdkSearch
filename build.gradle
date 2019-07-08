@@ -23,7 +23,7 @@ buildscript {
       'okhttp': '4.0.0',
       'retrofit': '2.6.0',
       'dagger': '2.23.1',
-      'sqldelight': '1.1.1',
+      'sqldelight': '1.2.0-SNAPSHOT',
   ]
 
   ext.deps = [
@@ -95,8 +95,9 @@ buildscript {
       'byteunits': 'com.jakewharton.byteunits:byteunits:0.9.1',
       'sqldelight': [
           'android': "com.squareup.sqldelight:android-driver:${versions.sqldelight}",
+          'coroutines': "com.squareup.sqldelight:coroutines-extensions-jvm:${versions.sqldelight}",
           'runtime': [
-              'common': "com.squareup.sqldelight:runtime-metadata:${versions.sqldelight}",
+              'common': "com.squareup.sqldelight:runtime:${versions.sqldelight}",
               'jdk': "com.squareup.sqldelight:runtime-jvm:${versions.sqldelight}",
               'js': "com.squareup.sqldelight:runtime-js:${versions.sqldelight}",
           ],
@@ -116,6 +117,7 @@ buildscript {
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     gradlePluginPortal()
   }
 
