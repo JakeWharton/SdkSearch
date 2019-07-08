@@ -9,6 +9,13 @@ configurations {
 }
 
 kotlin {
+  jvm()
+  js {
+    compilations.main.kotlinOptions {
+      moduleKind = 'umd'
+    }
+  }
+
   sourceSets {
     commonMain {
       dependencies {
@@ -45,15 +52,6 @@ kotlin {
     jvmTest {
       dependencies {
         implementation deps.kotlin.test.jdk
-      }
-    }
-  }
-
-  targets {
-    fromPreset(presets.jvm, 'jvm')
-    fromPreset(presets.js, 'js') {
-      tasks.getByName(compilations.main.compileKotlinTaskName).kotlinOptions {
-        moduleKind = 'umd'
       }
     }
   }

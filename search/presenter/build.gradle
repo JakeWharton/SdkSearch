@@ -9,6 +9,13 @@ configurations {
 }
 
 kotlin {
+  android()
+  js {
+    compilations.main.kotlinOptions {
+      moduleKind = 'umd'
+    }
+  }
+
   sourceSets {
     commonMain {
       dependencies {
@@ -18,6 +25,12 @@ kotlin {
         api deps.kotlin.coroutines.common
       }
     }
+    androidMain {
+      dependencies {
+        api deps.kotlin.stdlib.jdk
+        api deps.kotlin.coroutines.jdk
+      }
+    }
     jsMain {
       dependencies {
         api deps.kotlin.stdlib.js
@@ -25,24 +38,6 @@ kotlin {
       }
     }
   }
-
-  targets {
-    fromPreset(presets.android, 'android')
-    fromPreset(presets.js, 'js') {
-      tasks.getByName(compilations.main.compileKotlinTaskName).kotlinOptions {
-        moduleKind = 'umd'
-      }
-    }
-  }
-}
-
-/* android */ dependencies {
-  // TODO these two shouldn't be required to be duplicated here
-  api project(':sync')
-  api project(':presentation:presenter')
-
-  api deps.kotlin.stdlib.jdk
-  api deps.kotlin.coroutines.jdk
 }
 
 android {

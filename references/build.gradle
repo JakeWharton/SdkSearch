@@ -8,6 +8,18 @@ configurations {
 }
 
 kotlin {
+  jvm()
+  js {
+    // TODO apply this automatically on all multiplatform projects using js presets.
+    compilations.all {
+      kotlinOptions {
+        sourceMap = true
+        moduleKind = 'umd'
+        metaInfo = true
+      }
+    }
+  }
+
   sourceSets {
     commonMain {
       dependencies {
@@ -38,20 +50,6 @@ kotlin {
     jsTest {
       dependencies {
         implementation deps.kotlin.test.js
-      }
-    }
-  }
-
-  targets {
-    fromPreset(presets.jvm, 'jvm')
-    fromPreset(presets.js, 'js') {
-      // TODO apply this automatically on all multiplatform projects using js presets.
-      configure([compilations.main, compilations.test]) {
-        tasks.getByName(compileKotlinTaskName).kotlinOptions {
-          sourceMap = true
-          moduleKind = 'umd'
-          metaInfo = true
-        }
       }
     }
   }

@@ -9,6 +9,13 @@ configurations {
 }
 
 kotlin {
+  jvm()
+  js {
+    compilations.main.kotlinOptions {
+      moduleKind = 'umd'
+    }
+  }
+
   sourceSets {
     commonMain {
       dependencies {
@@ -26,15 +33,6 @@ kotlin {
       dependencies {
         api deps.kotlin.stdlib.js
         api deps.kotlin.serialization.js
-      }
-    }
-  }
-
-  targets {
-    fromPreset(presets.jvm, 'jvm')
-    fromPreset(presets.js, 'js') {
-      tasks.getByName(compilations.main.compileKotlinTaskName).kotlinOptions {
-        moduleKind = 'umd'
       }
     }
   }
