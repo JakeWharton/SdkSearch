@@ -68,11 +68,11 @@ private suspend fun listTypes(url: String): List<DocumentedType> {
     val className = linkElement.text()
 
     // Parse the package name from the URL paths.
-    val packageName = link.removePrefix("https://developer.android.com/reference/")
+    val packageName = link.removePrefix("/reference/")
         .removeSuffix("/$className.html")
         .replace('/', '.')
 
-    DocumentedType(packageName, className, api, deprecated, link)
+    DocumentedType(packageName, className, api, deprecated, "$dac$link")
   }
 
   return documentedTypes
