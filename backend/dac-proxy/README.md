@@ -23,6 +23,10 @@ Ensure the config uses configuration-on-demand and only builds this module:
 
 #### Release
 
+Ensure functional tests pass:
+
+    $ ./gradlew :backend:dac-proxy:functionalTest
+
 Commit to master and then push to heroku:
 
     $ git push heroku master
