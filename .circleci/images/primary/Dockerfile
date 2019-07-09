@@ -18,4 +18,7 @@ FROM circleci/android:api-29
 # Node 10 because the URL class was added as a global which is needed in unit tests.
 # GraphViz is used to render the project graph.
 RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - \
- && sudo apt-get install --no-install-recommends -y nodejs graphviz
+ && sudo apt-get install --no-install-recommends -y \
+      nodejs \
+      graphviz \
+ && sudo rm -rf /var/lib/apt/lists/*
