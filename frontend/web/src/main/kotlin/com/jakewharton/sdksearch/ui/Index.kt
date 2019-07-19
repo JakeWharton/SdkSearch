@@ -9,9 +9,10 @@ import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLInputElement
@@ -67,34 +68,35 @@ fun main() {
 }
 
 class InMemoryItemStore : ItemStore {
-  private var items = emptyList<Item>()
-  private val countChannel = ConflatedBroadcastChannel(0L)
+  private val itemsSink: SendChannel<List<Item>>
+  private val itemsFlow: Flow<List<Item>>
+  init {
+    val itemsChannel = ConflatedBroadcastChannel(emptyList<Item>())
+    itemsSink = itemsChannel
+    itemsFlow = itemsChannel.asFlow()
+  }
 
-  override fun count() = countChannel.asFlow()
+  override fun count() = itemsFlow.map { it.size.toLong() }
 
   override suspend fun updateItems(items: List<Item>) {
     Timber.debug { "Updating ${items.size} items" }
-    this.items = items
-    countChannel.offer(items.size.toLong())
+    itemsSink.offer(items)
   }
 
   override fun queryItems(term: String): Flow<List<Item>> {
-    // TODO store in a map and requery when updated?
-
-    val items = items
-        .filter { it.className.contains(term, ignoreCase = true) }
-        .sortedWith(compareBy {
-          val name = it.className
-          when {
-            name.equals(term, ignoreCase = true) -> 1
-            name.startsWith(term, ignoreCase = true) && name.indexOf('.') == -1 -> 2
-            name.endsWith(".$term", ignoreCase = true) -> 3
-            name.startsWith(term, ignoreCase = true) -> 4
-            name.contains(".$term", ignoreCase = true) -> 5
-            else -> 6
-          }
-        })
-
-    return flowOf(items)
+    return itemsFlow.map { items ->
+      items.filter { it.className.contains(term, ignoreCase = true) }
+          .sortedWith(compareBy {
+            val name = it.className
+            when {
+              name.equals(term, ignoreCase = true) -> 1
+              name.startsWith(term, ignoreCase = true) && name.indexOf('.') == -1 -> 2
+              name.endsWith(".$term", ignoreCase = true) -> 3
+              name.startsWith(term, ignoreCase = true) -> 4
+              name.contains(".$term", ignoreCase = true) -> 5
+              else -> 6
+            }
+          })
+    }
   }
 }
