@@ -8,6 +8,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
@@ -46,14 +47,20 @@ class StorageAreaItemStore(
   storageName: String,
   private val storageArea: StorageArea
 ) : ItemStore {
-  private val items = ConflatedBroadcastChannel<List<Item>>()
   private var currentJob: Job? = null
+  private val itemsSink: SendChannel<List<Item>>
+  private val itemsFlow: Flow<List<Item>>
+  init {
+    val itemsChannel = ConflatedBroadcastChannel(emptyList<Item>())
+    itemsSink = itemsChannel
+    itemsFlow = itemsChannel.asFlow()
+  }
 
   init {
     storageArea.get(KEY) {
       val existingItems = it[KEY]?.let(::unpackToItemList) ?: emptyList()
       Timber.debug { "Loaded initial ${existingItems.size} items" }
-      items.offer(existingItems)
+      itemsSink.offer(existingItems)
 
       storage.onChanged.addListener { objects, name ->
         Timber.debug { """Storage change in "$name" of key(s) "${Object.keys(objects)}"""" }
@@ -61,7 +68,7 @@ class StorageAreaItemStore(
           @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
           val change = objects[KEY] as StorageChange?
           if (change != null) {
-            items.offer(unpackToItemList(change.newValue))
+            itemsSink.offer(unpackToItemList(change.newValue))
           }
         }
       }
@@ -110,8 +117,8 @@ class StorageAreaItemStore(
   }
 
   override fun queryItems(term: String): Flow<List<Item>> {
-    return items.asFlow().map {
-      it.filter { it.className.contains(term, ignoreCase = true) }
+    return itemsFlow.map { items ->
+      items.filter { it.className.contains(term, ignoreCase = true) }
           .sortedWith(compareBy {
             val name = it.className
             when {
@@ -127,6 +134,6 @@ class StorageAreaItemStore(
   }
 
   override fun count(): Flow<Long> {
-    return items.asFlow().map { it.size.toLong() }
+    return itemsFlow.map { it.size.toLong() }
   }
 }
