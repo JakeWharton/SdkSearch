@@ -17,7 +17,7 @@ import timber.log.Timber
 fun main() {
   Timber.plant(ConsoleTree())
 
-  val itemStore = StorageAreaItemStore(storage, "local", storage.local)
+  val itemStore = StorageAreaItemStore(storage.local)
   val itemSynchronizer = ItemSynchronizer(itemStore, FetchDocumentationService)
 
   val presenter = SearchPresenter(itemStore, itemSynchronizer, 0L)

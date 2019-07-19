@@ -1,6 +1,5 @@
 package com.jakewharton.sdksearch.store.item
 
-import com.chrome.platform.storage.Storage
 import com.chrome.platform.storage.StorageArea
 import com.chrome.platform.storage.StorageChange
 import com.jakewharton.sdksearch.store.item.Item.Impl
@@ -41,10 +40,7 @@ private external object Object {
   fun keys(o: Any): Array<String>
 }
 
-// TODO three parameters is stupid https://bugs.chromium.org/p/chromium/issues/detail?id=863277
 class StorageAreaItemStore(
-  storage: Storage,
-  storageName: String,
   private val storageArea: StorageArea
 ) : ItemStore {
   private var currentJob: Job? = null
@@ -62,14 +58,12 @@ class StorageAreaItemStore(
       Timber.debug { "Loaded initial ${existingItems.size} items" }
       itemsSink.offer(existingItems)
 
-      storage.onChanged.addListener { objects, name ->
-        Timber.debug { """Storage change in "$name" of key(s) "${Object.keys(objects)}"""" }
-        if (name == storageName) {
-          @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
-          val change = objects[KEY] as StorageChange?
-          if (change != null) {
-            itemsSink.offer(unpackToItemList(change.newValue))
-          }
+      storageArea.onChanged.addListener { objects, _ ->
+        Timber.debug { """Storage change of key(s) "${Object.keys(objects)}"""" }
+        @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+        val change = objects[KEY] as StorageChange?
+        if (change != null) {
+          itemsSink.offer(unpackToItemList(change.newValue))
         }
       }
     }

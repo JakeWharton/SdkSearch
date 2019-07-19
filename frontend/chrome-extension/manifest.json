@@ -3,6 +3,7 @@
   "description": "Adds an '$keyword' Omnibox command and 'view source' links for the Android SDK",
   "version": "$version",
   "manifest_version": 2,
+  "minimum_chrome_version": "73",
   "icons": {
     "16": "icon_16.png",
     "32": "icon_32.png",
