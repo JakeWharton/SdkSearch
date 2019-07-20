@@ -1,0 +1,11 @@
+apply plugin: 'kotlin2js'
+
+dependencies {
+  compile project(':chrome-platform')
+  compile deps.kotlin.stdlib.js
+  compile deps.kotlin.coroutines.js
+}
+
+compileKotlin2Js {
+  kotlinOptions.moduleKind = 'umd'
+}
