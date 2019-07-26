@@ -195,6 +195,7 @@ allprojects {
           '-progressive',
           '-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi',
           '-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi',
+          '-Xuse-experimental=kotlin.time.ExperimentalTime',
       ]
     }
   }
