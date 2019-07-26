@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import com.bugsnag.android.Bugsnag
 import com.jakewharton.timber.bugsnag.BugsnagTree
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import timber.log.LogcatTree
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -12,7 +12,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-class SdkSearchApplication : Application(), HasActivityInjector {
+class SdkSearchApplication : Application(), HasAndroidInjector {
   private lateinit var appComponent: AppComponent
 
   override fun onCreate() {
@@ -46,7 +46,7 @@ class SdkSearchApplication : Application(), HasActivityInjector {
     appComponent = createAppComponent()
   }
 
-  override fun activityInjector() = appComponent.activityInjector
+  override fun androidInjector() = appComponent.androidInjector
 
   @SuppressLint("SimpleDateFormat") // Explicitly after normalized format not localized.
   private fun formattedCommitTime(): String {

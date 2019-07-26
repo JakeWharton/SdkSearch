@@ -22,7 +22,7 @@ buildscript {
       'ktor': '1.2.1',
       'okhttp': '4.0.0',
       'retrofit': '2.6.0',
-      'dagger': '2.23.1',
+      'dagger': '2.24',
       'sqldelight': '1.1.4',
   ]
 
