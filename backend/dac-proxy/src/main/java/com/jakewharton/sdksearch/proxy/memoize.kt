@@ -19,16 +19,15 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.time.Duration
 
-fun <R> memoizeWithExpiration(
+fun <R> (suspend () -> R).memoizeWithExpiration(
   duration: Duration = Duration.ZERO,
-  nanoSupplier: () -> Long = System::nanoTime,
-  supplier: suspend () -> R
+  nanoSupplier: () -> Long = System::nanoTime
 ): suspend () -> R {
   require(!duration.isNegative) { "Duration must be positive: $duration" }
   val durationNanos = duration.toNanos() // Throws when overflows.
 
   // TODO remove ::invoke once https://youtrack.jetbrains.com/issue/KT-18707 ships
-  return MemoizedSuspendingSupplier(durationNanos, nanoSupplier, supplier)::invoke
+  return MemoizedSuspendingSupplier(durationNanos, nanoSupplier, this)::invoke
 }
 
 private class MemoizedSuspendingSupplier<R>(

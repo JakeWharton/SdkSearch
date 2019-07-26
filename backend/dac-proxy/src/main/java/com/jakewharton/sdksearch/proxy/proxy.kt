@@ -40,7 +40,7 @@ fun main() {
   }.start()
 }
 
-private val jsonCache = memoizeWithExpiration(Duration.ofMinutes(30), supplier = ::listToJson)
+private val jsonCache = ::listToJson.memoizeWithExpiration(Duration.ofMinutes(30))
 
 private suspend fun listToJson(): String {
   return Json.stringify(DocumentedType.serializer().list, listDocumentedTypes())
