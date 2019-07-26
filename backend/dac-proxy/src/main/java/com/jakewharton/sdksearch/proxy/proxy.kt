@@ -19,7 +19,7 @@ import io.ktor.server.netty.Netty
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.list
 import org.slf4j.event.Level
-import java.time.Duration
+import kotlin.time.minutes
 
 fun main() {
   val port = System.getenv("PORT")?.toIntOrNull() ?: 8084
@@ -40,7 +40,7 @@ fun main() {
   }.start()
 }
 
-private val jsonCache = ::listToJson.memoizeWithExpiration(Duration.ofMinutes(30))
+private val jsonCache = ::listToJson.memoize(expiration = 30.minutes)
 
 private suspend fun listToJson(): String {
   return Json.stringify(DocumentedType.serializer().list, listDocumentedTypes())

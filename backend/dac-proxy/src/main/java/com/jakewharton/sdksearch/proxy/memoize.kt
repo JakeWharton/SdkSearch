@@ -17,41 +17,44 @@ package com.jakewharton.sdksearch.proxy
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import java.time.Duration
+import kotlin.time.Clock
+import kotlin.time.ClockMark
+import kotlin.time.Duration
+import kotlin.time.MonoClock
 
-fun <R> (suspend () -> R).memoizeWithExpiration(
-  duration: Duration = Duration.ZERO,
-  nanoSupplier: () -> Long = System::nanoTime
+fun <R> (suspend () -> R).memoize(
+  expiration: Duration = Duration.INFINITE,
+  clock: Clock = MonoClock
 ): suspend () -> R {
-  require(!duration.isNegative) { "Duration must be positive: $duration" }
-  val durationNanos = duration.toNanos() // Throws when overflows.
+  require(!expiration.isNegative()) { "Duration must be positive: $expiration" }
 
   // TODO remove ::invoke once https://youtrack.jetbrains.com/issue/KT-18707 ships
-  return MemoizedSuspendingSupplier(durationNanos, nanoSupplier, this)::invoke
+  return MemoizedSuspendingSupplier(expiration, clock, this)::invoke
 }
 
 private class MemoizedSuspendingSupplier<R>(
-  private val durationNanos: Long,
-  private val nanoSupplier: () -> Long,
+  private val expiration: Duration,
+  clock: Clock,
   private val delegate: suspend () -> R
 ) {
   private val lock = Mutex()
   @Volatile private var value: Any? = null
-  @Volatile private var expirationNanos = 0L // The special value 0 means "not yet initialized".
+
+  /**
+   * A [ClockMark] for which an elapsed time of 0 or greater means [value] has expired and should
+   * be (re)obtained from [delegate].
+   */
+  @Volatile private var expirationMark = clock.mark()
 
   suspend operator fun invoke(): R {
-    var nanos = expirationNanos
-    val now = nanoSupplier()
-    if (nanos == 0L || now - nanos >= 0L) {
+    val mark = expirationMark
+    if (!mark.elapsed().isNegative()) {
       lock.withLock {
         // Recheck for lost race.
-        if (nanos == expirationNanos) {
+        if (mark === expirationMark) {
           val newValue = delegate()
           value = newValue
-
-          nanos = now + durationNanos
-          // In the unlikely event nanos is 0, set it to 1; no one will notice 1 ns of tardiness.
-          expirationNanos = if (nanos == 0L) 1L else nanos
+          expirationMark = mark + expiration
 
           return newValue
         }

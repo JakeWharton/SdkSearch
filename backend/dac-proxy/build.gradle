@@ -29,6 +29,9 @@ dependencies {
   implementation deps.logback
   implementation project(':backend:dac-proxy:model')
 
+  testImplementation deps.junit
+  testImplementation deps.truth
+
   functionalTestImplementation deps.junit
   functionalTestImplementation deps.truth
 }
