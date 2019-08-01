@@ -12,7 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import okhttp3.logging.HttpLoggingInterceptor.Logger
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
-import java.time.Duration
+import kotlin.time.seconds
 
 private val dac = "https://developer.android.com"
 private val urls = listOf(
@@ -35,7 +35,7 @@ suspend fun listDocumentedTypes(): List<DocumentedType> {
 
 private val logger = LoggerFactory.getLogger("com.jakewharton.sdksearch.proxy")
 private val client = OkHttpClient.Builder()
-    .callTimeout(Duration.ofSeconds(30))
+    .callTimeout(30.seconds)
     .addInterceptor(HttpLoggingInterceptor(object : Logger {
         override fun log(message: String) = logger.info(message)
       })

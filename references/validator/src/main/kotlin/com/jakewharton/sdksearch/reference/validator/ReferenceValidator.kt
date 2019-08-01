@@ -7,10 +7,11 @@ import com.jakewharton.sdksearch.reference.AndroidReference
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
 import com.xenomachina.argparser.mainBody
-import kotlinx.coroutines.time.delay
 import okhttp3.OkHttpClient
 import okhttp3.Request.Builder
-import java.time.Duration
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration
+import kotlin.time.minutes
 
 private class CliConfig(parser: ArgParser) {
   val packages by parser.positionalList("PACKAGE", help = "package prefixes to validate (default: all)")
@@ -26,7 +27,7 @@ suspend fun main(vararg args: String) {
   }
 
   val client = OkHttpClient.Builder()
-      .readTimeout(Duration.ofMinutes(1))
+      .readTimeout(1.minutes)
       .build()
   val service = DacComponent.create(client)
       .documentationService()
@@ -62,7 +63,7 @@ suspend fun main(vararg args: String) {
         val code = it.code
         if (code == 429) {
           logStatus("$checking Rate limited! Cooling off…")
-          delay(Duration.ofMinutes(2))
+          delay(2.minutes)
           index -= 1 // Try this index again.
         } else if (!it.isSuccessful) {
           logPrint("$code $fqcn $url")
@@ -77,4 +78,14 @@ suspend fun main(vararg args: String) {
   // Shut down OkHttpClient resources so that the JVM can exit cleanly.
   client.dispatcher.executorService.shutdown()
   client.connectionPool.evictAll()
+}
+
+// TODO https://github.com/Kotlin/kotlinx.coroutines/issues/1402
+private suspend fun delay(duration: Duration) {
+  kotlinx.coroutines.delay(duration.toLongMilliseconds())
+}
+
+// TODO https://github.com/square/okhttp/issues/5322
+private fun OkHttpClient.Builder.readTimeout(duration: Duration) = apply {
+  readTimeout(duration.toLongMilliseconds(), TimeUnit.MILLISECONDS)
 }

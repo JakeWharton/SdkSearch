@@ -3,11 +3,14 @@ package com.jakewharton.sdksearch.proxy
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.ResponseBody
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.time.Duration
 
 suspend fun Call.awaitBody(): ResponseBody {
   return suspendCancellableCoroutine {
@@ -25,4 +28,9 @@ suspend fun Call.awaitBody(): ResponseBody {
       }
     })
   }
+}
+
+// TODO https://github.com/square/okhttp/issues/5322
+fun OkHttpClient.Builder.callTimeout(timeout: Duration) = apply {
+  callTimeout(timeout.toLongMilliseconds(), TimeUnit.MILLISECONDS)
 }
