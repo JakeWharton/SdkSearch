@@ -47,13 +47,10 @@ sqldelight {
   }
 }
 
-// TODO: Remove this when we can exclude build (https://github.com/JLLeitschuh/ktlint-gradle/issues/97)
-// TODO re-enable after https://github.com/JLLeitschuh/ktlint-gradle/issues/144
-//afterEvaluate {
-//  ktlintMainCheck.doFirst {
-//    ant.move(file: file('build/sqldelight'), todir: file('../tmp'))
-//  }
-//  ktlintMainCheck.doLast {
-//    ant.move(file: file('../tmp/sqldelight'), todir: file('build'))
-//  }
-//}
+ktlint {
+  ignoreFailures = true // TODO why isn't this working?
+
+  filter {
+    exclude("**/sqldelight/**")
+  }
+}

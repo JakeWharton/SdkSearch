@@ -126,7 +126,7 @@ buildscript {
     classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
     classpath 'org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.45'
     classpath "com.squareup.sqldelight:gradle-plugin:${versions.sqldelight}"
-    classpath 'gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:5.0.0'
+    classpath 'org.jlleitschuh.gradle:ktlint-gradle:8.2.0'
     classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
   }
 }
