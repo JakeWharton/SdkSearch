@@ -1,6 +1,8 @@
--dontoptimize
 -dontobfuscate
 -verbose
+
+# TODO remove after figuring out what R8 bugs are blocking this from working.
+-dontoptimize
 
 # Keep annotations with RUNTIME retention and their defaults.
 -keepattributes RuntimeVisible*Annotations, AnnotationDefault
