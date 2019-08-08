@@ -15,7 +15,7 @@ Building
 
 Prerequisites:
 
- * JDK 8 (kapt doesn't like 9 or 10, TODO find/file a bug for this)
+ * JDK 8 (kapt doesn't like 9 or 10, [follow issue here](https://youtrack.jetbrains.com/issue/KT-33050))
  * Node 8 or newer
  * Android SDK unzipped and `ANDROID_HOME` environment variable set to its path.
 
