@@ -121,7 +121,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.5.0-rc02'
+    classpath 'com.android.tools.build:gradle:3.5.0-rc03'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
     classpath 'org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.45'
