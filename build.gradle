@@ -23,7 +23,7 @@ buildscript {
       'okhttp': '4.0.0',
       'retrofit': '2.6.1',
       'dagger': '2.24',
-      'sqldelight': '1.1.4',
+      'sqldelight': '1.2.0',
   ]
 
   ext.deps = [
