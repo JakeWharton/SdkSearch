@@ -6,9 +6,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import kotlin.time.DurationUnit
 import kotlin.time.TestClock
 import kotlin.time.minutes
+import kotlin.time.nanoseconds
 import kotlin.time.seconds
 
 class MemoizeTest {
@@ -33,7 +33,7 @@ class MemoizeTest {
   }
 
   @Test fun defaultExpirationIsInfinity() = runBlocking {
-    val clock = TestClock(unit = DurationUnit.DAYS)
+    val clock = TestClock()
     var calls = 0
 
     val supplier = suspend {
@@ -42,7 +42,7 @@ class MemoizeTest {
 
     assertThat(supplier.invoke()).isEqualTo(1)
 
-    clock.reading = Long.MAX_VALUE
+    clock += Long.MAX_VALUE.nanoseconds
     assertThat(supplier.invoke()).isEqualTo(1)
   }
 
@@ -65,7 +65,7 @@ class MemoizeTest {
   }
 
   @Test fun supplerInvokedAgainAfterExpiration() = runBlocking {
-    val clock = TestClock(unit = DurationUnit.SECONDS)
+    val clock = TestClock()
     var calls = 0
 
     val supplier = suspend {
@@ -74,20 +74,20 @@ class MemoizeTest {
 
     assertThat(supplier.invoke()).isEqualTo(1)
 
-    clock.reading += 9 // seconds. TODO use plusAssign(Duration) when added to TestClock.
+    clock += 9.seconds
     assertThat(supplier.invoke()).isEqualTo(1)
 
-    clock.reading += 1 // seconds. TODO use plusAssign(Duration) when added to TestClock.
+    clock += 1.seconds
     assertThat(supplier.invoke()).isEqualTo(2)
   }
 
   @Test fun supplerExecutionTimeIsCountedAgainstExpiration() = runBlocking {
-    val clock = TestClock(unit = DurationUnit.SECONDS)
+    val clock = TestClock()
     var calls = 0
 
     val supplier = suspend {
       // Take longer to execute than the expiration.
-      clock.reading += 11 // seconds. TODO use plusAssign(Duration) when added to TestClock.
+      clock += 11.seconds
 
       ++calls
     }.memoize(10.seconds, clock)

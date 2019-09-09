@@ -44,11 +44,11 @@ private class MemoizedSuspendingSupplier<R>(
    * A [ClockMark] for which an elapsed time of 0 or greater means [value] has expired and should
    * be (re)obtained from [delegate].
    */
-  @Volatile private var expirationMark = clock.mark()
+  @Volatile private var expirationMark = clock.markNow()
 
   suspend operator fun invoke(): R {
     val mark = expirationMark
-    if (!mark.elapsed().isNegative()) {
+    if (mark.hasPassedNow()) {
       lock.withLock {
         // Recheck for lost race.
         if (mark === expirationMark) {
