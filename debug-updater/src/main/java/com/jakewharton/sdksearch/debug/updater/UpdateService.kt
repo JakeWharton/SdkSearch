@@ -1,6 +1,5 @@
 package com.jakewharton.sdksearch.debug.updater
 
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -47,7 +46,6 @@ internal fun Context.startUpdateService(config: UpdateConfig) {
 
 @RestrictTo(LIBRARY) // Public for Android to create.
 class UpdateService : Service() {
-  @SuppressLint("WrongConstant") // TODO https://issuetracker.google.com/issues/140626689
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
     val config = intent.getParcelableExtra<UpdateConfig>(KEY_CONFIG)
     if (config == null) {
