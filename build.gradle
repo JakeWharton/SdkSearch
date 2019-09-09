@@ -88,7 +88,7 @@ buildscript {
           'js': 'com.jakewharton.timber:timber-js:5.0.0-SNAPSHOT',
           'android': 'com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT',
       ],
-      'junit': 'junit:junit:4.12',
+      'junit': 'junit:junit:4.13-beta-3',
       'truth': 'com.google.truth:truth:0.45',
       'bugsnag': 'com.bugsnag:bugsnag-android:4.11.0',
       'argparser': 'com.xenomachina:kotlin-argparser:2.0.5',
