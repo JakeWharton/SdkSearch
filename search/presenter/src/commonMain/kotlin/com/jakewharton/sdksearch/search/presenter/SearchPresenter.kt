@@ -45,7 +45,7 @@ class SearchPresenter(
     }
 
     launch {
-      synchronizer.state.consumeEach {
+      synchronizer.state.collect {
         sendModel(model.copy(syncStatus = when (it) {
           ItemSynchronizer.SyncStatus.IDLE -> SyncStatus.IDLE
           ItemSynchronizer.SyncStatus.SYNC -> SyncStatus.SYNC

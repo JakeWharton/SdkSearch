@@ -5,7 +5,7 @@ import com.jakewharton.sdksearch.store.item.Item
 import com.jakewharton.sdksearch.store.item.ItemStore
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.debug
@@ -16,7 +16,7 @@ class ItemSynchronizer(
   private val documentationService: DocumentationService
 ) {
   private val _state = ConflatedBroadcastChannel<SyncStatus>()
-  val state: ReceiveChannel<SyncStatus> get() = _state.openSubscription()
+  val state = _state.asFlow()
 
   fun forceSync() {
     _state.offer(SyncStatus.SYNC)
