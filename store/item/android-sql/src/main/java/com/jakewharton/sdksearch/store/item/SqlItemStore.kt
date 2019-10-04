@@ -14,18 +14,21 @@ internal class SqlItemStore @Inject constructor(
 ) : ItemStore {
   override suspend fun updateItems(items: List<Item>) {
     db.transaction {
-      val ids = ArrayList<Long>(items.size)
+      val ids = db.findAllItemIds().executeAsList().toMutableSet()
+
       for (item in items) {
         db.updateItem(item.packageName, item.className, item.deprecated, item.link)
-        val id = if (db.changes().executeAsOne() != 0L) {
-          db.findItemId(item.packageName, item.className).executeAsOne()
+        if (db.changes().executeAsOne() != 0L) {
+          ids -= db.findItemId(item.packageName, item.className).executeAsOne()
         } else {
           db.insertItem(item.packageName, item.className, item.deprecated, item.link)
-          db.findInsertRowid().executeAsOne()
         }
-        ids.add(id)
       }
-      db.deleteOldItems(ids)
+
+      // SQLite only supports 999 bind args in a single statement.
+      ids.chunked(999).forEach { chunk ->
+        db.deleteItemIds(chunk)
+      }
     }
   }
 

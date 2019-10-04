@@ -81,6 +81,26 @@ class ItemStoreTest {
     }
   }
 
+  @Test fun oldItemsDeletedFirstInsert() = runBlocking<Unit> {
+    itemStore.count().test {
+      assertEquals(0, expectItem())
+
+      itemStore.updateItems(MutableList(2000) {
+        Impl(-1, "com.example", "Example$it", false, "item.html")
+      })
+
+      assertEquals(2000, expectItem())
+
+      itemStore.updateItems(listOf(
+        Impl(-1, "com.example", "Example0", false, "item.html")
+      ))
+
+      assertEquals(1, expectItem())
+
+      cancel()
+    }
+  }
+
   @Test fun count() = runBlocking<Unit> {
     itemStore.count().test {
       assertEquals(0, expectItem())

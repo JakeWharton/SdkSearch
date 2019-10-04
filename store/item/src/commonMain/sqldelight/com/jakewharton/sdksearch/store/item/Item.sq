@@ -48,9 +48,14 @@ WHERE packageName = ?1
   AND className = ?2
 ;
 
-deleteOldItems:
+findAllItemIds:
+SELECT id
+FROM item
+;
+
+deleteItemIds:
 DELETE FROM item
-WHERE id NOT IN ?;
+WHERE id IN ?;
 
 changes:
 SELECT changes()
