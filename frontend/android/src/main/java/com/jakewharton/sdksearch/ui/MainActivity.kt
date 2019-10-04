@@ -17,9 +17,9 @@ import com.jakewharton.sdksearch.search.ui.ShareItemHandler
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.error
@@ -27,8 +27,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class MainActivity : Activity() {
-  private val binderJob = Job()
-  private val scope = CoroutineScope(Dispatchers.Main + binderJob)
+  private val scope = MainScope()
 
   @Inject lateinit var searchPresenterProvider: Provider<SearchPresenter>
 
@@ -79,7 +78,7 @@ class MainActivity : Activity() {
 
   override fun onDestroy() {
     super.onDestroy()
-    binderJob.cancel()
+    scope.cancel()
 
     if (!isChangingConfigurations) {
       presentation.stop()
