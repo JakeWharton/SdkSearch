@@ -4,11 +4,6 @@ apply plugin: 'kotlin-kapt'
 
 archivesBaseName = 'api-dac-proxy'
 
-// TODO work around https://youtrack.jetbrains.com/issue/KT-27170
-configurations {
-  compileClasspath
-}
-
 kotlin {
   jvm {
     withJava()

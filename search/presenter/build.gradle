@@ -3,11 +3,6 @@ apply plugin: 'com.android.library'
 
 archivesBaseName = 'search-presenter'
 
-// TODO work around https://youtrack.jetbrains.com/issue/KT-27170
-configurations {
-  compileClasspath
-}
-
 kotlin {
   android()
   js {

@@ -3,11 +3,6 @@ apply plugin: 'com.squareup.sqldelight'
 
 archivesBaseName = 'store-item'
 
-// TODO work around https://youtrack.jetbrains.com/issue/KT-27170
-configurations {
-  compileClasspath
-}
-
 kotlin {
   jvm()
   js {

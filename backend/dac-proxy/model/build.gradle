@@ -3,11 +3,6 @@ apply plugin: 'kotlinx-serialization'
 
 archivesBaseName = 'dac-proxy-model'
 
-// TODO work around https://youtrack.jetbrains.com/issue/KT-27170
-configurations {
-  compileClasspath
-}
-
 kotlin {
   jvm()
   js {
