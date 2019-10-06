@@ -9,7 +9,7 @@ dependencies {
   implementation project(':api:dac-proxy')
   implementation deps.kotlin.coroutines.jdk8
   implementation deps.okhttp.client
-  implementation deps.argparser
+  implementation deps.clikt
 }
 
 distTar.enabled = false
