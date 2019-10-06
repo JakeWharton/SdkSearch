@@ -13,7 +13,7 @@ fun AndroidReference.sourceUrl(dacUrl: String): String? {
   val fqcn = justUrl.replace('/', '.')
   val range = PACKAGE.find(fqcn)?.range ?: return null
 
-  val packageName = fqcn.substring(range.start, range.endInclusive)
-  val className = fqcn.substring(range.endInclusive + 1)
+  val packageName = fqcn.substring(range.first, range.last)
+  val className = fqcn.substring(range.last + 1)
   return sourceUrl(packageName, className)
 }
