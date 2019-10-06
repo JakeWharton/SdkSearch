@@ -5,7 +5,6 @@ import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
 import java.io.IOException
-import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 suspend fun Call.await(): Response {
@@ -13,7 +12,7 @@ suspend fun Call.await(): Response {
     it.invokeOnCancellation { cancel() }
     enqueue(object : Callback {
       override fun onResponse(call: Call, response: Response) {
-        it.resume(response)
+        it.resume(response) { response.close() }
       }
       override fun onFailure(call: Call, e: IOException) {
         it.resumeWithException(e)
