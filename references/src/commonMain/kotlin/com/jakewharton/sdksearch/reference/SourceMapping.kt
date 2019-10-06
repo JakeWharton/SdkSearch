@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.reference
 
 import com.jakewharton.sdksearch.reference.SourceProject.BASE
 import com.jakewharton.sdksearch.reference.SourceProject.CAR
+import com.jakewharton.sdksearch.reference.SourceProject.CONSCRYPT
 import com.jakewharton.sdksearch.reference.SourceProject.DATABINDING
 import com.jakewharton.sdksearch.reference.SourceProject.ICU
 import com.jakewharton.sdksearch.reference.SourceProject.LIBCORE
@@ -47,10 +48,25 @@ internal val SOURCE_MAP = mapOf(
     "android.system" to LIBCORE.path("luni/src/main/java/"),
     "android.location" to BASE.path("location/java/"),
     "android.media" to BASE.path("media/java/"),
+    "android.media.MediaController2" to BASE.path("media/apex/java/"),
+    "android.media.MediaController2.Builder" to BASE.path("media/apex/java/"),
+    "android.media.MediaController2.ControllerCallback" to BASE.path("media/apex/java/"),
+    "android.media.MediaSession2" to BASE.path("media/apex/java/"),
+    "android.media.MediaSession2.Builder" to BASE.path("media/apex/java/"),
+    "android.media.MediaSession2.ControllerInfo" to BASE.path("media/apex/java/"),
+    "android.media.MediaSession2.SessionCallback" to BASE.path("media/apex/java/"),
+    "android.media.MediaSession2Service" to BASE.path("media/apex/java/"),
+    "android.media.MediaSession2Service.MediaNotification" to BASE.path("media/apex/java/"),
+    "android.media.Session2Command" to BASE.path("media/apex/java/"),
+    "android.media.Session2Command.Result" to BASE.path("media/apex/java/"),
+    "android.media.Session2CommandGroup" to BASE.path("media/apex/java/"),
+    "android.media.Session2CommandGroup.Builder" to BASE.path("media/apex/java/"),
+    "android.media.Session2Token" to BASE.path("media/apex/java/"),
     "android.media.effect" to BASE.path("media/mca/effect/java/"),
     "android.mtp" to BASE.path("media/java/"),
     "android.net.rtp" to VOIP.path("src/java/"),
     "android.net.sip" to VOIP.path("src/java/"),
+    "android.net.ssl" to CONSCRYPT.path("publicapi/src/main/java/"),
     "android.net.wifi" to BASE.path("wifi/java/"),
     "android.opengl" to BASE.path("opengl/java/"),
     "android.provider.Telephony" to BASE.path("telephony/java/"),
@@ -69,6 +85,7 @@ internal val SOURCE_MAP = mapOf(
     "android.test.InstrumentationTestCase" to BASE.path("test-base/src/"),
     "android.test.InstrumentationTestSuite" to BASE.path("test-base/src/"),
     "android.test.PerformanceTestCase" to BASE.path("test-base/src/"),
+    "android.test.RepetitiveTest" to BASE.path("test-base/src/"),
     "android.test.UiThreadTest" to BASE.path("test-base/src/"),
     "android.test.mock" to BASE.path("test-mock/src/"),
     "android.test.suitebuilder" to BASE.path("test-base/src/"),

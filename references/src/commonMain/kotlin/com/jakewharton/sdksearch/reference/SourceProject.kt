@@ -7,16 +7,13 @@ internal enum class SourceProject(val projectDir: String) {
   VOIP("platform/frameworks/opt/net/voip/"),
   TELEPHONY("platform/frameworks/opt/telephony/"),
   SUPPORT("platform/frameworks/support/"),
-  TESTING("platform/frameworks/testing/"),
-  UI_AUTOMATOR("platform/frameworks/uiautomator/"),
-  MULTIDEX("platform/frameworks/multidex/"),
-  CONSTRAINT_LAYOUT("platform/frameworks/opt/sherpa/"),
   ICU("platform/external/icu/"),
+  CONSCRYPT("platform/external/conscrypt/"),
   DATABINDING("platform/frameworks/data-binding/"),
   ;
 
   init {
-    require(projectDir.endsWith('/'))
+    require(projectDir.endsWith('/')) { "Project dir must end with '/': $projectDir" }
   }
 
   fun path(dir: String) = SourceLocation(this, baseDir = dir)
