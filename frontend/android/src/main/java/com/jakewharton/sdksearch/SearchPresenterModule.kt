@@ -8,6 +8,7 @@ import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
 import dagger.Module
 import dagger.Provides
+import java.io.File
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,7 +16,6 @@ import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import okhttp3.logging.HttpLoggingInterceptor.Logger
 import timber.log.Timber
 import timber.log.debug
-import java.io.File
 
 @Module
 object SearchPresenterModule {

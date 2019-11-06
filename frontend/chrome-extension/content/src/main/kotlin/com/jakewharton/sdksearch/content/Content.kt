@@ -2,10 +2,10 @@ package com.jakewharton.sdksearch.content
 
 import com.chrome.platform.Chrome
 import com.jakewharton.sdksearch.sourcelinker.insertSourceLink
-import timber.log.ConsoleTree
-import timber.log.Timber
 import kotlin.browser.document
 import kotlin.browser.window
+import timber.log.ConsoleTree
+import timber.log.Timber
 
 suspend fun main() {
   Timber.plant(ConsoleTree())

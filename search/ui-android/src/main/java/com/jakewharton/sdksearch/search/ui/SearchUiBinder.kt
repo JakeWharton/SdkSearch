@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.jakewharton.presentation.UiBinder
+import com.jakewharton.sdksearch.roboto.R as RobotoR
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event.ClearSyncStatus
 import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Model
@@ -31,7 +32,6 @@ import com.jakewharton.sdksearch.search.ui.util.onScroll
 import com.jakewharton.sdksearch.search.ui.util.onTextChanged
 import com.jakewharton.sdksearch.store.item.Item
 import kotlinx.coroutines.channels.SendChannel
-import com.jakewharton.sdksearch.roboto.R as RobotoR
 
 class SearchUiBinder(
   view: View,

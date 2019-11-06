@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.sourcelinker
 
 import com.jakewharton.sdksearch.reference.AndroidReference
 import com.jakewharton.sdksearch.reference.sourceUrl
+import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -9,7 +10,6 @@ import org.w3c.dom.MutationObserver
 import org.w3c.dom.MutationObserverInit
 import org.w3c.dom.Node
 import org.w3c.dom.ParentNode
-import kotlin.coroutines.resume
 import timber.log.Timber
 import timber.log.debug
 

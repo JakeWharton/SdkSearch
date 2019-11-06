@@ -2,6 +2,7 @@ package com.jakewharton.sdksearch.proxy
 
 import com.jakewharton.sdksearch.proxy.model.DocumentedType
 import com.squareup.moshi.JsonReader
+import kotlin.time.seconds
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -12,7 +13,6 @@ import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import okhttp3.logging.HttpLoggingInterceptor.Logger
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
-import kotlin.time.seconds
 
 private val dac = "https://developer.android.com"
 private val urls = listOf(

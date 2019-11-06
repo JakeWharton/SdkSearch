@@ -1,10 +1,10 @@
 package com.chrome.platform.storage
 
+import kotlin.js.Json
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.conflate
-import kotlin.js.Json
 
 fun StorageArea.changes(key: String): Flow<Any?> = callbackFlow {
   send(get(key))

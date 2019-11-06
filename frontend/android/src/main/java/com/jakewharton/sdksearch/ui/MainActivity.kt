@@ -17,14 +17,14 @@ import com.jakewharton.sdksearch.search.ui.ShareItemHandler
 import dagger.Module
 import dagger.android.AndroidInjection
 import dagger.android.ContributesAndroidInjector
+import javax.inject.Inject
+import javax.inject.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.error
-import javax.inject.Inject
-import javax.inject.Provider
 
 class MainActivity : Activity() {
   private val scope = MainScope()

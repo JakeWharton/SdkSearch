@@ -16,10 +16,10 @@ import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import kotlin.time.minutes
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.list
 import org.slf4j.event.Level
-import kotlin.time.minutes
 
 fun main() {
   val port = System.getenv("PORT")?.toIntOrNull() ?: 8084

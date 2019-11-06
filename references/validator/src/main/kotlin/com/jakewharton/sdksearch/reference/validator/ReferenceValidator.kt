@@ -7,12 +7,12 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.multiple
 import com.jakewharton.sdksearch.api.dac.DacComponent
 import com.jakewharton.sdksearch.reference.AndroidReference
-import kotlinx.coroutines.runBlocking
-import okhttp3.OkHttpClient
-import okhttp3.Request.Builder
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.minutes
+import kotlinx.coroutines.runBlocking
+import okhttp3.OkHttpClient
+import okhttp3.Request.Builder
 
 fun main(vararg args: String) {
   ValidationCommand().main(args.toList())

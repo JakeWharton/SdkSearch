@@ -5,12 +5,12 @@ import android.app.Application
 import com.bugsnag.android.Bugsnag
 import com.jakewharton.timber.bugsnag.BugsnagTree
 import dagger.android.HasAndroidInjector
-import timber.log.LogcatTree
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import timber.log.LogcatTree
+import timber.log.Timber
 
 class SdkSearchApplication : Application(), HasAndroidInjector {
   private lateinit var appComponent: AppComponent

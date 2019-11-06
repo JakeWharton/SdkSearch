@@ -23,6 +23,8 @@ import androidx.core.content.getSystemService
 import com.jakewharton.sdksearch.api.circleci.CircleCiComponent
 import com.jakewharton.sdksearch.api.circleci.Filter.SUCCESSFUL
 import com.jakewharton.sdksearch.api.circleci.VcsType.GITHUB
+import java.io.File
+import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,8 +34,6 @@ import timber.log.Timber
 import timber.log.debug
 import timber.log.info
 import timber.log.warn
-import java.io.File
-import java.io.IOException
 
 private const val KEY_CONFIG = "config"
 private const val CHANNEL_ID = "debug-updater"

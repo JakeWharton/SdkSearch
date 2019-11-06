@@ -1,15 +1,15 @@
 package com.jakewharton.sdksearch.proxy
 
 import com.google.common.truth.Truth.assertThat
+import kotlin.time.TestClock
+import kotlin.time.minutes
+import kotlin.time.nanoseconds
+import kotlin.time.seconds
 import kotlinx.coroutines.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import kotlin.time.TestClock
-import kotlin.time.minutes
-import kotlin.time.nanoseconds
-import kotlin.time.seconds
 
 class MemoizeTest {
   @Test fun negativeExpirationDisallowed() {

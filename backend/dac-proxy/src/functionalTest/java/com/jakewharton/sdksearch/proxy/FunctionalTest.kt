@@ -1,7 +1,7 @@
 package com.jakewharton.sdksearch.proxy
 
-import com.jakewharton.sdksearch.proxy.model.DocumentedType
 import com.google.common.truth.Truth.assertThat
+import com.jakewharton.sdksearch.proxy.model.DocumentedType
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 

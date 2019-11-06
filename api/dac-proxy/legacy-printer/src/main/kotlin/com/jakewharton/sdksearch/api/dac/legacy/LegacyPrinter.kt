@@ -3,9 +3,9 @@
 package com.jakewharton.sdksearch.api.dac.legacy
 
 import com.jakewharton.sdksearch.api.dac.DacComponent
-import okhttp3.OkHttpClient
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import okhttp3.OkHttpClient
 
 suspend fun main() {
   val client = OkHttpClient()

@@ -8,9 +8,9 @@ import android.util.Log.WARN
 import com.bugsnag.android.Client
 import com.bugsnag.android.Error
 import com.bugsnag.android.Severity
-import timber.log.Tree
 import java.util.ArrayDeque
 import java.util.Locale.US
+import timber.log.Tree
 
 /**
  * A logging implementation which buffers the last 200 messages and notifies on error exceptions.

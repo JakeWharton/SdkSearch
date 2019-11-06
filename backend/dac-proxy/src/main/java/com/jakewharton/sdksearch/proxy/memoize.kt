@@ -15,12 +15,12 @@
 
 package com.jakewharton.sdksearch.proxy
 
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlin.time.Clock
 import kotlin.time.ClockMark
 import kotlin.time.Duration
 import kotlin.time.MonoClock
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 fun <R> (suspend () -> R).memoize(
   expiration: Duration = Duration.INFINITE,

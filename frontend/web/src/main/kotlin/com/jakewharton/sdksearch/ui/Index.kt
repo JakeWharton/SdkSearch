@@ -6,6 +6,8 @@ import com.jakewharton.sdksearch.search.presenter.SearchPresenter.Event
 import com.jakewharton.sdksearch.store.item.Item
 import com.jakewharton.sdksearch.store.item.ItemStore
 import com.jakewharton.sdksearch.sync.ItemSynchronizer
+import kotlin.browser.document
+import kotlin.dom.clear
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -22,8 +24,6 @@ import org.w3c.dom.HTMLUListElement
 import timber.log.ConsoleTree
 import timber.log.Timber
 import timber.log.debug
-import kotlin.browser.document
-import kotlin.dom.clear
 
 fun main() {
   Timber.plant(ConsoleTree())
