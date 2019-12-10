@@ -1,9 +1,6 @@
 -dontobfuscate
 -verbose
 
-# TODO remove after figuring out what R8 bugs are blocking this from working.
--dontoptimize
-
 # Keep annotations with RUNTIME retention and their defaults.
 -keepattributes RuntimeVisible*Annotations, AnnotationDefault
 
@@ -35,18 +32,3 @@
 -keepclassmembers class <1>.<2> {
   <1>.<2>$Companion Companion;
 }
-
-# TODO This only applies when -dontoptimze is remmoved.
-# R8 in full mode sees only a single subtype of this interface. As a result, it rewrites all
-# references to use that subtype and removes this interface. This breaks the ServiceLoader because
-# the META-INF/services/ filename does not get updated.
-# TODO Remove after https://issuetracker.google.com/issues/124181030 is fixed.
-# TODO determine if the -keepnames for this interface should have prevented.
--keep class kotlinx.coroutines.internal.MainDispatcherFactory {}
-
-# TODO This only applies when -dontoptimze is remmoved.
-# R8 in full mode sees only a single subtype of this interface. As a result, it rewrites all
-# references to use that subtype and removes this interface. This breaks the Retrofit Converter for
-# Kotlin coroutines because it doesn't handle CompletableDeferred.
-# TODO Can we automate this rule https://github.com/square/retrofit/issues/3005?
--keep class kotlinx.coroutines.Deferred {}
