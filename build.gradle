@@ -21,7 +21,7 @@ buildscript {
       'kotlinSerialization': '0.14.0',
       'ktor': '1.2.1',
       'okhttp': '4.2.2',
-      'retrofit': '2.6.1',
+      'retrofit': '2.7.0',
       'dagger': '2.24',
       'sqldelight': '1.2.0',
   ]
