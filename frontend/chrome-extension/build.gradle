@@ -23,6 +23,8 @@ distributions {
       }
       from 'src/common/dist'
       from configurations.content
+
+      into '/'
     }
   }
   debug {
@@ -38,6 +40,8 @@ distributions {
       }
       from 'src/common/dist'
       from configurations.content
+
+      into '/'
     }
   }
 }
