@@ -21,6 +21,15 @@ Prerequisites:
 
 
 
+Crash Reporting
+---------------
+
+Provided [for free](https://www.bugsnag.com/open-source) by
+
+![Bugsnag](art/bugsnag_logo_navy.png)
+
+
+
 License
 =======
 
