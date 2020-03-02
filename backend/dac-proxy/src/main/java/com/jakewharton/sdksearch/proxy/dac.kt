@@ -16,9 +16,11 @@ import org.slf4j.LoggerFactory
 
 private val dac = "https://developer.android.com"
 private val urls = listOf(
-    "$dac/reference/classes?partial=1",
-    "$dac/reference/androidx/classes?partial=1",
+    "$dac/reference/kotlin/classes?partial=1",
+    "$dac/reference/kotlin/androidx/classes?partial=1",
+    "$dac/reference/kotlin/androidx/ui/classes?partial=1",
     "$dac/reference/androidx/test/classes?partial=1",
+    "$dac/reference/androidx/constraintlayout/classes?partial=1",
     "$dac/reference/com/google/android/material/classes?partial=1",
     "$dac/reference/com/google/android/play/core/classes?partial=1",
     "$dac/reference/com/android/billingclient/classes?partial=1",
@@ -62,17 +64,20 @@ private suspend fun listTypes(url: String): List<DocumentedType> {
   val documentedTypes = elements.map { element ->
     val linkElement = element.selectFirst("a")
 
-    val api = element.attr("data-version-added").toIntOrNull() ?: 0
     val deprecated = element.hasAttr("data-version-deprecated")
     val link = linkElement.attr("href")
+        .removePrefix(dac) // Compose links include the base URL.
     val className = linkElement.text()
 
     // Parse the package name from the URL paths.
-    val packageName = link.removePrefix("/reference/")
-        .removeSuffix("/$className.html")
+    val packageName = link
+        .removePrefix("/reference/kotlin/")
+        .removePrefix("/reference/")
+        .removeSuffix(".html")
+        .removeSuffix("/$className")
         .replace('/', '.')
 
-    DocumentedType(packageName, className, api, deprecated, "$dac$link")
+    DocumentedType(packageName, className, deprecated, "$dac$link")
   }
 
   return documentedTypes
