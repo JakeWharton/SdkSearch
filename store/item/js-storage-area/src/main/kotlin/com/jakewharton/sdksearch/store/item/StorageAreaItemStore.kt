@@ -13,11 +13,11 @@ private const val KEY = "items_2"
 // TODO replace with https://github.com/Kotlin/kotlinx.serialization/issues/116
 // TODO stop golfing byte count https://bugs.chromium.org/p/chromium/issues/detail?id=863214
 
-private fun Item.toPacked() = arrayOf<dynamic>(packageName, className, if (deprecated) 1 else 0, link)
+private fun Item.toPacked() = arrayOf<Any>(packageName, className, if (deprecated) 1 else 0, link)
 private fun List<Item>.toPacked() = Array(size) { this[it].toPacked() }
 
 private fun unpackItem(value: dynamic): Item = Impl(-1, value[0], value[1], value[2] == 1, value[3])
-private fun unpackToItemList(value: dynamic) = (value as Array<dynamic>).map(::unpackItem)
+private fun unpackToItemList(value: dynamic) = (value as Array<Any>).map(::unpackItem)
 
 class StorageAreaItemStore(
   private val storageArea: StorageArea
