@@ -1,7 +1,7 @@
 package com.jakewharton.sdksearch.proxy
 
 import com.google.common.truth.Truth.assertThat
-import kotlin.time.TestClock
+import kotlin.time.TestTimeSource
 import kotlin.time.minutes
 import kotlin.time.nanoseconds
 import kotlin.time.seconds
@@ -33,7 +33,7 @@ class MemoizeTest {
   }
 
   @Test fun defaultExpirationIsInfinity() = runBlocking {
-    val clock = TestClock()
+    val clock = TestTimeSource()
     var calls = 0
 
     val supplier = suspend {
@@ -65,7 +65,7 @@ class MemoizeTest {
   }
 
   @Test fun supplerInvokedAgainAfterExpiration() = runBlocking {
-    val clock = TestClock()
+    val clock = TestTimeSource()
     var calls = 0
 
     val supplier = suspend {
@@ -82,7 +82,7 @@ class MemoizeTest {
   }
 
   @Test fun supplerExecutionTimeIsCountedAgainstExpiration() = runBlocking {
-    val clock = TestClock()
+    val clock = TestTimeSource()
     var calls = 0
 
     val supplier = suspend {

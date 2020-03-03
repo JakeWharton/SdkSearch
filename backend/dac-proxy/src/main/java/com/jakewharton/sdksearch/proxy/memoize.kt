@@ -15,16 +15,16 @@
 
 package com.jakewharton.sdksearch.proxy
 
-import kotlin.time.Clock
-import kotlin.time.ClockMark
 import kotlin.time.Duration
-import kotlin.time.MonoClock
+import kotlin.time.TimeMark
+import kotlin.time.TimeSource
+import kotlin.time.TimeSource.Monotonic
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 fun <R> (suspend () -> R).memoize(
   expiration: Duration = Duration.INFINITE,
-  clock: Clock = MonoClock
+  clock: TimeSource = Monotonic
 ): suspend () -> R {
   require(!expiration.isNegative()) { "Duration must be positive: $expiration" }
 
@@ -34,14 +34,14 @@ fun <R> (suspend () -> R).memoize(
 
 private class MemoizedSuspendingSupplier<R>(
   private val expiration: Duration,
-  clock: Clock,
+  clock: TimeSource,
   private val delegate: suspend () -> R
 ) {
   private val lock = Mutex()
   @Volatile private var value: Any? = null
 
   /**
-   * A [ClockMark] for which an elapsed time of 0 or greater means [value] has expired and should
+   * A [TimeMark] for which an elapsed time of 0 or greater means [value] has expired and should
    * be (re)obtained from [delegate].
    */
   @Volatile private var expirationMark = clock.markNow()
