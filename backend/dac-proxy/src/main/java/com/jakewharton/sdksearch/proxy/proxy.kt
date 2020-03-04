@@ -17,8 +17,8 @@ import io.ktor.routing.get
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import kotlin.time.minutes
+import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.list
 import org.slf4j.event.Level
 
 fun main() {
