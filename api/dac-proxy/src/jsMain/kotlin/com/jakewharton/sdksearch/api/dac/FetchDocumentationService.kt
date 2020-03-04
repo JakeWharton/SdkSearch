@@ -3,8 +3,8 @@ package com.jakewharton.sdksearch.api.dac
 import com.jakewharton.sdksearch.proxy.model.DocumentedType
 import kotlin.browser.window
 import kotlinx.coroutines.await
+import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.list
 import org.w3c.dom.url.URL
 
 object FetchDocumentationService : DocumentationService {
