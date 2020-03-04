@@ -5,9 +5,7 @@ archivesBaseName = 'sync'
 kotlin {
   jvm()
   js {
-    compilations.main.kotlinOptions {
-      moduleKind = 'umd'
-    }
+    browser()
   }
 
   sourceSets {

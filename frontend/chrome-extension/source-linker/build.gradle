@@ -1,63 +1,16 @@
-apply plugin: 'kotlin2js'
+apply plugin: 'org.jetbrains.kotlin.js'
 
 dependencies {
-  compile deps.kotlin.stdlib.js
-  compile deps.kotlin.coroutines.js
-  compile project(':references')
-  compile deps.timber.js
+  api deps.kotlin.stdlib.js
+  api deps.kotlin.coroutines.js
+  implementation project(':references')
+  implementation deps.timber.js
 
-  testCompile deps.kotlin.test.js
+  testImplementation deps.kotlin.test.js
 }
 
-compileKotlin2Js {
-  kotlinOptions.moduleKind = 'umd'
+kotlin {
+  target {
+    browser()
+  }
 }
-compileTestKotlin2Js {
-  kotlinOptions.moduleKind = 'umd'
-}
-
-// TODO run this automatically on all projects applying JS plugin.
-apply plugin: 'com.moowork.node'
-
-def npmInstallMocha = tasks.create('npmInstallMocha', NpmTask) {
-  args = ['install', 'mocha@4.1.0', 'source-map-support@0.5.3', 'jsdom@13.2.0', '--no-save']
-}
-
-// Combine all required compilation results in the node_modules folder
-// - main compilation result (compileKotlinJs)
-// - all runtime dependencies of test sourceset
-def dependenciesTask = task('aggregateTestDependencies', type: Sync) {
-  from(compileKotlin2Js.destinationDir)
-  into("$node.nodeModulesDir/node_modules")
-
-  def configuration = configurations.testCompile
-  from(files {
-    configuration.collect { File file ->
-      file.name.endsWith('.jar') ?
-          zipTree(file.absolutePath).matching {
-            include '*.js'
-            include '*.js.map'
-          } :
-          files()
-    }
-  }.builtBy(configuration))
-}
-dependenciesTask.dependsOn(compileKotlin2Js)
-npmInstallMocha.dependsOn(dependenciesTask)
-
-def mochaTask = task('mochaTest', type: NodeTask) {
-  group = 'verification'
-  description = "Runs tests with Mocha"
-
-  script = file("$node.nodeModulesDir/node_modules/mocha/bin/mocha")
-  args = [
-      compileTestKotlin2Js.outputFile,
-      '--require',
-      'source-map-support/register',
-      '--require',
-      'jsdom'
-  ]
-}
-mochaTask.dependsOn(compileTestKotlin2Js, npmInstallMocha)
-
-tasks.getByName('test').dependsOn(mochaTask)

@@ -6,9 +6,7 @@ archivesBaseName = 'dac-proxy-model'
 kotlin {
   jvm()
   js {
-    compilations.main.kotlinOptions {
-      moduleKind = 'umd'
-    }
+    browser()
   }
 
   sourceSets {

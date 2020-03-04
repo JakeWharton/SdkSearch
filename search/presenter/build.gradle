@@ -3,19 +3,34 @@ apply plugin: 'com.android.library'
 
 archivesBaseName = 'search-presenter'
 
+android {
+  compileSdkVersion buildConfig.compileSdk
+
+  defaultConfig {
+    minSdkVersion buildConfig.minSdk
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    lintConfig rootProject.file('lint.xml')
+
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
+    checkReleaseBuilds false
+  }
+}
+
 kotlin {
   android()
   js {
-    compilations.main.kotlinOptions {
-      moduleKind = 'umd'
-    }
+    browser()
   }
 
   sourceSets {
     commonMain {
       dependencies {
         api project(':sync')
-        api project(':presentation:presenter')
+        api project(':presentation:presenter2')
         api deps.kotlin.stdlib.common
         api deps.kotlin.coroutines.common
       }
@@ -32,22 +47,5 @@ kotlin {
         api deps.kotlin.coroutines.js
       }
     }
-  }
-}
-
-android {
-  compileSdkVersion buildConfig.compileSdk
-
-  defaultConfig {
-    minSdkVersion buildConfig.minSdk
-  }
-
-  lintOptions {
-    textReport true
-    textOutput 'stdout'
-    lintConfig rootProject.file('lint.xml')
-
-    // We run a full lint analysis as build part in CI, so skip vital checks for assemble task.
-    checkReleaseBuilds false
   }
 }

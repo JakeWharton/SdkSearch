@@ -1,38 +1,34 @@
-apply plugin: 'kotlin2js'
-apply plugin: 'kotlin-dce-js'
-apply plugin: 'org.jetbrains.kotlin.frontend'
-apply plugin: 'distribution'
+apply plugin: 'org.jetbrains.kotlin.js'
 
-dependencies {
-  compile project(':search:presenter')
-  compile project(':references')
+archivesBaseName = 'sdk-search'
 
-  compile deps.kotlin.stdlib.js
-  compile deps.kotlin.coroutines.js
-  compile deps.timber.js
-}
-
-kotlinFrontend {
-  webpackBundle {
-    bundleName = 'sdk-search'
-    contentPath = file('src/main/web')
-    mode = 'none'
+kotlin {
+  target {
+    browser()
   }
-}
 
-distributions {
-  main {
-    baseName = 'sdk-search'
+  sourceSets {
+    main {
+      dependencies {
+        implementation project(':search:presenter')
+        implementation project(':references')
 
-    contents {
-      from 'src/main/web'
-      from "$buildDir/bundle/sdk-search.bundle.js"
+        implementation deps.kotlin.stdlib.js
+        implementation deps.kotlin.coroutines.js
+        implementation deps.timber.js
+      }
     }
   }
 }
 
-distTar.enabled = false
+def zip = tasks.create("zipDistribution", Zip) {
+  from "$buildDir/distributions"
+  include '**'
+  archiveName "${archivesBaseName}.zip"
+  destinationDir(buildDir)
+}
+zip.dependsOn('browserProductionWebpack')
 
-compileKotlin2Js {
-  kotlinOptions.moduleKind = 'umd'
+artifacts {
+  archives zip
 }

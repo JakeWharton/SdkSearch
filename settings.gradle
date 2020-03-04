@@ -14,7 +14,11 @@ include ':frontend:chrome-extension:content'
 include ':frontend:chrome-extension:source-linker'
 include ':frontend:web'
 include ':presentation:binder'
-include ':presentation:presenter'
+
+// TODO remove once https://youtrack.jetbrains.com/issue/KT-32209 ships
+include ':presentation:presenter2'
+project(':presentation:presenter2').projectDir = file('presentation/presenter')
+
 include ':references'
 include ':references:validator'
 include ':roboto'

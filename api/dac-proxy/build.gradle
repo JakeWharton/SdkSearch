@@ -9,9 +9,7 @@ kotlin {
     withJava()
   }
   js {
-    compilations.main.kotlinOptions {
-      moduleKind = 'umd'
-    }
+    browser()
   }
 
   sourceSets {

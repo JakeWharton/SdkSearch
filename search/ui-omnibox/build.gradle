@@ -1,13 +1,15 @@
-apply plugin: 'kotlin2js'
+apply plugin: 'org.jetbrains.kotlin.js'
 
 dependencies {
-  compile deps.kotlin.stdlib.js
-  compile deps.kotlin.coroutines.js
-  compile project(':search:presenter')
-  compile project(':presentation:binder')
-  compile project(":chrome-platform")
+  api deps.kotlin.stdlib.js
+  api deps.kotlin.coroutines.js
+  api project(':search:presenter')
+  api project(':presentation:binder')
+  api project(":chrome-platform")
 }
 
-compileKotlin2Js {
-  kotlinOptions.moduleKind = 'umd'
+kotlin {
+  target {
+    browser()
+  }
 }

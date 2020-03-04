@@ -116,7 +116,6 @@ buildscript {
     mavenCentral()
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
-    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     gradlePluginPortal()
   }
 
@@ -124,10 +123,8 @@ buildscript {
     classpath 'com.android.tools.build:gradle:3.6.1'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
-    classpath 'org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.45'
     classpath "com.squareup.sqldelight:gradle-plugin:${versions.sqldelight}"
     classpath 'org.jlleitschuh.gradle:ktlint-gradle:9.1.0'
-    classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
   }
 }
 
@@ -138,7 +135,6 @@ allprojects {
     mavenCentral()
     google()
     maven { url "https://kotlin.bintray.com/kotlinx" }
-    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     jcenter()
   }
@@ -149,22 +145,6 @@ allprojects {
         // Force all Kotlin stdlib artifacts to use the same version.
         if (details.requested.group == 'org.jetbrains.kotlin' && details.requested.name.startsWith('kotlin-stdlib')) {
           details.useVersion versions.kotlin
-        }
-      }
-    }
-  }
-
-  // TODO remove once https://github.com/Kotlin/kotlin-frontend-plugin/issues/141 is fixed
-  plugins.whenPluginAdded { plugin ->
-    if (plugin.class.name == 'org.jetbrains.kotlin.gradle.frontend.FrontendPlugin') {
-      def fixTask = tasks.register('webpack-config-fix') {
-        def dir = file('webpack.config.d')
-        it.outputs.dir(dir)
-        it.doLast { dir.mkdir() }
-      }
-      afterEvaluate {
-        tasks.named('webpack-config').configure {
-          it.dependsOn(fixTask)
         }
       }
     }

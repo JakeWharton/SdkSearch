@@ -32,7 +32,7 @@ task projectDependencyGraph {
       if (project.plugins.hasPlugin('org.jetbrains.kotlin.multiplatform')) {
         multiplatformProjects.add(project)
       }
-      if (project.plugins.hasPlugin('kotlin2js')) {
+      if (project.plugins.hasPlugin('org.jetbrains.kotlin.js')) {
         jsProjects.add(project)
       }
       if (project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
