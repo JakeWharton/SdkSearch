@@ -10,6 +10,7 @@ import com.jakewharton.sdksearch.reference.AndroidReference
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.minutes
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.Request.Builder
@@ -76,11 +77,6 @@ private class ValidationCommand : CliktCommand() {
     client.dispatcher.executorService.shutdown()
     client.connectionPool.evictAll()
   }
-}
-
-// TODO https://github.com/Kotlin/kotlinx.coroutines/issues/1402
-private suspend fun delay(duration: Duration) {
-  kotlinx.coroutines.delay(duration.toLongMilliseconds())
 }
 
 // TODO https://github.com/square/okhttp/issues/5322
