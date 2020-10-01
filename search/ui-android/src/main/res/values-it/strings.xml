@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="search">Cerca…</string>
+  <plurals name="search_classes">
+    <item quantity="one">Cerca 1 classe…</item>
+    <item quantity="other">Cerca %d classi…</item>
+  </plurals>
+  <string name="copy">Copia</string>
+  <string name="share">Condividi…</string>
+  <string name="more_options">Più opzioni</string>
+  <string name="clear_search_query">Cancella ricerca</string>
+  <string name="dismiss">Scarta</string>
+  <string name="view_source">Vedi sorgente</string>
+  <string name="updating">Aggiornamento lista classi in corso…</string>
+  <string name="updating_failed">Non é stato possibile aggiornare la lista delle classi.</string>
+  <string name="copied">URL %s copiato negli appunti!</string>
+  <string name="share_title">Condividi URL %s</string>
+  <string name="view_class_source">Vedi sorgente %s</string>
+  <string name="unknown_source">Posizione sorgente sconosciuta!</string>
+</resources>
