@@ -22,6 +22,7 @@ task projectDependencyGraph {
     def multiplatformProjects = []
     def jsProjects = []
     def androidProjects = []
+    def androidLibraries = []
     def javaProjects = []
 
     queue = [rootProject]
@@ -35,30 +36,32 @@ task projectDependencyGraph {
       if (project.plugins.hasPlugin('org.jetbrains.kotlin.js')) {
         jsProjects.add(project)
       }
-      if (project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
+      if (project.plugins.hasPlugin('com.android.application')) {
         androidProjects.add(project)
+      }
+      if (project.plugins.hasPlugin('com.android.library')) {
+        androidLibraries.add(project)
       }
       if (project.plugins.hasPlugin('java-library') || project.plugins.hasPlugin('java')) {
         javaProjects.add(project)
       }
 
       project.configurations.all { config ->
-        config.dependencies
-                .withType(ProjectDependency)
-                .collect { it.dependencyProject }
-                .each { dependency ->
-          projects.add(project)
-          projects.add(dependency)
-          rootProjects.remove(dependency)
+                if (config.name.toLowerCase().endsWith('implementation')) {
+                    config.dependencies
+                            .withType(ProjectDependency)
+                            .collect { it.dependencyProject }
+                            .each { dependency ->
+                                projects.add(project)
+                                projects.add(dependency)
+                                rootProjects.remove(dependency)
 
-          def graphKey = new Tuple2<Project, Project>(project, dependency)
-          def traits = dependencies.computeIfAbsent(graphKey) { new ArrayList<String>() }
-
-          if (config.name.toLowerCase().endsWith('implementation')) {
-            traits.add('style=dotted')
-          }
-        }
-      }
+                                def graphKey = new Tuple2<Project, Project>(project, dependency)
+                                def traits = dependencies.computeIfAbsent(graphKey) { new ArrayList<String>() }
+                                traits.add('style=dotted')
+                            }
+                }
+            }
     }
 
     projects = projects.sort { it.path }
@@ -75,8 +78,10 @@ task projectDependencyGraph {
         traits.add('fillcolor="#ffd2b3"')
       } else if (jsProjects.contains(project)) {
         traits.add('fillcolor="#ffffba"')
-      } else if (androidProjects.contains(project)) {
+      } else if (androidLibraries.contains(project)) {
         traits.add('fillcolor="#baffc9"')
+      } else if (androidProjects.contains(project)) {
+        traits.add('fillcolor="#eba834"')
       } else if (javaProjects.contains(project)) {
         traits.add('fillcolor="#ffb3ba"')
       } else {
